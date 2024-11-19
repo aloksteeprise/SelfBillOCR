@@ -1,0 +1,39 @@
+/* body {
+    overflow-x: hidden;
+  } */
+
+  .paddtop {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .buttonwidth {
+    max-width: 500px;
+    width: 100%;
+    border: 2px solid #E6EAF3;
+    background-color: white;
+    border-radius: 8px;
+    padding: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .buttonwidth:hover {
+    background-color: #E6EAF3 !important;
+  }
+  
+  .textunderline {
+    text-decoration: none;
+  }
+  
+
+  .eyeicon{
+    position: absolute;
+    right: 11px;
+    top: 39px;
+    cursor: pointer;
+  }
+
+  .marginleft{
+    margin-left: 10px;
+  }

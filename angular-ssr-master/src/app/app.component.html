@@ -1,4 +1,4 @@
-<header class="navbar navbar-expand-md navbar-dark fixed-top nga-navbar">
+<header class="navbar navbar-expand-md navbar-dark fixed-top nga-navbar " *ngIf="showHeader">
   <nav class="container" aria-label="Main navigation">
     <a routerLink="/" class="navbar-brand" alt="Accueil" aria-label="AFS">
       <img src="./assets/params/images/logo/ganatan-logo.png" srcset="./assets/params/images/logo/ganatan-logo.png,
@@ -52,6 +52,7 @@
 </header>
 
 <main>
+ 
   <router-outlet></router-outlet>
 </main>
 

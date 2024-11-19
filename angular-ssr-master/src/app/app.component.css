@@ -34,8 +34,16 @@
 }
 
 .nga-footer {
-  background-color: #212121;
+  /* background-color: #212121;
+  color: white; */
+
+  /* position: fixed; */
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: red;
   color: white;
+  text-align: center;
 }
 
 .nga-footer a {
