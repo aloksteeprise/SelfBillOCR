@@ -6,12 +6,10 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { InvoiceRoutingModule } from './invoice-routing.module';
 import { InvoiceComponent } from './invoice.component';
 import { InvoiceService } from './invoice.service'; 
-// import { HttpClientModule } from '@angular/common/http';
-// import { BrowserModule } from '@angular/platform-browser';
+import { MatFormFieldModule } from '@angular/material/form-field'; 
+import { MatInputModule } from '@angular/material/input';  
 
-import { SecurePipe } from './secure.pipe';
-
-
+ import { SecurePipe } from './secure.pipe';
 
 @NgModule({
   declarations: [
@@ -24,8 +22,8 @@ import { SecurePipe } from './secure.pipe';
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
-    // HttpClientModule,  // Add HttpClientModule here
-    // BrowserModule
+    MatFormFieldModule,  
+    MatInputModule      
   ],
   exports: [
     InvoiceComponent
@@ -33,4 +31,3 @@ import { SecurePipe } from './secure.pipe';
   providers: [InvoiceService],
 })
 export class InvoiceModule { }
-

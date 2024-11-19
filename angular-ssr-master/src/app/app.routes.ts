@@ -38,6 +38,11 @@ export const routes: Routes = [
       .then(mod => mod.InvoiceModule)
   },
   {
+    path: 'afsinvoices',
+    loadChildren: () => import('./pages/general/afsinvoices/afsinvoices.module')
+      .then(mod => mod.afsInvoiceModule)
+  },
+  {
     path: 'signup',
     loadChildren: () => import('./pages/general/signup/signup.module')
       .then(mod => mod.SignupModule)

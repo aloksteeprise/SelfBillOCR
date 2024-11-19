@@ -20,34 +20,33 @@ import { InvoiceRequest } from './invoiceRequest';
   //standalone: true,
   //imports: [],
   templateUrl: './invoice.component.html',
-  styleUrl: './invoice.component.css'
+  styleUrls: ['./invoice.component.css']  
 })
 export class InvoiceComponent implements OnInit,AfterViewInit {
 
-  @ViewChild(MatSort) sort = {} as MatSort;
-    @ViewChild(MatPaginator) paginator = {} as MatPaginator;
-
+  // @ViewChild(MatSort) sort = {} as MatSort;
+  //   @ViewChild(MatPaginator) paginator = {} as MatPaginator;
+  
+    @ViewChild(MatSort) sort!: MatSort;
+    @ViewChild(MatPaginator) paginator!: MatPaginator;
     constructor(private invoiceService: InvoiceService) { }
 
     displayedColumns: string[] = ['docCode', 'docDescription', 'ctdDesc'];
     dataSource = new MatTableDataSource<Invoice>();
     
     ngOnInit() {
-
-      debugger;
-      this.invoiceService.getAllContractorInvoices().subscribe((Result: Invoice[]) => {
+      this.invoiceService.getAllContractorInvoices().subscribe((Result: any) => {
         console.log(Result);
-        this.dataSource.data=Result;
-        // this.dataSource.paginator = this.paginator;
-        // this.dataSource.sort = this.sort;
-
-        console.log(this.dataSource);
+        this.dataSource.data = Result.data;  // Accessing data array within Result
       });
-      
     }
 
     ngAfterViewInit() {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     }
+
+    applyFilter(filterValue: string) {
+      this.dataSource.filter = filterValue.trim().toLowerCase();
+}
 }
