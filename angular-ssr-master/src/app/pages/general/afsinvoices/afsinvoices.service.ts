@@ -16,7 +16,6 @@ export class ApiService {
     pageSize: number,
     SortColumn: string | null = null,
     SortDirection: string | null = null,
-    filterValue: string,
     token: string
   ): Observable<PaginationResponse<any>> {
     // Set authorization and content-type headers
@@ -31,7 +30,7 @@ export class ApiService {
       pageSize,
       SortColumn,      // Add SortColumn to the request
       SortDirection,   // Add SortDirection to the request
-      filterValue
+      
     };
 
     console.log('Request Body:', body); // Log the request body for debugging

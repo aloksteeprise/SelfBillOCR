@@ -55,7 +55,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     const SortDirection = this.sort?.direction || ''; // Safely access sort.direction
 
     this.apiService
-      .getInvoices(this.pageIndex, this.pageSize, SortColumn, SortDirection,this.filterValue, this.token)
+      .getInvoices(this.pageIndex, this.pageSize, SortColumn, SortDirection, this.token)
       .subscribe({
         next: (response:any) => {
           debugger;
@@ -69,20 +69,20 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
         },
         error: (err) => {
           console.error('API Error:', err);
-          alert('Failed to load invoices. Check the console for details.');
+          // alert('Failed to load invoices. Check the console for details.');
         },
       });
   }
 
-  onFilter(event: KeyboardEvent) {
-    // Check if the key pressed is Enter (key code 13)
-    if (event.key === 'Enter') {
-      const input = event.target as HTMLInputElement;
-      this.filterValue = input.value.trim(); // Get the filter value
-      this.pageIndex = 1; // Reset to the first page for new filter
-      this.loadInvoices(); // Reload data with the filter
-    }
-  }
+  // onFilter(event: KeyboardEvent) {
+  //   // Check if the key pressed is Enter (key code 13)
+  //   if (event.key === 'Enter') {
+  //     const input = event.target as HTMLInputElement;
+  //     this.filterValue = input.value.trim(); // Get the filter value
+  //     this.pageIndex = 1; // Reset to the first page for new filter
+  //     this.loadInvoices(); // Reload data with the filter
+  //   }
+  // }
   
 
   onPageChanged(event: any) {
