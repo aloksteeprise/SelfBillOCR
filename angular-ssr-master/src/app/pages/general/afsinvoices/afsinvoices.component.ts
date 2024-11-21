@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { ApiService } from '../afsinvoices/afsinvoices.service';
 import { afsInvoice } from '../afsinvoices/afsinvoices.model';
 
@@ -8,43 +10,62 @@ import { afsInvoice } from '../afsinvoices/afsinvoices.model';
   templateUrl: './afsinvoices.component.html',
   styleUrls: ['./afsinvoices.component.css'],
 })
-export class AfsInvoicesComponent implements OnInit {
-  displayedColumns: string[] = ['docCode', 'docDescription', 'ctdDesc'];
+export class AfsInvoicesComponent implements OnInit, AfterViewInit {
+  displayedColumns: string[] = [
+    'contractorName',
+    'cFirstName',
+    'cLastName',
+    'startDate',
+    'endDate',
+    'totalAmount',
+    'selfBillInvoiceNo',
+    'selfBillInvoiceContractNo',
+    'errorID',
+    'errorMessage',
+  ];
+
   dataSource = new MatTableDataSource<afsInvoice>([]);
   totalRecords: number = 0;
   pageIndex: number = 1;
-  pageSize: number = 3;
+  pageSize: number = 10;
+  filterValue: string = '';
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
-  // Replace with token retrieval logic (e.g., from a login service)
-  token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IkJvdHRlc3QiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJwYWhhcmkubWNhQGdtYWlsLmNvbSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJUZXN0IFRpbWVzaGVldCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3N1cm5hbWUiOiIiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9tb2JpbGVwaG9uZSI6IiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkNvbnRyYWN0b3IiLCJleHAiOjE3MzIxNzA0NTV9.i3Uo-DZxGrPRBhN0LgOfLhkfZ8jzVw65TwBI947FfVs'; 
-  contractCode = 32651;
-  invFromDate = new Date('2022-11-14T06:24:19.825Z');
-  invToDate = new Date('2024-11-14T06:24:19.825Z');
-  contractorCode = '0Z202201280854ByZoho';
+  token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IkJvdHRlc3QiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJwYWhhcmkubWNhQGdtYWlsLmNvbSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJUZXN0IFRpbWVzaGVldCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3N1cm5hbWUiOiIiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9tb2JpbGVwaG9uZSI6IiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkNvbnRyYWN0b3IiLCJleHAiOjE3MzI3Nzc1MTd9.gBmhLO2ep7jf7FKYSlzPNL_c5NM_S9U3YLTlfdE2OdA'; 
 
   constructor(private apiService: ApiService) {}
 
   ngOnInit() {
-    this.loadInvoices();
+    this.loadInvoices(); // Initial data load
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator; // Assign paginator after view init
+    this.dataSource.sort = this.sort; // Assign sort after view init
+
+    this.sort.sortChange.subscribe(() => {
+      this.pageIndex = 1; // Reset to the first page on sort change
+      this.loadInvoices(); // Reload invoices with updated sorting
+    });
   }
 
   loadInvoices() {
+    const SortColumn = this.sort?.active || ''; // Safely access sort.active
+    const SortDirection = this.sort?.direction || ''; // Safely access sort.direction
+
     this.apiService
-      .getInvoices(
-        this.contractCode,
-        this.invFromDate,
-        this.invToDate,
-        this.contractorCode,
-        this.pageIndex,
-        this.pageSize,
-        this.token
-      )
+      .getInvoices(this.pageIndex, this.pageSize, SortColumn, SortDirection,this.filterValue, this.token)
       .subscribe({
-        next: (response) => {
-          this.dataSource.data = response.data;
-          this.totalRecords = response.data[0].totalRecord;
-          //this.totalRecords = response.data[0].totalRecord;
-          console.log(response.total);
+        next: (response:any) => {
+          debugger;
+          this.dataSource.data = response.data.data;
+          //this.totalRecords = response.data[0]?.totalRecords || 0; // Handle undefined values
+          this.totalRecords = response.data.totalRecords; // Handle undefined values
+          // Update paginator length
+        if (this.paginator) {
+          this.paginator.length = this.totalRecords;
+        }
         },
         error: (err) => {
           console.error('API Error:', err);
@@ -53,22 +74,25 @@ export class AfsInvoicesComponent implements OnInit {
       });
   }
 
-  // onPageChanged(event: any) {
-  //   debugger;
-  //   this.pageIndex = event.pageIndex;
-  //   this.pageSize = event.pageSize;
-  //   this.loadInvoices();
-  // }
-  onPageChanged(event: any) {
-    if (this.pageSize !== event.pageSize) {
-      // Reset to the first page if the page size changes
-      this.pageSize = event.pageSize;
-      this.pageIndex = 1; // Use 1 as the first page for API compatibility
-    } else {
-      this.pageIndex = event.pageIndex + 1; // Adjust for API's 1-based indexing
+  onFilter(event: KeyboardEvent) {
+    // Check if the key pressed is Enter (key code 13)
+    if (event.key === 'Enter') {
+      const input = event.target as HTMLInputElement;
+      this.filterValue = input.value.trim(); // Get the filter value
+      this.pageIndex = 1; // Reset to the first page for new filter
+      this.loadInvoices(); // Reload data with the filter
     }
-  
-    this.loadInvoices(); // Reload data with updated pageIndex and pageSize
   }
   
+
+  onPageChanged(event: any) {
+    if (this.pageSize !== event.pageSize) {
+      this.pageSize = event.pageSize;
+      this.pageIndex = 1; // Reset to the first page if page size changes
+    } else {
+      this.pageIndex = event.pageIndex + 1; // Adjust for 1-based indexing
+    }
+
+    this.loadInvoices();
+  }
 }
