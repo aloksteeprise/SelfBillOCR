@@ -22,7 +22,7 @@ export const routes: Routes = [
       .then(mod => mod.TutorialModule)
   },
   {
-    path: 'services',
+    path: 'services', 
     loadChildren: () => import('./pages/application/example-services/tutorial.module')
       .then(mod => mod.TutorialModule)
   },
@@ -56,6 +56,10 @@ export const routes: Routes = [
   {
     path: 'about',
     loadChildren: () => import('./pages/general/about/about.routes').then(routes => routes.routes)
+  },
+  {
+    path: 'afsinvoice',
+    loadChildren: () => import('./pages/general/afsinvoice/afsinvoice.module').then(mod => mod.AfsinvoiceModule)
   },
 
   { path: '**', component: NotFoundComponent }

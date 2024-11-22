@@ -1,0 +1,251 @@
+<!-- Button to open the modal -->
+<button type="button" class="btn btn-primary mt-5" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Open Form
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg custom-modal-width">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Expense</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- Tab Navigation -->
+            <div class="border-bottom">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="general-tab" data-bs-toggle="tab" data-bs-target="#general"
+                            type="button" role="tab" aria-controls="general" aria-selected="true">General</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="merchant-tab" data-bs-toggle="tab" data-bs-target="#merchant"
+                            type="button" role="tab" aria-controls="merchant" aria-selected="false">Merchant</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="attached-files-tab" data-bs-toggle="tab"
+                            data-bs-target="#attached-files" type="button" role="tab" aria-controls="attached-files"
+                            aria-selected="false">Attached Files (0)</button>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="modal-body d-flex flex-column flex-lg-row">
+                <!-- Left Side: Form with Scrollbar -->
+                <div class="col-12 col-lg-7 overflow-auto pe-lg-4 mb-3 mb-lg-0"
+                    style="max-height: 500px; border-right: 5px solid #ddd;">
+                    <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)">
+                        <!-- Invoice Number -->
+                        <div class="row mb-3 align-items-center">
+                            <label for="contractorname" class="col-sm-4 col-form-label">ContractorName:
+                            </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="contractorname" name="contractorname"
+                                    [(ngModel)]="contractorname" #name="ngModel" minlength="10" required
+                                    placeholder="Enter your Contractor Name">
+                                <div *ngIf="submitted && name.invalid">
+                                    <div *ngIf="name.errors?.['required']" class="custom-fontsize">Contractor name is
+                                        required.</div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row mb-3 align-items-center">
+                            <label for="afscontractor" class="col-sm-4 col-form-label">AFS Contractor:</label>
+                            <div class="col-sm-8">
+                                <select class="form-select" id="afscontractor" name="afscontractor" required
+                                    [(ngModel)]="afscontractor">
+                                    <option value="">Select type</option>
+                                    <option value="Christian David">Christian David</option>
+                                    <option value="Lee David">Lee David</option>
+                                </select>
+                                <!-- Validation Message -->
+                                <div *ngIf="submitted && afscontractor === ''" class="custom-fontsize">
+                                    Afs contractor name is required.
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row mb-3 align-items-center">
+                            <label for="afscontact" class="col-sm-4 col-form-label">AFS Contact:</label>
+                            <div class="col-sm-8">
+                                <select class="form-select" id="afscontact" name="afscontact" required  [(ngModel)]="afscontact" >
+                                    <option selected>Select type</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                </select>
+                                <div *ngIf="submitted && afscontact === ''" class="custom-fontsize">
+                                    Afs contact name is required.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Date Picker -->
+                        <div class="row mb-3 align-items-center">
+                            <label for="startdate" class="col-sm-4 col-form-label">Start Date:</label>
+                            <div class="col-sm-8">
+                                <input type="date" class="form-control" id="startdate" name="startdate" required [(ngModel)]="startdate">
+                                <div *ngIf="submitted && !startdate" class="custom-fontsize text-danger">
+                                    Start date is required.
+                                  </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3 align-items-center">
+                            <label for="enddate" class="col-sm-4 col-form-label">End Date:</label>
+                            <div class="col-sm-8">
+                                <input type="date" class="form-control" id="endate" name="enddate" required [(ngModel)]="enddate">
+                                <div *ngIf="submitted && !enddate" class="custom-fontsize text-danger">
+                                    Start date is required.
+                                  </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3 align-items-center">
+                            <label for="totalnumber" class="col-sm-4 col-form-label">Total Amount:</label>
+                            <div class="col-sm-8">
+                              <input 
+                                type="number" 
+                                class="form-control" 
+                                id="totalnumber" 
+                                name="totalnumber" 
+                                [(ngModel)]="totalnumber" 
+                                #totalnumberModel="ngModel" 
+                                required 
+                                placeholder="Enter your Total number">
+                              
+                              <!-- Validation Messages -->
+                              <div *ngIf="submitted && totalnumberModel.invalid">
+                                <div *ngIf="totalnumberModel.errors?.['required']" class="custom-fontsize text-danger">
+                                  Total number is required.
+                                </div>
+                                <!-- <div *ngIf="totalnumberModel.value <= 0" class="custom-fontsize text-danger">
+                                  Total number must be greater than 0.
+                                </div> -->
+                              </div>
+                            </div>
+                          </div>
+                          
+
+                        <div class="row mb-3 align-items-center">
+                            <label for="invoicenumber" class="col-sm-4 col-form-label">Invoice no:</label>
+                            <div class="col-sm-8">
+                              <input 
+                                type="number"  class="form-control"  id="invoicenumber"  name="invoicenumber"  [(ngModel)]="invoicenumber" 
+                                #invoicenumberModel="ngModel" 
+                                required 
+                                placeholder="Enter your Invoice number">
+                                
+                              <!-- Validation Message -->
+                              <div *ngIf="submitted && invoicenumberModel.invalid">
+                                <div *ngIf="invoicenumberModel.errors?.['required']" class="custom-fontsize text-danger">
+                                  Invoice number is required.
+                                </div>
+                                <div *ngIf="invoicenumberModel.errors?.['min']" class="custom-fontsize text-danger">
+                                  Invoice number must be greater than 0.
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          
+
+                        <div class="row mb-3 align-items-center">
+                            <label for="invoicedate" class="col-sm-4 col-form-label">Invoice Date:</label>
+                            <div class="col-sm-8">
+                                <input type="date" class="form-control" id="invoicedate" name="invoicedate" required [(ngModel)]="invoicedate">
+                                <div *ngIf="submitted && !invoicedate" class="custom-fontsize text-danger">
+                                    Invoice date is required.
+                                  </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3 align-items-center">
+                            <label for="SelfBIllcontractid" class="col-sm-4 col-form-label">SelfBIll ContractID:</label>
+                            <div class="col-sm-8">
+                              <input 
+                                type="text" 
+                                class="form-control" 
+                                id="SelfBIllcontractid" 
+                                name="SelfBIllcontractid" 
+                                [(ngModel)]="SelfBIllcontractid" 
+                                #SelfBIllcontractidModel="ngModel" 
+                                minlength="10" 
+                                required 
+                                placeholder="Enter your SelfBIll ContractID">
+                                
+                              <!-- Validation Messages -->
+                              <div *ngIf="submitted && SelfBIllcontractidModel.invalid">
+                                <div *ngIf="SelfBIllcontractidModel.errors?.['required']" class="custom-fontsize text-danger">
+                                  SelfBIll contract ID is required.
+                                </div>
+                                <!-- <div *ngIf="SelfBIllcontractidModel.errors?.['minlength']" class="custom-fontsize text-danger">
+                                  SelfBIll contract ID must be at least 10 characters long.
+                                </div> -->
+                              </div>
+                            </div>
+                          </div>
+                          
+
+
+
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+
+                <!-- Right Side: File Upload -->
+                <!-- <div class="col-12 col-lg-5 d-flex justify-content-center align-items-center"> -->
+                <!-- <div class="pdf-container" (mousemove)="onHover($event)" (mouseleave)="onLeave()">
+                        <iframe src="assets/documents/sample_pdf.pdf" class="pdf-viewer" title="PDF Document"></iframe>
+                        <div class="magnifier" #magnifier></div> 
+                      </div>  -->
+
+                <!-- <div class="col-12 col-lg-5 d-flex justify-content-center align-items-center"> -->
+                <!-- <div class="img-magnifier-container">
+                            <iframe src="assets/documents/sample_pdf.pdf"  ></iframe>
+                          </div> -->
+
+
+                <!-- Not working  -->
+
+                <div class="col-12 col-lg-5 d-flex justify-content-center align-items-center"
+                    style="max-width: 500px; max-height: 400px; overflow: hidden;">
+
+                    <!-- Worked for images  -->
+                    <lib-ngx-image-zoom  
+                    style="margin-top: 68px;"  
+                    [thumbImage]="mythumbImage"
+                    [fullImage]="myfullImagePath"
+                    [magnification]="2"         
+                    [enableScrollZoom]="false"  
+                    [enableLens]="true"         
+                    [lensWidth]="100"  
+                           
+                    [lensHeight]="100"         
+                    [maxZoomRatio]="2"          
+                    [circularLens]="true"       
+                    [scrollStepSize]="1"        
+                  
+                    >
+                  </lib-ngx-image-zoom>
+                  
+
+                </div>
+
+
+
+                <!-- </div> -->
+
+
+                <!-- </div> -->
+
+                <!-- Modal Footer -->
+                <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Submit</button>
+            </div> -->
+            </div>
+        </div>
+    </div>
