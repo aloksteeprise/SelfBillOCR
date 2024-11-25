@@ -1,0 +1,154 @@
+<div class="expense-container">
+  <!-- Form Section -->
+  <div class="form-section">
+    <h3>Expense</h3>
+    <form (ngSubmit)="onSubmit(myForm)" #myForm="ngForm">
+      <div class="form-content">
+        <!-- Invoice Number -->
+        <div class="form-row">
+          <label for="invoiceNumber">Invoice number</label>
+          <input
+            type="text"
+            id="invoiceNumber"
+            class="form-control"
+            [(ngModel)]="contractorname"
+            name="invoiceNumber"
+            required
+          />
+        </div>
+
+        <!-- Title -->
+        <div class="form-row">
+          <label for="title">Title</label>
+          <input
+            type="text"
+            id="title"
+            class="form-control"
+            [(ngModel)]="afscontractor"
+            name="title"
+            required
+          />
+        </div>
+
+        <!-- Date -->
+        <div class="form-row">
+          <label for="date">Date</label>
+          <input
+            type="date"
+            id="date"
+            class="form-control"
+            [(ngModel)]="startdate"
+            name="date"
+            required
+          />
+        </div>
+
+        <!-- Type -->
+        <div class="form-row">
+          <label for="type">Type (Expense/Income)</label>
+          <select
+            id="type"
+            class="form-control"
+            [(ngModel)]="enddate"
+            name="type"
+            required
+          >
+            <option value="1">1 - Expense</option>
+            <option value="2">2 - Income</option>
+          </select>
+        </div>
+
+        <!-- Category -->
+        <div class="form-row">
+          <label for="category">Category</label>
+          <select
+            id="category"
+            class="form-control"
+            [(ngModel)]="totalnumber"
+            name="category"
+            required
+          >
+            <option>Business meals / Entertainment</option>
+            <option>Travel</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <!-- Payment Instrument -->
+        <div class="form-row">
+          <label for="paymentInstrument">Payment instrument</label>
+          <select
+            id="paymentInstrument"
+            class="form-control"
+            [(ngModel)]="invoicenumber"
+            name="paymentInstrument"
+            required
+          >
+            <option>Card</option>
+            <option>Cash</option>
+            <option>Bank Transfer</option>
+          </select>
+        </div>
+
+        <!-- Country -->
+        <div class="form-row">
+          <label for="country">Country</label>
+          <select
+            id="country"
+            class="form-control"
+            [(ngModel)]="invoicedate"
+            name="country"
+            required
+          >
+            <option value="Germany">Germany</option>
+            <option value="France">France</option>
+            <option value="USA">USA</option>
+          </select>
+        </div>
+
+        <!-- Value -->
+        <div class="form-row">
+          <label for="value">Value</label>
+          <div class="value-container">
+            <input
+              type="number"
+              id="value"
+              class="form-control"
+              [(ngModel)]="SelfBIllcontractid"
+              name="value"
+              required
+            />
+            <select class="currency-dropdown">
+              <option>EUR</option>
+              <option>USD</option>
+              <option>GBP</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-footer">
+        <button type="submit" class="btn-save">Save</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Right Section: Image or PDF Preview -->
+  <div class="preview-section">
+    <h3>Preview</h3>
+    <!-- <div class="image-preview">
+      <lib-ngx-image-zoom
+        [thumbImage]="mythumbImage"
+        [fullImage]="myfullImagePath"
+        [magnification]="2"
+        [enableScrollZoom]="false"
+        [enableLens]="true"
+        [lensWidth]="100"
+        [lensHeight]="100"
+        [maxZoomRatio]="2"
+        [circularLens]="true"
+        [scrollStepSize]="1"
+      ></lib-ngx-image-zoom>
+    </div> -->
+  </div>
+</div>
