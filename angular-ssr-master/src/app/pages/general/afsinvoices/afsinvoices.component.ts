@@ -4,7 +4,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { ApiService } from '../afsinvoices/afsinvoices.service';
 import { afsInvoice } from '../afsinvoices/afsinvoices.model';
-
+import { MatDialog } from '@angular/material/dialog';
+import { AfsInvoicesPopupComponent } from '../afs-invoices-popup/afs-invoices-popup.component';
 @Component({
   selector: 'app-afsinvoices',
   templateUrl: './afsinvoices.component.html',
@@ -22,6 +23,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     'selfBillInvoiceContractNo',
     'errorID',
     'errorMessage',
+    'actions'
   ];
 
   dataSource = new MatTableDataSource<afsInvoice>([]);
@@ -32,9 +34,9 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IkJvdHRlc3QiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJwYWhhcmkubWNhQGdtYWlsLmNvbSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJUZXN0IFRpbWVzaGVldCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3N1cm5hbWUiOiIiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9tb2JpbGVwaG9uZSI6IiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkNvbnRyYWN0b3IiLCJleHAiOjE3MzI3Nzc1MTd9.gBmhLO2ep7jf7FKYSlzPNL_c5NM_S9U3YLTlfdE2OdA'; 
+  token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IkJvdHRlc3QiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJwYWhhcmkubWNhQGdtYWlsLmNvbSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJUZXN0IFRpbWVzaGVldCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3N1cm5hbWUiOiIiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9tb2JpbGVwaG9uZSI6IiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkNvbnRyYWN0b3IiLCJleHAiOjE3MzI4NjMzNzN9.fukTWksDM9BH0q6P3M4yd0Mi2RKmkH4ae6ziGeOhk1E'; 
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService,private dialog: MatDialog) {}
 
   ngOnInit() {
     this.loadInvoices(); // Initial data load
@@ -95,4 +97,16 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
 
     this.loadInvoices();
   }
+
+  openInvoiceModal(invoiceData: any): void {
+    const dialogRef = this.dialog.open(AfsInvoicesPopupComponent, {
+      width: '600px',
+      data: invoiceData
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
 }
