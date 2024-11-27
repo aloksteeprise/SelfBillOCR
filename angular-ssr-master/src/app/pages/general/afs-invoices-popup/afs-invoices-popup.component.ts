@@ -1,74 +1,50 @@
-// import { Component, Inject } from '@angular/core';
-// import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-// import { NgForm } from '@angular/forms';
-
-// @Component({
-//   selector: 'app-afs-invoices-popup',
-//   templateUrl: './afs-invoices-popup.component.html',
-//   styleUrls: ['./afs-invoices-popup.component.css']
-// })
-// export class AfsInvoicesPopupComponent {
-//   contractorname: string;
-//   startDate: string;
-
-//   constructor(
-//     @Inject(MAT_DIALOG_DATA) public data: any,
-//     private dialogRef: MatDialogRef<AfsInvoicesPopupComponent>
-//   ) {
-//     // Initialize the form fields with the passed data
-//     debugger;
-//     this.contractorname = data.contractorName;
-//     this.startDate = data.startDate;
-//   }
-
-//   // Handle form submission
-//   onSubmit(form: NgForm) {
-//     if (form.valid) {
-//       // Emit the data back to the parent
-//       this.dialogRef.close({
-//         contractorname: this.contractorname,
-//         startDate: this.startDate
-//       });
-//     }
-//   }
-
-//   // Close the modal without saving
-//   closeModal() {
-//     this.dialogRef.close();
-//   }
-// }
-
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-afs-invoices-popup',
   templateUrl: './afs-invoices-popup.component.html',
-  styleUrls: ['./afs-invoices-popup.component.css']
+  styleUrls: ['./afs-invoices-popup.component.css'],
 })
 export class AfsInvoicesPopupComponent implements OnInit {
   // Form fields
-  contractorname: string = ''; // Invoice number
-  afscontractor: string = ''; // Title
-  startdate: string = ''; // Date
-  enddate: string = ''; // Type (Expense/Income)
-  totalnumber: string = ''; // Category
-  invoicenumber: string = ''; // Payment instrument
-  invoicedate: string = ''; // Country
-  SelfBIllcontractid: number = 0; // Value
+  contractorname: string = '';
+  afscontractor: string = '';
+  firstnamefor:string = '';
+  lastnamefor:string = '';
+  startdate: string = '';
+  enddate: string = ''; 
+  totalnumber: string = ''; 
+  invoicenumber: string = '';
+  invoicedate: string = '';
+  SelfBIllcontractid: number = 0;
+  thumbImage: string;
+  fullImagePath: string;
+  contractorOptions: { id: number; firstName: string; lastName: string;fullName: string; }[] = []; // For first dropdown
+  filteredContractOptions: { id: number; name: string }[] = []; // For filtered second dropdown
+  //selectedContract: string = ''; // Holds the selected contractor from the first dropdown
+  selectedContract: any = null; // Holds the selected contractor object
+  selectedFilteredContract: string = ''; // Holds the selected filtered contract from the second dropdown
 
-  // Image Zoom Fields
-  mythumbImage: string = ''; // Path to the thumbnail image
-  myfullImagePath: string = ''; // Path to the full image
-
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {}
-  // myfullImagePath = 'assets/documents/image.png';
-  // mythumbImage = 'assets/documents/image.png';
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private http: HttpClient // Injecting HttpClient service
+  ) {
+    // These should now have values because they are being passed in the `data` object
+    this.thumbImage = data?.thumbImage;
+    this.fullImagePath = data?.fullImagePath;
+    console.log('Thumb Image:', this.thumbImage);
+    console.log('Full Image Path:', this.fullImagePath);
+  }
 
   ngOnInit(): void {
-    // Initialize the fields with the provided data
+    this.initializeFormData();
+    this.fetchContractorOptions(); // Fetch API data for dropdown
+  }
+
+  initializeFormData(): void {
     if (this.data) {
-      debugger;
       this.contractorname = this.data.contractorName || '';
       this.afscontractor = this.data.afscontractor || '';
       this.startdate = this.data.startdate || '';
@@ -77,13 +53,57 @@ export class AfsInvoicesPopupComponent implements OnInit {
       this.invoicenumber = this.data.invoicenumber || '';
       this.invoicedate = this.data.invoicedate || '';
       this.SelfBIllcontractid = this.data.SelfBIllcontractid || 0;
-
-      // Initialize image paths if available in data
-      this.mythumbImage = this.data.mythumbImage || 'assets/images/thumbnail.jpg';
-      this.myfullImagePath = this.data.myfullImagePath || 'assets/images/full-image.jpg';
+      //this.firstname = this.firstname || '';
+      //this.lastname = this.lastname || '';
     }
   }
 
+  fetchContractorOptions(): void {
+    const apiUrl = 'https://localhost:44337/api/OCRAI/GetContractorContractListByConName'; // Replace with your API URL
+
+    // Sending request to API
+    this.http.post<any>(apiUrl, { contractorName: this.data.contractorName }).subscribe(
+      (response) => {
+        // Assign the list of contractors to the dropdown options
+        if (response?.data?.contractsList) {
+          debugger;
+          // Store the entire contractsList in localStorage
+          localStorage.setItem('contractsList', JSON.stringify(response.data.contractsList));
+          this.contractorOptions = response.data.contractsList.map((item: any) => ({
+            id: item.ctcCode, // Use ctcCode as ID
+            firstName: item.conFirstName, // Use conFirstName for dropdown display
+            lastName:item.conLastName,
+            fullName:item.fullName
+          }));
+        }
+      },
+      (error) => {
+        console.error('Error fetching contractor options:', error);
+      }
+    );
+  }
+
+  // Filter contractor data and bind it to the second dropdown
+  filterContractData(): void {
+    debugger;
+    console.log('Selected Contractor:', this.selectedContract);
+    // Clear the previous filtered options
+    this.filteredContractOptions = [];
+    this.selectedFilteredContract = '';
+    // Retrieve the contracts list from localStorage
+    const storedContractsList = JSON.parse(localStorage.getItem('contractsList')!);
+    this.firstnamefor = this.selectedContract ? this.selectedContract.firstName : '';
+    this.lastnamefor = this.selectedContract ? this.selectedContract.lastName : '';
+    if (storedContractsList && this.selectedContract) {
+      // Filter contracts based on the selected contractor's fullName
+      this.filteredContractOptions = storedContractsList
+        .filter((contract: any) => contract.fullName === this.selectedContract.fullName)
+        .map((item: any) => ({
+          id: item.ctcCode,
+          name: item.contracts // Assuming "contracts" field is what you want to display
+        }));
+    }
+  }
   // Form submission handler
   onSubmit(form: any): void {
     if (form.valid) {
@@ -107,4 +127,3 @@ export class AfsInvoicesPopupComponent implements OnInit {
     }
   }
 }
-

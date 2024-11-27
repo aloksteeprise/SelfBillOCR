@@ -6,6 +6,7 @@ import { ApiService } from '../afsinvoices/afsinvoices.service';
 import { afsInvoice } from '../afsinvoices/afsinvoices.model';
 import { MatDialog } from '@angular/material/dialog';
 import { AfsInvoicesPopupComponent } from '../afs-invoices-popup/afs-invoices-popup.component';
+
 @Component({
   selector: 'app-afsinvoices',
   templateUrl: './afsinvoices.component.html',
@@ -28,7 +29,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
 
   dataSource = new MatTableDataSource<afsInvoice>([]);
   totalRecords: number = 0;
-  pageIndex: number = 1;
+  pageIndex: number = 0;
   pageSize: number = 10;
   filterValue: string = '';
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -43,11 +44,11 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator; // Assign paginator after view init
-    this.dataSource.sort = this.sort; // Assign sort after view init
+    // this.dataSource.paginator = this.paginator; // Assign paginator after view init
+    // this.dataSource.sort = this.sort; // Assign sort after view init
 
     this.sort.sortChange.subscribe(() => {
-      this.pageIndex = 1; // Reset to the first page on sort change
+      this.pageIndex = 0; // Reset to the first page on sort change
       this.loadInvoices(); // Reload invoices with updated sorting
     });
   }
@@ -65,9 +66,9 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
           //this.totalRecords = response.data[0]?.totalRecords || 0; // Handle undefined values
           this.totalRecords = response.data.totalRecords; // Handle undefined values
           // Update paginator length
-        if (this.paginator) {
-          this.paginator.length = this.totalRecords;
-        }
+        // if (this.paginator) {
+        //   this.paginator.length = this.totalRecords;
+        // }
         },
         error: (err) => {
           console.error('API Error:', err);
@@ -90,23 +91,38 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   onPageChanged(event: any) {
     if (this.pageSize !== event.pageSize) {
       this.pageSize = event.pageSize;
-      this.pageIndex = 1; // Reset to the first page if page size changes
+      this.pageIndex = 0; // Reset to the first page if page size changes
     } else {
-      this.pageIndex = event.pageIndex + 1; // Adjust for 1-based indexing
+      this.pageIndex = event.pageIndex; // Adjust for 1-based indexing
     }
 
     this.loadInvoices();
   }
 
   openInvoiceModal(invoiceData: any): void {
-    const dialogRef = this.dialog.open(AfsInvoicesPopupComponent, {
-      width: '600px',
-      data: invoiceData
+    debugger;
+     // Replace '.pdf' extension with '.png'
+  const imageFileName = invoiceData.invoiceFileName.replace(/\.pdf$/i, '.png');
+    const dialogRef = this.dialog.open(AfsInvoicesPopupComponent, 
+      {
+        width: '60vw',
+        maxWidth: '100vw',
+      data: {
+        ...invoiceData,  // Include all the properties of invoiceData
+        //thumbImage: 'assets/documents/image.png',  // Pass the image path as part of data
+        //fullImagePath: 'assets/documents/image.png'  // Pass the image path as part of data
+        //thumbImage: `assets/documents/${invoiceData.invoiceFileName}`,  // Dynamically set image path
+        //fullImagePath: `assets/documents/${invoiceData.invoiceFileName}`  // Dynamically set image path
+
+        thumbImage: `assets/documents/${imageFileName}`,  // Dynamically set image path
+        fullImagePath: `assets/documents/${imageFileName}`  // Dynamically set image path
+      }
     });
   
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });
   }
+  
 
 }

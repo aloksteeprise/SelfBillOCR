@@ -11,12 +11,11 @@ import { AfsInvoicesComponent } from './afsinvoices.component';
 import { afsInvoiceRoute } from './afsinvoices-routing.module';
 import { ApiService } from './afsinvoices.service';
 import { MatDialogModule } from '@angular/material/dialog';
-import { AfsInvoicesPopupComponent } from '../afs-invoices-popup/afs-invoices-popup.component';
+import { AfsInvoicesPopupModule } from '../afs-invoices-popup/afs-invoices-popup.module';
 import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
-    AfsInvoicesComponent,
-    AfsInvoicesPopupComponent
+    AfsInvoicesComponent
   ],
   imports: [    
     CommonModule,
@@ -27,7 +26,8 @@ import { FormsModule } from '@angular/forms';
     afsInvoiceRoute,
     MatSortModule,
     MatDialogModule,
-    FormsModule
+    FormsModule,
+    AfsInvoicesPopupModule
   ],
   exports: [
     AfsInvoicesComponent,

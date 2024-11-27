@@ -23,5 +23,5 @@ export interface afsInvoice {
   
   export interface PaginationResponse<T> {
     data: T[];
-    total: number; // Total records
+    totalRecords: number; // Total records
   }

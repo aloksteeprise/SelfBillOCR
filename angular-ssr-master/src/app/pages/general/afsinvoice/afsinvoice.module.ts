@@ -4,6 +4,9 @@ import { AfsinvoiceComponent } from './afsinvoice.component';  // Changed to Afs
 import { AfsinvoiceRoutingModule } from './afsinvoice-routing.module';  // Changed to AfsinvoiceRoutingModule
 import { FormsModule } from '@angular/forms';
 import { NgxImageZoomModule } from 'ngx-image-zoom';
+import { MatSortModule } from '@angular/material/sort';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   imports: [
