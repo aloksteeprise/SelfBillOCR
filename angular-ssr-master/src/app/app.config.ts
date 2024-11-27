@@ -7,5 +7,5 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideClientHydration(),provideHttpClient(),provideAnimations(), provideAnimationsAsync()]
+  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideClientHydration(),provideHttpClient(),provideAnimations(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync()]
 };

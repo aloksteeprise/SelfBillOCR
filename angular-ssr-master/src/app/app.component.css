@@ -37,11 +37,11 @@
   /* background-color: #212121;
   color: white; */
 
-  /* position: fixed; */
+  position: fixed;
   left: 0;
   bottom: 0;
   width: 100%;
-  background-color: red;
+  background-color: #fff;
   color: white;
   text-align: center;
 }
