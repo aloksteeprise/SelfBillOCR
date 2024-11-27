@@ -7,8 +7,8 @@ import { PaginationResponse } from '../afsinvoices/afsinvoices.model';
   providedIn: 'root',
 })
 export class ApiService {
-  //private apiUrl = 'https://localhost:44337/api/OCRAI/GetAFSExpensesData';
-  private apiUrl = 'https://wfmapi.accessfinancial.com/api/OCRAI';
+  private apiUrl = 'https://localhost:44337/api/OCRAI/GetAFSExpensesData';
+  //private apiUrl = 'https://wfmapi.accessfinancial.com/api/OCRAI';
   constructor(private http: HttpClient) {}
 
   getInvoices(
