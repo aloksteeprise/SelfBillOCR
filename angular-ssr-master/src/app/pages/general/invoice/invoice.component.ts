@@ -8,6 +8,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { InvoiceService } from './invoice.service';
 import { Invoice } from './invoice';
+import { MatDialog } from '@angular/material/dialog';
+import { AfsInvoicesPopupComponent } from '../afs-invoices-popup/afs-invoices-popup.component';
 // import { Invoice } from './invoice';
 import { InvoiceRequest } from './invoiceRequest';
 
@@ -29,9 +31,9 @@ export class InvoiceComponent implements OnInit,AfterViewInit {
   
     @ViewChild(MatSort) sort!: MatSort;
     @ViewChild(MatPaginator) paginator!: MatPaginator;
-    constructor(private invoiceService: InvoiceService) { }
+    constructor(private invoiceService: InvoiceService,private dialog: MatDialog) { }
 
-    displayedColumns: string[] = ['docCode', 'docDescription', 'ctdDesc'];
+    displayedColumns: string[] = ['docCode', 'docDescription', 'ctdDesc','actions'];
     dataSource = new MatTableDataSource<Invoice>();
     
     ngOnInit() {
@@ -48,5 +50,15 @@ export class InvoiceComponent implements OnInit,AfterViewInit {
 
     applyFilter(filterValue: string) {
       this.dataSource.filter = filterValue.trim().toLowerCase();
+}
+openInvoiceModal(invoiceData: any): void {
+  const dialogRef = this.dialog.open(AfsInvoicesPopupComponent, {
+    width: '600px',
+    data: invoiceData
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    console.log('The dialog was closed');
+  });
 }
 }
