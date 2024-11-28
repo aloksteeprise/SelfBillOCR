@@ -1,65 +1,64 @@
-.tdContactorName{
-    width: 200px; 
-    word-break: break-word; 
+.tdContactorName {
+    width: 200px;
+    word-break: break-word;
     white-space: normal;
 }
 
 
-/* table th {
-    text-align: center;
-  }
-table td {
-    text-align: center;
-  } */
 
-  /* Align all <td> and <th> cells to the right */
-/* Apply to both header and cell */
 
-/* .mat-mdc-table tbody, .mat-mdc-table tfoot, .mat-mdc-table thead, .mat-mdc-cell, .mat-mdc-footer-cell, .mat-mdc-header-row, .mat-mdc-row, .mat-mdc-footer-row, .mat-mdc-table  {
-    background: inherit;
-    background-color: burlywood;
-} */
-  
 .mat-mdc-header-row {
     background: inherit;
-    background-color: burlywood;
+    background-color: black;
+    /* color: white !important; */
 }
+
+::ng-deep .mat-sort-header-arrow {
+    color: white !important;
+}
+
+
+.coloredwhite {
+    color: white;
+}
+
 
 .mat-header-cell {
     font-weight: bold;
     font-size: 14px;
-  }
-  
-  .mat-cell {
+}
+
+.mat-cell {
     font-size: 13px;
-  }
-  
-  .mat-header-row {
-    background-color: #3f51b5; /* Primary color */
+}
+
+.mat-header-row {
+    background-color: #3f51b5;
+    /* Primary color */
     color: white;
     text-align: center;
-  }
-  
-  .mat-header-cell {
+}
+
+.mat-header-cell {
     padding: 16px;
     font-weight: bold;
-  }
-  
+}
 
-  .mat-row:nth-child(even) {
+
+.mat-row:nth-child(even) {
     background-color: #f9f9f9;
-  }
-  
-  .mat-row:hover {
-    background-color: #e0e0e0; /* Highlight on hover */
-    cursor: pointer;
-  }
-  
+}
 
-  .mat-table-container {
+.mat-row:hover {
+    background-color: #e0e0e0;
+    /* Highlight on hover */
+    cursor: pointer;
+}
+
+
+.mat-table-container {
     max-height: 400px;
     overflow: auto;
     border: 1px solid #ddd;
     border-radius: 4px;
-  }
-  
+}

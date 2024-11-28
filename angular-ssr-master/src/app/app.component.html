@@ -33,13 +33,13 @@
         </li> -->
 
         <li class="nav-item">
-          <a class="nav-link" aria-current="page" routerLink="/afsinvoices">
+          <a class="nav-link activecolor" aria-current="page" routerLink="/afsinvoices">
             <!-- <i class="fas fa-usd me-1"> </i> -->
             AFSInvoice</a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" aria-current="page" routerLink="/afsinvoices">
+          <a class="nav-link " aria-current="page" routerLink="/afsinvoices">
             <!-- <i class="fas fa-usd me-1"></i> -->
             Remmitense</a>
         </li>
@@ -48,8 +48,8 @@
       <form class="d-flex">
         <!-- <button type="button" class="btn btn-sm btn-primary me-2" *ngIf="!authService.isLoggedIn()"
           routerLink="/signup"><i class="fas fa-user-plus me-2"></i>Sign up</button> -->
-        <button type="button" class="btn btn-sm btn-outline-light me-2" *ngIf="!authService.isLoggedIn()"
-          routerLink="/login"><i class="fas fa-sign-in-alt me-2"></i>Login</button>
+        <!-- <button type="button" class="btn btn-sm btn-outline-light me-2" *ngIf="!authService.isLoggedIn()"
+          routerLink="/login"><i class="fas fa-sign-in-alt me-2"></i>Login</button> -->
           <span class="me-3 text-light" [title]="username">{{ getTruncatedUsername() }}</span>
         <button type="button" class="btn btn-sm btn-outline-light me-2" *ngIf="authService.isLoggedIn()"
           (click)="logout()"><i class="fas fa-sign-in-alt me-2"></i>Logout</button>
