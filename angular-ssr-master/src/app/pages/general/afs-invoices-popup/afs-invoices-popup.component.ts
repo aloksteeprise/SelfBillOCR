@@ -22,31 +22,46 @@ export class AfsInvoicesPopupComponent implements OnInit {
   invoiceDate: string = '';
   groupNewId: string = '';
   imageName: string = '';
-  thumbImage: string;
-  fullImagePath: string;
+  thumbImage: string = '';
+  fullImagePath: string = '';
   contractorOptions: { id: number; firstName: string; lastName: string;fullName: string; }[] = []; // For first dropdown
   filteredContractOptions: { id: number; name: string }[] = []; // For filtered second dropdown
   //selectedContract: string = ''; // Holds the selected contractor from the first dropdown
   selectedContract: any = null; // Holds the selected contractor object
   selectedFilteredContract: string = ''; // Holds the selected filtered contract from the second dropdown
   isPopupVisible: boolean = true;
+  ctcCode: number = 0;
+  gridCtcCode: number = 0;
+  
   constructor(
     public dialogRef: MatDialogRef<AfsInvoicesPopupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private http: HttpClient // Injecting HttpClient service
   ) {
-
+    debugger;
+    //this.imageName = data.invoiceFilePath;
     //this.imageName = data.invoiceFilePath.split('\\').pop();
     //this.thumbImage = `assets/documents/${this.imageName}`;
     //this.fullImagePath = `assets/documents/${this.imageName}`;
     // These should now have values because they are being passed in the `data` object
-    this.thumbImage = data?.thumbImage;
-    this.fullImagePath = data?.fullImagePath;
+    //this.thumbImage = data?.thumbImage;
+    //this.fullImagePath = data?.fullImagePath;
+    this.setImagePath(data.invoiceFilePath);
     
+    //console.log('Thumb Image:', this.thumbImage);
+   // console.log('Full Image Path:', this.fullImagePath);
+  }
+
+  setImagePath(filePath: string): void {
+    debugger;
+    this.imageName = filePath;
+    this.thumbImage = `assets/documents/${this.imageName}`;
+    this.fullImagePath = `assets/documents/${this.imageName}`;
+  
     console.log('Thumb Image:', this.thumbImage);
     console.log('Full Image Path:', this.fullImagePath);
   }
-  
+
   closeDialog(): void {
     this.dialogRef.close(); // Closes the dialog
   }
@@ -57,6 +72,7 @@ export class AfsInvoicesPopupComponent implements OnInit {
 
   initializeFormData(): void {
     if (this.data) {
+      
       this.id = this.data.id;
       this.contractorname = this.data.contractorName || '';
       this.afscontractor = this.data.afscontractor || '';
@@ -70,12 +86,13 @@ export class AfsInvoicesPopupComponent implements OnInit {
       this.invoiceNumber = this.data.selfBillInvoiceNo || '';
       this.invoiceDate = this.data.selfBillInvoiceDate || '';
       this.groupNewId = this.data.grouP_NEWID || '';
-      
+      this.gridCtcCode = this.data.contract_CtcCode || 0;
+      console.log(this.ctcCode);
     }
   }
 
   fetchContractorOptions(): void {
-    debugger;
+    
     const apiUrl = 'https://localhost:44337/api/OCRAI/GetContractorContractListByConName'; // Replace with your API URL
     //const apiUrl = 'https://wfmapi.accessfinancial.com/api/OCRAI/GetContractorContractListByConName';
     // Sending request to API
@@ -84,7 +101,8 @@ export class AfsInvoicesPopupComponent implements OnInit {
       (response) => {
         // Assign the list of contractors to the dropdown options
         if (response?.data?.contractsList) {
-          debugger;
+          
+          //this.gridCtcCode = Number(this.ctcCode);
           // Store the entire contractsList in localStorage
           localStorage.setItem('contractsList', JSON.stringify(response.data.contractsList));
           this.contractorOptions = response.data.contractsList.map((item: any) => ({
@@ -93,6 +111,14 @@ export class AfsInvoicesPopupComponent implements OnInit {
             lastName:item.conLastName,
             fullName:item.fullName
           }));
+          //Set the selected contract if `this.gridCtcCode` matches any option's `id`
+          this.selectedContract = this.contractorOptions.find(
+            (option) => option.id === Number(this.gridCtcCode)
+          );
+
+          if (this.selectedContract) {
+            this.filterContractData();
+          }
         }
       },
       (error) => {
@@ -100,10 +126,11 @@ export class AfsInvoicesPopupComponent implements OnInit {
       }
     );
   }
+  
 
   // Filter contractor data and bind it to the second dropdown
   filterContractData(): void {
-    debugger;
+    
     console.log('Selected Contractor:', this.selectedContract);
     // Clear the previous filtered options
     this.filteredContractOptions = [];
@@ -183,6 +210,7 @@ export class AfsInvoicesPopupComponent implements OnInit {
 
 
   fetchNextRecord(data: any): void {
+    debugger;
     this.id = data.ID;
     this.contractorname ='';
     this.contractorname = data.ContractorName || '';
@@ -195,10 +223,12 @@ export class AfsInvoicesPopupComponent implements OnInit {
     this.invoiceNumber = data.SelfBillInvoiceNo || '';
     this.invoiceDate = data.SelfBillInvoiceDate || '';
     this.groupNewId = data.GROUP_NEWID || '';
-
+    this.gridCtcCode = data.Contract_CtcCode || 0;
+    this.imageName = data.InvoiceFilePath;
     this.resetAFSContractorDropdown();
     this.fetchContractorOptions();
     this.resetAFSContractDropdown();
+    this.setImagePath(this.imageName);
   }
 
   resetAFSContractorDropdown(): void {

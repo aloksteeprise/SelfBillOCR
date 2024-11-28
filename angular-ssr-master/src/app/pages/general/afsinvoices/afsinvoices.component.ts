@@ -102,7 +102,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   openInvoiceModal(invoiceData: any): void {
     debugger;
      // Replace '.pdf' extension with '.png'
-    const imageFileName = invoiceData.invoiceFileName.replace(/\.pdf$/i, '.png');
+    //const imageFileName = invoiceData.invoiceFileName.replace(/\.pdf$/i, '.png');
 
     
 
@@ -118,8 +118,11 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
         //thumbImage: `assets/documents/${invoiceData.invoiceFileName}`,  // Dynamically set image path
         //fullImagePath: `assets/documents/${invoiceData.invoiceFileName}`  // Dynamically set image path
 
-        thumbImage: `assets/documents/${imageFileName}`,  // Dynamically set image path
-        fullImagePath: `assets/documents/${imageFileName}`  // Dynamically set image path
+        //thumbImage: `assets/documents/${imageFileName}`,  // Dynamically set image path
+        //fullImagePath: `assets/documents/${imageFileName}`  // Dynamically set image path
+
+        thumbImage: '',  // Dynamically set image path
+        fullImagePath: ''  // Dynamically set image path
       }
     });
   
