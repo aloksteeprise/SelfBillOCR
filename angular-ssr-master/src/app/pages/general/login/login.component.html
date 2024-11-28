@@ -1,9 +1,9 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-sm-7 p-0" style="background-color: #112253;">
-      <img src="assets/login/login4.webp" alt="Login Image" class="img-fluid mt-5" />
+<div class="container-fluid ">
+  <div class="row vh-100">
+    <div class="col-sm-7" style="background-color: #112253;">
+      <img  src="assets/login/login4.webp" alt="Login Image" class="img-fluid imageheight" />
     </div>
-    <div class="col-sm-5 d-flex align-items-center justify-content-center" style="border: 2px solid;">
+    <div class="col-sm-5 d-flex align-items-center justify-content-center card" style="border: 2px solid;">
       <div class="p-3" style="width: 100%; max-width: 500px;">
         <h3 class="text-start mb-4 mt-5">Login</h3>
         <form (ngSubmit)="onLogin()">
@@ -26,23 +26,11 @@
           <a href="" class="textunderline">
             <p class="text-center mt-3">I forgot my password</p>
           </a>
-          <p class="mt-3">or continue with...</p>
-
-          <button type="button" class="btn btn-light w-100 buttonwidth mt-2">
-            <i class="fab fa-google"></i> Google
-          </button>
-          <button type="button" class="btn btn-light w-100 buttonwidth mt-2">
-            <i class="fab fa-linkedin marginleft"></i> LinkedIn
-          </button>
-          <button type="button" class="btn btn-light w-100 buttonwidth mt-2">
-            <i class="fab fa-apple"></i> Apple
-          </button>
-
-          <p class="text-center mt-3">
-            Don't have an account? <a href="" class="textunderline">Register for free</a>
-          </p>
+         
         </form>
       </div>
     </div>
+
+    
   </div>
 </div>

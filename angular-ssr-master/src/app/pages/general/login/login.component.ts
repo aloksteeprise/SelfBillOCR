@@ -53,7 +53,7 @@ export class LoginComponent {
           localStorage.setItem('code', response.data.ccode);
           localStorage.setItem('username', response.data.username);
 
-          this.router.navigate(['/invoice']);
+          this.router.navigate(['/afsinvoices']);
 
         } else {
 

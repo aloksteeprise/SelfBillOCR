@@ -20,6 +20,7 @@ export class AppComponent implements OnInit {
   footerUrl = 'https://steeprise.com';
   footerLink = 'https://www.steeprise.com';
   showHeader = true;
+  username: string | null = null;
 
   constructor(
 
@@ -28,8 +29,11 @@ export class AppComponent implements OnInit {
     private router: Router,
     public authService: AuthService) { }
 
+
   ngOnInit(): void {
 
+ this.username = localStorage.getItem('username') || '';
+        console.log(this.username)
     this.router.events.subscribe(() => {
 
       this.showHeader = this.router.url !== '/login';
@@ -48,8 +52,17 @@ export class AppComponent implements OnInit {
             navMain.classList.remove("show");
           }
         }
+
+       
       }
     }
+  }
+
+  getTruncatedUsername(): string {
+    if (this.username && this.username.length > 10) {
+      return this.username.substring(0, 10) + '...'; // Truncate and add '...'
+    }
+    return this.username || ''; // Return full username or empty if not present
   }
 
   logout(): void {
@@ -57,5 +70,7 @@ export class AppComponent implements OnInit {
     this.authService.logout();
 
     this.router.navigate(['/login']);
+    localStorage.removeItem('username');
+    this.username = null;
   }
 } 

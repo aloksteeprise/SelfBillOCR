@@ -7,6 +7,10 @@
     justify-content: center;
     align-items: center;
   }
+
+  .imageheight{
+    margin-top: 175px;
+  }
   
   .buttonwidth {
     max-width: 500px;
@@ -37,3 +41,11 @@
   .marginleft{
     margin-left: 10px;
   }
+
+  @media screen and (min-width: 300px) and (max-width: 700px) {
+
+    .imageheight{
+      margin-top: 100px;
+    }
+  }
+  

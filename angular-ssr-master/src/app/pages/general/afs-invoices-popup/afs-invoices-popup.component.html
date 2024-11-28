@@ -1,267 +1,115 @@
-<div class="expense-container">
-  <!-- Form Section -->
-  <div class="form-section col-12 col-lg-7 overflow-auto pe-lg-4 mb-3 mb-lg-0" style="max-height: 500px; border-right: 5px solid #ddd;">
-    <h3>Expense</h3>
-    <form (ngSubmit)="onSubmit(myForm)" #myForm="ngForm">
-      <div class="form-content">
-        <!-- Contractor Name -->
-        <div class="form-row">
-          <label for="ContractorName">ContractorName:</label>
-          <input
-            type="text"
-            id="ContractorName"
-            class="form-control"
-            [(ngModel)]="contractorname"
-            name="ContractorName"
-            required
-          />
-        </div>
+<div class="modal-overlay" *ngIf="isPopupVisible">
 
-        <!-- AFS Contractor DropDown -->
-        <div class="form-row">
-          <label for="contractDropdown">AFS Contractor:</label>
-          <select
-            id="AFSContractorDropdown"
-            class="form-control"
-            [(ngModel)]="selectedContract"
-            name="Contractor"
-            (change)="filterContractData()"
-          >
-          <option *ngFor="let option of contractorOptions" [ngValue]="option">
-            {{ option.fullName }}
-          </option>
-          </select>
-        </div>
-      <!-- AFS Contact -->
-      <div class="form-row">
-        <label for="filteredContractDropdown">AFS Contact:</label>
-        <select
-          id="AFSContactDropdown"
-          class="form-control"
-          [(ngModel)]="selectedFilteredContract"
-          name="Contact"
-        >
-          <option *ngFor="let option of filteredContractOptions" [value]="option.id">
-            {{ option.name }}
-          </option>
-        </select>
-      </div>
-      
+  <div class="expense-container">
+    <button class="close-btn" (click)="closeDialog()">×</button>
+    <!-- Form Section -->
+    <div class="form-section col-12 col-lg-7 overflow-auto pe-lg-4 mb-3 mb-lg-0"
+      style="max-height: 550px; border-right: 5px solid #ddd;">
+      <h3 style="font-size: 18px; font-weight: 700; color: #2f455c;">Expense</h3>
+      <form (ngSubmit)="onSubmit(myForm)" #myForm="ngForm">
+        <div class="form-content">
+          <!-- Contractor Name -->
+          <div class="form-row">
+            <label for="ContractorName">ContractorName:</label>
+            <input type="text" id="ContractorName" class="form-control" [(ngModel)]="contractorname"
+              name="ContractorName" required />
+          </div>
 
-      <!-- First Name -->
-      <div class="form-row">
-        <label for="ContractorName">First Name:</label>
-        <input
-          type="text"
-          id="firstnamefor"
-          class="form-control"
-          [(ngModel)]="firstnamefor"
-          name="firstnamefor"
-          required
-        />
-      </div>
-
-      <!-- Last Name -->
-      <div class="form-row">
-        <label for="ContractorName">Last Name:</label>
-        <input
-          type="text"
-          id="LastName"
-          class="form-control"
-          [(ngModel)]="lastnamefor"
-          name="LastName"
-          required
-        />
-      </div>
-
-        <!--Start Date -->
-        <div class="form-row">
-          <label for="date">Start Date:</label>
-          <input
-            type="date"
-            id="startDate"
-            class="form-control"
-            [(ngModel)]="startdate"
-            name="date"
-            required
-          />
-        </div>
-
-         <!--End Date -->
-         <div class="form-row">
-          <label for="date">End Date:</label>
-          <input
-            type="date"
-            id="endDate"
-            class="form-control"
-            [(ngModel)]="startdate"
-            name="date"
-            required
-          />
-        </div>
-
-        <!-- Total Amount -->
-      <div class="form-row">
-        <label for="TotalAmount">Total Amount:</label>
-        <input
-          type="text"
-          id="TotalAmount"
-          class="form-control"
-          [(ngModel)]="lastnamefor"
-          name="TotalAmount"
-          required
-        />
-      </div>
-
-       <!-- Invoice No -->
-       <div class="form-row">
-        <label for="InvoiceNo">Invoice No:</label>
-        <input
-          type="text"
-          id="InvoiceNo"
-          class="form-control"
-          [(ngModel)]="lastnamefor"
-          name="InvoiceNo"
-          required
-        />
-      </div>
-
-      <!--Invoice Date -->
-      <div class="form-row">
-        <label for="Invoicedate">Invoice Date:</label>
-        <input
-          type="date"
-          id="Invoicedate"
-          class="form-control"
-          [(ngModel)]="startdate"
-          name="Invoicedate"
-          required
-        />
-      </div>
-
-      <!-- SelfBill contractID -->
-      <div class="form-row">
-        <label for="SelfBillcontractID">SelfBill ContractID:</label>
-        <input
-          type="text"
-          id="SelfBillcontractID"
-          class="form-control"
-          [(ngModel)]="lastnamefor"
-          name="SelfBillcontractID"
-          required
-        />
-      </div>
-
-       
-        <!-- <div class="form-row">
-          <label for="type">Type (Expense/Income)</label>
-          <select
-            id="type"
-            class="form-control"
-            [(ngModel)]="enddate"
-            name="type"
-            required
-          >
-            <option value="1">1 - Expense</option>
-            <option value="2">2 - Income</option>
-          </select>
-        </div>
-
-        
-        <div class="form-row">
-          <label for="category">Category</label>
-          <select
-            id="category"
-            class="form-control"
-            [(ngModel)]="totalnumber"
-            name="category"
-            required
-          >
-            <option>Business meals / Entertainment</option>
-            <option>Travel</option>
-            <option>Other</option>
-          </select>
-        </div>
-
-        
-        <div class="form-row">
-          <label for="paymentInstrument">Payment instrument</label>
-          <select
-            id="paymentInstrument"
-            class="form-control"
-            [(ngModel)]="invoicenumber"
-            name="paymentInstrument"
-            required
-          >
-            <option>Card</option>
-            <option>Cash</option>
-            <option>Bank Transfer</option>
-          </select>
-        </div>
-
-        
-        <div class="form-row">
-          <label for="country">Country</label>
-          <select
-            id="country"
-            class="form-control"
-            [(ngModel)]="invoicedate"
-            name="country"
-            required
-          >
-            <option value="Germany">Germany</option>
-            <option value="France">France</option>
-            <option value="USA">USA</option>
-          </select>
-        </div>
-
-       
-        <div class="form-row">
-          <label for="value">Value</label>
-          <div class="value-container">
-            <input
-              type="number"
-              id="value"
-              class="form-control"
-              [(ngModel)]="SelfBIllcontractid"
-              name="value"
-              required
-            />
-            <select class="currency-dropdown">
-              <option>EUR</option>
-              <option>USD</option>
-              <option>GBP</option>
+          <!-- AFS Contractor DropDown -->
+          <div class="form-row">
+            <label for="contractDropdown">AFS Contractor:</label>
+            <select id="AFSContractorDropdown" class="form-control" [(ngModel)]="selectedContract" name="Contractor"
+              (change)="filterContractData()">
+              <option *ngFor="let option of contractorOptions" [ngValue]="option">
+                {{ option.fullName }}
+              </option>
             </select>
           </div>
-        </div> -->
+          <!-- AFS Contact -->
+          <div class="form-row">
+            <label for="filteredContractDropdown">AFS Contract:</label>
+            <select id="AFSContactDropdown" class="form-control" [(ngModel)]="selectedFilteredContract" name="Contact">
+              <option *ngFor="let option of filteredContractOptions" [value]="option.id">
+                {{ option.name }}
+              </option>
+            </select>
+          </div>
+
+
+          <!-- First Name -->
+          <div class="form-row">
+            <label for="ContractorName">First Name:</label>
+            <input type="text" id="firstnamefor" class="form-control" [(ngModel)]="firstnamefor" name="firstnamefor"
+              required />
+          </div>
+
+          <!-- Last Name -->
+          <div class="form-row">
+            <label for="ContractorName">Last Name:</label>
+            <input type="text" id="LastName" class="form-control" [(ngModel)]="lastnamefor" name="lastnamefor" required />
+          </div>
+
+          <!--Start Date -->
+          <div class="form-row">
+            <label for="date">Start Date:</label>
+            <input type="text" id="startDate" class="form-control" [(ngModel)]="startdate" name="startdate" required />
+          </div>
+
+          <!--End Date -->
+          <div class="form-row">
+            <label for="date">End Date:</label>
+            <input type="text" id="endDate" class="form-control" [(ngModel)]="enddate" name="enddate" required />
+          </div>
+
+          <!-- Total Amount -->
+          <div class="form-row">
+            <label for="TotalAmount">Total Amount:</label>
+            <input type="text" id="TotalAmount" class="form-control" [(ngModel)]="totalAmount" name="totalAmount"
+              required />
+          </div>
+
+          <!-- Invoice No -->
+          <div class="form-row">
+            <label for="InvoiceNo">Invoice No:</label>
+            <input type="text" id="InvoiceNo" class="form-control" [(ngModel)]="invoiceNumber" name="invoiceNumber"
+              required />
+          </div>
+
+          <!--Invoice Date -->
+          <div class="form-row">
+            <label for="Invoicedate">Invoice Date:</label>
+            <input type="text" id="Invoicedate" class="form-control" [(ngModel)]="invoiceDate" name="invoiceDate"
+              required />
+          </div>
+
+          <input type="hidden" id="groupNewId" [(ngModel)] = "groupNewId">
+
+          <!-- SelfBill contractID -->
+          <!-- <div class="form-row">
+            <label for="SelfBillcontractID">SelfBill ContractID:</label>
+            <input type="text" id="SelfBillcontractID" class="form-control" [(ngModel)]="lastnamefor"
+              name="SelfBillcontractID" required />
+          </div> -->
+
+
+        </div>
+
+        <div class="form-footer">
+          <button type="submit" class="btn-save">Save</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Right Section: Image or PDF Preview -->
+    <div class="preview-section col-12 col-lg-5 ">
+      <h3 style="font-size: 18px; font-weight: 700; color: #2f455c;">Preview</h3>
+      <div class="image-preview">
+        <lib-ngx-image-zoom [thumbImage]="thumbImage" [fullImage]="fullImagePath" [magnification]="2"
+          [enableScrollZoom]="false" [enableLens]="true" [lensWidth]="100" [lensHeight]="100" [maxZoomRatio]="2"
+          [circularLens]="true" [scrollStepSize]="1">
+        </lib-ngx-image-zoom>
+
       </div>
-
-      <div class="form-footer">
-        <button type="submit" class="btn-save">Save</button>
-      </div>
-    </form>
-  </div>
-
-  <!-- Right Section: Image or PDF Preview -->
-  <div class="preview-section col-12 col-lg-5 ">
-    <h3>Preview</h3>
-    <div class="image-preview">
-      <lib-ngx-image-zoom  
-  [thumbImage]="thumbImage" 
-  [fullImage]="fullImagePath"
-  [magnification]="2"         
-  [enableScrollZoom]="false"  
-  [enableLens]="true"         
-  [lensWidth]="100"  
-         
-  [lensHeight]="100"         
-  [maxZoomRatio]="2"          
-  [circularLens]="true"       
-  [scrollStepSize]="1"  
-  
-  >
-</lib-ngx-image-zoom>
-
     </div>
   </div>
 </div>

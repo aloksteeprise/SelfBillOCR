@@ -1,4 +1,4 @@
-<div class="mat-elevation-z8" style="margin-top: 50px;">
+<div class="mat-elevation-z8 " style="margin-top: 50px;">
   <!-- <mat-form-field>
     <mat-label>Search</mat-label>
     <input matInput (keyup)="onFilter($event)" placeholder="Search">
@@ -6,14 +6,14 @@
 
   
   
-  <table mat-table [dataSource]="dataSource.data" matSort>
+  <table mat-table [dataSource]="dataSource.data" matSort class="table table-striped">
     <!-- <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef> ID </th>
       <td mat-cell *matCellDef="let row"> {{row.id}} </td>
     </ng-container> -->
 
      <ng-container matColumnDef="contractorName">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Contractor Name </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header > Contractor Name </th>
       <td mat-cell *matCellDef="let row" class="tdContactorName"> {{row.contractorName}} </td>
     </ng-container>
 
@@ -57,15 +57,15 @@
       <td mat-cell *matCellDef="let row"> {{row.selfBillInvoiceNo}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="selfBillInvoiceContractNo">
+    <!-- <ng-container matColumnDef="selfBillInvoiceContractNo">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> SelfBill InvoiceContractNo </th>
       <td mat-cell *matCellDef="let row"> {{row.selfBillInvoiceContractNo}} </td>
-    </ng-container>
+    </ng-container> -->
 
-    <ng-container matColumnDef="errorID">
+    <!-- <ng-container matColumnDef="errorID">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Error ID </th>
       <td mat-cell *matCellDef="let row"> {{row.errorID}} </td>
-    </ng-container>
+    </ng-container> -->
 
     <ng-container matColumnDef="errorMessage">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Error Message </th>
@@ -76,16 +76,15 @@
      <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef> Actions </th>
       <td mat-cell *matCellDef="let element">
-        <button mat-button (click)="openInvoiceModal(element)">Edit</button>
+        <button mat-button (click)="openInvoiceModal(element)">Validate</button>
       </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-</div>
 
-<mat-paginator 
+  <mat-paginator 
   [length]="totalRecords" 
   [pageSize]="pageSize" 
   [pageIndex]="pageIndex" 
@@ -93,3 +92,6 @@
   [pageSizeOptions]="[5, 10, 15, 20]">
   showFirstLastButtons
 </mat-paginator>
+</div>
+
+

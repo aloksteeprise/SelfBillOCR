@@ -21,8 +21,8 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     'endDate',
     'totalAmount',
     'selfBillInvoiceNo',
-    'selfBillInvoiceContractNo',
-    'errorID',
+    // 'selfBillInvoiceContractNo',
+    // 'errorID',
     'errorMessage',
     'actions'
   ];
@@ -102,11 +102,15 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   openInvoiceModal(invoiceData: any): void {
     debugger;
      // Replace '.pdf' extension with '.png'
-  const imageFileName = invoiceData.invoiceFileName.replace(/\.pdf$/i, '.png');
+    const imageFileName = invoiceData.invoiceFileName.replace(/\.pdf$/i, '.png');
+
+    
+
     const dialogRef = this.dialog.open(AfsInvoicesPopupComponent, 
       {
         width: '60vw',
         maxWidth: '100vw',
+        height:'80%',
       data: {
         ...invoiceData,  // Include all the properties of invoiceData
         //thumbImage: 'assets/documents/image.png',  // Pass the image path as part of data

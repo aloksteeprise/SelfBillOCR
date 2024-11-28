@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class LoginService {
-  private apiUrl = 'https://wfmapi.accessfinancial.com/api/identity/token';
+  private apiUrl = 'https://localhost:44337/api/identity/token/OcrLogin';
   constructor(private http: HttpClient) { }
 
   postData(data: any): Observable<any> {
