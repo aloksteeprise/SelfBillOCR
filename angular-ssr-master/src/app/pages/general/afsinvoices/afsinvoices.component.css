@@ -15,7 +15,15 @@ table td {
   /* Align all <td> and <th> cells to the right */
 /* Apply to both header and cell */
 
+/* .mat-mdc-table tbody, .mat-mdc-table tfoot, .mat-mdc-table thead, .mat-mdc-cell, .mat-mdc-footer-cell, .mat-mdc-header-row, .mat-mdc-row, .mat-mdc-footer-row, .mat-mdc-table  {
+    background: inherit;
+    background-color: burlywood;
+} */
   
+.mat-mdc-header-row {
+    background: inherit;
+    background-color: burlywood;
+}
 
 .mat-header-cell {
     font-weight: bold;
