@@ -116,31 +116,29 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   openInvoiceModal(invoiceData: any): void {
 
     debugger;
-     // Replace '.pdf' extension with '.png'
+    // Replace '.pdf' extension with '.png'
     //const imageFileName = invoiceData.invoiceFileName.replace(/\.pdf$/i, '.png');
 
-    
-
-    const dialogRef = this.dialog.open(AfsInvoicesPopupComponent, 
+    const dialogRef = this.dialog.open(AfsInvoicesPopupComponent,
       {
         width: '60vw',
         maxWidth: '100vw',
-        height:'80%',
-      data: {
-        ...invoiceData,  // Include all the properties of invoiceData
-        //thumbImage: 'assets/documents/image.png',  // Pass the image path as part of data
-        //fullImagePath: 'assets/documents/image.png'  // Pass the image path as part of data
-        //thumbImage: `assets/documents/${invoiceData.invoiceFileName}`,  // Dynamically set image path
-        //fullImagePath: `assets/documents/${invoiceData.invoiceFileName}`  // Dynamically set image path
+        height: '80%',
+        data: {
+          ...invoiceData,  // Include all the properties of invoiceData
+          //thumbImage: 'assets/documents/image.png',  // Pass the image path as part of data
+          //fullImagePath: 'assets/documents/image.png'  // Pass the image path as part of data
+          //thumbImage: `assets/documents/${invoiceData.invoiceFileName}`,  // Dynamically set image path
+          //fullImagePath: `assets/documents/${invoiceData.invoiceFileName}`  // Dynamically set image path
 
-        //thumbImage: `assets/documents/${imageFileName}`,  // Dynamically set image path
-        //fullImagePath: `assets/documents/${imageFileName}`  // Dynamically set image path
+          //thumbImage: `assets/documents/${imageFileName}`,  // Dynamically set image path
+          //fullImagePath: `assets/documents/${imageFileName}`  // Dynamically set image path
 
-        thumbImage: '',  // Dynamically set image path
-        fullImagePath: ''  // Dynamically set image path
-      }
-    });
-  
+          thumbImage: '',  // Dynamically set image path
+          fullImagePath: ''  // Dynamically set image path
+        }
+      });
+
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });
@@ -152,6 +150,16 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     this.invoiceno = this.invoiceno;
     this.startdate = this.startdate;
     this.enddate = this.enddate;
+
+    this.loadInvoices();
+  }
+
+  ClearSearch(): void {
+
+    this.name = '';
+    this.invoiceno = '';
+    this.startdate = '';
+    this.enddate = '';
 
     this.loadInvoices();
   }

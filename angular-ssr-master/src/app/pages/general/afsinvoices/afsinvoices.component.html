@@ -6,7 +6,7 @@
   <form (ngSubmit)="SearchResults(myForm)" #myForm="ngForm">
     <table class="searchTable">
       <tr>
-        <td><label style="padding-left: 10px; width: 50px;">Name</label></td>
+        <td style="padding: 20px 0px 20px 0px;"><label style="padding-left: 10px; width: 50px;">Name</label></td>
         <td><input type="text" style="width: 210px;" class="form-control" id="name" name="name"
             placeholder="First / Middle / Last name" [(ngModel)]="name" /></td>
         <td><label style="padding-left: 20px; width: 120px;">Invoice No</label></td>
@@ -17,6 +17,9 @@
         <td> <input type="date" id="startDate" class="form-control" [(ngModel)]="startdate" name="date" /></td>
         <td><label style="padding-left: 20px; width: 120px;">End Date</label></td>
         <td><input type="date" id="endDate" class="form-control" [(ngModel)]="enddate" name="date" /></td>
+        <td style="padding-left: 20px;">
+          <button type="submit" (click)="ClearSearch()">Clear</button>
+        </td>
         <td style="padding-left: 20px;">
           <button type="submit">Search</button>
         </td>
@@ -31,7 +34,7 @@
     </ng-container> -->
 
     <ng-container matColumnDef="contractorName">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header  class="coloredwhite"> Contractor Name </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Contractor Name </th>
       <td mat-cell *matCellDef="let row" class="tdContactorName"> {{row.contractorName}} </td>
     </ng-container>
 
@@ -100,14 +103,12 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row  *matRowDef="let row; let i = index; columns: displayedColumns;"
-    [ngClass]="{'table-success': row.errorID ===0, 'table-danger': row.errorID !==0}" ></tr>
+    <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns;"
+      [ngClass]="{'table-success': row.errorID ===0, 'table-danger': row.errorID !==0}"></tr>
   </table>
 
   <mat-paginator [length]="totalRecords" [pageSize]="pageSize" [pageIndex]="pageIndex" (page)="onPageChanged($event)"
-  [pageSizeOptions]="[5, 10, 15, 20]">
-  showFirstLastButtons
-</mat-paginator>
+    [pageSizeOptions]="[5, 10, 15, 20]">
+    showFirstLastButtons
+  </mat-paginator>
 </div>
-
-
