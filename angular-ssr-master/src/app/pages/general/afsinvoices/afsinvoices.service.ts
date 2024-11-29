@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PaginationResponse } from '../afsinvoices/afsinvoices.model';
+import {environment} from '../constant/api-constants'
 
 @Injectable({
   providedIn: 'root',
@@ -9,11 +10,13 @@ import { PaginationResponse } from '../afsinvoices/afsinvoices.model';
 
 export class ApiService {
 
-  private apiUrl = 'https://localhost:44337/api/OCRAI/GetAFSExpensesData';
+  private apiUrl = environment.API_BASE_URL+'OCRAI/GetAFSExpensesData';
+  
+ 
   //private apiUrl = 'https://wfmapi.accessfinancial.com/api/OCRAI';
 
   constructor(private http: HttpClient) {
-
+  
     date: [null];
   }
 
