@@ -18,10 +18,10 @@
         <td><label style="padding-left: 20px; width: 120px;">End Date</label></td>
         <td><input type="date" id="endDate" class="form-control" [(ngModel)]="enddate" name="date" /></td>
         <td style="padding-left: 20px;">
-          <button type="submit" (click)="ClearSearch()">Clear</button>
+          <button type="submit">Search</button>
         </td>
         <td style="padding-left: 20px;">
-          <button type="submit">Search</button>
+          <button type="submit" (click)="ClearSearch()">Clear</button>
         </td>
       </tr>
     </table>
