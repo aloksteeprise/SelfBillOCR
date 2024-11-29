@@ -55,8 +55,8 @@ export class AfsInvoicesPopupComponent implements OnInit {
   setImagePath(filePath: string): void {
     debugger;
     this.imageName = filePath;
-    this.thumbImage = `assets/documents/${this.imageName}`;
-    this.fullImagePath = `assets/documents/${this.imageName}`;
+    this.thumbImage = `assets/documents/pdf/${this.imageName}`;
+    this.fullImagePath = `assets/documents/pdf/${this.imageName}`;
   
     console.log('Thumb Image:', this.thumbImage);
     console.log('Full Image Path:', this.fullImagePath);

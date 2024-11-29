@@ -18,7 +18,7 @@
           <!-- AFS Contractor DropDown -->
           <div class="form-row">
             <label for="contractDropdown">AFS Contractor:</label>
-            <select id="AFSContractorDropdown" class="form-control" [(ngModel)]="selectedContract" name="Contractor"
+            <select id="AFSContractorDropdown" class="form-control styled-dropdown" [(ngModel)]="selectedContract" name="Contractor"
               (change)="filterContractData()">
               <option *ngFor="let option of contractorOptions" [ngValue]="option">
                 {{ option.fullName }}
@@ -28,7 +28,7 @@
           <!-- AFS Contact -->
           <div class="form-row">
             <label for="filteredContractDropdown">AFS Contract:</label>
-            <select id="AFSContactDropdown" class="form-control" [(ngModel)]="selectedFilteredContract" name="Contact">
+            <select id="AFSContactDropdown" class="form-control styled-dropdown" [(ngModel)]="selectedFilteredContract" name="Contact">
               <option *ngFor="let option of filteredContractOptions" [value]="option.id">
                 {{ option.name }}
               </option>
