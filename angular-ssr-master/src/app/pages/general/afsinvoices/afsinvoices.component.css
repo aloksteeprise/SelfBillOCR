@@ -5,13 +5,28 @@
 }
 
 
-
+hr {
+    margin: 0.2rem 0;
+    color: inherit;
+    border: 0;
+    border-top: var(--bs-border-width) solid;
+    opacity: .25;
+}
 
 .mat-mdc-header-row {
     background: inherit;
     background-color: black;
     /* color: white !important; */
 }
+
+::ng-deep .table > thead {
+    vertical-align: middle !important;
+}
+
+::ng-deep .mat-mdc-header-row {
+    /* height: 10px!important; */
+    text-align: center;
+} 
 
 ::ng-deep .mat-sort-header-arrow {
     color: white !important;

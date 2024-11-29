@@ -32,8 +32,8 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
 
-    //  this.username = localStorage.getItem('username') || '';
-    //         console.log(this.username)
+    // this.username = localStorage.getItem('username') || '';
+    // console.log(this.username)
     this.router.events.subscribe(() => {
 
       this.showHeader = this.router.url !== '/login';

@@ -3,13 +3,20 @@
     <mat-label>Search</mat-label>
     <input matInput (keyup)="onFilter($event)" placeholder="Search">
   </mat-form-field> -->
+  <!-- <div style="width: 100%;"> -->
+    <p class="mx-4" style="padding-top: 15px; font-weight: 500;">SelfBill Invoice</p>
+    <hr/> 
+  <!-- </div> -->
   <form (ngSubmit)="SearchResults(myForm)" #myForm="ngForm">
+    
     <table class="searchTable">
+      
+      
       <tr>
         <td style="padding: 20px 0px 20px 0px;"><label style="padding-left: 10px; width: 50px;">Name</label></td>
         <td><input type="text" style="width: 210px;" class="form-control" id="name" name="name"
             placeholder="First / Middle / Last name" [(ngModel)]="name" /></td>
-        <td><label style="padding-left: 20px; width: 120px;">Invoice No</label></td>
+        <td><label >Invoice No</label></td>
         <td><input type="text" style="width: 210px;" class="form-control" id="invoiceno" name="invoiceno"
             placeholder="Invoice No" [(ngModel)]="invoiceno" />
         </td>
