@@ -11,7 +11,9 @@ import { ContactComponent } from './pages/general/contact/contact.component';
 import { AboutComponent } from './pages/general/about/about.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent },
+  { path: 'afsinvoices', component: AfsInvoicesComponent, canActivate: [AuthGuard] },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   {
     path: 'bootstrap',
     loadChildren: () => import('./pages/application/example-bootstrap/tutorial.module')
