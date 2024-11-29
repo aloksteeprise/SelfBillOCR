@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef,MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
+import {environment} from '../constant/api-constants';
 
 @Component({
   selector: 'app-afs-invoices-popup',
@@ -94,7 +95,8 @@ export class AfsInvoicesPopupComponent implements OnInit {
   fetchContractorOptions(): void {
     
     //const apiUrl = 'https://localhost:44337/api/OCRAI/GetContractorContractListByConName'; // Replace with your API URL
-    const apiUrl = 'https://wfmapi.accessfinancial.com/api/OCRAI/GetContractorContractListByConName';
+    
+    const apiUrl = environment.API_BASE_URL+'OCRAI/GetContractorContractListByConName';
     // Sending request to API
     
     this.http.post<any>(apiUrl, { firstNameForAFS: this.firstnamefor,lastNameForAFS:this.lastnamefor }).subscribe(
@@ -162,7 +164,7 @@ export class AfsInvoicesPopupComponent implements OnInit {
       console.log('formData:', formData);
   
       //const apiUrl = 'https://localhost:44337/api/OCRAI/ValidateAndMapToContractorContract';
-      const apiUrl = 'https://wfmapi.accessfinancial.com/api/OCRAI/ValidateAndMapToContractorContract';
+      const apiUrl = environment.API_BASE_URL+'OCRAI/ValidateAndMapToContractorContract';
       this.http.post<any>(apiUrl, formData).subscribe({
         next: (response) => {
           switch (response.data.validationResult) {
