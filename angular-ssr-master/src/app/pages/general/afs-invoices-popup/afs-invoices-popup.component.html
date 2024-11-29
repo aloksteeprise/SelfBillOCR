@@ -29,7 +29,7 @@
           <div class="form-row">
             <label for="filteredContractDropdown">AFS Contract:</label>
             <select id="AFSContactDropdown" class="form-control styled-dropdown" [(ngModel)]="selectedFilteredContract" name="Contact">
-              <option *ngFor="let option of filteredContractOptions" [value]="option.id">
+              <option *ngFor="let option of filteredContractOptions" [value]="option.name">
                 {{ option.name }}
               </option>
             </select>

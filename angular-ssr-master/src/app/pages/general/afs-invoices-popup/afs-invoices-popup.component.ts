@@ -131,24 +131,30 @@ export class AfsInvoicesPopupComponent implements OnInit {
 
   // Filter contractor data and bind it to the second dropdown
   filterContractData(): void {
-    
     console.log('Selected Contractor:', this.selectedContract);
+
     // Clear the previous filtered options
     this.filteredContractOptions = [];
     this.selectedFilteredContract = '';
+
     // Retrieve the contracts list from localStorage
     const storedContractsList = JSON.parse(localStorage.getItem('contractsList')!);
-    
+
     if (storedContractsList && this.selectedContract) {
-     
-      this.filteredContractOptions = storedContractsList
-        .filter((contract: any) => contract.fullName === this.selectedContract.fullName)
-        .map((item: any) => ({
-          id: item.ctcCode,
-          name: item.contracts // Assuming "contracts" field is what you want to display
-        }));
+        // Filter and map contracts
+        this.filteredContractOptions = storedContractsList
+            .filter((contract: any) => contract.fullName === this.selectedContract.fullName)
+            .map((item: any) => ({
+                id: item.ctcCode,
+                name: item.contracts // Assuming "contracts" field is what you want to display
+            }));
+
+        // Select the first record by default
+        if (this.filteredContractOptions.length > 0) {
+            this.selectedFilteredContract = this.filteredContractOptions[0].name;
+        }
     }
-  }
+}
   // Form submission handler
   onSubmit(form: any): void {
     if (form.valid) {
