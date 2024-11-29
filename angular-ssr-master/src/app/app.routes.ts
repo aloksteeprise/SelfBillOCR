@@ -11,7 +11,7 @@ import { ContactComponent } from './pages/general/contact/contact.component';
 import { AboutComponent } from './pages/general/about/about.component';
 
 export const routes: Routes = [
-  { path: '',  redirectTo: 'login' , pathMatch: 'full' },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   {
     path: 'bootstrap',
     loadChildren: () => import('./pages/application/example-bootstrap/tutorial.module')
@@ -32,17 +32,10 @@ export const routes: Routes = [
     loadChildren: () => import('./pages/application/example-services/tutorial.module')
       .then(mod => mod.TutorialModule)
   },
-
   {
     path: 'login',
     loadChildren: () => import('./pages/general/login/login.module')
       .then(mod => mod.LoginModule)
-  },
-  { path: 'signup', component: SignupComponent },
-  {
-    path: 'contact', component: ContactComponent,
-    loadChildren: () => import('./pages/general/contact/contact.module')
-      .then(mod => mod.ContactModule)
   },
   { path: 'about', component: AboutComponent },
   {
@@ -65,7 +58,6 @@ export const routes: Routes = [
     loadChildren: () => import('./pages/general/contact/contact.module')
       .then(mod => mod.ContactModule)
   },
-
   {
     path: 'about',
     loadChildren: () => import('./pages/general/about/about.routes').then(routes => routes.routes)

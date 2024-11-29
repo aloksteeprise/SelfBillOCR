@@ -5,16 +5,20 @@ import { isPlatformBrowser } from '@angular/common';
   providedIn: 'root'
 })
 export class AuthService {
-  
+
   private isBrowser: boolean;
 
   constructor(@Inject(PLATFORM_ID) private platformId: object) {
+
     this.isBrowser = isPlatformBrowser(platformId);
   }
 
   isLoggedIn() {
+
     var token = null; // get token from local storage
+  
     if (this.isBrowser) {
+
       token = localStorage.getItem('token');
     }
 
@@ -32,12 +36,12 @@ export class AuthService {
 
   // Log in the user
   login(): void {
-    
+
   }
 
   // Log out the user
   logout(): void {
-    
+
     localStorage.clear();
   }
 }
