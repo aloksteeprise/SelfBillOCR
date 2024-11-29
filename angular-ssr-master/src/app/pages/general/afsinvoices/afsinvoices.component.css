@@ -13,6 +13,16 @@ hr {
     opacity: .25;
 }
 
+.fontweight500 {
+    font-weight: 500;
+}
+
+::ng-deep .mat-mdc-dialog-surface{
+
+    border-radius: 0px!important;
+  }
+  
+
 .mat-mdc-header-row {
     background: inherit;
     background-color: black;

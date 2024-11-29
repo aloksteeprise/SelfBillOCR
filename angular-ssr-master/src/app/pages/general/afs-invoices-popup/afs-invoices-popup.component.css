@@ -11,6 +11,10 @@
   z-index: 1000; */
 }
 
+::ng-deep .mat-mdc-dialog-surface{
+
+  border-radius: none!important;
+}
 
 .close-btn {
   position: absolute;

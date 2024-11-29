@@ -13,22 +13,22 @@
       
       
       <tr>
-        <td style="padding: 20px 0px 20px 0px;"><label style="padding-left: 10px; width: 50px;">Name</label></td>
+        <td style="padding: 20px 0px 20px 0px;"><label style="padding-left: 10px; width: 50px;" class="fontweight500">Name</label></td>
         <td><input type="text" style="width: 210px;" class="form-control" id="name" name="name"
-            placeholder="First / Middle / Last name" [(ngModel)]="name" /></td>
-        <td><label >Invoice No</label></td>
+            placeholder="First / Last name" [(ngModel)]="name" /></td>
+        <td><label class="fontweight500">Invoice No</label></td>
         <td><input type="text" style="width: 210px;" class="form-control" id="invoiceno" name="invoiceno"
             placeholder="Invoice No" [(ngModel)]="invoiceno" />
         </td>
-        <td><label style="padding-left: 20px; width: 120px;">Start Date</label></td>
+        <td><label style="padding-left: 20px; width: 120px;" class="fontweight500">Start Date</label></td>
         <td> <input type="date" id="startDate" class="form-control" [(ngModel)]="startdate" name="date" /></td>
-        <td><label style="padding-left: 20px; width: 120px;">End Date</label></td>
+        <td><label style="padding-left: 20px; width: 120px;" class="fontweight500">End Date</label></td>
         <td><input type="date" id="endDate" class="form-control" [(ngModel)]="enddate" name="date" /></td>
         <td style="padding-left: 20px;">
-          <button type="submit">Search</button>
+          <button type="submit" class="btn btn-dark">Search</button>
         </td>
         <td style="padding-left: 20px;">
-          <button type="submit" (click)="ClearSearch()">Clear</button>
+          <button type="submit" (click)="ClearSearch()" class="btn btn-outline-dark">Clear</button>
         </td>
       </tr>
     </table>
