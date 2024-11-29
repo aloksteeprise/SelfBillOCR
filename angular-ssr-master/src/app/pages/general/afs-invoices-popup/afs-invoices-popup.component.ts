@@ -93,8 +93,8 @@ export class AfsInvoicesPopupComponent implements OnInit {
 
   fetchContractorOptions(): void {
     
-    const apiUrl = 'https://localhost:44337/api/OCRAI/GetContractorContractListByConName'; // Replace with your API URL
-    //const apiUrl = 'https://wfmapi.accessfinancial.com/api/OCRAI/GetContractorContractListByConName';
+    //const apiUrl = 'https://localhost:44337/api/OCRAI/GetContractorContractListByConName'; // Replace with your API URL
+    const apiUrl = 'https://wfmapi.accessfinancial.com/api/OCRAI/GetContractorContractListByConName';
     // Sending request to API
     
     this.http.post<any>(apiUrl, { firstNameForAFS: this.firstnamefor,lastNameForAFS:this.lastnamefor }).subscribe(
@@ -163,8 +163,8 @@ export class AfsInvoicesPopupComponent implements OnInit {
   
       console.log('formData:', formData);
   
-      const apiUrl = 'https://localhost:44337/api/OCRAI/ValidateAndMapToContractorContract';
-      
+      //const apiUrl = 'https://localhost:44337/api/OCRAI/ValidateAndMapToContractorContract';
+      const apiUrl = 'https://wfmapi.accessfinancial.com/api/OCRAI/ValidateAndMapToContractorContract';
       this.http.post<any>(apiUrl, formData).subscribe({
         next: (response) => {
           switch (response.data.validationResult) {
