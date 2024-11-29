@@ -4,7 +4,7 @@
     <input matInput (keyup)="onFilter($event)" placeholder="Search">
   </mat-form-field> -->
   <!-- <div style="width: 100%;"> -->
-    <p class="mx-4" style="padding-top: 15px; font-weight: 500;">SelfBill Invoice</p>
+    <p class="mx-2" style="padding-top: 15px; font-weight: 500;">SelfBill Invoice</p>
     <hr/> 
   <!-- </div> -->
   <form (ngSubmit)="SearchResults(myForm)" #myForm="ngForm">
@@ -20,14 +20,14 @@
         <td><input type="text" style="width: 210px;" class="form-control" id="invoiceno" name="invoiceno"
             placeholder="Invoice No" [(ngModel)]="invoiceno" />
         </td>
-        <td><label style="padding-left: 20px; width: 120px;" class="fontweight500">Start Date</label></td>
+        <td><label style="padding-left: 20px; width: 100px;" class="fontweight500">Start Date</label></td>
         <td> <input type="date" id="startDate" class="form-control" [(ngModel)]="startdate" name="date" /></td>
-        <td><label style="padding-left: 20px; width: 120px;" class="fontweight500">End Date</label></td>
+        <td><label style="padding-left: 20px; width: 96px;" class="fontweight500">End Date</label></td>
         <td><input type="date" id="endDate" class="form-control" [(ngModel)]="enddate" name="date" /></td>
         <td style="padding-left: 20px;">
           <button type="submit" class="btn btn-dark">Search</button>
         </td>
-        <td style="padding-left: 20px;">
+        <td style="padding-left: 10px;">
           <button type="submit" (click)="ClearSearch()" class="btn btn-outline-dark">Clear</button>
         </td>
       </tr>
