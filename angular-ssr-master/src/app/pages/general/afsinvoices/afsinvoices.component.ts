@@ -40,7 +40,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   enddate: string = '';
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  tokenData : string = '';
+  tokenData: string = '';
   token: string = '';
   //token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6InNoeWFtIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoic2h5YW1zdW5kYXIucGFoYXJpQGFjY2Vzc2ZpbmFuY2lhbC5jb20iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiU2h5YW1zdW5kYXIgUGFoYXJpIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvc3VybmFtZSI6IiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL21vYmlsZXBob25lIjoiKzkxLTk5MTAwNzY1NzMiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbmlzdHJhdG9yIiwiZXhwIjoxNzMzNDY4NTY3fQ.FX1TSsGpyHGCdMmz6pzQgVMVcp-1Rz3f9sXNhzuDYyY';
 
@@ -151,6 +151,8 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
       });
 
     dialogRef.afterClosed().subscribe(result => {
+
+      this.ClearSearch();
       console.log('The dialog was closed');
     });
   }
