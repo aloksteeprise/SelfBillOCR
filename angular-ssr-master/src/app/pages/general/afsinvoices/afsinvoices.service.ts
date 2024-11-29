@@ -12,8 +12,9 @@ export class ApiService {
 
   private apiUrl = environment.API_BASE_URL+'OCRAI/GetAFSExpensesData';
   
+  
  
-  //private apiUrl = 'https://wfmapi.accessfinancial.com/api/OCRAI';
+  //private apiUrl = 'https://localhost:44337/api/OCRAI/GetAFSExpensesData';
 
   constructor(private http: HttpClient) {
   

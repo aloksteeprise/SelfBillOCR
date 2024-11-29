@@ -111,7 +111,7 @@
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns;"
-      [ngClass]="{'table-success': row.errorID ===0, 'table-danger': row.errorID !==0}"></tr>
+    [ngClass]="{'table-success': row.isErrorOnRow===0, 'table-danger': row.isErrorOnRow ===1}"></tr>
   </table>
 
   <mat-paginator [length]="totalRecords" [pageSize]="pageSize" [pageIndex]="pageIndex" (page)="onPageChanged($event)"

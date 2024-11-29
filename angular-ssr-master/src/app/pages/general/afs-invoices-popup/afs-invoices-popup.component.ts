@@ -38,7 +38,7 @@ export class AfsInvoicesPopupComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private http: HttpClient // Injecting HttpClient service
   ) {
-    debugger;
+    
     //this.imageName = data.invoiceFilePath;
     //this.imageName = data.invoiceFilePath.split('\\').pop();
     //this.thumbImage = `assets/documents/${this.imageName}`;
@@ -53,7 +53,7 @@ export class AfsInvoicesPopupComponent implements OnInit {
   }
 
   setImagePath(filePath: string): void {
-    debugger;
+    
     this.imageName = filePath;
     this.thumbImage = `assets/documents/pdf/${this.imageName}`;
     this.fullImagePath = `assets/documents/pdf/${this.imageName}`;
@@ -80,7 +80,7 @@ export class AfsInvoicesPopupComponent implements OnInit {
       this.lastnamefor = this.data.cLastName || '';
       this.startdate = this.data.startDate || '';
       this.enddate = this.data.endDate || '';
-      //this.totalAmount = this.data.totalAmount || '';
+      
       // Remove currency 
       this.totalAmount = this.data.totalAmount.includes(' ') ? this.data.totalAmount.split(' ')[0] : this.data.totalAmount.trim();
       this.invoiceNumber = this.data.selfBillInvoiceNo || '';
@@ -102,7 +102,6 @@ export class AfsInvoicesPopupComponent implements OnInit {
         // Assign the list of contractors to the dropdown options
         if (response?.data?.contractsList) {
           
-          //this.gridCtcCode = Number(this.ctcCode);
           // Store the entire contractsList in localStorage
           localStorage.setItem('contractsList', JSON.stringify(response.data.contractsList));
           this.contractorOptions = response.data.contractsList.map((item: any) => ({
@@ -137,10 +136,9 @@ export class AfsInvoicesPopupComponent implements OnInit {
     this.selectedFilteredContract = '';
     // Retrieve the contracts list from localStorage
     const storedContractsList = JSON.parse(localStorage.getItem('contractsList')!);
-    //this.firstnamefor = this.selectedContract ? this.selectedContract.firstName : '';
-    //this.lastnamefor = this.selectedContract ? this.selectedContract.lastName : '';
+    
     if (storedContractsList && this.selectedContract) {
-      // Filter contracts based on the selected contractor's fullName
+     
       this.filteredContractOptions = storedContractsList
         .filter((contract: any) => contract.fullName === this.selectedContract.fullName)
         .map((item: any) => ({
