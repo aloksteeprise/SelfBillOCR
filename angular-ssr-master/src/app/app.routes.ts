@@ -1,13 +1,17 @@
-import { Routes } from '@angular/router';
-
+import { NgModule } from '@angular/core';
 import { HomeComponent } from './pages/general/home/home.component';
-import { LoginComponent } from './pages/general/login/login.component';
-
 import { NotFoundComponent } from './pages/general/not-found/not-found.component';
+import { LoginComponent } from './pages/general/login/login.component';
+import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './auth.guard';
+import { InvoiceComponent } from './pages/general/invoice/invoice.component';
+import { AfsInvoicesComponent } from './pages/general/afsinvoices/afsinvoices.component';
+import { SignupComponent } from './pages/general/signup/signup.component';
+import { ContactComponent } from './pages/general/contact/contact.component';
+import { AboutComponent } from './pages/general/about/about.component';
 
 export const routes: Routes = [
   { path: '',  redirectTo: 'login' , pathMatch: 'full' },
-
   {
     path: 'bootstrap',
     loadChildren: () => import('./pages/application/example-bootstrap/tutorial.module')
@@ -24,7 +28,7 @@ export const routes: Routes = [
       .then(mod => mod.TutorialModule)
   },
   {
-    path: 'services', 
+    path: 'services',
     loadChildren: () => import('./pages/application/example-services/tutorial.module')
       .then(mod => mod.TutorialModule)
   },
@@ -34,13 +38,20 @@ export const routes: Routes = [
     loadChildren: () => import('./pages/general/login/login.module')
       .then(mod => mod.LoginModule)
   },
+  { path: 'signup', component: SignupComponent },
   {
-    path: 'invoice',
+    path: 'contact', component: ContactComponent,
+    loadChildren: () => import('./pages/general/contact/contact.module')
+      .then(mod => mod.ContactModule)
+  },
+  { path: 'about', component: AboutComponent },
+  {
+    path: 'invoice', component: InvoiceComponent, canActivate: [AuthGuard],
     loadChildren: () => import('./pages/general/invoice/invoice.module')
       .then(mod => mod.InvoiceModule)
   },
   {
-    path: 'afsinvoices',
+    path: 'afsinvoices', component: AfsInvoicesComponent, canActivate: [AuthGuard],
     loadChildren: () => import('./pages/general/afsinvoices/afsinvoices.module')
       .then(mod => mod.afsInvoiceModule)
   },
@@ -66,3 +77,10 @@ export const routes: Routes = [
 
   { path: '**', component: NotFoundComponent }
 ];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
+})
+
+export class AppRoutingModule { }

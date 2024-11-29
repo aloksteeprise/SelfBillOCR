@@ -70,7 +70,5 @@ export class AppComponent implements OnInit {
     this.authService.logout();
 
     this.router.navigate(['/login']);
-    localStorage.removeItem('username');
-    this.username = null;
   }
 } 

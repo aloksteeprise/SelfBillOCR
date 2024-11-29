@@ -1,0 +1,13 @@
+.pdfdiv {
+    width: 700px;
+    font-size: small;
+    border: 1px solid #E6EAF3;
+    background-color: orange;
+}
+
+.pdfdiv:hover {
+    width: 700px;
+    font-size: xx-large;
+    border: 1px solid #E6EAF3;
+    background-color: yellow;
+}

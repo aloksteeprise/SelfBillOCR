@@ -62,3 +62,8 @@
     border: 1px solid #ddd;
     border-radius: 4px;
 }
+
+.searchTable{
+    width: 100%;
+    background-color: #FAF9FD;
+}

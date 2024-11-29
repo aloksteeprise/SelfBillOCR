@@ -9,23 +9,23 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header>DocCode</th>
       <td mat-cell *matCellDef="let element"> {{element.docCode}} </td>
     </ng-container>
-  
+
     <!-- Title Column -->
     <ng-container matColumnDef="docDescription">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> DocDescription </th>
       <td mat-cell *matCellDef="let element"> {{element.docDescription}} </td>
     </ng-container>
-  
+
     <!-- Category Column -->
     <ng-container matColumnDef="ctdDesc">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Desc </th>
       <td mat-cell *matCellDef="let element"> {{element.ctdDesc}} </td>
     </ng-container>
-  
-    
-  
+
+
+
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
   <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-</div> 
+</div>

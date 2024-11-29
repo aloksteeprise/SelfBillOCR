@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, input } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -12,7 +12,9 @@ import { AfsInvoicesPopupComponent } from '../afs-invoices-popup/afs-invoices-po
   templateUrl: './afsinvoices.component.html',
   styleUrls: ['./afsinvoices.component.css'],
 })
+
 export class AfsInvoicesComponent implements OnInit, AfterViewInit {
+
   displayedColumns: string[] = [
     'contractorName',
     'cFirstName',
@@ -32,43 +34,51 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   pageIndex: number = 0;
   pageSize: number = 10;
   filterValue: string = '';
+  name: string = '';
+  invoiceno: string = '';
+  startdate: string = '';
+  enddate: string = '';
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IkJvdHRlc3QiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJwYWhhcmkubWNhQGdtYWlsLmNvbSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJUZXN0IFRpbWVzaGVldCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3N1cm5hbWUiOiIiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9tb2JpbGVwaG9uZSI6IiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkNvbnRyYWN0b3IiLCJleHAiOjE3MzI4NjMzNzN9.fukTWksDM9BH0q6P3M4yd0Mi2RKmkH4ae6ziGeOhk1E'; 
+  token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IkJvdHRlc3QiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJwYWhhcmkubWNhQGdtYWlsLmNvbSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJUZXN0IFRpbWVzaGVldCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3N1cm5hbWUiOiIiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9tb2JpbGVwaG9uZSI6IiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkNvbnRyYWN0b3IiLCJleHAiOjE3MzI4NjMzNzN9.fukTWksDM9BH0q6P3M4yd0Mi2RKmkH4ae6ziGeOhk1E';
 
-  constructor(private apiService: ApiService,private dialog: MatDialog) {}
+  constructor(private apiService: ApiService, private dialog: MatDialog) { }
 
   ngOnInit() {
+
     this.loadInvoices(); // Initial data load
   }
 
   ngAfterViewInit() {
+
     // this.dataSource.paginator = this.paginator; // Assign paginator after view init
     // this.dataSource.sort = this.sort; // Assign sort after view init
 
     this.sort.sortChange.subscribe(() => {
+
       this.pageIndex = 0; // Reset to the first page on sort change
       this.loadInvoices(); // Reload invoices with updated sorting
     });
   }
 
   loadInvoices() {
+
     const SortColumn = this.sort?.active || ''; // Safely access sort.active
     const SortDirection = this.sort?.direction || ''; // Safely access sort.direction
 
     this.apiService
-      .getInvoices(this.pageIndex, this.pageSize, SortColumn, SortDirection, this.token)
+      .getInvoices(this.pageIndex, this.pageSize, SortColumn, SortDirection, this.name, this.invoiceno, this.startdate, this.enddate, this.token)
       .subscribe({
-        next: (response:any) => {
+        next: (response: any) => {
           debugger;
           this.dataSource.data = response.data.data;
           //this.totalRecords = response.data[0]?.totalRecords || 0; // Handle undefined values
           this.totalRecords = response.data.totalRecords; // Handle undefined values
           // Update paginator length
-        // if (this.paginator) {
-        //   this.paginator.length = this.totalRecords;
-        // }
+          // if (this.paginator) {
+          //   this.paginator.length = this.totalRecords;
+          // }
         },
         error: (err) => {
           console.error('API Error:', err);
@@ -86,13 +96,17 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   //     this.loadInvoices(); // Reload data with the filter
   //   }
   // }
-  
+
 
   onPageChanged(event: any) {
+
     if (this.pageSize !== event.pageSize) {
+
       this.pageSize = event.pageSize;
       this.pageIndex = 0; // Reset to the first page if page size changes
+
     } else {
+
       this.pageIndex = event.pageIndex; // Adjust for 1-based indexing
     }
 
@@ -100,6 +114,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   }
 
   openInvoiceModal(invoiceData: any): void {
+
     debugger;
      // Replace '.pdf' extension with '.png'
     //const imageFileName = invoiceData.invoiceFileName.replace(/\.pdf$/i, '.png');
@@ -130,6 +145,14 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
       console.log('The dialog was closed');
     });
   }
-  
 
+  SearchResults(form: any): void {
+
+    this.name = this.name;
+    this.invoiceno = this.invoiceno;
+    this.startdate = this.startdate;
+    this.enddate = this.enddate;
+
+    this.loadInvoices();
+  }
 }

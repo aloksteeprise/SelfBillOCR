@@ -8,6 +8,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { InvoiceService } from './invoice.service';
 import { Invoice } from './invoice';
+import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { AfsInvoicesPopupComponent } from '../afs-invoices-popup/afs-invoices-popup.component';
 // import { Invoice } from './invoice';
@@ -24,6 +25,7 @@ import { InvoiceRequest } from './invoiceRequest';
   templateUrl: './invoice.component.html',
   styleUrls: ['./invoice.component.css']  
 })
+
 export class InvoiceComponent implements OnInit,AfterViewInit {
 
   // @ViewChild(MatSort) sort = {} as MatSort;
@@ -37,6 +39,7 @@ export class InvoiceComponent implements OnInit,AfterViewInit {
     dataSource = new MatTableDataSource<Invoice>();
     
     ngOnInit() {
+
       this.invoiceService.getAllContractorInvoices().subscribe((Result: any) => {
         console.log(Result);
         this.dataSource.data = Result.data;  // Accessing data array within Result

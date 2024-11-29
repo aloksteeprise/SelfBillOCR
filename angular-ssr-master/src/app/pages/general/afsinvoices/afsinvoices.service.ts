@@ -6,16 +6,27 @@ import { PaginationResponse } from '../afsinvoices/afsinvoices.model';
 @Injectable({
   providedIn: 'root',
 })
+
 export class ApiService {
+
   private apiUrl = 'https://localhost:44337/api/OCRAI/GetAFSExpensesData';
   //private apiUrl = 'https://wfmapi.accessfinancial.com/api/OCRAI';
-  constructor(private http: HttpClient) {}
+
+  constructor(private http: HttpClient) {
+
+    date: [null];
+  }
 
   getInvoices(
+
     pageIndex: number,
     pageSize: number,
     SortColumn: string | null = null,
     SortDirection: string | null = null,
+    name: string | null = null,
+    invoiceno: string | null = null,
+    startdate: string | null = null,
+    enddate: string | null = null,
     token: string
   ): Observable<PaginationResponse<any>> {
     // Set authorization and content-type headers
@@ -30,7 +41,10 @@ export class ApiService {
       pageSize,
       SortColumn,      // Add SortColumn to the request
       SortDirection,   // Add SortDirection to the request
-      
+      name,
+      invoiceno,
+      startdate,
+      enddate,
     };
 
     console.log('Request Body:', body); // Log the request body for debugging
