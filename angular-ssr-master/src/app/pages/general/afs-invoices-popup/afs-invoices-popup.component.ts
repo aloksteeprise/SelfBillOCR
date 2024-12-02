@@ -39,18 +39,9 @@ export class AfsInvoicesPopupComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private http: HttpClient // Injecting HttpClient service
   ) {
-    
-    //this.imageName = data.invoiceFilePath;
-    //this.imageName = data.invoiceFilePath.split('\\').pop();
-    //this.thumbImage = `assets/documents/${this.imageName}`;
-    //this.fullImagePath = `assets/documents/${this.imageName}`;
-    // These should now have values because they are being passed in the `data` object
-    //this.thumbImage = data?.thumbImage;
-    //this.fullImagePath = data?.fullImagePath;
+
     this.setImagePath(data.invoiceFilePath);
-    
-    //console.log('Thumb Image:', this.thumbImage);
-   // console.log('Full Image Path:', this.fullImagePath);
+
   }
 
   setImagePath(filePath: string): void {
@@ -99,7 +90,7 @@ export class AfsInvoicesPopupComponent implements OnInit {
     const apiUrl = environment.API_BASE_URL+'OCRAI/GetContractorContractListByConName';
     // Sending request to API
     
-    this.http.post<any>(apiUrl, { firstNameForAFS: this.firstnamefor,lastNameForAFS:this.lastnamefor }).subscribe(
+    this.http.post<any>(apiUrl, { firstNameForAFS: this.firstnamefor,lastNameForAFS:this.lastnamefor,fullName: this.contractorname }).subscribe(
       (response) => {
         // Assign the list of contractors to the dropdown options
         if (response?.data?.contractsList) {
