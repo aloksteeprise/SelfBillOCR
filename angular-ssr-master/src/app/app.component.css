@@ -20,6 +20,16 @@
 
 
 
+#app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1; /* This ensures that the main content area takes up the remaining space. */
+}
+
 
 .nga-navbar {
   -webkit-box-shadow: 0 2px 5px 0 rgba(112, 90, 90, 0.16), 0 11px 10px 0 rgba(0, 0, 0, 0.12);
@@ -43,16 +53,15 @@
   color: rgba(255, 255, 255, 0.75);
 }
 
-.nga-footer {
-  /* background-color: #212121;
-  color: white; */
 
+.nga-footer {
+  background-color: black;
+  color: white;
+  text-align: center;
   left: 0;
   bottom: 0;
   width: 100%;
-  background-color: #fff;
-  color: white;
-  text-align: center;
+  padding: 10px 0; /* Optional for spacing */
 }
 
 .nga-footer a {

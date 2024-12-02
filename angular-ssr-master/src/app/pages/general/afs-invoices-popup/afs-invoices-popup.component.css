@@ -88,6 +88,10 @@
   display: block;
 }
 
+.fontsize14{
+  font-size: 14px;
+}
+
 
 .form-content {
   display: flex;

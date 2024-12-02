@@ -17,8 +17,8 @@ import { AuthService } from './auth.service';
 export class AppComponent implements OnInit {
 
   title = 'angular-routing';
-  footerUrl = 'https://steeprise.com';
-  footerLink = 'https://www.steeprise.com';
+  footerUrl = ''; //https://www.steeprise.com
+  footerLink = ''; //https://www.steeprise.com
   showHeader = true;
   username: string | null = null;
 

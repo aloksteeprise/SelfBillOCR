@@ -10,14 +10,14 @@
         <div class="form-content">
           <!-- Contractor Name -->
           <div class="form-row">
-            <label for="ContractorName">Contractor Name:</label>
+            <label for="ContractorName" class="fontsize14">Contractor Name:</label>
             <input type="text" id="ContractorName" class="form-control" [(ngModel)]="contractorname"
               name="ContractorName" required />
           </div>
 
           <!-- AFS Contractor DropDown -->
           <div class="form-row">
-            <label for="contractDropdown">AFS Contractor:</label>
+            <label for="contractDropdown" class="fontsize14">AFS Contractor:</label>
             <select id="AFSContractorDropdown" class="form-control styled-dropdown" [(ngModel)]="selectedContract" name="Contractor"
               (change)="filterContractData()">
               <option *ngFor="let option of contractorOptions" [ngValue]="option">
@@ -27,7 +27,7 @@
           </div>
           <!-- AFS Contact -->
           <div class="form-row">
-            <label for="filteredContractDropdown">AFS Contract:</label>
+            <label for="filteredContractDropdown" class="fontsize14">AFS Contract:</label>
             <select id="AFSContactDropdown" class="form-control styled-dropdown" [(ngModel)]="selectedFilteredContract" name="Contact">
               <option *ngFor="let option of filteredContractOptions" [value]="option.name">
                 {{ option.name }}
@@ -38,46 +38,46 @@
 
           <!-- First Name -->
           <div class="form-row">
-            <label for="ContractorName">First Name:</label>
+            <label for="ContractorName" class="fontsize14">First Name:</label>
             <input type="text" id="firstnamefor" class="form-control" [(ngModel)]="firstnamefor" name="firstnamefor"
               required />
           </div>
 
           <!-- Last Name -->
           <div class="form-row">
-            <label for="ContractorName">Last Name:</label>
+            <label for="ContractorName" class="fontsize14">Last Name:</label>
             <input type="text" id="LastName" class="form-control" [(ngModel)]="lastnamefor" name="lastnamefor" required />
           </div>
 
           <!--Start Date -->
           <div class="form-row">
-            <label for="date">Start Date:</label>
+            <label for="date" class="fontsize14">Start Date:</label>
             <input type="date" id="startDate" class="form-control" [(ngModel)]="startdate" name="startdate" required />
           </div>
 
           <!--End Date -->
           <div class="form-row">
-            <label for="date">End Date:</label>
+            <label for="date" class="fontsize14">End Date:</label>
             <input type="date" id="endDate" class="form-control" [(ngModel)]="enddate" name="enddate" required />
           </div>
 
           <!-- Total Amount -->
           <div class="form-row">
-            <label for="TotalAmount">Total Amount:</label>
+            <label for="TotalAmount" class="fontsize14">Total Amount:</label>
             <input type="text" id="TotalAmount" class="form-control" [(ngModel)]="totalAmount" name="totalAmount"
               required />
           </div>
 
           <!-- Invoice No -->
           <div class="form-row">
-            <label for="InvoiceNo">Invoice No:</label>
+            <label for="InvoiceNo" class="fontsize14">Invoice No:</label>
             <input type="text" id="InvoiceNo" class="form-control" [(ngModel)]="invoiceNumber" name="invoiceNumber"
               required />
           </div>
 
           <!--Invoice Date -->
           <div class="form-row">
-            <label for="Invoicedate">Invoice Date:</label>
+            <label for="Invoicedate" class="fontsize14">Invoice Date:</label>
             <input type="date" id="Invoicedate" class="form-control" [(ngModel)]="invoiceDate" name="invoiceDate"
               required />
           </div>
