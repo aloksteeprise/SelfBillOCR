@@ -1,4 +1,4 @@
-<div class="modal d-block mt-2 custom-height" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+<div class="modal d-block mt-3 custom-height" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
   aria-hidden="false">
   <div class="modal-dialog modal-lg custom-modal-width modal-dialog-centered">
     <div class="modal-content">
@@ -123,7 +123,11 @@
 
         <div class="col-12 col-lg-5 d-flex justify-content-center align-items-center"
           style="max-width: 500px; max-height: 470px; overflow: hidden; ">
-          <lib-ngx-image-zoom [thumbImage]="thumbImage" [fullImage]="fullImagePath" [magnification]="1"
+          <lib-ngx-image-zoom 
+          *ngIf="thumbImage && fullImagePath"
+          
+          
+          [thumbImage]="thumbImage" [fullImage]="fullImagePath" [magnification]="1"
             [enableScrollZoom]="false" [enableLens]="true" [lensWidth]="140" [lensHeight]="140" [minZoomRatio]=".5"
             [maxZoomRatio]="1" [circularLens]="true" [scrollStepSize]="1">
           </lib-ngx-image-zoom>

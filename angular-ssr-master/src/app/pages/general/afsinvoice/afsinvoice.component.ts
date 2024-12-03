@@ -3,6 +3,7 @@ import { MatDialogRef,MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
 import {environment} from '../constant/api-constants';
 
+
 @Component({
   selector: 'app-afsinvoice',
   templateUrl: './afsinvoice.component.html',
@@ -54,6 +55,13 @@ export class AfsinvoiceComponent implements OnInit {
     console.log('Thumb Image:', this.thumbImage);
     console.log('Full Image Path:', this.fullImagePath);
   }
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.thumbImage = `assets/documents/pdf/${this.imageName}`;
+      this.fullImagePath = `assets/documents/pdf/${this.imageName}`;
+    }, 100);
+  }
+  
 
   ngOnInit(): void {
     this.initializeFormData();

@@ -37,16 +37,22 @@
   }
 
   ::ng-deep .ngxImageZoomContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100% !important;
-    height: 100% !important;
+    width: 100% !important; /* Ensure the container spans the parent element */
+    height: auto !important; /* Maintain aspect ratio */
+   
+    position: relative !important; /* Prevent pointer-events issues */
+    overflow: visible !important; /* Fix clipping issues */
+    pointer-events: auto !important; /* Allow interactions */
   }
+
+  ::ng-deep .ngxImageZoomFullContainer:hover {
+    /* display: block !important; */
+  }
+  
   
   ::ng-deep .ngxImageZoomThumbnail {
     width: 100%;
-    display: block;
+    
    
   }
 
