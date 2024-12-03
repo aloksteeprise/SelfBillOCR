@@ -2,50 +2,49 @@
     overflow-x: hidden;
   } */
 
-  .paddtop {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+.paddtop {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  .imageheight{
-    margin-top: 175px;
-  }
-  
-  .buttonwidth {
-    max-width: 500px;
-    width: 100%;
-    border: 2px solid #E6EAF3;
-    background-color: white;
-    border-radius: 8px;
-    padding: 5px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .buttonwidth:hover {
-    background-color: #E6EAF3 !important;
-  }
-  
-  .textunderline {
-    text-decoration: none;
-  }
-  
+.imageheight {
+  margin-top: 175px;
+}
 
-  .eyeicon{
-    position: absolute;
-    right: 11px;
-    top: 39px;
-    cursor: pointer;
-  }
+.buttonwidth {
+  max-width: 500px;
+  width: 100%;
+  border: 2px solid #E6EAF3;
+  background-color: white;
+  border-radius: 8px;
+  padding: 5px;
+  transition: background-color 0.3s ease;
+}
 
-  .marginleft{
-    margin-left: 10px;
-  }
+.buttonwidth:hover {
+  background-color: #E6EAF3 !important;
+}
 
-  @media screen and (min-width: 300px) and (max-width: 700px) {
+.textunderline {
+  text-decoration: none;
+}
 
-    .imageheight{
-      margin-top: 100px;
-    }
+
+.eyeicon {
+  position: absolute;
+  right: 11px;
+  top: 39px;
+  cursor: pointer;
+}
+
+.marginleft {
+  margin-left: 10px;
+}
+
+@media screen and (min-width: 300px) and (max-width: 700px) {
+
+  .imageheight {
+    margin-top: 100px;
   }
-  
+}
