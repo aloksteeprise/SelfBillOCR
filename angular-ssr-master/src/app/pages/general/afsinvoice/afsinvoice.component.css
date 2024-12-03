@@ -1,96 +1,84 @@
 .form-section {
-    border-right: 2px solid #ddd;
-    padding-right: 20px;
+  border-right: 2px solid #ddd;
+  padding-right: 20px;
 }
 
-
-.fontchange{
-    font-size: 12px;
-    font-weight: 600;
+.fontchange {
+  font-size: 12px;
+  font-weight: 600;
 }
 
 .custom-modal-width {
-    max-width: 66%; 
+  max-width: 66%;
 }
 
-.custom-fontsize{
-    font-size: 13px;
-    color: red;
+.custom-fontsize {
+  font-size: 13px;
+  color: red;
 }
 
-
-
-
-/* PDF Container */
-/* PDF Container */
 .pdf-container {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 500px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-    margin-top: 20px;
-  }
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 500px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 20px;
+}
 
-  ::ng-deep .ngxImageZoomContainer {
-    width: 100% !important; /* Ensure the container spans the parent element */
-    height: auto !important; /* Maintain aspect ratio */
-   
-    position: relative !important; /* Prevent pointer-events issues */
-    overflow: visible !important; /* Fix clipping issues */
-    pointer-events: auto !important; /* Allow interactions */
-  }
+::ng-deep .ngxImageZoomContainer {
+  width: 100% !important;
+  /* Ensure the container spans the parent element */
+  height: auto !important;
+  /* Maintain aspect ratio */
 
-  ::ng-deep .ngxImageZoomFullContainer:hover {
-    /* display: block !important; */
-  }
-  
-  
-  ::ng-deep .ngxImageZoomThumbnail {
-    width: 100%;
-    
-   
-  }
+  position: relative !important;
+  /* Prevent pointer-events issues */
+  overflow: visible !important;
+  /* Fix clipping issues */
+  pointer-events: auto !important;
+  /* Allow interactions */
+}
 
- 
-  
-  ::ng-deep .ngxImageZoomFullContainer.ngxImageZoomLensEnabled {
-    border: 2px solid #7393B3 !important;
-    cursor: crosshair !important;
-  }
+::ng-deep .ngxImageZoomThumbnail {
+  width: 100%;
+}
 
-  
-  /* PDF Viewer */
-  .pdf-viewer {
-    width: 100%;
-    height: 100%;
-    border: none;
-  }
-  
-  /* Magnifier Glass */
-  .magnifier {
-    position: absolute;
-    border: 3px solid #ccc;
-    border-radius: 50%;
-    cursor: zoom-in;
-    width: 150px;
-    height: 150px;
-    overflow: hidden;
-    display: none;
-    pointer-events: none;
-    z-index: 10;
-  }
-  
+::ng-deep .ngxImageZoomFullContainer.ngxImageZoomLensEnabled {
+  border: 2px solid #7393B3 !important;
+  cursor: crosshair !important;
+}
 
-  lib-ngx-image-zoom {
-    max-width: 100%;
-  }
+/* PDF Viewer */
+.pdf-viewer {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
 
-  input::-webkit-outer-spin-button,
+/* Magnifier Glass */
+.magnifier {
+  position: absolute;
+  border: 3px solid #ccc;
+  border-radius: 50%;
+  cursor: zoom-in;
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
+  display: none;
+  pointer-events: none;
+  z-index: 10;
+}
+
+lib-ngx-image-zoom {
+  max-width: 100%;
+}
+
+input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
@@ -100,23 +88,16 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
-  
-  
 
 @media screen and (min-width: 300px) and (max-width: 700px) {
-.custom-height{
+  .custom-height {
 
-  margin-top: 40px !important;
+    margin-top: 40px !important;
+  }
 }
-
-}
-
-
 
 @media (max-width: 768px) {
-    .custom-modal-width {
-        max-width: 100%; 
-    }
+  .custom-modal-width {
+    max-width: 100%;
+  }
 }
-
-

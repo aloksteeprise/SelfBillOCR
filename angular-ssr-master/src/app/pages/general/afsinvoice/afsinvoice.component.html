@@ -6,9 +6,6 @@
         <h5 class="modal-title" id="exampleModalLabel">Expense</h5>
         <button type="button" class="btn-close" (click)="closeDialog()" aria-label="Close"></button>
       </div>
-
-     
-
       <div class="modal-body d-flex flex-column flex-lg-row">
         <!-- Left Side: Form with Scrollbar -->
         <div class="col-12 col-lg-7 overflow-auto pe-lg-4 mb-3 mb-lg-0"
@@ -35,7 +32,6 @@
                 </select>
               </div>
             </div>
-
             <!-- AFS Contact -->
             <div class="row mb-3 align-items-center">
               <label for="afscontact" class="col-sm-4 col-form-label">AFS Contract:</label>
@@ -72,7 +68,6 @@
               <div class="col-sm-8">
                 <input type="date" class="form-control" id="startDate" name="startdate" required
                   [(ngModel)]="startdate">
-
               </div>
             </div>
             <!--End Date -->
@@ -80,7 +75,6 @@
               <label for="enddate" class="col-sm-4 col-form-label">End Date:</label>
               <div class="col-sm-8">
                 <input type="date" class="form-control" id="endDate" name="enddate" required [(ngModel)]="enddate">
-
               </div>
             </div>
             <!-- Total Amount -->
@@ -89,11 +83,8 @@
               <div class="col-sm-8">
                 <input type="text" class="form-control" id="TotalAmount" name="totalAmount" [(ngModel)]="totalAmount"
                   required>
-
               </div>
             </div>
-
-
             <!-- Invoice No -->
             <div class="row mb-3 align-items-center">
               <label for="InvoiceNo" class="col-sm-4 col-form-label">Invoice no:</label>
@@ -102,44 +93,28 @@
                   [(ngModel)]="invoiceNumber" required>
               </div>
             </div>
-
-
             <div class="row mb-3 align-items-center">
               <label for="Invoicedate" class="col-sm-4 col-form-label">Invoice Date:</label>
               <div class="col-sm-8">
                 <input type="date" class="form-control" id="Invoicedate" name="invoiceDate" required
                   [(ngModel)]="invoiceDate">
-
               </div>
             </div>
             <input type="hidden" id="groupNewId" [(ngModel)]="groupNewId">
             <input type="hidden" id="gridCtcCode" [(ngModel)]="gridCtcCode">
-
           </form>
-
         </div>
-
-
-
         <div class="col-12 col-lg-5 d-flex justify-content-center align-items-center"
           style="max-width: 500px; max-height: 470px; overflow: hidden; ">
-          <lib-ngx-image-zoom 
-          *ngIf="thumbImage && fullImagePath"
-          
-          
-          [thumbImage]="thumbImage" [fullImage]="fullImagePath" [magnification]="1"
-            [enableScrollZoom]="false" [enableLens]="true" [lensWidth]="140" [lensHeight]="140" [minZoomRatio]=".5"
-            [maxZoomRatio]="1" [circularLens]="true" [scrollStepSize]="1">
+          <lib-ngx-image-zoom *ngIf="thumbImage && fullImagePath" [thumbImage]="thumbImage" [fullImage]="fullImagePath"
+            [magnification]="1" [enableScrollZoom]="false" [enableLens]="true" [lensWidth]="140" [lensHeight]="140"
+            [minZoomRatio]=".5" [maxZoomRatio]="1" [circularLens]="true" [scrollStepSize]="1">
           </lib-ngx-image-zoom>
         </div>
-
-
       </div>
-      <div class="col-12 col-lg-7 overflow-auto pe-lg-4 mb-3 mb-lg-0 d-flex justify-content-end" >
+      <div class="col-12 col-lg-7 overflow-auto pe-lg-4 mb-3 mb-lg-0 d-flex justify-content-end">
         <button (click)="submitForm()" class="btn btn-primary mt-3" style="margin-bottom: 10px;">Save and Next</button>
       </div>
-
-
     </div>
   </div>
 </div>
