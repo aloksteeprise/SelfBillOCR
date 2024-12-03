@@ -20,7 +20,7 @@
           </li>
         </ul>
         <form class="d-flex">
-          <span class="me-3 text-light" [title]="username">{{ getTruncatedUsername() }}</span>
+          <span style="padding-top: 5px;" class="me-3 text-light" [title]="username">{{ getTruncatedUsername() }}</span>
           <button type="button" class="btn btn-sm btn-outline-light me-2" *ngIf="authService.isLoggedIn()"
             (click)="logout()"><i class="fas fa-sign-in-alt me-2"></i>Logout</button>
         </form>

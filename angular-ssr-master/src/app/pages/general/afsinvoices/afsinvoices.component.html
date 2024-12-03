@@ -1,14 +1,13 @@
 <div class="mat-elevation-z8 " style="margin-top: 50px;">
-    <p class="mx-2" style="padding-top: 15px; font-weight: 500;">SelfBill Invoice</p>
-    <hr/> 
+  <p style="padding: 20px 0px 0px 20px; font-weight: 1000; font-size: x-large; vertical-align: center;">SelfBill Invoice
+  </p>
+  <hr />
   <!-- </div> -->
   <form (ngSubmit)="SearchResults(myForm)" #myForm="ngForm">
-    
     <table class="searchTable">
-      
-      
       <tr>
-        <td style="padding: 20px 0px 20px 0px;"><label style="padding-left: 10px; width: 50px;" class="fontweight500">Name</label></td>
+        <td style="padding: 20px 0px 20px 0px;"><label style="padding-left: 10px; width: 50px;"
+            class="fontweight500">Name</label></td>
         <td><input type="text" style="width: 210px;" class="form-control" id="name" name="name"
             placeholder="First / Last name" [(ngModel)]="name" /></td>
         <td><label class="fontweight500">Invoice No</label></td>
@@ -28,6 +27,8 @@
       </tr>
     </table>
   </form>
+
+  <hr />
 
   <table mat-table [dataSource]="dataSource.data" matSort class="table table-striped">
     <ng-container matColumnDef="contractorName">
@@ -81,7 +82,7 @@
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns;"
-    [ngClass]="{'table-success': row.isErrorOnRow===0, 'table-danger': row.isErrorOnRow ===1}"></tr>
+      [ngClass]="{'table-success': row.isErrorOnRow===0, 'table-danger': row.isErrorOnRow ===1}"></tr>
   </table>
 
   <mat-paginator [length]="totalRecords" [pageSize]="pageSize" [pageIndex]="pageIndex" (page)="onPageChanged($event)"

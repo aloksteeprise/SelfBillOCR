@@ -88,6 +88,11 @@
   display: block;
 }
 
+::ng-deep .ngxImageZoomFullContainer.ngxImageZoomLensEnabled {
+  border: 2px solid #7393B3 !important;
+  cursor: crosshair !important;
+}
+
 .fontsize14{
   font-size: 14px;
 }
