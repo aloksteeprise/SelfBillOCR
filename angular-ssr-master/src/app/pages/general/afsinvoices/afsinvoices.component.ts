@@ -6,6 +6,7 @@ import { ApiService } from '../afsinvoices/afsinvoices.service';
 import { afsInvoice } from '../afsinvoices/afsinvoices.model';
 import { MatDialog } from '@angular/material/dialog';
 import { AfsInvoicesPopupComponent } from '../afs-invoices-popup/afs-invoices-popup.component';
+import { AfsinvoiceComponent } from '../afsinvoice/afsinvoice.component';
 
 @Component({
   selector: 'app-afsinvoices',
@@ -124,34 +125,40 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     this.loadInvoices();
   }
 
+  // openInvoiceModal(invoiceData: any): void {
+
+  //   debugger;
+  //   // Replace '.pdf' extension with '.png'
+  //   //const imageFileName = invoiceData.invoiceFileName.replace(/\.pdf$/i, '.png');
+
+  //   const dialogRef = this.dialog.open(AfsInvoicesPopupComponent,
+  //     {
+  //       width: '90%', 
+  //       maxWidth: '600px', // Optional: Limit max width
+  //       data: {
+  //         ...invoiceData,  // Include all the properties of invoiceData
+         
+
+  //         thumbImage: '',  // Dynamically set image path
+  //         fullImagePath: ''  // Dynamically set image path
+  //       }
+  //     });
+
+  //   dialogRef.afterClosed().subscribe(result => {
+
+  //     this.ClearSearch();
+  //     console.log('The dialog was closed');
+  //   });
+  // }
+
   openInvoiceModal(invoiceData: any): void {
-
-    debugger;
-    // Replace '.pdf' extension with '.png'
-    //const imageFileName = invoiceData.invoiceFileName.replace(/\.pdf$/i, '.png');
-
-    const dialogRef = this.dialog.open(AfsInvoicesPopupComponent,
-      {
-        width: '60vw',
-        maxWidth: '100vw',
-        height: '80%',
-        data: {
-          ...invoiceData,  // Include all the properties of invoiceData
-          //thumbImage: 'assets/documents/image.png',  // Pass the image path as part of data
-          //fullImagePath: 'assets/documents/image.png'  // Pass the image path as part of data
-          //thumbImage: `assets/documents/${invoiceData.invoiceFileName}`,  // Dynamically set image path
-          //fullImagePath: `assets/documents/${invoiceData.invoiceFileName}`  // Dynamically set image path
-
-          //thumbImage: `assets/documents/${imageFileName}`,  // Dynamically set image path
-          //fullImagePath: `assets/documents/${imageFileName}`  // Dynamically set image path
-
-          thumbImage: '',  // Dynamically set image path
-          fullImagePath: ''  // Dynamically set image path
-        }
-      });
-
+    const dialogRef = this.dialog.open(AfsinvoiceComponent, {
+      width: '800px',
+      data: invoiceData, // Pass row data to the modal
+    });
+  
+    // Use afterClosed() on dialogRef to handle modal close event
     dialogRef.afterClosed().subscribe(result => {
-
       this.ClearSearch();
       console.log('The dialog was closed');
     });
