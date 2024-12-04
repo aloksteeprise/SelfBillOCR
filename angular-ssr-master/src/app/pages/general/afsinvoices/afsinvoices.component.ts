@@ -137,7 +137,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   //       maxWidth: '600px', // Optional: Limit max width
   //       data: {
   //         ...invoiceData,  // Include all the properties of invoiceData
-         
+
 
   //         thumbImage: '',  // Dynamically set image path
   //         fullImagePath: ''  // Dynamically set image path
@@ -156,16 +156,24 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
       width: '800px',
       data: invoiceData, // Pass row data to the modal
     });
-  
+
     // Use afterClosed() on dialogRef to handle modal close event
     dialogRef.afterClosed().subscribe(result => {
-      this.ClearSearch();
+
+      this.name = this.name;
+      this.invoiceno = this.invoiceno;
+      this.startdate = this.startdate;
+      this.enddate = this.enddate;
+
+      this.loadInvoices();
+
       console.log('The dialog was closed');
     });
   }
 
   SearchResults(form: any): void {
 
+    this.pageIndex = 0;
     this.name = this.name;
     this.invoiceno = this.invoiceno;
     this.startdate = this.startdate;
