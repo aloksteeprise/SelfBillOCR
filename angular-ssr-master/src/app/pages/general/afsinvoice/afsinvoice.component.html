@@ -46,35 +46,48 @@
             </div>
             <!-- First Name -->
             <div class="row mb-3 align-items-center">
-              <label for="contractorname" class="col-sm-4 col-form-label">First Name:
-              </label>
+              <label for="firstnamefor" class="col-sm-4 col-form-label">First Name:</label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" id="firstnamefor" name="firstnamefor" [(ngModel)]="firstnamefor"
-                  required>
+                  required />
+                <div class="error-message">
+                  <small class="text-danger" *ngIf="errors.firstName">{{ errors.firstName }}</small>
+                </div>
               </div>
             </div>
+
             <!-- Last Name -->
             <div class="row mb-3 align-items-center">
-              <label for="contractorname" class="col-sm-4 col-form-label">Last Name:
-              </label>
+              <label for="lastnamefor" class="col-sm-4 col-form-label">Last Name:</label>
               <div class="col-sm-8">
-                <input type="text" class="form-control" id="LastName" name="lastnamefor" [(ngModel)]="lastnamefor"
-                  required>
+                <input type="text" class="form-control" id="lastnamefor" name="lastnamefor" [(ngModel)]="lastnamefor"
+                  required />
+                <div class="error-message">
+                  <small class="text-danger" *ngIf="errors.lastName">{{ errors.lastName }}</small>
+                </div>
               </div>
             </div>
-            <!--Start Date -->
+
+            <!-- Start Date -->
             <div class="row mb-3 align-items-center">
-              <label for="startdate" class="col-sm-4 col-form-label">Start Date:</label>
+              <label for="startDate" class="col-sm-4 col-form-label">Start Date:</label>
               <div class="col-sm-8">
-                <input type="date" class="form-control" id="startDate" name="startdate" required
-                  [(ngModel)]="startdate">
+                <input type="date" class="form-control" id="startDate" name="startdates" [(ngModel)]="startdate"
+                  required />
+                <div class="error-message">
+                  <small class="text-danger" *ngIf="errors.startDate">{{ errors.startDate }}</small>
+                </div>
               </div>
             </div>
-            <!--End Date -->
+
+            <!-- End Date -->
             <div class="row mb-3 align-items-center">
-              <label for="enddate" class="col-sm-4 col-form-label">End Date:</label>
+              <label for="endDate" class="col-sm-4 col-form-label">End Date:</label>
               <div class="col-sm-8">
-                <input type="date" class="form-control" id="endDate" name="enddate" required [(ngModel)]="enddate">
+                <input type="date" class="form-control" id="endDate" name="enddates" [(ngModel)]="enddate" required />
+                <div class="error-message">
+                  <small class="text-danger" *ngIf="errors.endDate">{{ errors.endDate }}</small>
+                </div>
               </div>
             </div>
             <!-- Total Amount -->
@@ -100,8 +113,8 @@
                   [(ngModel)]="invoiceDate">
               </div>
             </div>
-            <input type="hidden" id="groupNewId" [(ngModel)]="groupNewId">
-            <input type="hidden" id="gridCtcCode" [(ngModel)]="gridCtcCode">
+            <input type="hidden" id="groupNewId" name="groupNewId" [(ngModel)]="groupNewId">
+            <input type="hidden" id="gridCtcCode" name="gridCtcCode" [(ngModel)]="gridCtcCode">
           </form>
         </div>
         <div class="col-12 col-lg-5 d-flex justify-content-center align-items-center"
@@ -111,9 +124,22 @@
             [minZoomRatio]=".5" [maxZoomRatio]="1" [circularLens]="true" [scrollStepSize]="1">
           </lib-ngx-image-zoom>
         </div>
+
       </div>
-      <div class="col-12 col-lg-7 overflow-auto pe-lg-4 mb-3 mb-lg-0 d-flex justify-content-end">
-        <button (click)="submitForm()" class="btn btn-primary mt-3" style="margin-bottom: 10px;">Save and Next</button>
+      <div class="col-12">
+        <div class="row">
+          <!-- Error Message with more space on larger screens -->
+          <div class="col-12 col-lg-4">
+            <small class="text-danger p-2" *ngIf="errors.dateComparison">
+              {{ errors.dateComparison }}
+            </small>
+          </div>
+
+          <!-- Button on the right -->
+          <div class="col-12 col-lg-3 overflow-auto pe-lg-4 mb-3 mb-lg-0 d-flex justify-content-end">
+            <button (click)="submitForm()" class="btn btn-primary mt-3">Save and Next</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

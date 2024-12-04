@@ -36,6 +36,8 @@ export class AfsinvoiceComponent implements OnInit {
   ctcCode: number = 0;
   gridCtcCode: number = 0;
   submitted = false;
+  errors: any = {};
+  
 
   constructor(
     private dialogRef: MatDialogRef<AfsinvoiceComponent>,
@@ -154,9 +156,102 @@ export class AfsinvoiceComponent implements OnInit {
 }
 
  // Form submission handler
- onSubmit(form: any): void {
+//  onSubmit(form: any): void {
+//   this.submitted = true; // Mark the form as submitted
+//   if (form.valid) {
+//     const formData = {
+//       RowId: this.id,
+//       FirstName: this.firstnamefor,
+//       LastName: this.lastnamefor,
+//       StartDate: this.startdate,
+//       EndDate: this.enddate,
+//       GroupNewId: this.groupNewId,
+//     };
+
+//     console.log('formData:', formData);
+
+//     //const apiUrl = 'https://localhost:44337/api/OCRAI/ValidateAndMapToContractorContract';
+//     const apiUrl = environment.API_BASE_URL+'OCRAI/ValidateAndMapToContractorContract';
+//     this.http.post<any>(apiUrl, formData).subscribe({
+//       next: (response) => {
+//         switch (response.data.validationResult) {
+//           case -1:
+//             alert('Error occurred!');
+//             break;
+  
+//           case 1:
+//             alert('No rows updated!');
+//             this.fetchNextRecord(response.data.resultTable[0]);
+//             break;
+  
+//           case 2:
+//             alert('Update successful!');
+//             this.fetchNextRecord(response.data.resultTable[0]);
+//             break;
+  
+//           case 3:
+//             alert('Error in usp_UpdateContractorInfoInInvoice!');
+//             this.fetchNextRecord(response.data.resultTable[0]);
+//             break;
+  
+//           case 4:
+//             alert('Contractor info updated!');
+//             this.fetchNextRecord(response.data.resultTable[0]);
+//             break;
+  
+//           default:
+//             console.warn('Unhandled validation result:', response.data.validationResult);
+//             break;
+//         }
+//       },
+//       error: (error) => {
+//         console.error('API Error:', error);
+//         alert('There was an error submitting the form. Please try again.');
+//       },
+//     });
+//   } 
+//   // else {
+//   //   alert('Please fill out all required fields.');
+//   // }
+// }
+
+
+onSubmit(form: any): void {
   this.submitted = true; // Mark the form as submitted
-  if (form.valid) {
+  let isValid = true;
+  const errors: any = {};
+  if (!this.firstnamefor || this.firstnamefor.trim() === '') {
+    errors.firstName = 'First Name is required.';
+    isValid = false;
+  }
+
+  if (!this.lastnamefor || this.lastnamefor.trim() === '') {
+    errors.lastName = 'Last Name is required.';
+    isValid = false;
+  }
+
+  if (!this.startdate || this.startdate.trim() === '') {
+    errors.startDate = 'Start Date is required.';
+    isValid = false;
+  }
+
+  if (!this.enddate || this.enddate.trim() === '') {
+    errors.endDate = 'End Date is required.';
+    isValid = false;
+  }
+
+  if (this.startdate && this.enddate) {
+    const startDateObj = new Date(this.startdate);
+    const endDateObj = new Date(this.enddate);
+
+    if (startDateObj > endDateObj) {
+      errors.dateComparison = 'Start Date cannot be greater than End Date.';
+      isValid = false;
+    }
+  }
+  this.errors = errors; // Assign errors to the class property
+
+  if (isValid) {
     const formData = {
       RowId: this.id,
       FirstName: this.firstnamefor,
