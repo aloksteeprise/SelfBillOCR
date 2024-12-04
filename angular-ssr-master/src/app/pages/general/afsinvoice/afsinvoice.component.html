@@ -8,7 +8,7 @@
       </div>
       <div class="modal-body d-flex flex-column flex-lg-row">
         <!-- Left Side: Form with Scrollbar -->
-        <div class="col-12 col-lg-6 overflow-auto pe-lg-4 mb-3 mb-lg-0"
+        <div class="col-12 col-lg-7 overflow-auto pe-lg-4 mb-3 mb-lg-0"
           style="max-height: 450px; border-right: 5px solid #ddd;">
           <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)">
             <!-- Contractor Name -->
@@ -50,7 +50,7 @@
               <div class="col-sm-8">
                 <input type="text" class="form-control" id="firstnamefor" name="firstnamefor" [(ngModel)]="firstnamefor"
                   required />
-                <div class="error-message">
+                  <div class="error-message" *ngIf="errors.firstName">
                   <small class="text-danger" *ngIf="errors.firstName">{{ errors.firstName }}</small>
                 </div>
               </div>
@@ -62,7 +62,7 @@
               <div class="col-sm-8">
                 <input type="text" class="form-control" id="lastnamefor" name="lastnamefor" [(ngModel)]="lastnamefor"
                   required />
-                <div class="error-message">
+                  <div class="error-message" *ngIf="errors.lastName">
                   <small class="text-danger" *ngIf="errors.lastName">{{ errors.lastName }}</small>
                 </div>
               </div>
@@ -74,7 +74,7 @@
               <div class="col-sm-8">
                 <input type="date" class="form-control" id="startDate" name="startdates" [(ngModel)]="startdate"
                   required />
-                <div class="error-message">
+                  <div class="error-message" *ngIf="errors.startDate">
                   <small class="text-danger" *ngIf="errors.startDate">{{ errors.startDate }}</small>
                 </div>
               </div>
@@ -84,12 +84,21 @@
             <div class="row mb-3 align-items-center">
               <label for="endDate" class="col-sm-4 col-form-label fontsize14">End Date:</label>
               <div class="col-sm-8">
-                <input type="date" class="form-control" id="endDate" name="enddates" [(ngModel)]="enddate" required />
-                <div class="error-message">
-                  <small class="text-danger" *ngIf="errors.endDate">{{ errors.endDate }}</small>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="endDate"
+                  name="enddates"
+                  [(ngModel)]="enddate"
+                  required
+                />
+                <!-- Only show the div if there is an error -->
+                <div class="error-message" *ngIf="errors.endDate">
+                  <small class="text-danger">{{ errors.endDate }}</small>
                 </div>
               </div>
             </div>
+            
             <!-- Total Amount -->
             <div class="row mb-3 align-items-center">
               <label for="TotalAmount" class="col-sm-4 col-form-label fontsize14">Total Amount:</label>
@@ -117,7 +126,7 @@
             <input type="hidden" id="gridCtcCode" name="gridCtcCode" [(ngModel)]="gridCtcCode">
           </form>
         </div>
-        <div class="col-12 col-lg-6 d-flex justify-content-center align-items-center"
+        <div class="col-12 col-lg-5 d-flex justify-content-center align-items-center"
           style="max-width: 500px; max-height: 470px; overflow: hidden; ">
           
           <!-- <lib-ngx-image-zoom [thumbImage]="thumbImage" [fullImage]="fullImagePath" [magnification]="2"
@@ -135,15 +144,15 @@
       <div class="col-12">
         <div class="row">
           <!-- Error Message with more space on larger screens -->
-          <div class="col-12 col-lg-3">
+          <div class="col-12 col-lg-4">
             <small class="text-danger p-2" *ngIf="errors.dateComparison">
               {{ errors.dateComparison }}
             </small>
           </div>
 
           <!-- Button on the right -->
-          <div class="col-12 col-lg-3 overflow-auto pe-lg-4 mb-3 mb-lg-0 d-flex justify-content-end">
-            <button (click)="submitForm()" class="btn btn-primary mt-3">Save and Next</button>
+          <div class="col-12 col-lg-3 overflow-auto pe-lg-2 mb-3 mb-lg-0 d-flex justify-content-end">
+            <button (click)="submitForm()" class="btn btn-primary mt-3 mb-3" >Save and Next</button>
           </div>
         </div>
       </div>

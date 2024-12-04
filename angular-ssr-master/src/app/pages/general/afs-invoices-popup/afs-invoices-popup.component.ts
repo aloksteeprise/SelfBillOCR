@@ -207,7 +207,7 @@ export class AfsInvoicesPopupComponent implements OnInit {
 
 
   fetchNextRecord(data: any): void {
-    debugger;
+    
     this.id = data.ID;
     this.contractorname ='';
     this.contractorname = data.ContractorName || '';
