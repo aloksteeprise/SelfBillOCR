@@ -17,6 +17,12 @@
   color: red;
 }
 
+.fontsize14{
+  font-size: 14px;
+  color: #2F455C;
+  font-weight: bold;
+}
+
 .pdf-container {
   position: relative;
   display: flex;
@@ -30,28 +36,24 @@
   margin-top: 20px;
 }
 
+/* Adjust the container to maintain proper dimensions */
+
+
+/* Resize the thumbnail image correctly */
 ::ng-deep .ngxImageZoomContainer {
-  width: 100% !important;
-  /* Ensure the container spans the parent element */
-  height: auto !important;
-  /* Maintain aspect ratio */
-
-  position: relative !important;
-  /* Prevent pointer-events issues */
-  overflow: visible !important;
-  /* Fix clipping issues */
-  pointer-events: auto !important;
-  /* Allow interactions */
+  width: 595px !important; 
+  height: 529px !important;
+  display: block;
 }
 
-::ng-deep .ngxImageZoomThumbnail {
-  width: 100%;
-}
-
+/* Customize the lens appearance */
 ::ng-deep .ngxImageZoomFullContainer.ngxImageZoomLensEnabled {
-  border: 2px solid #7393B3 !important;
-  cursor: crosshair !important;
+  border: 2px solid #7393B3 !important; /* Lens border */
+  cursor: crosshair !important; /* Pointer */
 }
+
+
+
 
 /* PDF Viewer */
 .pdf-viewer {

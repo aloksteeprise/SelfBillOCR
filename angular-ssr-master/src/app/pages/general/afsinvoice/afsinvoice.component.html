@@ -8,12 +8,12 @@
       </div>
       <div class="modal-body d-flex flex-column flex-lg-row">
         <!-- Left Side: Form with Scrollbar -->
-        <div class="col-12 col-lg-7 overflow-auto pe-lg-4 mb-3 mb-lg-0"
+        <div class="col-12 col-lg-6 overflow-auto pe-lg-4 mb-3 mb-lg-0"
           style="max-height: 450px; border-right: 5px solid #ddd;">
           <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)">
             <!-- Contractor Name -->
             <div class="row mb-3 align-items-center">
-              <label for="contractorname" class="col-sm-4 col-form-label">Contractor Name:
+              <label for="contractorname" class="col-sm-4 col-form-label fontsize14">Contractor Name:
               </label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" id="ContractorName" name="contractorname"
@@ -22,7 +22,7 @@
             </div>
             <!-- AFS Contractor DropDown -->
             <div class="row mb-3 align-items-center">
-              <label for="afscontractor" class="col-sm-4 col-form-label">AFS Contractor:</label>
+              <label for="afscontractor" class="col-sm-4 col-form-label fontsize14">AFS Contractor:</label>
               <div class="col-sm-8">
                 <select class="form-select" id="AFSContractorDropdown" name="Contractor" (change)="filterContractData()"
                   required [(ngModel)]="selectedContract">
@@ -34,7 +34,7 @@
             </div>
             <!-- AFS Contact -->
             <div class="row mb-3 align-items-center">
-              <label for="afscontact" class="col-sm-4 col-form-label">AFS Contract:</label>
+              <label for="afscontact" class="col-sm-4 col-form-label fontsize14">AFS Contract:</label>
               <div class="col-sm-8">
                 <select class="form-select" id="AFSContactDropdown" name="afscontact" required
                   [(ngModel)]="selectedFilteredContract">
@@ -46,7 +46,7 @@
             </div>
             <!-- First Name -->
             <div class="row mb-3 align-items-center">
-              <label for="firstnamefor" class="col-sm-4 col-form-label">First Name:</label>
+              <label for="firstnamefor" class="col-sm-4 col-form-label fontsize14">First Name:</label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" id="firstnamefor" name="firstnamefor" [(ngModel)]="firstnamefor"
                   required />
@@ -58,7 +58,7 @@
 
             <!-- Last Name -->
             <div class="row mb-3 align-items-center">
-              <label for="lastnamefor" class="col-sm-4 col-form-label">Last Name:</label>
+              <label for="lastnamefor" class="col-sm-4 col-form-label fontsize14">Last Name:</label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" id="lastnamefor" name="lastnamefor" [(ngModel)]="lastnamefor"
                   required />
@@ -70,7 +70,7 @@
 
             <!-- Start Date -->
             <div class="row mb-3 align-items-center">
-              <label for="startDate" class="col-sm-4 col-form-label">Start Date:</label>
+              <label for="startDate" class="col-sm-4 col-form-label fontsize14">Start Date:</label>
               <div class="col-sm-8">
                 <input type="date" class="form-control" id="startDate" name="startdates" [(ngModel)]="startdate"
                   required />
@@ -82,7 +82,7 @@
 
             <!-- End Date -->
             <div class="row mb-3 align-items-center">
-              <label for="endDate" class="col-sm-4 col-form-label">End Date:</label>
+              <label for="endDate" class="col-sm-4 col-form-label fontsize14">End Date:</label>
               <div class="col-sm-8">
                 <input type="date" class="form-control" id="endDate" name="enddates" [(ngModel)]="enddate" required />
                 <div class="error-message">
@@ -92,7 +92,7 @@
             </div>
             <!-- Total Amount -->
             <div class="row mb-3 align-items-center">
-              <label for="TotalAmount" class="col-sm-4 col-form-label">Total Amount:</label>
+              <label for="TotalAmount" class="col-sm-4 col-form-label fontsize14">Total Amount:</label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" id="TotalAmount" name="totalAmount" [(ngModel)]="totalAmount"
                   required>
@@ -100,14 +100,14 @@
             </div>
             <!-- Invoice No -->
             <div class="row mb-3 align-items-center">
-              <label for="InvoiceNo" class="col-sm-4 col-form-label">Invoice no:</label>
+              <label for="InvoiceNo" class="col-sm-4 col-form-label fontsize14">Invoice no:</label>
               <div class="col-sm-8">
                 <input type="number" class="form-control" id="InvoiceNo" name="invoiceNumber"
                   [(ngModel)]="invoiceNumber" required>
               </div>
             </div>
             <div class="row mb-3 align-items-center">
-              <label for="Invoicedate" class="col-sm-4 col-form-label">Invoice Date:</label>
+              <label for="Invoicedate" class="col-sm-4 col-form-label fontsize14">Invoice Date:</label>
               <div class="col-sm-8">
                 <input type="date" class="form-control" id="Invoicedate" name="invoiceDate" required
                   [(ngModel)]="invoiceDate">
@@ -117,19 +117,25 @@
             <input type="hidden" id="gridCtcCode" name="gridCtcCode" [(ngModel)]="gridCtcCode">
           </form>
         </div>
-        <div class="col-12 col-lg-5 d-flex justify-content-center align-items-center"
+        <div class="col-12 col-lg-6 d-flex justify-content-center align-items-center"
           style="max-width: 500px; max-height: 470px; overflow: hidden; ">
-          <lib-ngx-image-zoom *ngIf="thumbImage && fullImagePath" [thumbImage]="thumbImage" [fullImage]="fullImagePath"
-            [magnification]="1" [enableScrollZoom]="false" [enableLens]="true" [lensWidth]="140" [lensHeight]="140"
-            [minZoomRatio]=".5" [maxZoomRatio]="1" [circularLens]="true" [scrollStepSize]="1">
-          </lib-ngx-image-zoom>
+          
+          <!-- <lib-ngx-image-zoom [thumbImage]="thumbImage" [fullImage]="fullImagePath" [magnification]="2"
+          [enableScrollZoom]="false" [enableLens]="true" [lensWidth]="100" [lensHeight]="100" [maxZoomRatio]="2"
+          [circularLens]="true" [scrollStepSize]="1">
+        </lib-ngx-image-zoom> -->
+
+        <lib-ngx-image-zoom *ngIf="thumbImage && fullImagePath" [thumbImage]="thumbImage" [fullImage]="fullImagePath"
+        [magnification]="1.5" [enableScrollZoom]="false" [enableLens]="true" [lensWidth]="140" [lensHeight]="140"
+        [minZoomRatio]=".5" [maxZoomRatio]="1" [circularLens]="true" [scrollStepSize]="1">
+      </lib-ngx-image-zoom>
         </div>
 
       </div>
       <div class="col-12">
         <div class="row">
           <!-- Error Message with more space on larger screens -->
-          <div class="col-12 col-lg-4">
+          <div class="col-12 col-lg-3">
             <small class="text-danger p-2" *ngIf="errors.dateComparison">
               {{ errors.dateComparison }}
             </small>

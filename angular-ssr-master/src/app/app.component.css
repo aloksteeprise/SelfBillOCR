@@ -18,6 +18,11 @@
 
 }
 
+.fixed-top{
+
+  z-index: 0 !important;
+}
+
 
 
 #app-container {

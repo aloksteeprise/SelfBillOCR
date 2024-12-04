@@ -53,16 +53,18 @@ export class AfsinvoiceComponent implements OnInit {
     this.imageName = filePath;
     this.thumbImage = `assets/documents/pdf/${this.imageName}`;
     this.fullImagePath = `assets/documents/pdf/${this.imageName}`;
+
+    //image with good readibility
+    // this.thumbImage = `assets/documents/pdf/La fosse - SB-209461_Image20241126_120950.png`;
+    // this.fullImagePath = `assets/documents/pdf/La fosse - SB-209461_Image20241126_120950.png`;
+
+    // this.thumbImage = `assets/documents/pdf/invoice_18_04_2024_2_Image20241129_122116.png`;
+    // this.fullImagePath = `assets/documents/pdf/invoice_18_04_2024_2_Image20241129_122116.png`;
   
     console.log('Thumb Image:', this.thumbImage);
     console.log('Full Image Path:', this.fullImagePath);
   }
-  ngAfterViewInit() {
-    setTimeout(() => {
-      this.thumbImage = `assets/documents/pdf/${this.imageName}`;
-      this.fullImagePath = `assets/documents/pdf/${this.imageName}`;
-    }, 100);
-  }
+  
   
 
   ngOnInit(): void {
@@ -309,7 +311,7 @@ onSubmit(form: any): void {
 }
 
 fetchNextRecord(data: any): void {
-  debugger;
+
   this.id = data.ID;
   this.contractorname ='';
   this.contractorname = data.ContractorName || '';
