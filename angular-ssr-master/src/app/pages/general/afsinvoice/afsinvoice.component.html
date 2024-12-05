@@ -3,16 +3,16 @@
   <div class="modal-dialog modal-lg custom-modal-width modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Expense</h5>
+        <h5 class="modal-title mx-3 headingmargin" id="exampleModalLabel" style="font-size: 22px; font-weight: 700; color: #2f455c;">Expense</h5>
         <button type="button" class="btn-close" (click)="closeDialog()" aria-label="Close"></button>
       </div>
       <div class="modal-body d-flex flex-column flex-lg-row">
         <!-- Left Side: Form with Scrollbar -->
-        <div class="col-12 col-lg-7 overflow-auto pe-lg-4 mb-3 mb-lg-0"
+        <div class="col-12 col-lg-6 overflow-auto pe-lg-4 mb-2 mb-lg-0"
           style="max-height: 450px; border-right: 5px solid #ddd;">
           <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)">
             <!-- Contractor Name -->
-            <div class="row mb-3 align-items-center">
+            <div class="row mb-2 align-items-center">
               <label for="contractorname" class="col-sm-4 col-form-label fontsize14">Contractor Name:
               </label>
               <div class="col-sm-8">
@@ -21,7 +21,7 @@
               </div>
             </div>
             <!-- AFS Contractor DropDown -->
-            <div class="row mb-3 align-items-center">
+            <div class="row mb-2 align-items-center">
               <label for="afscontractor" class="col-sm-4 col-form-label fontsize14">AFS Contractor:</label>
               <div class="col-sm-8">
                 <select class="form-select" id="AFSContractorDropdown" name="Contractor" (change)="filterContractData()"
@@ -33,7 +33,7 @@
               </div>
             </div>
             <!-- AFS Contact -->
-            <div class="row mb-3 align-items-center">
+            <div class="row mb-2 align-items-center">
               <label for="afscontact" class="col-sm-4 col-form-label fontsize14">AFS Contract:</label>
               <div class="col-sm-8">
                 <select class="form-select" id="AFSContactDropdown" name="afscontact" required
@@ -45,7 +45,7 @@
               </div>
             </div>
             <!-- First Name -->
-            <div class="row mb-3 align-items-center">
+            <div class="row mb-2 align-items-center">
               <label for="firstnamefor" class="col-sm-4 col-form-label fontsize14">First Name:</label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" id="firstnamefor" name="firstnamefor" [(ngModel)]="firstnamefor"
@@ -57,7 +57,7 @@
             </div>
 
             <!-- Last Name -->
-            <div class="row mb-3 align-items-center">
+            <div class="row mb-2 align-items-center">
               <label for="lastnamefor" class="col-sm-4 col-form-label fontsize14">Last Name:</label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" id="lastnamefor" name="lastnamefor" [(ngModel)]="lastnamefor"
@@ -69,7 +69,7 @@
             </div>
 
             <!-- Start Date -->
-            <div class="row mb-3 align-items-center">
+            <div class="row mb-2 align-items-center">
               <label for="startDate" class="col-sm-4 col-form-label fontsize14">Start Date:</label>
               <div class="col-sm-8">
                 <input type="date" class="form-control" id="startDate" name="startdates" [(ngModel)]="startdate"
@@ -81,7 +81,7 @@
             </div>
 
             <!-- End Date -->
-            <div class="row mb-3 align-items-center">
+            <div class="row mb-2 align-items-center">
               <label for="endDate" class="col-sm-4 col-form-label fontsize14">End Date:</label>
               <div class="col-sm-8">
                 <input
@@ -100,7 +100,7 @@
             </div>
             
             <!-- Total Amount -->
-            <div class="row mb-3 align-items-center">
+            <div class="row mb-2 align-items-center">
               <label for="TotalAmount" class="col-sm-4 col-form-label fontsize14">Total Amount:</label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" id="TotalAmount" name="totalAmount" [(ngModel)]="totalAmount"
@@ -108,14 +108,14 @@
               </div>
             </div>
             <!-- Invoice No -->
-            <div class="row mb-3 align-items-center">
+            <div class="row mb-2 align-items-center">
               <label for="InvoiceNo" class="col-sm-4 col-form-label fontsize14">Invoice no:</label>
               <div class="col-sm-8">
                 <input type="number" class="form-control" id="InvoiceNo" name="invoiceNumber"
                   [(ngModel)]="invoiceNumber" required>
               </div>
             </div>
-            <div class="row mb-3 align-items-center">
+            <div class="row mb-2 align-items-center">
               <label for="Invoicedate" class="col-sm-4 col-form-label fontsize14">Invoice Date:</label>
               <div class="col-sm-8">
                 <input type="date" class="form-control" id="Invoicedate" name="invoiceDate" required
@@ -126,7 +126,7 @@
             <input type="hidden" id="gridCtcCode" name="gridCtcCode" [(ngModel)]="gridCtcCode">
           </form>
         </div>
-        <div class="col-12 col-lg-5 d-flex justify-content-center align-items-center"
+        <div class="col-12 col-lg-6 d-flex justify-content-center align-items-center"
           style="max-width: 500px; max-height: 470px; overflow: hidden; ">
           
           <!-- <lib-ngx-image-zoom [thumbImage]="thumbImage" [fullImage]="fullImagePath" [magnification]="2"
@@ -151,9 +151,15 @@
           </div>
 
           <!-- Button on the right -->
-          <div class="col-12 col-lg-3 overflow-auto pe-lg-2 mb-3 mb-lg-0 d-flex justify-content-end">
+          <div class="col-12 col-lg-3 overflow-auto  mb-3 mb-lg-0 d-flex justify-content-start">
             <button (click)="submitForm()" class="btn btn-primary mt-3 mb-3" >Save and Next</button>
           </div>
+
+          <!-- <div class="col-12 col-lg-3 overflow-auto  mb-3 mb-lg-0 d-flex justify-content-end">
+            <i class="fa fa-download" style="font-size:24px; "></i>
+
+          </div> -->
+
         </div>
       </div>
     </div>

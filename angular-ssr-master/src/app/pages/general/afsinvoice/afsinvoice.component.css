@@ -3,6 +3,37 @@
   padding-right: 20px;
 }
 
+/* ::ng-deep .mat-typography h5 {
+ 
+  margin: 0 !important;
+} */
+
+.headingmargin{
+  margin: 0px 17px 0px !important;
+}
+
+::ng-deep .modal-header  {
+padding: 0px !important ;
+}
+
+::ng-deep .modal-header .btn-close {
+padding: 19px;
+}
+
+
+::ng-deep .btn-close {
+
+  --bs-btn-close-focus-shadow :none !important;
+}
+
+
+::ng-deep .modal-content{
+  background-color: rgba(250,249,253,255) !important;
+}
+
+
+
+
 .fontchange {
   font-size: 12px;
   font-weight: 600;
