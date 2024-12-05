@@ -43,6 +43,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
   tokenData: string = '';
   token: string = '';
+  loading: boolean = false;
   //token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6InNoeWFtIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoic2h5YW1zdW5kYXIucGFoYXJpQGFjY2Vzc2ZpbmFuY2lhbC5jb20iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiU2h5YW1zdW5kYXIgUGFoYXJpIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvc3VybmFtZSI6IiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL21vYmlsZXBob25lIjoiKzkxLTk5MTAwNzY1NzMiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbmlzdHJhdG9yIiwiZXhwIjoxNzMzNDY4NTY3fQ.FX1TSsGpyHGCdMmz6pzQgVMVcp-1Rz3f9sXNhzuDYyY';
 
   constructor(private apiService: ApiService, private dialog: MatDialog) { }
@@ -75,7 +76,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   }
 
   loadInvoices() {
-
+    this.loading = true; // Start loading
     const SortColumn = this.sort?.active || ''; // Safely access sort.active
     const SortDirection = this.sort?.direction || ''; // Safely access sort.direction
 
@@ -85,16 +86,12 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
         next: (response: any) => {
           debugger;
           this.dataSource.data = response.data.data;
-          //this.totalRecords = response.data[0]?.totalRecords || 0; // Handle undefined values
           this.totalRecords = response.data.totalRecords; // Handle undefined values
-          // Update paginator length
-          // if (this.paginator) {
-          //   this.paginator.length = this.totalRecords;
-          // }
+          this.loading = false; // Stop loading
         },
         error: (err) => {
           console.error('API Error:', err);
-          // alert('Failed to load invoices. Check the console for details.');
+          this.loading = false; // Stop loading even on error
         },
       });
   }
