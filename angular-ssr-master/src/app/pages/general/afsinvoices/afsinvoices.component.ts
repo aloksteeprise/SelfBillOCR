@@ -181,6 +181,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
 
   ClearSearch(): void {
 
+    this.pageIndex = 0;
     this.name = '';
     this.invoiceno = '';
     this.startdate = '';
