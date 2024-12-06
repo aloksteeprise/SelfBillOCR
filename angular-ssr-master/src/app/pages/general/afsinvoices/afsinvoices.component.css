@@ -21,6 +21,10 @@ hr {
 
     border-radius: 0px!important;
   }
+
+  ::ng-deep .mat-mdc-row{
+    vertical-align: middle !important; 
+  }  
   
 
 .mat-mdc-header-row {
@@ -116,6 +120,15 @@ hr {
     border-color: #ccc #0000;
     animation: l16 1s infinite linear;
 }
+
+.custom-success {
+  background-color: #f7f7c9;
+}
+
+.custom-danger {
+  background-color: #effdec;
+}
+
 
 .loader::before,
 .loader::after {
