@@ -283,26 +283,26 @@ onSubmit(form: any): void {
       next: (response) => {
         switch (response.data.validationResult) {
           case -1:
-            alert('Error occurred!');
+            alert('Error occurred in validation process.');
             break;
   
           case 1:
-            alert('No rows updated!');
+            alert('No row validated.');
             this.fetchNextRecord(response.data.resultTable[0]);
             break;
   
           case 2:
-            alert('Update successful!');
+            alert('The records have been successfully validated and moved.');
             this.fetchNextRecord(response.data.resultTable[0]);
             break;
   
           case 3:
-            alert('Error in usp_UpdateContractorInfoInInvoice!');
+            alert('Error in validation process.');
             this.fetchNextRecord(response.data.resultTable[0]);
             break;
   
           case 4:
-            alert('Contractor info updated!');
+            alert('The records have been successfully validated and moved.');
             this.fetchNextRecord(response.data.resultTable[0]);
             break;
   
