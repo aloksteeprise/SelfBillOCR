@@ -163,3 +163,8 @@ hr {
 input[type="checkbox"] {
     transform: scale(2.2);
   }
+
+.fa-triangle-exclamation {
+    color: #c12b2b;
+}
+.fa-circle-check { color: #085d08;} 
