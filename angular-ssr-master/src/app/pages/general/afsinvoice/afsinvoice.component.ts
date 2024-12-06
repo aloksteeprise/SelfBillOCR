@@ -222,6 +222,18 @@ onSubmit(form: any): void {
   this.submitted = true; // Mark the form as submitted
   let isValid = true;
   const errors: any = {};
+
+  
+  if (!this.selectedContract) {
+    errors.selectedContract = 'AFS Contractor is required.';
+    isValid = false;
+  }
+
+  if (!this.selectedFilteredContract) {
+    errors.selectedFilteredContract = 'AFS Contract is required.';
+    isValid = false;
+  }
+
   if (!this.firstnamefor || this.firstnamefor.trim() === '') {
     errors.firstName = 'First Name is required.';
     isValid = false;
