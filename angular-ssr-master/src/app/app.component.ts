@@ -5,6 +5,7 @@ import { RouterLink, RouterOutlet, Router } from '@angular/router';
 import { Inject, PLATFORM_ID } from '@angular/core';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { AuthService } from './auth.service';
+import { UserService } from './pages/general/service/user.service'
 
 @Component({
   selector: 'app-root',
@@ -27,6 +28,7 @@ export class AppComponent implements OnInit {
     @Inject(DOCUMENT) private document: Document,
     @Inject(PLATFORM_ID) private platformId: object,
     private router: Router,
+    private userService: UserService,
     public authService: AuthService) { }
 
 
@@ -35,11 +37,21 @@ export class AppComponent implements OnInit {
     this.router.events.subscribe(() => {
 
       this.showHeader = this.router.url !== '/login';
+
+      this.userService.username$.subscribe((username) => {
+        this.username = username;
+      });
     });
 
-    if (isPlatformBrowser(this.platformId)) {
 
-      this.username = localStorage.getItem('username') || '';
+
+    if (isPlatformBrowser(this.platformId)) {
+      const storedUsername = localStorage.getItem('username');
+      if (storedUsername) {
+        this.userService.setUsername(storedUsername);
+      }
+
+      // this.username = localStorage.getItem('username') || '';
 
       const navMain = this.document.getElementById('navbarCollapse');
 

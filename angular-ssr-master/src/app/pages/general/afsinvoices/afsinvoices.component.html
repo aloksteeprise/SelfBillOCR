@@ -6,7 +6,7 @@
   <form (ngSubmit)="SearchResults(myForm)" #myForm="ngForm">
     <table class="searchTable">
       <tr>
-        <td style="padding: 20px 0px 20px 0px;"><label style="padding-left: 10px; width: 50px;"
+        <td style="padding: 20px 0px 20px 0px;"><label style="padding-left: 10px; width: 50px; color: white;"
             class="fontweight500">Name</label></td>
         <td><input type="text" style="width: 210px;" class="form-control" id="name" name="name"
             placeholder="First / Last name" [(ngModel)]="name" maxlength="50" /></td>
@@ -14,10 +14,10 @@
         <td><input type="text" style="width: 210px;" class="form-control" id="invoiceno" name="invoiceno"
             placeholder="Invoice No" [(ngModel)]="invoiceno" maxlength="50" />
         </td>
-        <td><label style="padding-left: 20px; width: 100px;" class="fontweight500">Start Date</label></td>
-        <td> <input type="date" id="startDate" class="form-control" [(ngModel)]="startdate" name="date" /></td>
-        <td><label style="padding-left: 20px; width: 96px;" class="fontweight500">End Date</label></td>
-        <td><input type="date" id="endDate" class="form-control" [(ngModel)]="enddate" name="date" /></td>
+        <td><label style="padding-left: 20px; width: 100px; color: white;" class="fontweight500">Start Date</label></td>
+        <td> <input type="date" id="startdate" placeholder="MM/DD/YYYY" class="form-control" [(ngModel)]="startdate" name="startdate" /></td>
+        <td><label style="padding-left: 20px; width: 96px; color: white;" class="fontweight500">End Date</label></td>
+        <td><input type="date" id="enddate" class="form-control" [(ngModel)]="enddate" name="date" /></td>
         <td style="padding-left: 20px;">
           <button type="submit" class="btn btn-dark">Search</button>
         </td>

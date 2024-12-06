@@ -50,7 +50,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
 
-    debugger;
+   
     // Retrieve the token from localStorage dynamically
     const storedToken = localStorage.getItem('token');
     if (storedToken) {
@@ -84,7 +84,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
       .getInvoices(this.pageIndex, this.pageSize, SortColumn, SortDirection, this.name, this.invoiceno, this.startdate, this.enddate, this.token)
       .subscribe({
         next: (response: any) => {
-          debugger;
+         
           this.dataSource.data = response.data.data;
           this.totalRecords = response.data.totalRecords; // Handle undefined values
           this.loading = false; // Stop loading
@@ -124,11 +124,9 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
 
   // openInvoiceModal(invoiceData: any): void {
 
-  //   debugger;
-  //   // Replace '.pdf' extension with '.png'
-  //   //const imageFileName = invoiceData.invoiceFileName.replace(/\.pdf$/i, '.png');
+   
 
-  //   const dialogRef = this.dialog.open(AfsInvoicesPopupComponent,
+  //   const dialogRef = this.dialog.open(AfsinvoiceComponent,
   //     {
   //       width: '90%', 
   //       maxWidth: '600px', // Optional: Limit max width
@@ -180,13 +178,20 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   }
 
   ClearSearch(): void {
-
     this.pageIndex = 0;
     this.name = '';
     this.invoiceno = '';
-    this.startdate = '';
-    this.enddate = '';
-
+    this.startdate = ''; // Reset the start date
+    this.enddate = ''; // Reset the end date
+  
+    
+    const startDateInput = document.getElementById('startdate') as HTMLInputElement;
+    const endDateInput = document.getElementById('enddate') as HTMLInputElement;
+  
+    if (startDateInput) startDateInput.value = '';
+    if (endDateInput) endDateInput.value = '';
+  
     this.loadInvoices();
   }
+  
 }

@@ -69,6 +69,9 @@ padding: 19px;
 
 /* Adjust the container to maintain proper dimensions */
 
+::ng-deep .custom-modal-width[_ngcontent-ng-c760026350] {
+  max-width: 77% !important;
+}
 
 /* Resize the thumbnail image correctly */
 ::ng-deep .ngxImageZoomContainer {
@@ -161,6 +164,10 @@ input[type=number] {
   .custom-height {
 
     margin-top: 40px !important;
+  }
+
+  ::ng-deep .custom-modal-width[_ngcontent-ng-c760026350] {
+    max-width: 100% !important;
   }
 }
 

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { LoginService } from '../login/login.service'
 import { Router } from '@angular/router';
+import { UserService } from '../service/user.service';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +24,7 @@ export class LoginComponent {
   errorMessage: string = '';
 
   constructor(private loginService: LoginService,
-    private router: Router) { }
+    private router: Router,private userService: UserService) { }
 
   onLogin() {
 
@@ -52,8 +53,15 @@ export class LoginComponent {
           localStorage.setItem('token', response.data.token);
           localStorage.setItem('code', response.data.ccode);
           localStorage.setItem('username', response.data.username);
+          debugger;
+
+          this.userService.setUsername(response.data.username);
 
           this.router.navigate(['/afsinvoices']);
+          // this.router.navigate(['/afsinvoices']).then(() => {
+          
+          //   window.location.reload();
+          // });
 
         } else {
 
