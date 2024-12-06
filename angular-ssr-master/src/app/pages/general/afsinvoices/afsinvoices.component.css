@@ -98,8 +98,9 @@ hr {
 
 .searchTable {
     width: 100%;
-    background-color: #7393B3;
+    background-color: #7a7777;
 }
+
 .loading-overlay {
     position: fixed;
     top: 0;
