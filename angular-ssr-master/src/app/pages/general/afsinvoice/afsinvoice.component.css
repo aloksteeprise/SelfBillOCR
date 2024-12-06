@@ -40,7 +40,7 @@ padding: 19px;
 }
 
 .custom-modal-width {
-  max-width: 66%;
+  max-width: 75%;
 }
 
 .custom-fontsize {
@@ -75,7 +75,7 @@ padding: 19px;
 
 /* Resize the thumbnail image correctly */
 ::ng-deep .ngxImageZoomContainer {
-  width: 595px !important; 
+  width: 612px !important; 
   height: 529px !important;
   display: block;
 }
