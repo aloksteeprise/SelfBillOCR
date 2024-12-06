@@ -35,7 +35,7 @@
 
   <hr />
 
-  <table mat-table [dataSource]="dataSource.data" matSort class="table table-striped">
+  <table mat-table [dataSource]="dataSource.data" matSort class="table">
     <ng-container matColumnDef="contractorName">
       <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Contractor Name </th>
       <td mat-cell *matCellDef="let row"> {{row.contractorName}} </td>
