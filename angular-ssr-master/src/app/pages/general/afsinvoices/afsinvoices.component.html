@@ -10,14 +10,19 @@
             class="fontweight500">Name</label></td>
         <td><input type="text" style="width: 210px;" class="form-control" id="name" name="name"
             placeholder="First / Last name" [(ngModel)]="name" maxlength="50" /></td>
-        <td><label class="fontweight500">Invoice No</label></td>
+        <td><label class="fontweight500" style="color: white;">Invoice No</label></td>
         <td><input type="text" style="width: 210px;" class="form-control" id="invoiceno" name="invoiceno"
             placeholder="Invoice No" [(ngModel)]="invoiceno" maxlength="50" />
         </td>
         <td><label style="padding-left: 20px; width: 100px; color: white;" class="fontweight500">Start Date</label></td>
-        <td> <input type="date" id="startdate" placeholder="MM/DD/YYYY" class="form-control" [(ngModel)]="startdate" name="startdate" /></td>
+        <td> <input type="date" id="startdate" placeholder="MM/DD/YYYY" class="form-control" [(ngModel)]="startdate"
+            name="startdate" /></td>
         <td><label style="padding-left: 20px; width: 96px; color: white;" class="fontweight500">End Date</label></td>
         <td><input type="date" id="enddate" class="form-control" [(ngModel)]="enddate" name="date" /></td>
+        <td> <label class="fontweight500" style="color: white;padding-left: 20px; padding-right: 20px;"> Validated
+          </label>
+          <input type="checkbox" name="IsValidatedRecord" [(ngModel)]="IsValidatedRecord" />
+        </td>
         <td style="padding-left: 20px;">
           <button type="submit" class="btn btn-dark">Search</button>
         </td>
@@ -85,7 +90,7 @@
       <td mat-cell *matCellDef="let element">
         <!-- If element.isRecordValidated is true, show text -->
         <ng-container *ngIf="element.isRecordValidated; else showButton">
-          
+
           <strong class="p-2" style="color:green;font-size: small;">Validated</strong>
         </ng-container>
         <!-- If not true, show the button -->
@@ -94,10 +99,10 @@
         </ng-template>
       </td>
     </ng-container>
-    
-    
-    
-    
+
+
+
+
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns;"

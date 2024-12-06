@@ -39,6 +39,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   invoiceno: string = '';
   startdate: string = '';
   enddate: string = '';
+  IsValidatedRecord = false;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   tokenData: string = '';
@@ -50,7 +51,6 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
 
-   
     // Retrieve the token from localStorage dynamically
     const storedToken = localStorage.getItem('token');
     if (storedToken) {
@@ -76,15 +76,16 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   }
 
   loadInvoices() {
+
     this.loading = true; // Start loading
     const SortColumn = this.sort?.active || ''; // Safely access sort.active
     const SortDirection = this.sort?.direction || ''; // Safely access sort.direction
 
     this.apiService
-      .getInvoices(this.pageIndex, this.pageSize, SortColumn, SortDirection, this.name, this.invoiceno, this.startdate, this.enddate, this.token)
+      .getInvoices(this.pageIndex, this.pageSize, SortColumn, SortDirection, this.name, this.invoiceno, this.startdate, this.enddate, this.IsValidatedRecord, this.token)
       .subscribe({
         next: (response: any) => {
-         
+
           this.dataSource.data = response.data.data;
           this.totalRecords = response.data.totalRecords; // Handle undefined values
           this.loading = false; // Stop loading
@@ -124,7 +125,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
 
   // openInvoiceModal(invoiceData: any): void {
 
-   
+
 
   //   const dialogRef = this.dialog.open(AfsinvoiceComponent,
   //     {
@@ -147,6 +148,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   // }
 
   openInvoiceModal(invoiceData: any): void {
+
     const dialogRef = this.dialog.open(AfsinvoiceComponent, {
       width: '800px',
       data: invoiceData, // Pass row data to the modal
@@ -173,25 +175,26 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     this.invoiceno = this.invoiceno;
     this.startdate = this.startdate;
     this.enddate = this.enddate;
+    this.IsValidatedRecord = this.IsValidatedRecord;
 
     this.loadInvoices();
   }
 
   ClearSearch(): void {
+
     this.pageIndex = 0;
     this.name = '';
     this.invoiceno = '';
     this.startdate = ''; // Reset the start date
     this.enddate = ''; // Reset the end date
-  
-    
+    this.IsValidatedRecord = false;
+
     const startDateInput = document.getElementById('startdate') as HTMLInputElement;
     const endDateInput = document.getElementById('enddate') as HTMLInputElement;
-  
+
     if (startDateInput) startDateInput.value = '';
     if (endDateInput) endDateInput.value = '';
-  
+
     this.loadInvoices();
   }
-  
 }

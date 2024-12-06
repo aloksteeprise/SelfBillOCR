@@ -142,3 +142,7 @@ hr {
         transform: rotate(1turn);
     }
 }
+
+input[type="checkbox"] {
+    transform: scale(2.2);
+  }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PaginationResponse } from '../afsinvoices/afsinvoices.model';
-import {environment} from '../constant/api-constants'
+import { environment } from '../constant/api-constants'
 
 @Injectable({
   providedIn: 'root',
@@ -10,14 +10,12 @@ import {environment} from '../constant/api-constants'
 
 export class ApiService {
 
-  private apiUrl = environment.API_BASE_URL+'OCRAI/GetAFSExpensesData';
-  
-  
- 
+  private apiUrl = environment.API_BASE_URL + 'OCRAI/GetAFSExpensesData';
+
   //private apiUrl = 'https://localhost:44337/api/OCRAI/GetAFSExpensesData';
 
   constructor(private http: HttpClient) {
-  
+
     date: [null];
   }
 
@@ -31,6 +29,7 @@ export class ApiService {
     invoiceno: string | null = null,
     startdate: string | null = null,
     enddate: string | null = null,
+    IsValidatedRecord: boolean,
     token: string
   ): Observable<PaginationResponse<any>> {
     // Set authorization and content-type headers
@@ -49,6 +48,7 @@ export class ApiService {
       invoiceno,
       startdate,
       enddate,
+      IsValidatedRecord,
     };
 
     console.log('Request Body:', body); // Log the request body for debugging
