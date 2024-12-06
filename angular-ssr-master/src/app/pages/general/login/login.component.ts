@@ -53,7 +53,7 @@ export class LoginComponent {
           localStorage.setItem('token', response.data.token);
           localStorage.setItem('code', response.data.ccode);
           localStorage.setItem('username', response.data.username);
-          debugger;
+        
 
           this.userService.setUsername(response.data.username);
 
