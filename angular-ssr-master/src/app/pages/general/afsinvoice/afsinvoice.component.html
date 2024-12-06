@@ -157,7 +157,7 @@
             <div class="row mb-2 align-items-center">
               <label for="InvoiceNo" class="col-sm-4 col-form-label fontsize14">Invoice no:</label>
               <div class="col-sm-8">
-                <input type="number" class="form-control" id="InvoiceNo" name="invoiceNumber"
+                <input type="text" class="form-control" id="InvoiceNo" name="invoiceNumber"
                   [(ngModel)]="invoiceNumber" maxlength="500" required>
               </div>
             </div>
@@ -198,7 +198,7 @@
 
           <!-- Button on the right -->
           <div class="col-12 col-lg-3 overflow-auto  mb-3 mb-lg-0 d-flex justify-content-start">
-            <button (click)="submitForm()" class="btn btn-primary mt-3 mb-3" >Save and Next</button>
+            <button (click)="submitForm()" class="btn btn-primary mt-3 mb-3" >Validate and Next</button>
           </div>
 
           <!-- <div class="col-12 col-lg-3 overflow-auto  mb-3 mb-lg-0 d-flex justify-content-end">
