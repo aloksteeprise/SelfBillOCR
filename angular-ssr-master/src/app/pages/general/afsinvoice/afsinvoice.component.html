@@ -3,14 +3,15 @@
   <div class="modal-dialog modal-lg custom-modal-width modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title mx-3 headingmargin" id="exampleModalLabel" style="font-size: 22px; font-weight: 700; color: #2f455c;">Expense</h5>
+        <h5 class="modal-title mx-3 headingmargin" id="exampleModalLabel"
+          style="font-size: 22px; font-weight: 700; color: #2f455c;">Expense</h5>
         <button type="button" class="btn-close" (click)="closeDialog()" aria-label="Close"></button>
       </div>
       <div class="modal-body d-flex flex-column flex-lg-row">
         <!-- Left Side: Form with Scrollbar -->
-        <div class="col-12 col-lg-5 overflow-auto pe-lg-4 mb-2 mb-lg-0"
-          style="max-height: 450px; border-right: 5px solid #ddd;">
-          
+        <div class="col-12 col-lg-6 overflow-auto pe-lg-4 mb-2 mb-lg-0"
+          style="max-height: 470px; border-right: 5px solid #ddd;">
+
           <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)">
             <!-- Contractor Name -->
             <div class="row mb-2 align-items-center">
@@ -21,6 +22,8 @@
                   [(ngModel)]="contractorname" #name="ngModel" maxlength="250" required>
               </div>
             </div>
+
+
             <!-- AFS Contractor DropDown -->
             <!-- <div class="row mb-2 align-items-center">
               <label for="afscontractor" class="col-sm-4 col-form-label fontsize14">AFS Contractor:</label>
@@ -37,14 +40,8 @@
             <div class="row mb-2 align-items-center">
               <label for="afscontractor" class="col-sm-4 col-form-label fontsize14">AFS Contractor:</label>
               <div class="col-sm-8">
-                <select
-                  class="form-select"
-                  id="AFSContractorDropdown"
-                  name="Contractor"
-                  (change)="filterContractData()"
-                  required
-                  [(ngModel)]="selectedContract"
-                >
+                <select class="form-select" id="AFSContractorDropdown" name="Contractor" (change)="filterContractData()"
+                  required [(ngModel)]="selectedContract">
                   <option [ngValue]="null" disabled selected>Select Contractor</option>
                   <option *ngFor="let option of contractorOptions" [ngValue]="option">
                     {{ option.fullName }}
@@ -72,13 +69,8 @@
             <div class="row mb-2 align-items-center">
               <label for="afscontact" class="col-sm-4 col-form-label fontsize14">AFS Contract:</label>
               <div class="col-sm-8">
-                <select
-                  class="form-select"
-                  id="AFSContactDropdown"
-                  name="afscontact"
-                  required
-                  [(ngModel)]="selectedFilteredContract"
-                >
+                <select class="form-select" id="AFSContactDropdown" name="afscontact" required
+                  [(ngModel)]="selectedFilteredContract">
                   <option [value]="" disabled selected>Select Contract</option>
                   <option *ngFor="let option of filteredContractOptions" [value]="option.name">
                     {{ option.name }}
@@ -89,7 +81,7 @@
                 </div>
               </div>
             </div>
-            
+
             <!-- First Name -->
             <div class="row mb-2 align-items-center">
               <label for="firstnamefor" class="col-sm-4 col-form-label fontsize14">First Name:</label>
@@ -145,7 +137,7 @@
                 </div>
               </div>
             </div>
-            
+
             <!-- Total Amount -->
             <div class="row mb-2 align-items-center">
               <label for="TotalAmount" class="col-sm-4 col-form-label fontsize14">Total Amount:</label>
@@ -158,8 +150,8 @@
             <div class="row mb-2 align-items-center">
               <label for="InvoiceNo" class="col-sm-4 col-form-label fontsize14">Invoice no:</label>
               <div class="col-sm-8">
-                <input type="text" class="form-control" id="InvoiceNo" name="invoiceNumber"
-                  [(ngModel)]="invoiceNumber" maxlength="500" required>
+                <input type="text" class="form-control" id="InvoiceNo" name="invoiceNumber" [(ngModel)]="invoiceNumber"
+                  maxlength="500" required>
               </div>
             </div>
             <div class="row mb-2 align-items-center">
@@ -173,19 +165,18 @@
             <input type="hidden" id="gridCtcCode" name="gridCtcCode" [(ngModel)]="gridCtcCode">
           </form>
         </div>
-        <div class="col-12 col-lg-7 d-flex justify-content-center align-items-center"
-          style="max-width: 645px; max-height: 470px; overflow: hidden; ">
-          
-          <!-- <lib-ngx-image-zoom [thumbImage]="thumbImage" [fullImage]="fullImagePath" [magnification]="2"
-          [enableScrollZoom]="false" [enableLens]="true" [lensWidth]="100" [lensHeight]="100" [maxZoomRatio]="2"
-          [circularLens]="true" [scrollStepSize]="1">
-        </lib-ngx-image-zoom> -->
-
-        <lib-ngx-image-zoom *ngIf="thumbImage && fullImagePath" [thumbImage]="thumbImage" [fullImage]="fullImagePath"
-        [magnification]="1.5" [enableScrollZoom]="false" [enableLens]="true" [lensWidth]="140" [lensHeight]="140"
-        [minZoomRatio]=".5" [maxZoomRatio]="1" [circularLens]="true" [scrollStepSize]="1">
-      </lib-ngx-image-zoom>
+        <div class="col-12 col-lg-6 d-flex justify-content-center align-items-center"
+          style="max-width: 470px; max-height: 490px; margin-left: 6px;">
+          <div class="image-scroll-container overflow-auto" style="max-width: 512px; border: 2px solid #ddd;">
+            <lib-ngx-image-zoom *ngIf="thumbImage && fullImagePath" [thumbImage]="thumbImage"
+              [fullImage]="fullImagePath" [magnification]="1.5" [enableScrollZoom]="false" [enableLens]="true"
+              [lensWidth]="140" [lensHeight]="140" [minZoomRatio]="0.5" [maxZoomRatio]="1" [circularLens]="true"
+              [scrollStepSize]="1">
+            </lib-ngx-image-zoom>
+          </div>
         </div>
+
+
 
       </div>
       <div class="col-12">
@@ -199,7 +190,7 @@
 
           <!-- Button on the right -->
           <div class="col-12 col-lg-3 overflow-auto  mb-3 mb-lg-0 d-flex justify-content-start">
-            <button (click)="submitForm()" class="btn btn-primary mt-3 mb-3" >Validate and Next</button>
+            <button (click)="submitForm()" class="btn btn-primary mt-3 mb-3">Validate and Next</button>
           </div>
 
           <!-- <div class="col-12 col-lg-3 overflow-auto  mb-3 mb-lg-0 d-flex justify-content-end">

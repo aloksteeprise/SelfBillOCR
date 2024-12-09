@@ -70,13 +70,12 @@ padding: 19px;
 /* Adjust the container to maintain proper dimensions */
 
 ::ng-deep .custom-modal-width[_ngcontent-ng-c760026350] {
-  max-width: 77% !important;
+  max-width: 65% !important;
 }
 
-/* Resize the thumbnail image correctly */
 ::ng-deep .ngxImageZoomContainer {
   width: 612px !important; 
-  height: 529px !important;
+  height: 470px !important;
   display: block;
 }
 

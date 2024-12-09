@@ -101,6 +101,10 @@ hr {
     background-color: #7a7777;
 }
 
+::ng-deep .btn-outline-dark {
+    --bs-btn-border-color: white !important;
+  }
+
 .loading-overlay {
     position: fixed;
     top: 0;
