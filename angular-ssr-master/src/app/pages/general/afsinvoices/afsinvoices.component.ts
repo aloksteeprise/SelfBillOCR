@@ -24,9 +24,8 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     'endDate',
     'totalAmount',
     'selfBillInvoiceNo',
-    // 'selfBillInvoiceContractNo',
-    // 'errorID',
     'errorMessage',
+    'afsInvoiceStatus',
     'actions'
   ];
 
@@ -45,41 +44,37 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   tokenData: string = '';
   token: string = '';
   loading: boolean = false;
-  //token: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6InNoeWFtIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoic2h5YW1zdW5kYXIucGFoYXJpQGFjY2Vzc2ZpbmFuY2lhbC5jb20iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiU2h5YW1zdW5kYXIgUGFoYXJpIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvc3VybmFtZSI6IiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL21vYmlsZXBob25lIjoiKzkxLTk5MTAwNzY1NzMiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbmlzdHJhdG9yIiwiZXhwIjoxNzMzNDY4NTY3fQ.FX1TSsGpyHGCdMmz6pzQgVMVcp-1Rz3f9sXNhzuDYyY';
+  
 
   constructor(private apiService: ApiService, private dialog: MatDialog) { }
 
   ngOnInit() {
 
-    // Retrieve the token from localStorage dynamically
     const storedToken = localStorage.getItem('token');
     if (storedToken) {
-      this.token = storedToken; // Assign the token from localStorage
+      this.token = storedToken; 
     } else {
       console.error('Token not found in localStorage.');
-      // Handle token absence (e.g., redirect to login)
+     
     }
 
-    this.loadInvoices(); // Initial data load
+    this.loadInvoices(); 
   }
 
   ngAfterViewInit() {
 
-    // this.dataSource.paginator = this.paginator; // Assign paginator after view init
-    // this.dataSource.sort = this.sort; // Assign sort after view init
-
     this.sort.sortChange.subscribe(() => {
 
-      this.pageIndex = 0; // Reset to the first page on sort change
-      this.loadInvoices(); // Reload invoices with updated sorting
+      this.pageIndex = 0; 
+      this.loadInvoices(); 
     });
   }
 
   loadInvoices() {
 
-    this.loading = true; // Start loading
-    const SortColumn = this.sort?.active || ''; // Safely access sort.active
-    const SortDirection = this.sort?.direction || ''; // Safely access sort.direction
+    this.loading = true; 
+    const SortColumn = this.sort?.active || ''; 
+    const SortDirection = this.sort?.direction || ''; 
 
     this.apiService
       .getInvoices(this.pageIndex, this.pageSize, SortColumn, SortDirection, this.name, this.invoiceno, this.startdate, this.enddate, this.IsValidatedRecord, this.token)
@@ -87,12 +82,12 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
         next: (response: any) => {
 
           this.dataSource.data = response.data.data;
-          this.totalRecords = response.data.totalRecords; // Handle undefined values
-          this.loading = false; // Stop loading
+          this.totalRecords = response.data.totalRecords; 
+          this.loading = false; 
         },
         error: (err) => {
           console.error('API Error:', err);
-          this.loading = false; // Stop loading even on error
+          this.loading = false; 
         },
       });
   }
@@ -197,4 +192,28 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
 
     this.loadInvoices();
   }
+
+
+  onDownloadInvoice(row: any) {
+
+    const invoiceID = row.afsInvoiceStatus;
+    const isAdminorContractor = 0;
+
+    this.apiService.generateInvoicePDF(invoiceID, isAdminorContractor).subscribe(
+      (response: any) => {
+        if (response.succeeded) {
+          const pdfPath = response.messages[0];
+          const fullPdfUrl = `https://wfmapi.accessfinancial.com/${pdfPath.replace(/\\/g, '/')}`;
+          window.open(fullPdfUrl, '_blank');
+        } else {
+          alert('Failed to generate the invoice.');
+        }
+      },
+      (error) => {
+        console.error('Error generating invoice:', error);
+        alert('An error occurred while generating the invoice.');
+      }
+    );
+  }
+
 }

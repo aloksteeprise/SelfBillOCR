@@ -173,3 +173,15 @@ input[type="checkbox"] {
     color: #c12b2b;
 }
 .fa-circle-check { color: #085d08;} 
+
+.invoice-link {
+    text-decoration: underline;
+    color: blue;
+    
+  }
+  
+  .invoice-link:hover {
+    color: darkblue;
+    cursor: pointer;
+  }
+  

@@ -17,7 +17,7 @@ export interface afsInvoice {
     isMapedContract:boolean;
     errorID:number;
     errorMessage:string;
-
+    afsInvoiceStatus:string;
     // Add other fields as needed
   }
   

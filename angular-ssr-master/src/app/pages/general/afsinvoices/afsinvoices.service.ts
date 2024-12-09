@@ -56,4 +56,21 @@ export class ApiService {
     // Make the POST request
     return this.http.post<PaginationResponse<any>>(this.apiUrl, body, { headers });
   }
+
+  generateInvoicePDF(invoiceID: number, isAdminorContractor: number): Observable<any> {
+    const url = environment.API_BASE_URL + 'Invoice/GenerateInvoicePDF';
+  
+    // Construct the request body
+    const body = {
+      invoiceID,
+      isAdminorContractor,
+    };
+  debugger;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+  
+    // Return the API response
+    return this.http.post<any>(url, body, { headers });
+  }
 }
