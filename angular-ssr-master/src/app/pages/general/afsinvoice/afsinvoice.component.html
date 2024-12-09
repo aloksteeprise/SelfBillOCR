@@ -10,8 +10,7 @@
       <div class="modal-body d-flex flex-column flex-lg-row">
         <!-- Left Side: Form with Scrollbar -->
         <div class="col-12 col-lg-6 overflow-auto pe-lg-4 mb-2 mb-lg-0"
-          style="max-height: 470px; border-right: 5px solid #ddd;">
-
+          style="max-height: 480px; border-right: 5px solid #ddd;">
           <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)">
             <!-- Contractor Name -->
             <div class="row mb-2 align-items-center">
@@ -78,6 +77,9 @@
                 </select>
                 <div class="error-message" *ngIf="errors.selectedFilteredContract">
                   <small class="text-danger">{{ errors.selectedFilteredContract }}</small>
+                </div>
+                <div *ngIf="IsContractIsActiveOrNot ==='Contract is not active.'">
+                  <span  style="color: rgb(225, 21, 21);"> Contract is not active.</span>
                 </div>
               </div>
             </div>

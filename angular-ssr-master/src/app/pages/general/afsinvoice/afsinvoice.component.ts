@@ -37,7 +37,7 @@ export class AfsinvoiceComponent implements OnInit {
   gridCtcCode: number = 0;
   submitted = false;
   errors: any = {};
-  
+  IsContractIsActiveOrNot:any;
 
   constructor(
     private dialogRef: MatDialogRef<AfsinvoiceComponent>,
@@ -74,6 +74,8 @@ export class AfsinvoiceComponent implements OnInit {
 
   initializeFormData(): void {
     if (this.data) {
+
+      console.log(this.data);
       
       this.id = this.data.id;
       this.contractorname = this.data.contractorName || '';
@@ -82,6 +84,7 @@ export class AfsinvoiceComponent implements OnInit {
       this.lastnamefor = this.data.cLastName || '';
       this.startdate = this.data.startDate || '';
       this.enddate = this.data.endDate || '';
+      this.IsContractIsActiveOrNot = this.data.errorMessage;
       
       // Remove currency 
       this.totalAmount = this.data.totalAmount.includes(' ') ? this.data.totalAmount.split(' ')[0] : this.data.totalAmount.trim();
@@ -148,7 +151,7 @@ export class AfsinvoiceComponent implements OnInit {
     if (storedContractsList && this.selectedContract) {
         // Filter and map contracts
         this.filteredContractOptions = storedContractsList
-            .filter((contract: any) => contract.fullName === this.selectedContract.fullName)
+            .filter((contract: any) => contract.fullName === this.selectedContract.fullName && contract.contracts.includes('Active'))
             .map((item: any) => ({
                 id: item.ctcCode,
                 name: item.contracts // Assuming "contracts" field is what you want to display
