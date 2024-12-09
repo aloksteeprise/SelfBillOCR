@@ -93,10 +93,10 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite">
         AFS Invoice Status
       </th>
-      <td mat-cell *matCellDef="let row">
-        <a *ngIf="row.afsInvoiceStatus; else pendingTemplate" href="javascript:void(0)" (click)="onDownloadInvoice(row)"
+      <td mat-cell *matCellDef="let row" style="text-align: center;">
+        <a *ngIf="row.isRecordValidated; else pendingTemplate" href="javascript:void(0)" (click)="onDownloadInvoice(row)"
           class="invoice-link">
-          {{row.afsInvoiceStatus}}  <i class="fa-solid fa-download" style="margin-right: 5px;"></i>
+        {{row.afsInvoiceStatus}}  <i class="fa-solid fa-download" style="margin-right: 5px;"></i>
         </a>
         <ng-template #pendingTemplate>
           <span>Pending</span>

@@ -38,7 +38,7 @@
             </div> -->
 
             <div class="row mb-2 align-items-center">
-              <label for="afscontractor" class="col-sm-4 col-form-label fontsize14">AFS Contractor:</label>
+              <label for="afscontractor" class="col-sm-4 col-form-label fontsize14">AFS Contractor: <span style="color: red;"> *</span> </label>
               <div class="col-sm-8">
                 <select class="form-select" id="AFSContractorDropdown" name="Contractor" (change)="filterContractData()"
                   required [(ngModel)]="selectedContract">
@@ -67,7 +67,7 @@
             </div> -->
 
             <div class="row mb-2 align-items-center">
-              <label for="afscontact" class="col-sm-4 col-form-label fontsize14">AFS Contract:</label>
+              <label for="afscontact" class="col-sm-4 col-form-label fontsize14">AFS Contract: <span style="color: red;"> *</span></label>
               <div class="col-sm-8">
                 <select class="form-select" id="AFSContactDropdown" name="afscontact" required
                   [(ngModel)]="selectedFilteredContract">
@@ -84,7 +84,7 @@
 
             <!-- First Name -->
             <div class="row mb-2 align-items-center">
-              <label for="firstnamefor" class="col-sm-4 col-form-label fontsize14">First Name:</label>
+              <label for="firstnamefor" class="col-sm-4 col-form-label fontsize14">First Name: <span style="color: red;"> *</span></label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" id="firstnamefor" name="firstnamefor" [(ngModel)]="firstnamefor"
                   required maxlength="50" (input)="clearValidation('firstName')" />
@@ -96,7 +96,7 @@
 
             <!-- Last Name -->
             <div class="row mb-2 align-items-center">
-              <label for="lastnamefor" class="col-sm-4 col-form-label fontsize14">Last Name:</label>
+              <label for="lastnamefor" class="col-sm-4 col-form-label fontsize14">Last Name: <span style="color: red;"> *</span></label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" id="lastnamefor" name="lastnamefor" [(ngModel)]="lastnamefor"
                   required maxlength="50" (input)="clearValidation('lastName')" />
@@ -108,7 +108,7 @@
 
             <!-- Start Date -->
             <div class="row mb-2 align-items-center">
-              <label for="startDate" class="col-sm-4 col-form-label fontsize14">Start Date:</label>
+              <label for="startDate" class="col-sm-4 col-form-label fontsize14">Start Date: <span style="color: red;"> *</span></label>
               <div class="col-sm-8">
                 <input type="date" class="form-control" id="startDate" name="startdates" [(ngModel)]="startdate"
                   required (input)="clearValidation('startDate')" />
@@ -120,7 +120,7 @@
 
             <!-- End Date -->
             <div class="row mb-2 align-items-center">
-              <label for="endDate" class="col-sm-4 col-form-label fontsize14">End Date:</label>
+              <label for="endDate" class="col-sm-4 col-form-label fontsize14">End Date: <span style="color: red;"> *</span></label>
               <div class="col-sm-8">
                 <input
                   type="date"
