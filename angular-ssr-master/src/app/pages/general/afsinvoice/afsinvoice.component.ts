@@ -138,6 +138,10 @@ export class AfsinvoiceComponent implements OnInit {
     this.filteredContractOptions = [];
     this.selectedFilteredContract = '';
 
+    if (this.selectedContract) {
+      this.errors.selectedContract = undefined;
+      
+    }
     // Retrieve the contracts list from localStorage
     const storedContractsList = JSON.parse(localStorage.getItem('contractsList')!);
 
@@ -153,6 +157,7 @@ export class AfsinvoiceComponent implements OnInit {
         // Select the first record by default
         if (this.filteredContractOptions.length > 0) {
             this.selectedFilteredContract = this.filteredContractOptions[0].name;
+            this.errors.selectedFilteredContract = undefined;
         }
     }
 }
