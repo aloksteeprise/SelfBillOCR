@@ -162,6 +162,14 @@ export class AfsinvoiceComponent implements OnInit {
     }
 }
 
+ // Clear validation error for a specific field
+ clearValidation(field: string) {
+  if ((this as any)[field]?.trim() !== '') {
+    this.errors[field] = null;
+  }
+}
+
+
  // Form submission handler
 //  onSubmit(form: any): void {
 //   this.submitted = true; // Mark the form as submitted
