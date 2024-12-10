@@ -12,19 +12,24 @@ import { AfsinvoiceComponent } from '../afsinvoice/afsinvoice.component';
   templateUrl: './invoice.component.html',
   styleUrls: ['./invoice.component.css']
 })
+
+
 export class InvoiceComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  displayedColumns: string[] = ['docCode', 'docDescription', 'ctdDesc', 'actions'];
+  
+
+  displayedColumns: string[] = ['contractorName','invoiceDate', 'DueDate','invoiceNumber','paidAmount','invoiceAmount','selfBillInvoiceNo','description','actions'];
   dataSource = new MatTableDataSource<Invoice>();
 
   constructor(private invoiceService: InvoiceService, private dialog: MatDialog) {}
 
   ngOnInit() {
+    //debugger;
     this.invoiceService.getAllContractorInvoices().subscribe((result: any) => {
-      this.dataSource.data = result.data; // Accessing data array
+      this.dataSource.data = result.data; 
     });
   }
 

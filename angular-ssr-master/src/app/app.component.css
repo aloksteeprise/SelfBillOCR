@@ -18,6 +18,13 @@
 
 }
 
+.activecolor2{
+  color: rgb(0, 204, 255)!important;
+  border-top: 1px solid rgb(0, 225, 255)!important;
+  border-bottom: 1px solid rgb(0, 183, 255)!important;
+
+}
+
 /* .fixed-top{
 
   z-index: 0 !important;

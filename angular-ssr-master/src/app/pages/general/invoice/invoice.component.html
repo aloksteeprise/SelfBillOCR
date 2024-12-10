@@ -1,32 +1,120 @@
-<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+<div style="margin-top: 50px;" >
+  <p style="padding: 20px 0px 0px 20px; font-weight: 1000; font-size: x-large; vertical-align: center;">Remittance Invoice
+  </p>
+
+  <!-- <hr /> -->
+  <!-- </div> -->
+  <!-- <form  >
+    <table class="searchTable">
+      <tr>
+        <td style="padding: 20px 0px 20px 0px;"><label style="padding-left: 10px; padding-right: 10px; color: white;"
+            class="fontweight500">Name</label></td>
+        <td><input type="text" style="width: 210px;" class="form-control" id="name" name="name"
+            placeholder="First / Last name" maxlength="50" /></td>
+        <td><label class="fontweight500" style="color: white;">Invoice No</label></td>
+        <td><input type="text" style="width: 210px;" class="form-control" id="invoiceno" name="invoiceno"
+            placeholder="Invoice No"  maxlength="50" />
+        </td>
+        <td><label style="padding-left: 20px; width: 100px; color: white;" class="fontweight500">Start Date</label></td>
+        <td> <input type="date" id="startdate"  class="form-control" name="startdate" /></td>
+        <td><label style="padding-left: 20px; width: 96px; color: white;" class="fontweight500">End Date</label></td>
+        <td><input type="date" id="enddate" class="form-control"  name="date" /></td>
+        <td> <label class="fontweight500" style="color: white;padding-left: 20px; padding-right: 20px;"> Validated
+          </label>
+          <input type="checkbox"  />
+        </td>
+        <td style="padding-left: 20px;">
+          <button type="submit" class="btn btn-dark">Search</button>
+        </td>
+       
+      </tr>
+    </table>
+  </form> -->
+
+  <!-- <hr /> -->
+<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 table table-striped" >
 
   <!-- Columns definition -->
-  <ng-container matColumnDef="docCode">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Doc Code </th>
-    <td mat-cell *matCellDef="let row"> {{row.docCode}} </td>
+  <!-- <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> ID </th>
+    <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+  </ng-container> -->
+
+  <!-- <ng-container matColumnDef="re_GUID">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Re_GUID </th>
+    <td mat-cell *matCellDef="let row"> {{row.re_GUID}} </td>
+  </ng-container> -->
+
+  <ng-container matColumnDef="contractorName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Contractor Name </th>
+    <td mat-cell *matCellDef="let row"> {{row.contractorName}} </td>
+  </ng-container>
+  <ng-container matColumnDef="invoiceDate">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Invoice Date </th>
+    <td mat-cell *matCellDef="let row"> {{row.invoiceDate}} </td>
+  </ng-container>
+  <ng-container matColumnDef="DueDate">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Invoice DueDate </th>
+    <td mat-cell *matCellDef="let row"> {{row.DueDate}} </td>
+  </ng-container>
+  <ng-container matColumnDef="invoiceAmount">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Invoice Amount </th>
+    <td mat-cell *matCellDef="let row" style="text-align: center;"> {{row.invoiceAmount}} </td>
+  </ng-container>
+  <ng-container matColumnDef="paidAmount">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Paid Amount </th>
+    <td mat-cell *matCellDef="let row" style="text-align: center;"> {{row.paidAmount}} </td>
+  </ng-container>
+  <ng-container matColumnDef="invoiceNumber">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Invoice Number </th>
+    <td mat-cell *matCellDef="let row" > {{row.invoiceNumber}} </td>
+  </ng-container>
+ 
+  <ng-container matColumnDef="selfBillInvoiceNo">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> SelfBill InvoiceNo </th>
+    <td mat-cell *matCellDef="let row"> </td>
   </ng-container>
 
-  <ng-container matColumnDef="docDescription">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Doc Description </th>
-    <td mat-cell *matCellDef="let row"> {{row.docDescription}} </td>
+ 
+  <ng-container matColumnDef="description">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Description </th>
+    <td mat-cell *matCellDef="let row" class="break-word"> {{row.description}} </td>
   </ng-container>
-
-  <ng-container matColumnDef="ctdDesc">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Ctd Desc </th>
-    <td mat-cell *matCellDef="let row"> {{row.ctdDesc}} </td>
+  <!-- <ng-container matColumnDef="isMapedContract">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> isMapedContract </th>
+    <td mat-cell *matCellDef="let row" class="break-word"> {{row.isMapedContract}} </td>
   </ng-container>
+  <ng-container matColumnDef="isActiveContract">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> isActiveContract </th>
+    <td mat-cell *matCellDef="let row" class="break-word"> {{row.isActiveContract}} </td>
+  </ng-container> -->
 
   <ng-container matColumnDef="actions">
-    <th mat-header-cell *matHeaderCellDef> Actions </th>
+    <th mat-header-cell *matHeaderCellDef class="coloredwhite"> Actions </th>
     <td mat-cell *matCellDef="let row">
-      <!-- Button to open the modal -->
-      <button mat-button (click)="openInvoiceModal(row)">Open Invoice</button>
+      <button mat-button class="btn btn-outline-dark" disabled>Validate</button>
     </td>
   </ng-container>
+  
+  
+  
+  
+
+  <!-- <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef> Actions </th>
+    <td mat-cell *matCellDef="let row">
+    
+      <button mat-button (click)="openInvoiceModal(row)">Open Invoice</button>
+    </td>
+  </ng-container> -->
 
   <!-- Table Header and Row -->
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
 
+  
+
+</table>
 <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
+
+</div>

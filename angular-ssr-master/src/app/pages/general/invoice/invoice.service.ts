@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Invoice } from './invoice';
 import { InvoiceRequest } from './invoiceRequest';
+import { environment } from '../constant/api-constants';
 
 
 
@@ -12,8 +13,9 @@ import { InvoiceRequest } from './invoiceRequest';
 
  
  export class InvoiceService {
+  
 
-  private apiUrl = 'https://wfmapi.accessfinancial.com/api/Compliance/GetAllComplDocList';
+  private apiUrl = environment.API_BASE_URL + 'OCRAI/GetPDFReadRemittanceList';
   constructor(private http: HttpClient) { }
 
     
@@ -24,6 +26,6 @@ import { InvoiceRequest } from './invoiceRequest';
         'Content-Type': 'application/json'
       });
   
-      return this.http.get<Invoice[]>(this.apiUrl, { headers });
+      return this.http.post<Invoice[]>(this.apiUrl, { headers });
     }
  } 
