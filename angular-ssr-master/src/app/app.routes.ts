@@ -72,7 +72,7 @@ export const routes: Routes = [
     loadChildren: () => import('./pages/general/afsinvoice/afsinvoice.module').then(mod => mod.AfsinvoiceModule)
   },
   {
-    path: 'remittance',
+    path: 'remittance', component: InvoiceComponent, canActivate: [AuthGuard],
     loadChildren: () => import('./pages/general/invoice/invoice.module')
       .then(mod => mod.InvoiceModule)
   },

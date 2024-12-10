@@ -21,7 +21,7 @@ export class InvoiceComponent implements OnInit, AfterViewInit {
 
   
 
-  displayedColumns: string[] = ['id','re_GUID','contractorName','invoiceDate', 'DueDate','invoiceNumber','invoiceAmount','paidAmount','description','isMapedContract','isActiveContract'];
+  displayedColumns: string[] = ['id','contractorName','invoiceDate', 'DueDate','invoiceNumber','paidAmount','invoiceAmount','selfBillInvoiceNo','paidAmount','description','actions'];
   dataSource = new MatTableDataSource<Invoice>();
 
   constructor(private invoiceService: InvoiceService, private dialog: MatDialog) {}

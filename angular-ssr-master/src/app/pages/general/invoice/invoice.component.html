@@ -4,7 +4,7 @@
 
   <hr />
   <!-- </div> -->
-  <form  >
+  <!-- <form  >
     <table class="searchTable">
       <tr>
         <td style="padding: 20px 0px 20px 0px;"><label style="padding-left: 10px; padding-right: 10px; color: white;"
@@ -26,12 +26,10 @@
         <td style="padding-left: 20px;">
           <button type="submit" class="btn btn-dark">Search</button>
         </td>
-        <!-- <td style="padding-left: 10px;">
-          <button type="submit"  class="btn btn-outline-dark" style="color: white;">Clear</button>
-        </td> -->
+       
       </tr>
     </table>
-  </form>
+  </form> -->
 
   <hr />
 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 table table-striped" >
@@ -42,58 +40,73 @@
     <td mat-cell *matCellDef="let row"> {{row.id}} </td>
   </ng-container>
 
-  <ng-container matColumnDef="re_GUID">
+  <!-- <ng-container matColumnDef="re_GUID">
     <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Re_GUID </th>
     <td mat-cell *matCellDef="let row"> {{row.re_GUID}} </td>
-  </ng-container>
+  </ng-container> -->
 
   <ng-container matColumnDef="contractorName">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> contractor Name </th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Contractor Name </th>
     <td mat-cell *matCellDef="let row"> {{row.contractorName}} </td>
   </ng-container>
   <ng-container matColumnDef="invoiceDate">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Invoice date </th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Invoice Date </th>
     <td mat-cell *matCellDef="let row"> {{row.invoiceDate}} </td>
   </ng-container>
   <ng-container matColumnDef="DueDate">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Due date </th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Due Date </th>
     <td mat-cell *matCellDef="let row"> {{row.DueDate}} </td>
   </ng-container>
-  <ng-container matColumnDef="invoiceNumber">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> invoiceNumber </th>
-    <td mat-cell *matCellDef="let row"> {{row.invoiceNumber}} </td>
-  </ng-container>
   <ng-container matColumnDef="invoiceAmount">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> invoiceAmount </th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Invoice Amount </th>
     <td mat-cell *matCellDef="let row"> {{row.invoiceAmount}} </td>
   </ng-container>
   <ng-container matColumnDef="paidAmount">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> paidAmount </th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Paid Amount </th>
     <td mat-cell *matCellDef="let row"> {{row.paidAmount}} </td>
   </ng-container>
+  <ng-container matColumnDef="invoiceNumber">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Invoice Number </th>
+    <td mat-cell *matCellDef="let row"> {{row.invoiceNumber}} </td>
+  </ng-container>
+ 
+  <ng-container matColumnDef="selfBillInvoiceNo">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Self Bill Invoice no </th>
+    <td mat-cell *matCellDef="let row"> </td>
+  </ng-container>
+
+ 
   <ng-container matColumnDef="description">
     <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Description </th>
     <td mat-cell *matCellDef="let row" class="break-word"> {{row.description}} </td>
   </ng-container>
-  <ng-container matColumnDef="isMapedContract">
+  <!-- <ng-container matColumnDef="isMapedContract">
     <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> isMapedContract </th>
     <td mat-cell *matCellDef="let row" class="break-word"> {{row.isMapedContract}} </td>
   </ng-container>
   <ng-container matColumnDef="isActiveContract">
     <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> isActiveContract </th>
     <td mat-cell *matCellDef="let row" class="break-word"> {{row.isActiveContract}} </td>
+  </ng-container> -->
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef class="coloredwhite"> Actions </th>
+    <td mat-cell *matCellDef="let row">
+      <button mat-button class="btn btn-outline-success" disabled>Validate</button>
+    </td>
   </ng-container>
   
   
   
+  
 
-  <ng-container matColumnDef="actions">
+  <!-- <ng-container matColumnDef="actions">
     <th mat-header-cell *matHeaderCellDef> Actions </th>
     <td mat-cell *matCellDef="let row">
     
       <button mat-button (click)="openInvoiceModal(row)">Open Invoice</button>
     </td>
-  </ng-container>
+  </ng-container> -->
 
   <!-- Table Header and Row -->
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
