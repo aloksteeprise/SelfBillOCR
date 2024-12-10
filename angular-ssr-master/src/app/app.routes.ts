@@ -9,6 +9,9 @@ import { AfsInvoicesComponent } from './pages/general/afsinvoices/afsinvoices.co
 import { SignupComponent } from './pages/general/signup/signup.component';
 import { ContactComponent } from './pages/general/contact/contact.component';
 import { AboutComponent } from './pages/general/about/about.component';
+// import {RemittanceComponent} from './pages/general/remittance/remittance.component'
+// import {InvoiceComponent} from './pages/general/invoice/invoice.component'
+ 
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -67,6 +70,11 @@ export const routes: Routes = [
   {
     path: 'afsinvoice',
     loadChildren: () => import('./pages/general/afsinvoice/afsinvoice.module').then(mod => mod.AfsinvoiceModule)
+  },
+  {
+    path: 'remittance',
+    loadChildren: () => import('./pages/general/invoice/invoice.module')
+      .then(mod => mod.InvoiceModule)
   },
 
   { path: '**', component: NotFoundComponent }
