@@ -2,7 +2,7 @@ import { Component, Inject, OnInit,ViewChild  } from '@angular/core';
 import { MatDialogRef,MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
 import {environment} from '../constant/api-constants';
-
+import { NotificationPopupService } from '../notification-popup/notification-popup.service';
 
 @Component({
   selector: 'app-afsinvoice',
@@ -42,7 +42,8 @@ export class AfsinvoiceComponent implements OnInit {
   constructor(
     private dialogRef: MatDialogRef<AfsinvoiceComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private http: HttpClient // Injecting HttpClient service
+    private http: HttpClient, // Injecting HttpClient service
+    private notificationService: NotificationPopupService // Inject service
   ) 
   {
     this.setImagePath(data.invoiceFilePath);
@@ -299,37 +300,99 @@ onSubmit(form: any): void {
       next: (response) => {
         switch (response.data.validationResult) {
           case -1:
-            alert('Error occurred in validation process.');
+            //alert('Error occurred in validation process.');
+
+            this.notificationService.showNotification(
+              'Error occurred in validation process.',
+              'ERROR',
+              'error',
+              () => {
+                console.log('OK clicked!'); // Callback logic
+              }
+            );
             break;
   
           case 1:
-            alert('No row validated.');
-            this.fetchNextRecord(response.data.resultTable[0]);
+            //alert('No row validated.');
+            //this.fetchNextRecord(response.data.resultTable[0]);
+            this.notificationService.showNotification(
+              'No row validated.',
+              'INFORMATION',
+              'success',
+              () => {
+                console.log('OK clicked!'); // Callback logic
+                this.fetchNextRecord(response.data.resultTable[0]);
+              }
+            );
             break;
   
           case 2:
-            alert('The records have been successfully validated and moved.');
-            this.fetchNextRecord(response.data.resultTable[0]);
+            //alert('The records have been successfully validated and moved.');
+            //this.fetchNextRecord(response.data.resultTable[0]);
+            this.notificationService.showNotification(
+              'The records have been successfully validated and moved.',
+              'INFORMATION',
+              'success',
+              () => {
+                console.log('OK clicked!'); // Callback logic
+                this.fetchNextRecord(response.data.resultTable[0]);
+              }
+            );
             break;
   
           case 3:
-            alert('Error in validation process.');
-            this.fetchNextRecord(response.data.resultTable[0]);
+            //alert('Error in validation process.');
+            //this.fetchNextRecord(response.data.resultTable[0]);
+            this.notificationService.showNotification(
+              'Error in validation process.',
+              'ERROR',
+              'error',
+              () => {
+                console.log('OK clicked!'); // Callback logic
+                this.fetchNextRecord(response.data.resultTable[0]);
+              }
+            );
             break;
   
           case 4:
-            alert('The records have been successfully validated and moved.');
-            this.fetchNextRecord(response.data.resultTable[0]);
+            //alert('The records have been successfully validated and moved.');
+            //this.fetchNextRecord(response.data.resultTable[0]);
+            this.notificationService.showNotification(
+              'The records have been successfully validated and moved.',
+              'INFORMATION',
+              'success',
+              () => {
+                console.log('OK clicked!'); // Callback logic
+                this.fetchNextRecord(response.data.resultTable[0]);
+              }
+            );
             break;
+
   
           default:
-            console.warn('Unhandled validation result:', response.data.validationResult);
+            this.notificationService.showNotification(
+              'Unhandled validation result:',
+              'WARNING',
+              'Warning',
+              () => {
+                console.log('OK clicked!'); 
+              }
+            );
+            //console.warn('Unhandled validation result:', response.data.validationResult);
             break;
         }
       },
       error: (error) => {
-        console.error('API Error:', error);
-        alert('There was an error submitting the form. Please try again.');
+        //console.error('API Error:', error);
+        //alert('There was an error submitting the form. Please try again.');
+        this.notificationService.showNotification(
+          'There was an error submitting the form. Please try again.',
+          'ERROR',
+          'error',
+          () => {
+            console.log('OK clicked!'); // Callback logic
+          }
+        );
       },
     });
   } 

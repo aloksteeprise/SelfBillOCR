@@ -7,19 +7,23 @@ import { NgxImageZoomModule } from 'ngx-image-zoom';
 import { MatSortModule } from '@angular/material/sort';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { NotificationPopupComponent } from '../notification-popup/notification-popup.component';
+import { AfsInvoicesPopupModule } from "../afs-invoices-popup/afs-invoices-popup.module";
 
 @NgModule({
   imports: [
     CommonModule,
-    AfsinvoiceRoutingModule,  
+    AfsinvoiceRoutingModule,
     FormsModule,
-    NgxImageZoomModule
-  ],
+    NgxImageZoomModule,
+    AfsInvoicesPopupModule
+],
   exports: [
     AfsinvoiceComponent  
   ],
   declarations: [
-    AfsinvoiceComponent  
+    AfsinvoiceComponent,
+    NotificationPopupComponent  
   ],
   providers: [],
 })
