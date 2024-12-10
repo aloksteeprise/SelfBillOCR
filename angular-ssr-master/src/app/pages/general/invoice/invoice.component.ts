@@ -27,7 +27,7 @@ export class InvoiceComponent implements OnInit, AfterViewInit {
   constructor(private invoiceService: InvoiceService, private dialog: MatDialog) {}
 
   ngOnInit() {
-    debugger;
+    //debugger;
     this.invoiceService.getAllContractorInvoices().subscribe((result: any) => {
       this.dataSource.data = result.data; 
     });
