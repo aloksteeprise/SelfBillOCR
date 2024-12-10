@@ -38,6 +38,8 @@ export class AfsinvoiceComponent implements OnInit {
   submitted = false;
   errors: any = {};
   IsContractIsActiveOrNot:any;
+  imageWidth: number = 792;
+
 
   constructor(
     private dialogRef: MatDialogRef<AfsinvoiceComponent>,
@@ -133,6 +135,14 @@ export class AfsinvoiceComponent implements OnInit {
     );
   }
   
+  onImageLoad(event: Event): void {
+    const imgElement = event.target as HTMLImageElement;
+
+    // Adjust the imageWidth to the actual width of the loaded image
+    if (imgElement && imgElement.naturalWidth) {
+      this.imageWidth = imgElement.naturalWidth;  // Set the image width dynamically
+    }
+  }
 
   // Filter contractor data and bind it to the second dropdown
   filterContractData(): void {

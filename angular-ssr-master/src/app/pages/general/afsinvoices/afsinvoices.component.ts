@@ -26,13 +26,14 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     'selfBillInvoiceNo',
     'errorMessage',
     'afsInvoiceStatus',
+    'isExpenseOrTimesheet',
     'actions'
   ];
 
   dataSource = new MatTableDataSource<afsInvoice>([]);
   totalRecords: number = 0;
   pageIndex: number = 0;
-  pageSize: number = 10;
+  pageSize: number = 20;
   filterValue: string = '';
   name: string = '';
   invoiceno: string = '';
