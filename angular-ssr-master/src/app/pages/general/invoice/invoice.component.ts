@@ -21,14 +21,15 @@ export class InvoiceComponent implements OnInit, AfterViewInit {
 
   
 
-  displayedColumns: string[] = ['contractorName','invoiceDate', 'DueDate','invoiceNumber','paidAmount','invoiceAmount','selfBillInvoiceNo','description','actions'];
+  displayedColumns: string[] = ['contractorName','invoiceDate', 'DueDate','invoiceNumber','paidAmount','invoiceAmount','currencyType','selfBillInvoiceNo','description','actions'];
   dataSource = new MatTableDataSource<Invoice>();
 
   constructor(private invoiceService: InvoiceService, private dialog: MatDialog) {}
 
   ngOnInit() {
-    //debugger;
+    debugger;
     this.invoiceService.getAllContractorInvoices().subscribe((result: any) => {
+      debugger;
       this.dataSource.data = result.data; 
     });
   }
