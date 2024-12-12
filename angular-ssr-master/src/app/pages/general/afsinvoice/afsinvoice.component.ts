@@ -159,6 +159,8 @@ export class AfsinvoiceComponent implements OnInit {
     // Retrieve the contracts list from localStorage
     const storedContractsList = JSON.parse(localStorage.getItem('contractsList')!);
 
+    console.log(storedContractsList);
+
     if (storedContractsList && this.selectedContract) {
         // Filter and map contracts
         this.filteredContractOptions = storedContractsList
@@ -166,13 +168,28 @@ export class AfsinvoiceComponent implements OnInit {
             .map((item: any) => ({
                 id: item.ctcCode,
                 name: item.contracts // Assuming "contracts" field is what you want to display
-            }));
+            }));       
+            
+          // Select the first record by default
+          if (this.filteredContractOptions.length > 0) {
+              this.selectedFilteredContract = this.filteredContractOptions[0].name;
+              this.errors.selectedFilteredContract = undefined;
+          }
 
-        // Select the first record by default
-        if (this.filteredContractOptions.length > 0) {
-            this.selectedFilteredContract = this.filteredContractOptions[0].name;
-            this.errors.selectedFilteredContract = undefined;
-        }
+          //changeName As per Contractor Change
+          let changeNameAsperContractorChange =storedContractsList
+          .filter((contract: any) => contract.fullName === this.selectedContract.fullName && contract.contracts.includes('Active'));       
+
+          if(changeNameAsperContractorChange !=undefined && changeNameAsperContractorChange[0] != undefined){
+            this.firstnamefor = changeNameAsperContractorChange[0].conFirstName;
+            this.lastnamefor = changeNameAsperContractorChange[0].conLastName;
+
+            console.log(this.firstnamefor);
+            console.log(this.lastnamefor);
+          }
+          else{
+            this.IsContractIsActiveOrNot = 'Contract is not active.';
+          }
     }
 }
 
@@ -330,8 +347,13 @@ onSubmit(form: any): void {
               'INFORMATION',
               'success',
               () => {
-                console.log('OK clicked!'); // Callback logic
-                this.fetchNextRecord(response.data.resultTable[0]);
+                console.log('OK clicked 1'); // Callback logic
+                console.log('response');
+                console.log(response);
+                //this.fetchNextRecord(response.data.resultTable[0]);
+                if(response.data.resultTable.length >0){
+                  this.fetchNextRecord(response.data.resultTable[0]);
+                }
               }
             );
             break;
@@ -344,8 +366,13 @@ onSubmit(form: any): void {
               'INFORMATION',
               'success',
               () => {
-                console.log('OK clicked!'); // Callback logic
-                this.fetchNextRecord(response.data.resultTable[0]);
+                console.log('OK clicked 2'); // Callback logic
+                console.log('response');
+                console.log(response);
+                //this.fetchNextRecord(response.data.resultTable[0]);
+                if(response.data.resultTable.length >0){
+                  this.fetchNextRecord(response.data.resultTable[0]);
+                }
               }
             );
             break;
@@ -358,8 +385,13 @@ onSubmit(form: any): void {
               'ERROR',
               'error',
               () => {
-                console.log('OK clicked!'); // Callback logic
-                this.fetchNextRecord(response.data.resultTable[0]);
+                console.log('OK clicked 3'); // Callback logic
+                console.log('response');
+                console.log(response);
+                //this.fetchNextRecord(response.data.resultTable[0]);
+                if(response.data.resultTable.length >0){
+                  this.fetchNextRecord(response.data.resultTable[0]);
+                }
               }
             );
             break;
@@ -372,8 +404,12 @@ onSubmit(form: any): void {
               'INFORMATION',
               'success',
               () => {
-                console.log('OK clicked!'); // Callback logic
-                this.fetchNextRecord(response.data.resultTable[0]);
+                console.log('OK clicked 4'); // Callback logic
+                console.log('response' + response.data.resultTable.length);
+                console.log(response);
+                if(response.data.resultTable.length >0){
+                  this.fetchNextRecord(response.data.resultTable[0]);
+                }
               }
             );
             break;
@@ -385,7 +421,7 @@ onSubmit(form: any): void {
               'WARNING',
               'Warning',
               () => {
-                console.log('OK clicked!'); 
+                console.log('OK clicked default'); 
               }
             );
             //console.warn('Unhandled validation result:', response.data.validationResult);
@@ -400,7 +436,7 @@ onSubmit(form: any): void {
           'ERROR',
           'error',
           () => {
-            console.log('OK clicked!'); // Callback logic
+            console.log('OK clicked error'); // Callback logic
           }
         );
       },
@@ -412,7 +448,8 @@ onSubmit(form: any): void {
 }
 
 fetchNextRecord(data: any): void {
-
+console.log("this.id" + this.id);
+console.log(data);
   this.id = data.ID;
   this.contractorname ='';
   this.contractorname = data.ContractorName || '';
@@ -431,6 +468,7 @@ fetchNextRecord(data: any): void {
   this.fetchContractorOptions();
   this.resetAFSContractDropdown();
   this.setImagePath(this.imageName);
+  this.IsContractIsActiveOrNot = this.data.errorMessage;
 }
 
 resetAFSContractorDropdown(): void {
