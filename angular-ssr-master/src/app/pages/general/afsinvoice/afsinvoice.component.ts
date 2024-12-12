@@ -3,6 +3,8 @@ import { MatDialogRef,MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
 import {environment} from '../constant/api-constants';
 import { NotificationPopupService } from '../notification-popup/notification-popup.service';
+import { DownloadPdfService } from '../service/downlaodPdf.service';
+
 
 @Component({
   selector: 'app-afsinvoice',
@@ -39,23 +41,29 @@ export class AfsinvoiceComponent implements OnInit {
   errors: any = {};
   IsContractIsActiveOrNot:any;
   imageWidth: number = 792;
+  pdfFileName:string="";
+  uplodedPDFFile:string="";
 
 
   constructor(
     private dialogRef: MatDialogRef<AfsinvoiceComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private http: HttpClient, // Injecting HttpClient service
-    private notificationService: NotificationPopupService // Inject service
+    private notificationService: NotificationPopupService, // Inject service,
+    private downloadPdfService: DownloadPdfService
   ) 
   {
-    this.setImagePath(data.invoiceFilePath);
+    this.setImagePath(data.invoiceFilePath, data.invoiceFileName);
   }
 
-  setImagePath(filePath: string): void {
+  setImagePath(filePath: string, pdfFile: string): void {
     
     this.imageName = filePath;
+    this.uplodedPDFFile =pdfFile;
     this.thumbImage = `assets/documents/pdf/${this.imageName}`;
     this.fullImagePath = `assets/documents/pdf/${this.imageName}`;
+    
+    this.pdfFileName =`assets/documents/processed-pdf/${this.uplodedPDFFile}`;
 
     //image with good readibility
     // this.thumbImage = `assets/documents/pdf/La fosse - SB-209461_Image20241126_120950.png`;
@@ -66,6 +74,8 @@ export class AfsinvoiceComponent implements OnInit {
   
     console.log('Thumb Image:', this.thumbImage);
     console.log('Full Image Path:', this.fullImagePath);
+
+    console.log('Full pdfFileName  Path:', this.pdfFileName);
   }
   
   
@@ -467,7 +477,7 @@ console.log(data);
   this.resetAFSContractorDropdown();
   this.fetchContractorOptions();
   this.resetAFSContractDropdown();
-  this.setImagePath(this.imageName);
+  this.setImagePath(this.imageName, this.uplodedPDFFile);
   this.IsContractIsActiveOrNot = this.data.errorMessage;
 }
 
@@ -508,5 +518,19 @@ resetAFSContractDropdown(): void {
 
   closeDialog(): void {
     this.dialogRef.close(); // Closes the dialog
+  }
+
+  downloadPdfFile(data: any) {
+    console.log(data);
+    const fileUrl = environment.API_BASE_URL +`assets/documents/processed-pdf/${data.InvoiceFileName}`;; // Replace with your API endpoint
+
+    this.downloadPdfService.downloadPdf(fileUrl).subscribe((blob) => {
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'file.pdf'; // Specify the file name
+      link.click();
+      window.URL.revokeObjectURL(url); // Clean up
+    });
   }
 }

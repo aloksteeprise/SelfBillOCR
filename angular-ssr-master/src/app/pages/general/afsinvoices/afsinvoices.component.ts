@@ -204,6 +204,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
       (response: any) => {
         if (response.succeeded) {
           const pdfPath = response.messages[0];
+          console.log("pdfPath : "+ pdfPath)
           const fullPdfUrl = `https://wfmapi.accessfinancial.com/${pdfPath.replace(/\\/g, '/')}`;
           window.open(fullPdfUrl, '_blank');
         } else {
