@@ -173,6 +173,7 @@ export class AfsinvoiceComponent implements OnInit {
 
     if (storedContractsList && this.selectedContract) {
         // Filter and map contracts
+        this.IsContractIsActiveOrNot="";
         this.filteredContractOptions = storedContractsList
             .filter((contract: any) => contract.fullName === this.selectedContract.fullName && contract.contracts.includes('Active'))
             .map((item: any) => ({
@@ -271,6 +272,39 @@ export class AfsinvoiceComponent implements OnInit {
 //   // }
 // }
 
+onSkip(){
+
+  const formData = {
+    RowId: this.id,
+    FirstName: this.firstnamefor,
+    LastName: this.lastnamefor,
+    StartDate: this.startdate,
+    EndDate: this.enddate,
+    GroupNewId: this.groupNewId,
+    IsSkip:true
+  };
+
+  const apiUrl = environment.API_BASE_URL+'OCRAI/ValidateAndMapToContractorContract';
+    this.http.post<any>(apiUrl, formData).subscribe({
+      next: (response) => {
+        if(response.data.resultTable.length >0){
+          this.fetchNextRecord(response.data.resultTable[0]);
+        }
+      },
+      error: (error) => {
+        //console.error('API Error:', error);
+        //alert('There was an error submitting the form. Please try again.');
+        this.notificationService.showNotification(
+          'Unable to complete the skip action. Please retry.',
+          'ERROR',
+          'error',
+          () => {
+            console.log('OK clicked error'); // Callback logic
+          }
+        );
+      },
+    });
+}
 
 onSubmit(form: any): void {
   this.submitted = true; // Mark the form as submitted
@@ -318,6 +352,7 @@ onSubmit(form: any): void {
     }
   }
   this.errors = errors; // Assign errors to the class property
+  //alert(form);
 
   if (isValid) {
     const formData = {
@@ -327,6 +362,7 @@ onSubmit(form: any): void {
       StartDate: this.startdate,
       EndDate: this.enddate,
       GroupNewId: this.groupNewId,
+      IsSkip:false
     };
 
     console.log('formData:', formData);
