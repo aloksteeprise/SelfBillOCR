@@ -194,6 +194,9 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     this.loadInvoices();
   }
 
+  getToday(): string {
+    return new Date().toISOString().split('T')[0]
+  }
 
   onDownloadInvoice(row: any) {
 
@@ -217,5 +220,8 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
       }
     );
   }
+
+
+
 
 }

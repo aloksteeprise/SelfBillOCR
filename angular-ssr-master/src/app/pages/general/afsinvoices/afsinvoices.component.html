@@ -20,9 +20,9 @@
         </td>
         <td><label style="padding-left: 20px; width: 100px; color: white;" class="fontweight500">Start Date</label></td>
         <td> <input type="date" id="startdate" placeholder="MM/DD/YYYY" class="form-control" [(ngModel)]="startdate"
-            name="startdate" /></td>
+            name="startdate" [max]="getToday()"/></td>
         <td><label style="padding-left: 20px; width: 96px; color: white;" class="fontweight500">End Date</label></td>
-        <td><input type="date" id="enddate" class="form-control" [(ngModel)]="enddate" name="date" /></td>
+        <td><input type="date" id="enddate" class="form-control" [(ngModel)]="enddate" name="date" [max]="getToday()"/></td>
         <td> <label class="fontweight500" style="color: white;padding-left: 20px; padding-right: 20px;"> Validated
           </label>
           <input type="checkbox" name="IsValidatedRecord" [(ngModel)]="IsValidatedRecord" />

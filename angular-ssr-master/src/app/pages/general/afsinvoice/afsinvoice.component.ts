@@ -519,4 +519,8 @@ resetAFSContractDropdown(): void {
       window.URL.revokeObjectURL(url); // Clean up
     });
   }
+
+  getToday(): string {
+    return new Date().toISOString().split('T')[0]
+ }
 }
