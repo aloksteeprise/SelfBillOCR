@@ -162,9 +162,9 @@ export class AfsinvoiceComponent implements OnInit {
     this.filteredContractOptions = [];
     this.selectedFilteredContract = '';
 
+   //alert( this.IsContractIsActiveOrNot);
     if (this.selectedContract) {
       this.errors.selectedContract = undefined;
-      
     }
     // Retrieve the contracts list from localStorage
     const storedContractsList = JSON.parse(localStorage.getItem('contractsList')!);
@@ -173,7 +173,7 @@ export class AfsinvoiceComponent implements OnInit {
 
     if (storedContractsList && this.selectedContract) {
         // Filter and map contracts
-        this.IsContractIsActiveOrNot="";
+        //this.IsContractIsActiveOrNot="";
         this.filteredContractOptions = storedContractsList
             .filter((contract: any) => contract.fullName === this.selectedContract.fullName && contract.contracts.includes('Active'))
             .map((item: any) => ({
@@ -198,9 +198,15 @@ export class AfsinvoiceComponent implements OnInit {
             console.log(this.firstnamefor);
             console.log(this.lastnamefor);
           }
-          else{
-            this.IsContractIsActiveOrNot = 'Contract is not active.';
-          }
+          // else{          
+          //   let filertR = storedContractsList.filter((contract: any) => contract.fullName === this.selectedContract.fullName);
+          //   if(filertR.length>0){
+          //     let resultFilter =filertR.filter((c: any) =>c.contracts.includes('Active'));
+          //     if(resultFilter.length>0){
+          //       this.IsContractIsActiveOrNot = 'Contract is not active.';
+          //     }
+          //   }
+          // }
     }
 }
 
@@ -210,67 +216,6 @@ export class AfsinvoiceComponent implements OnInit {
     this.errors[field] = null;
   }
 }
-
-
- // Form submission handler
-//  onSubmit(form: any): void {
-//   this.submitted = true; // Mark the form as submitted
-//   if (form.valid) {
-//     const formData = {
-//       RowId: this.id,
-//       FirstName: this.firstnamefor,
-//       LastName: this.lastnamefor,
-//       StartDate: this.startdate,
-//       EndDate: this.enddate,
-//       GroupNewId: this.groupNewId,
-//     };
-
-//     console.log('formData:', formData);
-
-//     //const apiUrl = 'https://localhost:44337/api/OCRAI/ValidateAndMapToContractorContract';
-//     const apiUrl = environment.API_BASE_URL+'OCRAI/ValidateAndMapToContractorContract';
-//     this.http.post<any>(apiUrl, formData).subscribe({
-//       next: (response) => {
-//         switch (response.data.validationResult) {
-//           case -1:
-//             alert('Error occurred!');
-//             break;
-  
-//           case 1:
-//             alert('No rows updated!');
-//             this.fetchNextRecord(response.data.resultTable[0]);
-//             break;
-  
-//           case 2:
-//             alert('Update successful!');
-//             this.fetchNextRecord(response.data.resultTable[0]);
-//             break;
-  
-//           case 3:
-//             alert('Error in usp_UpdateContractorInfoInInvoice!');
-//             this.fetchNextRecord(response.data.resultTable[0]);
-//             break;
-  
-//           case 4:
-//             alert('Contractor info updated!');
-//             this.fetchNextRecord(response.data.resultTable[0]);
-//             break;
-  
-//           default:
-//             console.warn('Unhandled validation result:', response.data.validationResult);
-//             break;
-//         }
-//       },
-//       error: (error) => {
-//         console.error('API Error:', error);
-//         alert('There was an error submitting the form. Please try again.');
-//       },
-//     });
-//   } 
-//   // else {
-//   //   alert('Please fill out all required fields.');
-//   // }
-// }
 
 onSkip(){
 
@@ -283,11 +228,13 @@ onSkip(){
     GroupNewId: this.groupNewId,
     IsSkip:true
   };
+ 
 
   const apiUrl = environment.API_BASE_URL+'OCRAI/ValidateAndMapToContractorContract';
     this.http.post<any>(apiUrl, formData).subscribe({
       next: (response) => {
         if(response.data.resultTable.length >0){
+          
           this.fetchNextRecord(response.data.resultTable[0]);
         }
       },
@@ -514,7 +461,10 @@ console.log(data);
   this.fetchContractorOptions();
   this.resetAFSContractDropdown();
   this.setImagePath(this.imageName, this.uplodedPDFFile);
-  this.IsContractIsActiveOrNot = this.data.errorMessage;
+  this.IsContractIsActiveOrNot = data.ErrorMessage;
+  
+  // alert(this.data.errorMessage);
+  // alert(this.IsContractIsActiveOrNot);
 }
 
 resetAFSContractorDropdown(): void {
