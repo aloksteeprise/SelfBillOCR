@@ -138,19 +138,19 @@ export class AfsinvoiceComponent implements OnInit {
             (option) => option.id === Number(this.gridCtcCode)
           );
 
-          console.log('contractsList');
-          console.log(response.data.contractsList);
-          console.log('contractorOptions');
-          console.log(this.contractorOptions);
+          // console.log('contractsList');
+          // console.log(response.data.contractsList);
+          // console.log('contractorOptions');
+          // console.log(this.contractorOptions);
 
-          console.log('this.conCode');
-          console.log( this.selectedContract);
-
+          // console.log('this.conCode');
+      
+          if(this.selectedContract && this.selectedContract.conCode){
+             this.conCode =this.selectedContract.conCode;
+             this.filterContractData();
+          }   
           
-
-          if (this.selectedContract) {
-            this.filterContractData();
-          }
+          
         }
       },
       (error) => {
@@ -184,10 +184,11 @@ export class AfsinvoiceComponent implements OnInit {
 
 //ToDO API Call
 
-//const apiUrl = environment.API_BASE_URL+'OCRAI/GetContractorActiveContract';
+const apiUrl = environment.API_BASE_URL+'OCRAI/GetContractorActiveContract';
 // Sending request to API
-const apiUrl = 'https://localhost:44337/api/OCRAI/GetContractorActiveContract'; // Replace with your API URL
+//const apiUrl = 'https://localhost:44337/api/OCRAI/GetContractorActiveContract'; // Replace with your API URL
 console.log(apiUrl);
+console.log('this.ctcCode');
 console.log(this.ctcCode);
 
 this.http.post<any>(apiUrl, { CtcCode: this.conCode }).subscribe(
@@ -197,8 +198,10 @@ this.http.post<any>(apiUrl, { CtcCode: this.conCode }).subscribe(
     console.log(response);
     if (response?.data?.contractsList) {
       
-     console.log(response?.data?.contractsList);
+     //console.log(response?.data?.contractsList);
      let contractsListItems =response?.data?.contractsList;
+     console.log('this.selectedContract');
+     console.log(this.selectedContract);
        if (contractsListItems && this.selectedContract) {
         // Filter and map contracts
         //this.IsContractIsActiveOrNot="";
