@@ -4,11 +4,13 @@ import { NotFoundComponent } from './pages/general/not-found/not-found.component
 import { LoginComponent } from './pages/general/login/login.component';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './auth.guard';
-import { InvoiceComponent } from './pages/general/invoice/invoice.component';
+
 import { AfsInvoicesComponent } from './pages/general/afsinvoices/afsinvoices.component';
 import { SignupComponent } from './pages/general/signup/signup.component';
 import { ContactComponent } from './pages/general/contact/contact.component';
 import { AboutComponent } from './pages/general/about/about.component';
+import { RemittancePopupComponent } from './pages/general/remittance-popup/remittance-popup.component';
+import { RemittanceComponent } from './pages/general/remittance/remittance.component';
 // import {RemittanceComponent} from './pages/general/remittance/remittance.component'
 // import {InvoiceComponent} from './pages/general/invoice/invoice.component'
  
@@ -44,11 +46,6 @@ export const routes: Routes = [
   },
   { path: 'about', component: AboutComponent },
   {
-    path: 'invoice', component: InvoiceComponent, canActivate: [AuthGuard],
-    loadChildren: () => import('./pages/general/invoice/invoice.module')
-      .then(mod => mod.InvoiceModule)
-  },
-  {
     path: 'afsinvoices', component: AfsInvoicesComponent, canActivate: [AuthGuard],
     loadChildren: () => import('./pages/general/afsinvoices/afsinvoices.module')
       .then(mod => mod.afsInvoiceModule)
@@ -72,10 +69,16 @@ export const routes: Routes = [
     loadChildren: () => import('./pages/general/afsinvoice/afsinvoice.module').then(mod => mod.AfsinvoiceModule)
   },
   {
-    path: 'remittance', component: InvoiceComponent, canActivate: [AuthGuard],
-    loadChildren: () => import('./pages/general/invoice/invoice.module')
-      .then(mod => mod.InvoiceModule)
+    path: 'remittance', component: RemittanceComponent, canActivate: [AuthGuard],
+    loadChildren: () => import('./pages/general/remittance/remittance.module')
+      .then(mod => mod.RemittanceModule)
   },
+  {
+    path: 'remittancepop', component: RemittancePopupComponent, canActivate: [AuthGuard],
+    loadChildren: () => import('./pages/general/remittance-popup/remittance-pop.module')
+      .then(mod => mod.RemittancePopModule)
+  },
+
 
   { path: '**', component: NotFoundComponent }
 ];

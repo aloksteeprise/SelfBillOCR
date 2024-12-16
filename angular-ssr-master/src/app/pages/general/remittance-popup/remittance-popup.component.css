@@ -1,0 +1,204 @@
+.form-section {
+    border-right: 2px solid #ddd;
+    padding-right: 20px;
+  }
+  
+  /* ::ng-deep .mat-typography h5 {
+   
+    margin: 0 !important;
+  } */
+  
+  .headingmargin{
+    margin: 0px 17px 0px !important;
+  }
+  
+  ::ng-deep .modal-header  {
+  padding: 0px !important ;
+  }
+  
+  ::ng-deep .modal-header .btn-close {
+  padding: 19px;
+  }
+  
+  
+  ::ng-deep .btn-close {
+  
+    --bs-btn-close-focus-shadow :none !important;
+  }
+  
+  
+  ::ng-deep .modal-content{
+    background-color: rgba(250,249,253,255) !important;
+  }
+  
+  
+  
+  
+  .fontchange {
+    font-size: 12px;
+    font-weight: 600;
+  }
+  
+  .custom-modal-width {
+    max-width: 66%;
+  }
+  
+  .custom-fontsize {
+    font-size: 13px;
+    color: red;
+  }
+  
+  .fontsize14{
+    font-size: 14px;
+    color: #2F455C;
+    font-weight: bold;
+  }
+  
+  .pdf-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 500px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 20px;
+  }
+  
+  /* Adjust the container to maintain proper dimensions */
+  
+  ::ng-deep .custom-modal-width[_ngcontent-ng-c760026350] {
+    max-width: 66% !important;
+  }
+  
+  /* ::ng-deep .ngxImageZoomContainer {
+    width: 792px !important; 
+    height: 470px !important;
+    display: block;
+  } */
+  
+  /* Customize the lens appearance */
+  ::ng-deep .ngxImageZoomFullContainer.ngxImageZoomLensEnabled {
+    border: 2px solid #7393B3 !important; /* Lens border */
+    cursor: crosshair !important; /* Pointer */
+  }
+  
+  
+  
+  
+  /* PDF Viewer */
+  .pdf-viewer {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+  
+  /* Magnifier Glass */
+  .magnifier {
+    position: absolute;
+    border: 3px solid #ccc;
+    border-radius: 50%;
+    cursor: zoom-in;
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    display: none;
+    pointer-events: none;
+    z-index: 10;
+  }
+  
+  lib-ngx-image-zoom {
+    max-width: 100%;
+  }
+  
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  /* Firefox */
+  input[type=number] {
+    -moz-appearance: textfield;
+  }
+  
+  .error-message {
+    min-height: 10px;
+    margin-top: 8px; 
+  }
+  
+  .text-danger {
+    font-size: 0.75rem; 
+    line-height: 1; 
+  }
+  
+  .form-control {
+    transition: border-color 0.3s ease; 
+  }
+  
+  .form-control.is-invalid {
+    border-color: #dc3545;
+  }
+  
+  
+  
+  .error-message {
+    margin-top: 0.15rem;
+    font-size: 0.875rem;
+  }
+  
+  @media (max-width: 767px) {
+    .col-sm-3 {
+      flex: 0 0 100%; 
+    }
+  
+    .col-sm-9 {
+      flex: 0 0 100%; 
+    }
+  }
+  
+  @media screen and (min-width: 300px) and (max-width: 700px) {
+    .custom-height {
+  
+      margin-top: 40px !important;
+    }
+  
+    ::ng-deep .custom-modal-width[_ngcontent-ng-c760026350] {
+      max-width: 100% !important;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .custom-modal-width {
+      max-width: 100%;
+    }
+  }
+  
+  .image-scroll-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+    position: relative;
+  }
+  
+  /* / Ensure scroll container behaves dynamically / */
+  .image-scroll-container {
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+  }
+  
+  ::ng-deep .ngxImageZoomContainer {
+    height: 470px !important;
+    display: block;
+  }
+  
+  ::ng-deep .ngxImageZoomFullContainer.ngxImageZoomLensEnabled {
+    border: 2px solid #7393B3 !important; 
+    cursor: crosshair !important; 
+  }
