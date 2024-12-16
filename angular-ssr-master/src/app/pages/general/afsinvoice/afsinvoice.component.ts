@@ -15,6 +15,7 @@ export class AfsinvoiceComponent implements OnInit {
   @ViewChild('myForm') myForm: any;
   
   id:number = 0;
+  conCode:string="";
   contractorname: string = '';
   afscontractor: string = '';
   afsContract: string = '';
@@ -89,8 +90,9 @@ export class AfsinvoiceComponent implements OnInit {
     if (this.data) {
 
       console.log(this.data);
-      
+      //alert(this.data.contract_CtcContractor);
       this.id = this.data.id;
+      this.conCode = this.data.contract_CtcContractor || '';
       this.contractorname = this.data.contractorName || '';
       this.afscontractor = this.data.afscontractor || '';
       this.firstnamefor = this.data.cFirstName || '';
@@ -125,14 +127,26 @@ export class AfsinvoiceComponent implements OnInit {
           localStorage.setItem('contractsList', JSON.stringify(response.data.contractsList));
           this.contractorOptions = response.data.contractsList.map((item: any) => ({
             id: item.ctcCode, // Use ctcCode as ID
+            conCode:item.conCode,
             firstName: item.conFirstName, // Use conFirstName for dropdown display
             lastName:item.conLastName,
             fullName:item.fullName
           }));
+
           //Set the selected contract if `this.gridCtcCode` matches any option's `id`
           this.selectedContract = this.contractorOptions.find(
             (option) => option.id === Number(this.gridCtcCode)
           );
+
+          console.log('contractsList');
+          console.log(response.data.contractsList);
+          console.log('contractorOptions');
+          console.log(this.contractorOptions);
+
+          console.log('this.conCode');
+          console.log( this.selectedContract);
+
+          
 
           if (this.selectedContract) {
             this.filterContractData();
@@ -166,21 +180,36 @@ export class AfsinvoiceComponent implements OnInit {
     if (this.selectedContract) {
       this.errors.selectedContract = undefined;
     }
-    // Retrieve the contracts list from localStorage
-    const storedContractsList = JSON.parse(localStorage.getItem('contractsList')!);
 
-    console.log(storedContractsList);
 
-    if (storedContractsList && this.selectedContract) {
+//ToDO API Call
+
+//const apiUrl = environment.API_BASE_URL+'OCRAI/GetContractorActiveContract';
+// Sending request to API
+const apiUrl = 'https://localhost:44337/api/OCRAI/GetContractorActiveContract'; // Replace with your API URL
+console.log(apiUrl);
+console.log(this.ctcCode);
+
+this.http.post<any>(apiUrl, { CtcCode: this.conCode }).subscribe(
+  (response) => {
+    // Assign the list of contractors to the dropdown options
+    console.log('GetContractorActiveContract API');
+    console.log(response);
+    if (response?.data?.contractsList) {
+      
+     console.log(response?.data?.contractsList);
+     let contractsListItems =response?.data?.contractsList;
+       if (contractsListItems && this.selectedContract) {
         // Filter and map contracts
         //this.IsContractIsActiveOrNot="";
-        this.filteredContractOptions = storedContractsList
-            .filter((contract: any) => contract.fullName === this.selectedContract.fullName && contract.contracts.includes('Active'))
+        this.filteredContractOptions = contractsListItems
+            .filter((contract: any) => contract.ctcCode === this.selectedContract.id && contract.contracts.includes('Active'))
             .map((item: any) => ({
                 id: item.ctcCode,
                 name: item.contracts // Assuming "contracts" field is what you want to display
             }));       
-            
+          console.log('this.filteredContractOptions');
+          console.log(this.filteredContractOptions);
           // Select the first record by default
           if (this.filteredContractOptions.length > 0) {
               this.selectedFilteredContract = this.filteredContractOptions[0].name;
@@ -188,8 +217,9 @@ export class AfsinvoiceComponent implements OnInit {
           }
 
           //changeName As per Contractor Change
-          let changeNameAsperContractorChange =storedContractsList
-          .filter((contract: any) => contract.fullName === this.selectedContract.fullName && contract.contracts.includes('Active'));       
+          
+          let changeNameAsperContractorChange =contractsListItems
+          .filter((contract: any) => contract.ctcCode === this.selectedContract.id && contract.contracts.includes('Active'));       
 
           if(changeNameAsperContractorChange !=undefined && changeNameAsperContractorChange[0] != undefined){
             this.firstnamefor = changeNameAsperContractorChange[0].conFirstName;
@@ -198,16 +228,48 @@ export class AfsinvoiceComponent implements OnInit {
             console.log(this.firstnamefor);
             console.log(this.lastnamefor);
           }
-          // else{          
-          //   let filertR = storedContractsList.filter((contract: any) => contract.fullName === this.selectedContract.fullName);
-          //   if(filertR.length>0){
-          //     let resultFilter =filertR.filter((c: any) =>c.contracts.includes('Active'));
-          //     if(resultFilter.length>0){
-          //       this.IsContractIsActiveOrNot = 'Contract is not active.';
-          //     }
-          //   }
-          // }
     }
+    }
+  },
+  (error) => {
+    console.error('Error fetching contractor options:', error);
+  }
+);
+
+
+    // Retrieve the contracts list from localStorage
+    // const storedContractsList = JSON.parse(localStorage.getItem('contractsList')!);
+
+    // console.log(storedContractsList);
+
+    // if (storedContractsList && this.selectedContract) {
+    //     // Filter and map contracts
+    //     //this.IsContractIsActiveOrNot="";
+    //     this.filteredContractOptions = storedContractsList
+    //         .filter((contract: any) => contract.fullName === this.selectedContract.fullName && contract.contracts.includes('Active'))
+    //         .map((item: any) => ({
+    //             id: item.ctcCode,
+    //             name: item.contracts // Assuming "contracts" field is what you want to display
+    //         }));       
+            
+    //       // Select the first record by default
+    //       if (this.filteredContractOptions.length > 0) {
+    //           this.selectedFilteredContract = this.filteredContractOptions[0].name;
+    //           this.errors.selectedFilteredContract = undefined;
+    //       }
+
+    //       //changeName As per Contractor Change
+    //       let changeNameAsperContractorChange =storedContractsList
+    //       .filter((contract: any) => contract.fullName === this.selectedContract.fullName && contract.contracts.includes('Active'));       
+
+    //       if(changeNameAsperContractorChange !=undefined && changeNameAsperContractorChange[0] != undefined){
+    //         this.firstnamefor = changeNameAsperContractorChange[0].conFirstName;
+    //         this.lastnamefor = changeNameAsperContractorChange[0].conLastName;
+
+    //         console.log(this.firstnamefor);
+    //         console.log(this.lastnamefor);
+    //       }
+    // }
 }
 
  // Clear validation error for a specific field
