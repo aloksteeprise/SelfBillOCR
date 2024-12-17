@@ -8,6 +8,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { AfsInvoicesPopupComponent } from '../afs-invoices-popup/afs-invoices-popup.component';
 import { AfsinvoiceComponent } from '../afsinvoice/afsinvoice.component';
 import { ConfirmationPopComponent } from '../confirmation-pop/confirmation-pop.component';
+import {environment} from '../constant/api-constants';
+import { NotificationPopupService } from '../notification-popup/notification-popup.service';
+import { HttpClient } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-afsinvoices',
@@ -49,7 +53,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   loading: boolean = false;
   
 
-  constructor(private apiService: ApiService, private dialog: MatDialog) { }
+  constructor(private apiService: ApiService, private dialog: MatDialog,  private notificationService: NotificationPopupService,private http: HttpClient ) { }
 
   ngOnInit() {
 
@@ -223,21 +227,59 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     );
   }
 
-  openConfirmationBox() {
+  openBatchValidateConfirmationBox() {
     this.popupComponent.openPopup(
       'Confirmation',
       'Are you sure that you want to proceed?',
       'warning',
       () => {
-        console.log('Save clicked!');
+        console.log('Yes action clicked!');
+        this.BatchValidate();
+
       },
       () => {
-        console.log('Cancel clicked!');
+        console.log('No action clicked!');
       }
     );
   }
 
 
+  BatchValidate(){
+ 
+    const apiUrl = environment.API_BASE_URL+'OCRAI/SelfBillBatchValidate';
+    //alert(apiUrl);
+      this.http.post<any>(apiUrl, {}).subscribe({
+        next: (response) => {
+          //debugger;
+          // console.log('response');
+          // console.log(response.data.length);
+          // console.log(response.data[0].status);
+          if(response && response.data && response.data.length >0 && response.data[0].status ==4){
+            alert('Records have been processed successfully.')
+            // this.notificationService.showNotification(
+            //   'Records have been processed successfully.',
+            //   'INFORMATION',
+            //   'success',
+            //   () => {
+            //     console.log('success'); // Callback logic                
+            //   }
+            // );
+          }
+        },
+        error: (error) => {
+          //console.error('API Error:', error);
+          //alert('There was an error submitting the form. Please try again.');
+          this.notificationService.showNotification(
+            'Unable to complete the skip action. Please retry.',
+            'ERROR',
+            'error',
+            () => {
+              console.log('OK clicked error'); // Callback logic
+            }
+          );
+        },
+      });
+  }
 
 
 }
