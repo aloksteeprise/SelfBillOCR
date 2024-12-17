@@ -17,35 +17,99 @@ import { ConfirmationPopComponent } from '../confirmation-pop/confirmation-pop.c
 
 export class RemittanceComponent implements OnInit, AfterViewInit {
 
-  @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  
   @ViewChild(ConfirmationPopComponent) popupComponent!: ConfirmationPopComponent;
 
-  // ConfirmationPopComponent
   
-
   displayedColumns: string[] = ['contractorName','invoiceDate', 'DueDate','invoiceNumber','paidAmount','invoiceAmount','selfBillInvoiceNo','description','actions'];
   dataSource = new MatTableDataSource<Invoice>();
+  totalRecords: number = 0;
+  pageIndex: number = 0;
+  pageSize: number = 10;
+  IsValidatedRecord = false;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+  tokenData: string = '';
+  token: string = '';
+  loading: boolean = false;
 
   constructor(private invoiceService: InvoiceService, private dialog: MatDialog) {}
 
+  // ngOnInit() {
+  //   debugger;
+  //   this.invoiceService.getAllContractorInvoices().subscribe((result: any) => {
+  //     debugger;
+  //     this.dataSource.data = result.data; 
+  //   });
+  // }
+
+  // ngAfterViewInit() {
+  //   this.dataSource.paginator = this.paginator;
+  //   this.dataSource.sort = this.sort;
+  // }
+
+  // applyFilter(filterValue: string) {
+  //   this.dataSource.filter = filterValue.trim().toLowerCase();
+  // }
+
   ngOnInit() {
-    debugger;
-    this.invoiceService.getAllContractorInvoices().subscribe((result: any) => {
-      debugger;
-      this.dataSource.data = result.data; 
-    });
+
+    const storedToken = localStorage.getItem('token');
+    if (storedToken) {
+      this.token = storedToken; 
+    } else {
+      console.error('Token not found in localStorage.');
+     
+    }
+
+    this.remittanceRecord(); 
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+
+    this.sort.sortChange.subscribe(() => {
+
+      this.pageIndex = 0; 
+      this.remittanceRecord(); 
+    });
   }
 
-  applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  remittanceRecord() {
+
+    this.loading = true; 
+    const SortColumn = this.sort?.active || ''; 
+    const SortDirection = this.sort?.direction || ''; 
+
+    this.invoiceService
+      .getRemittanceRecord(this.pageIndex, this.pageSize, SortColumn, SortDirection, this.token)
+      .subscribe({
+        next: (response: any) => {
+
+          this.dataSource.data = response.data.data;
+          this.totalRecords = response.data.totalRecords; 
+          this.loading = false; 
+        },
+        error: (err) => {
+          console.error('API Error:', err);
+          this.loading = false; 
+        },
+      });
   }
 
+  onPageChanged(event: any) {
+
+    if (this.pageSize !== event.pageSize) {
+
+      this.pageSize = event.pageSize;
+      this.pageIndex = 0; // Reset to the first page if page size changes
+
+    } else {
+
+      this.pageIndex = event.pageIndex; // Adjust for 1-based indexing
+    }
+
+    this.remittanceRecord();
+  }
   // openInvoiceModal(invoiceData: any): void {
   //   const dialogRef = this.dialog.open(AfsRemittanceComponent, {
   //     width: '800px', // Modal width

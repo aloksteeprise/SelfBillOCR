@@ -3,3 +3,8 @@ export interface Invoice {
   docDescription: string;
   ctdDesc: string;
   }
+
+  export interface PaginationResponse<T> {
+    data: T[];
+    totalRecords: number; // Total records
+  }
