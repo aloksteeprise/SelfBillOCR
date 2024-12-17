@@ -7,6 +7,7 @@ import { afsInvoice } from '../afsinvoices/afsinvoices.model';
 import { MatDialog } from '@angular/material/dialog';
 import { AfsInvoicesPopupComponent } from '../afs-invoices-popup/afs-invoices-popup.component';
 import { AfsinvoiceComponent } from '../afsinvoice/afsinvoice.component';
+import { ConfirmationPopComponent } from '../confirmation-pop/confirmation-pop.component';
 
 @Component({
   selector: 'app-afsinvoices',
@@ -16,6 +17,7 @@ import { AfsinvoiceComponent } from '../afsinvoice/afsinvoice.component';
 
 export class AfsInvoicesComponent implements OnInit, AfterViewInit {
 
+  @ViewChild(ConfirmationPopComponent) popupComponent!: ConfirmationPopComponent;
   displayedColumns: string[] = [
     'contractorName',
     'cFirstName',
@@ -217,6 +219,20 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
       (error) => {
         console.error('Error generating invoice:', error);
         alert('An error occurred while generating the invoice.');
+      }
+    );
+  }
+
+  openConfirmationBox() {
+    this.popupComponent.openPopup(
+      'Confirmation',
+      'Are you sure that you want to proceed?',
+      'warning',
+      () => {
+        console.log('Save clicked!');
+      },
+      () => {
+        console.log('Cancel clicked!');
       }
     );
   }

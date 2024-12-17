@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InvoiceComponent } from './invoice.component';
+import { ConfirmationPopComponent } from './confirmation-pop.component';
 
-describe('InvoiceComponent', () => {
-  let component: InvoiceComponent;
-  let fixture: ComponentFixture<InvoiceComponent>;
+describe('ConfirmationPopComponent', () => {
+  let component: ConfirmationPopComponent;
+  let fixture: ComponentFixture<ConfirmationPopComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [InvoiceComponent]
+      imports: [ConfirmationPopComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(InvoiceComponent);
+    fixture = TestBed.createComponent(ConfirmationPopComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

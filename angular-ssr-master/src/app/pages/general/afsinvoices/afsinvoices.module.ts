@@ -13,9 +13,12 @@ import { ApiService } from './afsinvoices.service';
 import { MatDialogModule } from '@angular/material/dialog';
 import { AfsInvoicesPopupModule } from '../afs-invoices-popup/afs-invoices-popup.module';
 import { FormsModule } from '@angular/forms';
+// import { ConfirmationPopComponent } from '../confirmation-pop/confirmation-pop.component';
+import { SharedModule } from '../shared/shared.module';
 @NgModule({
   declarations: [
-    AfsInvoicesComponent
+    AfsInvoicesComponent,
+    // ConfirmationPopComponent
   ],
   imports: [    
     CommonModule,
@@ -27,7 +30,8 @@ import { FormsModule } from '@angular/forms';
     MatSortModule,
     MatDialogModule,
     FormsModule,
-    AfsInvoicesPopupModule
+    AfsInvoicesPopupModule,
+    SharedModule
   ],
   exports: [
     AfsInvoicesComponent,

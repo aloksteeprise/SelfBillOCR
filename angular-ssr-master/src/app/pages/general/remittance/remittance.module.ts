@@ -8,12 +8,15 @@ import { RemittanceComponent } from './remittance.component';
 import { InvoiceService } from './remittance.service'; 
 import { MatFormFieldModule } from '@angular/material/form-field'; 
 import { MatInputModule } from '@angular/material/input';  
+// import { ConfirmationPopComponent } from '../confirmation-pop/confirmation-pop.component';
+import { SharedModule } from '../shared/shared.module'; 
 
 //  import { SecurePipe } from './secure.pipe'; 
 
 @NgModule({
   declarations: [
     RemittanceComponent,
+    // ConfirmationPopComponent
     // SecurePipe,
   ],
   imports: [
@@ -23,10 +26,12 @@ import { MatInputModule } from '@angular/material/input';
     MatSortModule,
     MatPaginatorModule,
     MatFormFieldModule,  
-    MatInputModule      
+    MatInputModule ,
+    SharedModule     
   ],
   exports: [
-    RemittanceComponent
+    RemittanceComponent,
+    // ConfirmationPopComponent
   ],
   providers: [InvoiceService],
 })

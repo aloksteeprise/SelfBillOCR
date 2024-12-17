@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { InvoiceService } from './remittance.service';
 import { Invoice } from './remittance';
 import { RemittancePopupComponent } from '../remittance-popup/remittance-popup.component';
+import { ConfirmationPopComponent } from '../confirmation-pop/confirmation-pop.component';
 
 @Component({
   selector: 'app-remittance',
@@ -18,7 +19,9 @@ export class RemittanceComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(ConfirmationPopComponent) popupComponent!: ConfirmationPopComponent;
 
+  // ConfirmationPopComponent
   
 
   displayedColumns: string[] = ['contractorName','invoiceDate', 'DueDate','invoiceNumber','paidAmount','invoiceAmount','selfBillInvoiceNo','description','actions'];
@@ -75,5 +78,20 @@ export class RemittanceComponent implements OnInit, AfterViewInit {
 
       console.log('The dialog was closed');
     });
+  }
+
+
+  openConfirmationBox() {
+    this.popupComponent.openPopup(
+      'Confirmation',
+      'Are you sure that you want to proceed?',
+      'warning',
+      () => {
+        console.log('Save clicked!');
+      },
+      () => {
+        console.log('Cancel clicked!');
+      }
+    );
   }
 }

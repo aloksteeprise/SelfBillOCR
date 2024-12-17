@@ -1,0 +1,13 @@
+<div class="confirmation-wrapper" *ngIf="isVisible">
+    <div class="confirmation-popup" >
+      <h3 class="confirmation-header">{{ header }}</h3>
+      <p class="confirmation-message">{{ message }}</p>
+      <div class="confirmation-footer">
+        <button class="cancel-btn" (click)="onCancel()">Cancel</button>
+        <button class="save-btn" (click)="onSave()">Save</button>
+      </div>
+    </div>
+  </div>
+  
+
+  
