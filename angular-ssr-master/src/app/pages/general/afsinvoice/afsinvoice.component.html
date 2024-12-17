@@ -167,6 +167,9 @@
             <input type="hidden" id="groupNewId" name="groupNewId" [(ngModel)]="groupNewId">
             <input type="hidden" id="gridCtcCode" name="gridCtcCode" [(ngModel)]="gridCtcCode">
             <input type="hidden"   id="hiddenField"   name="hiddenData"   [(ngModel)]="conCode">
+            <div class="loading-overlay" *ngIf="loading">
+              <div class="loader"></div>
+            </div>
           </form>
         </div>
         <!-- <div class="col-12 col-lg-6 d-flex justify-content-center align-items-center"

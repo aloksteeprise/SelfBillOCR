@@ -44,6 +44,7 @@ export class AfsinvoiceComponent implements OnInit {
   imageWidth: number = 792;
   pdfFileName:string="";
   uplodedPDFFile:string="";
+  loading: boolean = false;
 
 
   constructor(
@@ -292,7 +293,7 @@ this.http.post<any>(apiUrl, { CtcCode: this.conCode }).subscribe(
 }
 
 onSkip(){
-
+  this.loading =true;
   const formData = {
     RowId: this.id,
     FirstName: this.firstnamefor,
@@ -307,12 +308,14 @@ onSkip(){
   const apiUrl = environment.API_BASE_URL+'OCRAI/ValidateAndMapToContractorContract';
     this.http.post<any>(apiUrl, formData).subscribe({
       next: (response) => {
+        this.loading =false;
         if(response.data.resultTable.length >0){
           //debugger;
           this.fetchNextRecord(response.data.resultTable[0]);
         }
       },
       error: (error) => {
+        this.loading =false;
         //console.error('API Error:', error);
         //alert('There was an error submitting the form. Please try again.');
         this.notificationService.showNotification(
@@ -601,10 +604,12 @@ resetAFSContractDropdown(): void {
 
   onContractorNameBlur(): void {
       console.log('Contractor Name field lost focus:', this.contractorname);
+      this.loading =true;
       if (this.contractorname) { 
           //re-bind the drop-downs
           this.fetchContractorOptions();
       }
+      this.loading =false;
   }
 
 }
