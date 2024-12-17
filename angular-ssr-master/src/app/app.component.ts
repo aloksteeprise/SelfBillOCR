@@ -6,11 +6,12 @@ import { Inject, PLATFORM_ID } from '@angular/core';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { AuthService } from './auth.service';
 import { UserService } from './pages/general/service/user.service'
+import {RouterModule} from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterOutlet],
+  imports: [CommonModule, RouterLink, RouterOutlet,RouterModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })

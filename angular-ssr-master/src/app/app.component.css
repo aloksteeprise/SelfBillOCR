@@ -11,19 +11,20 @@
   border-bottom: 1px solid yellow;
 } */
 
-.activecolor{
-  color: yellow!important;
-  border-top: 1px solid yellow!important;
-  border-bottom: 1px solid yellow!important;
-
+/* Default Link Style */
+.nav-link {
+  color: #000; /* Default color */
+  border-top: 1px solid transparent; /* Default border */
+  border-bottom: 1px solid transparent; /* Default border */
 }
 
-.activecolor2{
-  color: rgb(0, 204, 255)!important;
-  border-top: 1px solid rgb(0, 225, 255)!important;
-  border-bottom: 1px solid rgb(0, 183, 255)!important;
-
+/* Active Link Style */
+.active-link {
+  color: yellow !important;
+  border-top: 1px solid yellow !important;
+  border-bottom: 1px solid yellow !important;
 }
+
 
 /* .fixed-top{
 

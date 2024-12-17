@@ -13,11 +13,20 @@
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
-            <a class="nav-link activecolor" aria-current="page" routerLink="/afsinvoices">Self Bill</a>
+            <a class="nav-link" 
+               routerLink="/afsinvoices" 
+               routerLinkActive="active-link" 
+               [routerLinkActiveOptions]="{exact: true}" 
+               aria-current="page">Self Bill</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link activecolor2" aria-current="page" routerLink="/remittance">Remittance</a>
+            <a class="nav-link" 
+               routerLink="/remittance" 
+               routerLinkActive="active-link" 
+               [routerLinkActiveOptions]="{exact: true}" 
+               aria-current="page">Remittance</a>
           </li>
+          
         </ul>
         <form class="d-flex">
           <span style="padding-top: 5px;" class="me-3 text-light" [title]="username">{{ getTruncatedUsername() }}</span>
