@@ -19,7 +19,7 @@
               </label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" id="ContractorName" name="contractorname"
-                  [(ngModel)]="contractorname" #name="ngModel" maxlength="250" required>
+                  [(ngModel)]="contractorname" #name="ngModel" maxlength="250"  (blur)="onContractorNameBlur()" required>
               </div>
             </div>
 
@@ -67,7 +67,7 @@
             </div> -->
 
             <div class="row mb-2 align-items-center">
-              <label for="afscontact" class="col-sm-4 col-form-label fontsize14">AFS Contract: <span style="color: red;"> *</span></label>
+              <label for="afscontact" class="col-sm-4 col-form-label fontsize14">AFS Contract <span style="font-size: 13px; color: grey;">(Active Only)</span>: <span style="color: red;"> *</span></label>
               <div class="col-sm-8">
                 <select class="form-select" id="AFSContactDropdown" name="afscontact" required
                   [(ngModel)]="selectedFilteredContract">
@@ -166,6 +166,7 @@
             </div>
             <input type="hidden" id="groupNewId" name="groupNewId" [(ngModel)]="groupNewId">
             <input type="hidden" id="gridCtcCode" name="gridCtcCode" [(ngModel)]="gridCtcCode">
+            <input type="hidden"   id="hiddenField"   name="hiddenData"   [(ngModel)]="conCode">
           </form>
         </div>
         <!-- <div class="col-12 col-lg-6 d-flex justify-content-center align-items-center"

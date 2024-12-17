@@ -120,7 +120,7 @@ export class AfsinvoiceComponent implements OnInit {
     
     this.http.post<any>(apiUrl, { firstNameForAFS: this.firstnamefor,lastNameForAFS:this.lastnamefor,fullName: this.contractorname }).subscribe(
       (response) => {
-        debugger;
+        //debugger;
         // Assign the list of contractors to the dropdown options
         if (response?.data?.contractsList) {
           
@@ -135,17 +135,18 @@ export class AfsinvoiceComponent implements OnInit {
           }));
 
           //Set the selected contract if `this.gridCtcCode` matches any option's `id`
-          this.selectedContract = this.contractorOptions.find(
-            (option) => option.conCode  == this.conCode
-          );
-
-          // console.log('contractsList');
-          // console.log(response.data.contractsList);
-          // console.log('contractorOptions');
-          // console.log(this.contractorOptions);
-
-          // console.log('this.conCode');
-      
+           if(this.conCode)
+            {
+              this.selectedContract = this.contractorOptions.find(
+                (option) => option.conCode  == this.conCode
+              );
+            }
+            else{
+              this.selectedContract = this.contractorOptions.find(
+                (option) => option.conCode.length >0
+              );
+            }
+            
           if(this.selectedContract && this.selectedContract.conCode){
              this.conCode =this.selectedContract.conCode;
              this.filterContractData();
@@ -172,7 +173,7 @@ export class AfsinvoiceComponent implements OnInit {
   // Filter contractor data and bind it to the second dropdown
   filterContractData(): void {
     console.log('Selected Contractor:', this.selectedContract);
-debugger;
+    //debugger;
     // Clear the previous filtered options
     this.filteredContractOptions = [];
     this.selectedFilteredContract = '';
@@ -300,7 +301,7 @@ onSkip(){
     this.http.post<any>(apiUrl, formData).subscribe({
       next: (response) => {
         if(response.data.resultTable.length >0){
-          debugger;
+          //debugger;
           this.fetchNextRecord(response.data.resultTable[0]);
         }
       },
@@ -590,4 +591,14 @@ resetAFSContractDropdown(): void {
   getToday(): string {
     return new Date().toISOString().split('T')[0]
  }
+
+ onContractorNameBlur(): void {
+  console.log('Contractor Name field lost focus:', this.contractorname);
+  // Add your custom logic here, e.g., validation or additional processing.
+  //alert('Contractor Name field lost focus : ' + this.contractorname);
+  //alert(this.gridCtcCode);
+//debugger;
+  this.fetchContractorOptions();
+}
+
 }
