@@ -117,8 +117,15 @@ export class AfsinvoiceComponent implements OnInit {
     
     const apiUrl = environment.API_BASE_URL+'OCRAI/GetContractorContractListByConName';
     // Sending request to API
+    let searchFullName="";
+    if(this.gridCtcCode >0){
+      searchFullName = this.firstnamefor + ' ' + this.lastnamefor;
+    }
+    else{
+      searchFullName= this.contractorname ;
+    }
     
-    this.http.post<any>(apiUrl, { firstNameForAFS: this.firstnamefor,lastNameForAFS:this.lastnamefor,fullName: this.contractorname }).subscribe(
+    this.http.post<any>(apiUrl, { firstNameForAFS: this.firstnamefor,lastNameForAFS:this.lastnamefor,fullName: searchFullName }).subscribe(
       (response) => {
         //debugger;
         // Assign the list of contractors to the dropdown options
@@ -592,13 +599,12 @@ resetAFSContractDropdown(): void {
     return new Date().toISOString().split('T')[0]
  }
 
- onContractorNameBlur(): void {
-  console.log('Contractor Name field lost focus:', this.contractorname);
-  // Add your custom logic here, e.g., validation or additional processing.
-  //alert('Contractor Name field lost focus : ' + this.contractorname);
-  //alert(this.gridCtcCode);
-//debugger;
-  this.fetchContractorOptions();
-}
+  onContractorNameBlur(): void {
+      console.log('Contractor Name field lost focus:', this.contractorname);
+      if (this.contractorname) { 
+          //re-bind the drop-downs
+          this.fetchContractorOptions();
+      }
+  }
 
 }

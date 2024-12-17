@@ -250,6 +250,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     //alert(apiUrl);
       this.http.post<any>(apiUrl, {}).subscribe({
         next: (response) => {
+          //debugger;
           console.log(response);
           if(response && response.data && response.data.length >0 && response.data[0].status ==4){
             alert('Records have been processed successfully.');
@@ -265,6 +266,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
           }
         },
         error: (error) => {
+          //debugger;
           //console.error('API Error:', error);
           //alert('There was an error submitting the form. Please try again.');
           this.notificationService.showNotification(
