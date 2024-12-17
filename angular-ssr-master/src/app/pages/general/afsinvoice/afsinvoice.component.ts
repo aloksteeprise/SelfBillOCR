@@ -30,7 +30,7 @@ export class AfsinvoiceComponent implements OnInit {
   imageName: string = '';
   thumbImage: string = '';
   fullImagePath: string = '';
-  contractorOptions: { id: number; firstName: string; lastName: string;fullName: string; }[] = []; // For first dropdown
+  contractorOptions: { id: number; firstName: string; lastName: string;fullName: string; conCode:string; }[] = []; // For first dropdown
   filteredContractOptions: { id: number; name: string }[] = []; // For filtered second dropdown
   //selectedContract: string = ''; // Holds the selected contractor from the first dropdown
   selectedContract: any = null; // Holds the selected contractor object
@@ -120,6 +120,7 @@ export class AfsinvoiceComponent implements OnInit {
     
     this.http.post<any>(apiUrl, { firstNameForAFS: this.firstnamefor,lastNameForAFS:this.lastnamefor,fullName: this.contractorname }).subscribe(
       (response) => {
+        debugger;
         // Assign the list of contractors to the dropdown options
         if (response?.data?.contractsList) {
           
@@ -135,7 +136,7 @@ export class AfsinvoiceComponent implements OnInit {
 
           //Set the selected contract if `this.gridCtcCode` matches any option's `id`
           this.selectedContract = this.contractorOptions.find(
-            (option) => option.id === Number(this.gridCtcCode)
+            (option) => option.conCode  == this.conCode
           );
 
           // console.log('contractsList');
@@ -171,7 +172,7 @@ export class AfsinvoiceComponent implements OnInit {
   // Filter contractor data and bind it to the second dropdown
   filterContractData(): void {
     console.log('Selected Contractor:', this.selectedContract);
-
+debugger;
     // Clear the previous filtered options
     this.filteredContractOptions = [];
     this.selectedFilteredContract = '';
@@ -206,7 +207,7 @@ this.http.post<any>(apiUrl, { CtcCode: this.conCode }).subscribe(
         // Filter and map contracts
         //this.IsContractIsActiveOrNot="";
         this.filteredContractOptions = contractsListItems
-            .filter((contract: any) => contract.ctcCode === this.selectedContract.id && contract.contracts.includes('Active'))
+            .filter((contract: any) => contract.conCode === this.selectedContract.conCode && contract.contracts.includes('Active'))
             .map((item: any) => ({
                 id: item.ctcCode,
                 name: item.contracts // Assuming "contracts" field is what you want to display
@@ -222,7 +223,7 @@ this.http.post<any>(apiUrl, { CtcCode: this.conCode }).subscribe(
           //changeName As per Contractor Change
           
           let changeNameAsperContractorChange =contractsListItems
-          .filter((contract: any) => contract.ctcCode === this.selectedContract.id && contract.contracts.includes('Active'));       
+          .filter((contract: any) => contract.conCode === this.selectedContract.conCode && contract.contracts.includes('Active'));       
 
           if(changeNameAsperContractorChange !=undefined && changeNameAsperContractorChange[0] != undefined){
             this.firstnamefor = changeNameAsperContractorChange[0].conFirstName;
@@ -299,7 +300,7 @@ onSkip(){
     this.http.post<any>(apiUrl, formData).subscribe({
       next: (response) => {
         if(response.data.resultTable.length >0){
-          
+          debugger;
           this.fetchNextRecord(response.data.resultTable[0]);
         }
       },
@@ -509,6 +510,7 @@ fetchNextRecord(data: any): void {
 console.log("this.id" + this.id);
 console.log(data);
   this.id = data.ID;
+  this.conCode = data.Contract_CtcContractor || '';
   this.contractorname ='';
   this.contractorname = data.ContractorName || '';
   this.afscontractor = data.afscontractor || '';
