@@ -124,6 +124,7 @@ export class RemittanceComponent implements OnInit, AfterViewInit {
 
 
  openInvoiceModal(invoiceData: any): void {
+  debugger;
 
     const dialogRef = this.dialog.open(RemittancePopupComponent, {
       width: '800px',

@@ -22,6 +22,9 @@ export class RemittancePopupComponent implements OnInit {
   startdate: string = '';
   enddate: string = ''; 
   totalAmount: string = ''; 
+  paidAmount:string = '';
+  selfbillinvoice:string = '';
+  duedate:string = '';
   invoiceNumber: string = '';
   invoiceDate: string = '';
   groupNewId: string = '';
@@ -84,11 +87,12 @@ export class RemittancePopupComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeFormData();
-    this.fetchContractorOptions(); // Fetch API data for dropdown
+    // this.fetchContractorOptions();
   }
 
   initializeFormData(): void {
     if (this.data) {
+      debugger;
 
       console.log(this.data);
       
@@ -102,9 +106,9 @@ export class RemittancePopupComponent implements OnInit {
       this.IsContractIsActiveOrNot = this.data.errorMessage;
       
       // Remove currency 
-      this.totalAmount = this.data.totalAmount.includes(' ') ? this.data.totalAmount.split(' ')[0] : this.data.totalAmount.trim();
-      this.invoiceNumber = this.data.selfBillInvoiceNo || '';
-      this.invoiceDate = this.data.selfBillInvoiceDate || '';
+      this.paidAmount = this.data.paidAmount.includes(' ') ? this.data.paidAmount.split(' ')[0] : this.data.paidAmount.trim();
+      this.invoiceNumber = this.data.invoiceNumber || '';
+      this.invoiceDate = this.data.invoiceDate || '';
       this.groupNewId = this.data.grouP_NEWID || '';
       this.gridCtcCode = this.data.contract_CtcCode || 0;
       console.log(this.ctcCode);
@@ -114,7 +118,9 @@ export class RemittancePopupComponent implements OnInit {
   fetchContractorOptions(): void {
     
     //const apiUrl = 'https://localhost:44337/api/OCRAI/GetContractorContractListByConName'; // Replace with your API URL
-    
+
+
+    debugger;
     const apiUrl = environment.API_BASE_URL+'OCRAI/GetContractorContractListByConName';
     // Sending request to API
     
@@ -137,7 +143,7 @@ export class RemittancePopupComponent implements OnInit {
           );
 
           if (this.selectedContract) {
-            this.filterContractData();
+            //this.filterContractData();
           }
         }
       },
@@ -274,15 +280,26 @@ onSubmit(form: any): void {
     isValid = false;
   }
 
-  if (!this.firstnamefor || this.firstnamefor.trim() === '') {
-    errors.firstName = 'First Name is required.';
-    isValid = false;
-  }
+  // if (!this.firstnamefor || this.firstnamefor.trim() === '') {
+  //   errors.firstName = 'First Name is required.';
+  //   isValid = false;
+  // }
 
-  if (!this.lastnamefor || this.lastnamefor.trim() === '') {
-    errors.lastName = 'Last Name is required.';
+  // if (!this.lastnamefor || this.lastnamefor.trim() === '') {
+  //   errors.lastName = 'Last Name is required.';
+  //   isValid = false;
+  // }
+
+  if (!this.paidAmount || this.paidAmount.trim() === '') {
+    errors.paidAmount = 'paid Amount is required.';
     isValid = false;
   }
+  if (!this.totalAmount || this.totalAmount.trim() === '') {
+    errors.totalAmount = 'total Amount is required.';
+    isValid = false;
+  }
+  
+
 
   if (!this.startdate || this.startdate.trim() === '') {
     errors.startDate = 'Start Date is required.';
@@ -462,9 +479,9 @@ console.log(data);
   this.groupNewId = data.GROUP_NEWID || '';
   this.gridCtcCode = data.Contract_CtcCode || 0;
   this.imageName = data.InvoiceFilePath;
-  this.resetAFSContractorDropdown();
-  this.fetchContractorOptions();
-  this.resetAFSContractDropdown();
+  //this.resetAFSContractorDropdown();
+  //this.fetchContractorOptions();
+  //this.resetAFSContractDropdown();
   this.setImagePath(this.imageName, this.uplodedPDFFile);
   this.IsContractIsActiveOrNot = data.ErrorMessage;
   

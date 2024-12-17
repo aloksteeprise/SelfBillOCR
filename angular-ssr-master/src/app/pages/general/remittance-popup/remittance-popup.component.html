@@ -86,7 +86,7 @@
             </div>
 
             <!-- First Name -->
-            <div class="row mb-2 align-items-center">
+            <!-- <div class="row mb-2 align-items-center">
               <label for="firstnamefor" class="col-sm-4 col-form-label fontsize14">First Name: <span style="color: red;"> *</span></label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" id="firstnamefor" name="firstnamefor" [(ngModel)]="firstnamefor"
@@ -95,10 +95,10 @@
                   <small class="text-danger" *ngIf="errors.firstName">{{ errors.firstName }}</small>
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <!-- Last Name -->
-            <div class="row mb-2 align-items-center">
+            <!-- <div class="row mb-2 align-items-center">
               <label for="lastnamefor" class="col-sm-4 col-form-label fontsize14">Last Name: <span style="color: red;"> *</span></label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" id="lastnamefor" name="lastnamefor" [(ngModel)]="lastnamefor"
@@ -107,10 +107,10 @@
                   <small class="text-danger" *ngIf="errors.lastName">{{ errors.lastName }}</small>
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <!-- Start Date -->
-            <div class="row mb-2 align-items-center">
+            <!-- <div class="row mb-2 align-items-center">
               <label for="startDate" class="col-sm-4 col-form-label fontsize14">Start Date: <span style="color: red;"> *</span></label>
               <div class="col-sm-8">
                 <input type="date" class="form-control" id="startDate" name="startdates" [(ngModel)]="startdate"
@@ -119,10 +119,10 @@
                   <small class="text-danger" *ngIf="errors.startDate">{{ errors.startDate }}</small>
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <!-- End Date -->
-            <div class="row mb-2 align-items-center">
+            <!-- <div class="row mb-2 align-items-center">
               <label for="endDate" class="col-sm-4 col-form-label fontsize14">End Date: <span style="color: red;"> *</span></label>
               <div class="col-sm-8">
                 <input
@@ -134,29 +134,53 @@
                   (input)="clearValidation('endDate')" 
                   required [max]="getToday()"
                 />
-                <!-- Only show the div if there is an error -->
+               
                 <div class="error-message" *ngIf="errors.endDate">
                   <small class="text-danger">{{ errors.endDate }}</small>
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <!-- Total Amount -->
-            <div class="row mb-2 align-items-center">
-              <label for="TotalAmount" class="col-sm-4 col-form-label fontsize14">Total Amount:</label>
+            <!-- <div class="row mb-2 align-items-center">
+              <label for="TotalAmount" class="col-sm-4 col-form-label fontsize14">Total Amount:  <span style="color: red;"> *</span></label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" id="TotalAmount" name="totalAmount" [(ngModel)]="totalAmount"
-                  required maxlength="50">
+                  required maxlength="50" (input)="clearValidation('totalAmount')" >
+                  <div class="error-message" *ngIf="errors.totalAmount">
+                    <small class="text-danger">{{ errors.totalAmount }}</small>
+                  </div>
+              </div>
+            </div> -->
+            <div class="row mb-2 align-items-center">
+              
+              <label for="paidAmount" class="col-sm-4 col-form-label fontsize14">Paid Amount:  <span style="color: red;"> *</span></label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" id="paidAmount" name="paidAmount" [(ngModel)]="paidAmount"
+                  required maxlength="50" (input)="clearValidation('paidAmount')">
+                  <div class="error-message" *ngIf="errors.paidAmount">
+                    <small class="text-danger">{{ errors.paidAmount }}</small>
+                  </div>
               </div>
             </div>
+
             <!-- Invoice No -->
             <div class="row mb-2 align-items-center">
-              <label for="InvoiceNo" class="col-sm-4 col-form-label fontsize14">Invoice no:</label>
+              <label for="InvoiceNo" class="col-sm-4 col-form-label fontsize14">Invoice Number:</label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" id="InvoiceNo" name="invoiceNumber" [(ngModel)]="invoiceNumber"
                   maxlength="500" required>
               </div>
             </div>
+
+            <div class="row mb-2 align-items-center">
+              <label for="selfbillinvoice" class="col-sm-4 col-form-label fontsize14">SelfBill Invoice Number:</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" id="selfbillinvoice" name="selfbillinvoice" [(ngModel)]="selfbillinvoice"
+                  maxlength="500" required>
+              </div>
+            </div>
+
             <div class="row mb-2 align-items-center">
               <label for="Invoicedate" class="col-sm-4 col-form-label fontsize14">Invoice Date:</label>
               <div class="col-sm-8">
@@ -164,10 +188,20 @@
                   [(ngModel)]="invoiceDate">
               </div>
             </div>
+
+            <div class="row mb-2 align-items-center">
+              <label for="duedate" class="col-sm-4 col-form-label fontsize14">Due Date:</label>
+              <div class="col-sm-8">
+                <input type="date" class="form-control" id="duedate" name="duedate" required
+                  [(ngModel)]="duedate"  required [max]="getToday()">
+              </div>
+            </div>  
             <input type="hidden" id="groupNewId" name="groupNewId" [(ngModel)]="groupNewId">
             <input type="hidden" id="gridCtcCode" name="gridCtcCode" [(ngModel)]="gridCtcCode">
           </form>
         </div>
+
+
         <!-- <div class="col-12 col-lg-6 d-flex justify-content-center align-items-center"
           style="max-width: 792px; max-height: 490px; margin-left: 6px;">
           <div class="image-scroll-container overflow-auto" style="max-width: 792px; border: 2px solid #ddd;">
