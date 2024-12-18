@@ -109,6 +109,7 @@ export class RemittancePopupComponent implements OnInit {
       this.IsContractIsActiveOrNot = this.data.errorMessage;
       this.currencytype = this.data.currencyType || '';
       this.invoiceNumber = this.data.invoiceNumber || '';
+      this.duedate = this.data.dueDate || '';
       
       // Remove currency 
       this.paidAmount = this.data.paidAmount.includes(' ') ? this.data.paidAmount.split(' ')[0] : this.data.paidAmount.trim();
