@@ -56,6 +56,18 @@ export class AppComponent implements OnInit {
         this.userService.setUsername(storedUsername);
       }
 
+      this.route.queryParams.subscribe(params => {
+        var urlToken = localStorage.getItem('token');
+        // var urlToken = params['token'];      
+        if (urlToken) {
+          console.log('Token exists. Updating state.');
+          this.token = urlToken;
+          this.showMenu = false;
+          this.selfBillNotificationLink = `/afsselfbillnotification?token=${this.token}`;
+          this.sendLinkViaEmail();
+        }
+      });
+
       // this.username = localStorage.getItem('username') || '';
 
       const navMain = this.document.getElementById('navbarCollapse');
@@ -70,22 +82,13 @@ export class AppComponent implements OnInit {
           }
         }
       }
-      this.route.queryParams.subscribe(params => {
-        var urlToken = localStorage.getItem('token');
-        urlToken = params['token'];
-  
-        if (urlToken) {
-          this.token = urlToken;
-          this.showMenu = false;
-          this.selfBillNotificationLink = `/afsselfbillnotification?token=${this.token}`;
-          this.sendLinkViaEmail();
-        } 
-      });
+      
     }
     
   }
 
   sendLinkViaEmail() {
+    debugger;
     const emailBody = `Access the Self Bill Notification Component here: ${window.location.origin}${this.selfBillNotificationLink}`;
     console.log(emailBody);
   }
