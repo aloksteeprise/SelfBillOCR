@@ -22,7 +22,6 @@ export class AppComponent implements OnInit {
   footerUrl = ''; //https://www.steeprise.com
   footerLink = ''; //https://www.steeprise.com
   showHeader = true;
-  showMenu = true;
   username: string | null = null;
   token: string | null = null;
   selfBillNotificationLink: string | null = null;
