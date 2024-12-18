@@ -105,6 +105,7 @@ export class RemittancePopupComponent implements OnInit {
       this.enddate = this.data.endDate || '';
       this.IsContractIsActiveOrNot = this.data.errorMessage;
       this.currencytype = this.data.currencyType || '';
+      this.invoiceNumber = this.data.invoiceNumber || '';
       
       // Remove currency 
       this.paidAmount = this.data.paidAmount.includes(' ') ? this.data.paidAmount.split(' ')[0] : this.data.paidAmount.trim();
@@ -480,7 +481,7 @@ console.log(data);
   this.startdate = data.StartDate || '';
   this.enddate = data.EndDate || '';
   this.totalAmount = data.TotalTaxAmount?.includes(' ') ? data.TotalTaxAmount.split(' ')[0] : data.TotalTaxAmount?.trim() || '';
-  this.invoiceNumber = data.SelfBillInvoiceNo || '';
+  this.invoiceNumber = data.invoiceNumber || '';
   this.invoiceDate = data.SelfBillInvoiceDate || '';
   this.groupNewId = data.GROUP_NEWID || '';
   this.gridCtcCode = data.Contract_CtcCode || 0;
