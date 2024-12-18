@@ -23,7 +23,9 @@ export class RemittancePopupComponent implements OnInit {
   enddate: string = ''; 
   totalAmount: string = ''; 
   paidAmount:string = '';
+  currencytype :string='';
   selfbillinvoice:string = '';
+  InvoiceAmount:string = '';
   duedate:string = '';
   invoiceNumber: string = '';
   invoiceDate: string = '';
@@ -65,13 +67,13 @@ export class RemittancePopupComponent implements OnInit {
     
     this.imageName = filePath;
     this.uplodedPDFFile =pdfFile;
+    //server
     // this.thumbImage = `assets/documents/remittance/image/${this.imageName}`;
     // this.fullImagePath = `assets/documents/remittance/image/${this.imageName}`;
-    
-    this.pdfFileName =`assets/documents/remittance/pdf/${this.uplodedPDFFile}`;
+    // this.pdfFileName =`assets/documents/remittance/pdf/${this.uplodedPDFFile}`;
 
-    //image with good readibility
-
+  //Local
+    this.pdfFileName =`assets/documents/remittance/pdf/Remittanceadvice.pdf`;
     this.thumbImage = `assets/documents/remittance/image/100100159466-img.png`;
     this.fullImagePath = `assets/documents/remittance/image/100100159466-img.png`;
   
@@ -102,10 +104,11 @@ export class RemittancePopupComponent implements OnInit {
       this.startdate = this.data.startDate || '';
       this.enddate = this.data.endDate || '';
       this.IsContractIsActiveOrNot = this.data.errorMessage;
+      this.currencytype = this.data.currencyType || '';
       
       // Remove currency 
       this.paidAmount = this.data.paidAmount.includes(' ') ? this.data.paidAmount.split(' ')[0] : this.data.paidAmount.trim();
-      this.invoiceNumber = this.data.invoiceNumber || '';
+      this.InvoiceAmount = this.data.invoiceAmount || '';
       this.invoiceDate = this.data.invoiceDate || '';
       this.groupNewId = this.data.grouP_NEWID || '';
       this.gridCtcCode = this.data.contract_CtcCode || 0;
@@ -292,6 +295,11 @@ onSubmit(form: any): void {
     errors.paidAmount = 'paid Amount is required.';
     isValid = false;
   }
+  if (!this.InvoiceAmount || this.InvoiceAmount.trim() === '') {
+    errors.InvoiceAmount = 'Invoice Amount is required.';
+    isValid = false;
+  }
+
   if (!this.totalAmount || this.totalAmount.trim() === '') {
     errors.totalAmount = 'total Amount is required.';
     isValid = false;

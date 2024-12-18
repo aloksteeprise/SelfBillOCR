@@ -15,9 +15,9 @@
           <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)">
             <!-- Contractor Name -->
             <div class="row mb-2 align-items-center">
-              <label for="contractorname" class="col-sm-4 col-form-label fontsize14">Contractor Name:
+              <label for="contractorname" class="col-sm-5 col-form-label fontsize14">Contractor Name:
               </label>
-              <div class="col-sm-8">
+              <div class="col-sm-7">
                 <input type="text" class="form-control" id="ContractorName" name="contractorname"
                   [(ngModel)]="contractorname" #name="ngModel" maxlength="250" required>
               </div>
@@ -26,8 +26,8 @@
 
             <!-- AFS Contractor DropDown -->
             <!-- <div class="row mb-2 align-items-center">
-              <label for="afscontractor" class="col-sm-4 col-form-label fontsize14">AFS Contractor:</label>
-              <div class="col-sm-8">
+              <label for="afscontractor" class="col-sm-5 col-form-label fontsize14">AFS Contractor:</label>
+              <div class="col-sm-7">
                 <select class="form-select" id="AFSContractorDropdown" name="Contractor" (change)="filterContractData()"
                   required [(ngModel)]="selectedContract">
                   <option *ngFor="let option of contractorOptions" [ngValue]="option">
@@ -37,9 +37,9 @@
               </div>
             </div> -->
 
-            <div class="row mb-2 align-items-center">
-              <label for="afscontractor" class="col-sm-4 col-form-label fontsize14">AFS Contractor: <span style="color: red;"> *</span> </label>
-              <div class="col-sm-8">
+            <!-- <div class="row mb-2 align-items-center">
+              <label for="afscontractor" class="col-sm-5 col-form-label fontsize14">AFS Contractor: <span style="color: red;"> *</span> </label>
+              <div class="col-sm-7">
                 <select class="form-select" id="AFSContractorDropdown" name="Contractor" (change)="filterContractData()"
                   required [(ngModel)]="selectedContract">
                   <option [ngValue]="null" disabled selected>Select Contractor</option>
@@ -51,12 +51,12 @@
                   <small class="text-danger" *ngIf="errors.selectedContract">{{ errors.selectedContract }}</small>
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <!-- AFS Contact -->
             <!-- <div class="row mb-2 align-items-center">
-              <label for="afscontact" class="col-sm-4 col-form-label fontsize14">AFS Contract:</label>
-              <div class="col-sm-8">
+              <label for="afscontact" class="col-sm-5 col-form-label fontsize14">AFS Contract:</label>
+              <div class="col-sm-7">
                 <select class="form-select" id="AFSContactDropdown" name="afscontact" required
                   [(ngModel)]="selectedFilteredContract">
                   <option *ngFor="let option of filteredContractOptions" [value]="option.name">
@@ -66,9 +66,9 @@
               </div>
             </div> -->
 
-            <div class="row mb-2 align-items-center">
-              <label for="afscontact" class="col-sm-4 col-form-label fontsize14">AFS Contract: <span style="color: red;"> *</span></label>
-              <div class="col-sm-8">
+            <!-- <div class="row mb-2 align-items-center">
+              <label for="afscontact" class="col-sm-5 col-form-label fontsize14">AFS Contract: <span style="color: red;"> *</span></label>
+              <div class="col-sm-7">
                 <select class="form-select" id="AFSContactDropdown" name="afscontact" required
                   [(ngModel)]="selectedFilteredContract">
                   <option [value]="" disabled selected>Select Contract</option>
@@ -83,12 +83,12 @@
                   <span  style="color: rgb(225, 21, 21);"> Contract is not active.</span>
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <!-- First Name -->
             <!-- <div class="row mb-2 align-items-center">
-              <label for="firstnamefor" class="col-sm-4 col-form-label fontsize14">First Name: <span style="color: red;"> *</span></label>
-              <div class="col-sm-8">
+              <label for="firstnamefor" class="col-sm-5 col-form-label fontsize14">First Name: <span style="color: red;"> *</span></label>
+              <div class="col-sm-7">
                 <input type="text" class="form-control" id="firstnamefor" name="firstnamefor" [(ngModel)]="firstnamefor"
                   required maxlength="50" (input)="clearValidation('firstName')" />
                   <div class="error-message" *ngIf="errors.firstName">
@@ -99,8 +99,8 @@
 
             <!-- Last Name -->
             <!-- <div class="row mb-2 align-items-center">
-              <label for="lastnamefor" class="col-sm-4 col-form-label fontsize14">Last Name: <span style="color: red;"> *</span></label>
-              <div class="col-sm-8">
+              <label for="lastnamefor" class="col-sm-5 col-form-label fontsize14">Last Name: <span style="color: red;"> *</span></label>
+              <div class="col-sm-7">
                 <input type="text" class="form-control" id="lastnamefor" name="lastnamefor" [(ngModel)]="lastnamefor"
                   required maxlength="50" (input)="clearValidation('lastName')" />
                   <div class="error-message" *ngIf="errors.lastName">
@@ -111,8 +111,8 @@
 
             <!-- Start Date -->
             <!-- <div class="row mb-2 align-items-center">
-              <label for="startDate" class="col-sm-4 col-form-label fontsize14">Start Date: <span style="color: red;"> *</span></label>
-              <div class="col-sm-8">
+              <label for="startDate" class="col-sm-5 col-form-label fontsize14">Start Date: <span style="color: red;"> *</span></label>
+              <div class="col-sm-7">
                 <input type="date" class="form-control" id="startDate" name="startdates" [(ngModel)]="startdate"
                   required (input)="clearValidation('startDate')"  [max]="getToday()"/>
                   <div class="error-message" *ngIf="errors.startDate">
@@ -123,8 +123,8 @@
 
             <!-- End Date -->
             <!-- <div class="row mb-2 align-items-center">
-              <label for="endDate" class="col-sm-4 col-form-label fontsize14">End Date: <span style="color: red;"> *</span></label>
-              <div class="col-sm-8">
+              <label for="endDate" class="col-sm-5 col-form-label fontsize14">End Date: <span style="color: red;"> *</span></label>
+              <div class="col-sm-7">
                 <input
                   type="date"
                   class="form-control"
@@ -142,20 +142,20 @@
             </div> -->
 
             <!-- Total Amount -->
-            <!-- <div class="row mb-2 align-items-center">
-              <label for="TotalAmount" class="col-sm-4 col-form-label fontsize14">Total Amount:  <span style="color: red;"> *</span></label>
-              <div class="col-sm-8">
-                <input type="text" class="form-control" id="TotalAmount" name="totalAmount" [(ngModel)]="totalAmount"
-                  required maxlength="50" (input)="clearValidation('totalAmount')" >
-                  <div class="error-message" *ngIf="errors.totalAmount">
-                    <small class="text-danger">{{ errors.totalAmount }}</small>
+            <div class="row mb-2 align-items-center">
+              <label for="InvoiceAmount" class="col-sm-5 col-form-label fontsize14">Invoice Amount <span style="font-size: 10px;">({{currencytype}}):</span> <span style="color: red;"> *</span></label>
+              <div class="col-sm-7">
+                <input type="text" class="form-control" id="InvoiceAmount" name="InvoiceAmount" [(ngModel)]="InvoiceAmount"
+                  required maxlength="50" (input)="clearValidation('InvoiceAmount')" >
+                  <div class="error-message" *ngIf="errors.InvoiceAmount">
+                    <small class="text-danger">{{ errors.InvoiceAmount }}</small>
                   </div>
               </div>
-            </div> -->
+            </div>
             <div class="row mb-2 align-items-center">
               
-              <label for="paidAmount" class="col-sm-4 col-form-label fontsize14">Paid Amount:  <span style="color: red;"> *</span></label>
-              <div class="col-sm-8">
+              <label for="paidAmount" class="col-sm-5 col-form-label fontsize14">Paid Amount <span style="font-size: 10px;">({{currencytype}}):</span>  <span style="color: red;"> *</span></label>
+              <div class="col-sm-7">
                 <input type="text" class="form-control" id="paidAmount" name="paidAmount" [(ngModel)]="paidAmount"
                   required maxlength="50" (input)="clearValidation('paidAmount')">
                   <div class="error-message" *ngIf="errors.paidAmount">
@@ -166,32 +166,32 @@
 
             <!-- Invoice No -->
             <div class="row mb-2 align-items-center">
-              <label for="InvoiceNo" class="col-sm-4 col-form-label fontsize14">Invoice Number:</label>
-              <div class="col-sm-8">
+              <label for="InvoiceNo" class="col-sm-5 col-form-label fontsize14">Invoice Number:</label>
+              <div class="col-sm-7">
                 <input type="text" class="form-control" id="InvoiceNo" name="invoiceNumber" [(ngModel)]="invoiceNumber"
                   maxlength="500" required>
               </div>
             </div>
 
             <div class="row mb-2 align-items-center">
-              <label for="selfbillinvoice" class="col-sm-4 col-form-label fontsize14">SelfBill Invoice Number:</label>
-              <div class="col-sm-8">
+              <label for="selfbillinvoice" class="col-sm-5 col-form-label fontsize14">SelfBill Invoice Number:</label>
+              <div class="col-sm-7">
                 <input type="text" class="form-control" id="selfbillinvoice" name="selfbillinvoice" [(ngModel)]="selfbillinvoice"
                   maxlength="500" required>
               </div>
             </div>
 
             <div class="row mb-2 align-items-center">
-              <label for="Invoicedate" class="col-sm-4 col-form-label fontsize14">Invoice Date:</label>
-              <div class="col-sm-8">
+              <label for="Invoicedate" class="col-sm-5 col-form-label fontsize14">Invoice Date:</label>
+              <div class="col-sm-7">
                 <input type="date" class="form-control" id="Invoicedate" name="invoiceDate" required
                   [(ngModel)]="invoiceDate">
               </div>
             </div>
 
             <div class="row mb-2 align-items-center">
-              <label for="duedate" class="col-sm-4 col-form-label fontsize14">Due Date:</label>
-              <div class="col-sm-8">
+              <label for="duedate" class="col-sm-5 col-form-label fontsize14">Due Date:</label>
+              <div class="col-sm-7">
                 <input type="date" class="form-control" id="duedate" name="duedate" required
                   [(ngModel)]="duedate"  required [max]="getToday()">
               </div>
@@ -271,7 +271,7 @@
           <!-- Button on the right -->
           <div class="col-12 col-lg-3 overflow-auto  mb-3 mb-lg-0 d-flex justify-content-start">
             <button (click)="submitForm()" class="btn btn-primary mt-3 mb-3">Validate and Next</button>
-            <button (click)="onSkip()" class="btn btn-outline-dark mt-3 mb-3" style="margin-left: 20px;">Skip</button>
+            <button  class="btn btn-outline-dark mt-3 mb-3" style="margin-left: 20px;">Skip</button>
           </div>
 
           <!-- <div class="col-12 col-lg-3 overflow-auto  mb-3 mb-lg-0 d-flex justify-content-end">
