@@ -78,6 +78,10 @@ export const routes: Routes = [
     loadChildren: () => import('./pages/general/remittance-popup/remittance-pop.module')
       .then(mod => mod.RemittancePopModule)
   },
+  {
+  path: 'afsselfbillnotification',
+  loadChildren: () => import('./pages/general/afsselfbillnotification/afsselfbillnotification.module').then(mod => mod.AfsSelfBillNotificationModule)
+  },
 
 
   { path: '**', component: NotFoundComponent }

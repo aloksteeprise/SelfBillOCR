@@ -1,0 +1,243 @@
+
+
+<div class="d-flex align-items-center justify-content-center bg-light" style="height: 90vh">
+  <div style="position: absolute;top: 90px;left: 150px;z-index: 9999;padding: 17px;background-color: white;" *ngIf="showErrorLabel">
+    <label id="lblError"  style="color: red; font-size: 1rem;">
+      Authentication Failed: The token provided is invalid or has expired. Please provide a valid token to proceed.
+    </label>
+  </div>
+  <div id="fileUpload" *ngIf="isFileUploadVisible" class="p-4 border rounded shadow-lg"
+    style="width: 30%; height: 60%; background-color: aliceblue;">
+    <h1 class="mb-4 text-center" style="color: #4CAF50; font-size: 2.5rem; font-weight: 500;">Self Bill Upload</h1>
+    <div class="mb-3">
+      <input type="file" id="fileInput" (change)="onFileSelect($event)" accept=".pdf" class="form-control"
+        aria-label="Choose self bill file" style="margin-bottom: 15px;">
+    </div>
+    <div>
+      <!-- <p style="font-size: 1rem; font-weight: bold; color: #4CAF50;">Choose PDF Files Only<span class="text-danger">*</span>
+      </p> -->
+      <p class="text-muted" style="margin: 0; font-size: 0.9rem;">PDF <span class="text-danger">*</span></p>
+    </div>
+    <button type="button" (click)="onUpload()" class="btn btn-success btn-lg" style="align-self: center; float:right;">
+      Upload
+    </button>
+  </div>
+
+  <div class="confirmation-wrapper" *ngIf="!isValidToken">
+    <div class="confirmation-popup">
+      <h3 class="confirmation-header" [ngClass]="{'error-message': errorMessage.includes('Authentication Failed'), 'success-message': !errorMessage.includes('Authentication Failed')}">
+        {{ errorMessage }}
+      </h3>
+      <div class="confirmation-footer">
+        <button (click)="closeErrorPopup()" type="button" class="save-btn" style="margin-top: auto; align-self: center;">
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+  
+
+  <div class="loading-overlay" *ngIf="loading">
+    <div class="loader"></div>
+  </div>
+</div>
+
+
+  <!-- <div *ngIf="!isValidToken" class="text-center text-danger p-4 border rounded shadow-lg"
+    style="width: 25%; height: 35%; background-color: aliceblue;">
+    <h6>{{ errorMessage }}</h6>
+    <button (click)="closeErrorPopup()" type="button" class="btn btn-success btn-lg"
+      style="margin-top: auto; align-self: center;">
+      OK
+    </button>
+  </div> -->
+
+  <!-- <div class="modal d-block mt-4 custom-height" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+  aria-hidden="false" *ngIf="isPopupVisible">
+  <div class="modal-dialog modal-lg custom-modal-width modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title mx-3 headingmargin" id="exampleModalLabel"
+          style="font-size: 22px; font-weight: 700; color: #2f455c;">Self Bill Notification</h5>
+        <button type="button" class="btn-close" (click)="closePopup()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body d-flex flex-column flex-lg-row">
+         
+        <div class="col-12 col-lg-6 overflow-auto pe-lg-4 mb-2 mb-lg-0"
+          style="max-height: 480px; border-right: 5px solid #ddd;">
+          <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)">
+            <div class="row mb-2 align-items-center">
+              <label for="contractorname" class="col-sm-4 col-form-label fontsize14">Contractor Name:
+              </label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" id="ContractorName" name="contractorname"
+                  [(ngModel)]="contractorName" #name="ngModel" maxlength="250" required>
+              </div>
+            </div>
+
+            <div class="row mb-2 align-items-center">
+              <label for="afscontractor" class="col-sm-4 col-form-label fontsize14">AFS Contractor: <span style="color: red;"> *</span> </label>
+              <div class="col-sm-8">
+                <select class="form-select" id="AFSContractorDropdown" name="Contractor" (change)="filterContractData()"
+                  required [(ngModel)]="selectedContract">
+                  <option [ngValue]="null" disabled selected>Select Contractor</option>
+                  <option *ngFor="let option of contractorOptions" [ngValue]="option">
+                    {{ option.fullName }}
+                  </option>
+                </select>
+                <div class="error-message" *ngIf="errors.selectedContract">
+                  <small class="text-danger" *ngIf="errors.selectedContract">{{ errors.selectedContract }}</small>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-2 align-items-center">
+              <label for="afscontact" class="col-sm-4 col-form-label fontsize14">AFS Contract: <span style="color: red;"> *</span></label>
+              <div class="col-sm-8">
+                <select class="form-select" id="AFSContactDropdown" name="afscontact" required
+                  [(ngModel)]="selectedFilteredContract">
+                  <option [value]="" disabled selected>Select Contract</option>
+                  <option *ngFor="let option of filteredContractOptions" [value]="option.name">
+                    {{ option.name }}
+                  </option>
+                </select>
+                <div class="error-message" *ngIf="errors.selectedFilteredContract">
+                  <small class="text-danger">{{ errors.selectedFilteredContract }}</small>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-2 align-items-center">
+              <label for="firstnamefor" class="col-sm-4 col-form-label fontsize14">First Name: <span style="color: red;"> *</span></label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" id="firstnamefor" name="firstnamefor" [(ngModel)]="firstName"
+                  required maxlength="50" (input)="clearValidation('firstName')" />
+                  <div class="error-message" *ngIf="errors.firstName">
+                  <small class="text-danger" *ngIf="errors.firstName">{{ errors.firstName }}</small>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-2 align-items-center">
+              <label for="lastnamefor" class="col-sm-4 col-form-label fontsize14">Last Name: <span style="color: red;"> *</span></label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" id="lastnamefor" name="lastnamefor" [(ngModel)]="lastName"
+                  required maxlength="50" (input)="clearValidation('lastName')" />
+                  <div class="error-message" *ngIf="errors.lastName">
+                  <small class="text-danger" *ngIf="errors.lastName">{{ errors.lastName }}</small>
+                </div>
+              </div>  
+            </div>
+
+            <div class="row mb-2 align-items-center">
+              <label for="startDate" class="col-sm-4 col-form-label fontsize14">Start Date: <span style="color: red;"> *</span></label>
+              <div class="col-sm-8">
+                <input type="date" class="form-control" id="startDate" name="startdates" [(ngModel)]="startDate"
+                  required (input)="clearValidation('startDate')" [max]="getToday()" (blur)="validateDate()" />
+                  <div class="error-message" *ngIf="errors.startDate">
+                  <small class="text-danger" *ngIf="errors.startDate">{{ errors.startDate }}</small>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-2 align-items-center">
+              <label for="endDate" class="col-sm-4 col-form-label fontsize14">End Date: <span style="color: red;"> *</span></label>
+              <div class="col-sm-8">
+                <input
+                  type="date"
+                  class="form-control"
+                  id="endDate"
+                  name="enddates"
+                  [(ngModel)]="endDate"
+                  (input)="clearValidation('endDate')" 
+                  required [max]="getToday() "
+                  (blur)="validateDate()"
+                />
+                <div class="error-message" *ngIf="errors.endDate">
+                  <small class="text-danger">{{ errors.endDate }}</small>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-2 align-items-center">
+              <label for="TotalAmount" class="col-sm-4 col-form-label fontsize14">Total Amount:</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" id="TotalAmount" name="totalAmount" [(ngModel)]="totalAmount"
+                  required maxlength="50">
+              </div>
+            </div>
+            <div class="row mb-2 align-items-center">
+              <label for="InvoiceNo" class="col-sm-4 col-form-label fontsize14">Invoice no:</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" id="InvoiceNo" name="invoiceNumber" [(ngModel)]="invoiceNumber"
+                  maxlength="500" required>
+              </div>
+            </div>
+            <div class="row mb-2 align-items-center">
+              <label for="Invoicedate" class="col-sm-4 col-form-label fontsize14">Invoice Date:</label>
+              <div class="col-sm-8">
+                <input type="date" class="form-control" id="Invoicedate" name="invoiceDate" required
+                  [(ngModel)]="invoiceDate">
+              </div>
+            </div>
+            <input type="hidden" id="groupNewId" name="groupNewId" [(ngModel)]="groupNewId">
+            <input type="hidden" id="gridCtcCode" name="gridCtcCode" [(ngModel)]="gridCtcCode">
+          </form>
+        </div>
+        <div 
+        class="col-12 col-lg-6 d-flex justify-content-center align-items-center"
+        style="max-width: 792px; max-height: 490px; margin-left: 6px;">
+        <a target="_blank"  style="display: contents;"  href="{{pdfFileName}}" >
+          <i 
+          class="fa fa-download" 
+          style="
+            font-size: 24px; 
+            position: absolute; 
+            z-index: 10; 
+            color: #fff; 
+            top: 10px; 
+            background: rgba(0, 0, 0, 0.5); 
+            padding: 5px; 
+            border-radius: 50%;"
+        ></i>
+        </a>  
+        <div 
+          class="image-scroll-container overflow-auto" 
+          [ngStyle]="{ 'max-width': imageWidth + 'px', 'border': '2px solid #ddd' }">
+          <lib-ngx-image-zoom 
+            *ngIf="thumbImage && fullImagePath" 
+            [thumbImage]="thumbImage"
+            [fullImage]="fullImagePath" 
+            [magnification]="1.5" 
+            [enableScrollZoom]="false" 
+            [enableLens]="true"
+            [lensWidth]="140" 
+            [lensHeight]="140" 
+            [minZoomRatio]="0.5" 
+            [maxZoomRatio]="1" 
+            [circularLens]="true"
+            [scrollStepSize]="1"
+            (imageLoaded)="onImageLoad($event)">
+          </lib-ngx-image-zoom>
+        </div>
+      </div>
+      
+      </div>
+      <div class="col-12">
+        <div class="row">
+          <div class="col-12 col-lg-4">
+            <small class="text-danger p-2" *ngIf="errors.dateComparison">
+              {{ errors.dateComparison }}
+            </small>
+          </div>
+
+          <div class="col-12 col-lg-3 overflow-auto  mb-3 mb-lg-0 d-flex justify-content-start">
+            <button (click)="submitForm()" class="btn btn-primary mt-3 mb-3">Validate and Next</button>
+            <button (click)="onSkip()" class="btn btn-outline-dark mt-3 mb-3" style="margin-left: 20px;">Skip</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->

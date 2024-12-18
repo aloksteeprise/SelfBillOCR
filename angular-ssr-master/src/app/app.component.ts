@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterOutlet, Router } from '@angular/router';
+import { RouterLink, RouterOutlet, Router,ActivatedRoute } from '@angular/router';
 
 import { Inject, PLATFORM_ID } from '@angular/core';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
@@ -22,7 +22,10 @@ export class AppComponent implements OnInit {
   footerUrl = ''; //https://www.steeprise.com
   footerLink = ''; //https://www.steeprise.com
   showHeader = true;
+  showMenu = true;
   username: string | null = null;
+  token: string | null = null;
+  selfBillNotificationLink: string | null = null;
 
   constructor(
 
@@ -30,11 +33,12 @@ export class AppComponent implements OnInit {
     @Inject(PLATFORM_ID) private platformId: object,
     private router: Router,
     private userService: UserService,
-    public authService: AuthService) { }
+    public authService: AuthService,
+    private route: ActivatedRoute) { }
+    
 
 
   ngOnInit(): void {
-
     this.router.events.subscribe(() => {
 
       this.showHeader = this.router.url !== '/login';
@@ -66,7 +70,24 @@ export class AppComponent implements OnInit {
           }
         }
       }
+      this.route.queryParams.subscribe(params => {
+        var urlToken = localStorage.getItem('token');
+        urlToken = params['token'];
+  
+        if (urlToken) {
+          this.token = urlToken;
+          this.showMenu = false;
+          this.selfBillNotificationLink = `/afsselfbillnotification?token=${this.token}`;
+          this.sendLinkViaEmail();
+        } 
+      });
     }
+    
+  }
+
+  sendLinkViaEmail() {
+    const emailBody = `Access the Self Bill Notification Component here: ${window.location.origin}${this.selfBillNotificationLink}`;
+    console.log(emailBody);
   }
 
   getTruncatedUsername(): string {
