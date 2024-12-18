@@ -58,24 +58,27 @@ export class RemittancePopupComponent implements OnInit {
     private downloadPdfService: DownloadPdfService
   ) 
   {
-    this.setImagePath(data.invoiceFilePath, data.invoiceFileName);
+    //console.log('data');
+    //console.log(data);
+    this.setImagePath(data.pdF_Image_FileName, data.pdF_FileName);
   }
 
 
   
   setImagePath(filePath: string, pdfFile: string): void {
     
+   
     this.imageName = filePath;
     this.uplodedPDFFile =pdfFile;
     //server
-    // this.thumbImage = `assets/documents/remittance/image/${this.imageName}`;
-    // this.fullImagePath = `assets/documents/remittance/image/${this.imageName}`;
-    // this.pdfFileName =`assets/documents/remittance/pdf/${this.uplodedPDFFile}`;
+    this.thumbImage = `assets/documents/remittance/image/${this.imageName}`;
+    this.fullImagePath = `assets/documents/remittance/image/${this.imageName}`;
+    this.pdfFileName =`assets/documents/remittance/pdf/${this.uplodedPDFFile}`;
 
   //Local
-    this.pdfFileName =`assets/documents/remittance/pdf/Remittanceadvice.pdf`;
-    this.thumbImage = `assets/documents/remittance/image/100100159466-img.png`;
-    this.fullImagePath = `assets/documents/remittance/image/100100159466-img.png`;
+    // this.pdfFileName =`assets/documents/remittance/pdf/Remittanceadvice.pdf`;
+    // this.thumbImage = `assets/documents/remittance/image/100100159466-img.png`;
+    // this.fullImagePath = `assets/documents/remittance/image/100100159466-img.png`;
   
     console.log('Thumb Image:', this.thumbImage);
     console.log('Full Image Path:', this.fullImagePath);
