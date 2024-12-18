@@ -62,7 +62,6 @@ export class AppComponent implements OnInit {
         if (urlToken) {
           console.log('Token exists. Updating state.');
           this.token = urlToken;
-          this.showMenu = false;
           this.selfBillNotificationLink = `/afsselfbillnotification?token=${this.token}`;
           this.sendLinkViaEmail();
         }
