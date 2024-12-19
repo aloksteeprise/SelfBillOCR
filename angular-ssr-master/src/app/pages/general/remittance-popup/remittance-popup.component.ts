@@ -120,8 +120,42 @@ export class RemittancePopupComponent implements OnInit {
   }
 }
 
-onSkip(){
+// onSkip(){
 
+//   const formData = {
+//     Id: this.id,
+//     InvoiceAmount: this.InvoiceAmount,
+//     PaidAmount: this.paidAmount,
+//     InvoiceNumber: this.invoiceNumber,
+//     SelfBillInvoiceNumber: this.selfbillinvoice,
+//     InvoiceDate: this.invoiceDate,
+//     DueDate: this.duedate,
+//     IsSkip:true
+//   };
+ 
+
+//   const apiUrl = environment.API_BASE_URL+'OCRAI/ValidateRemittanceInvoice';
+//     this.http.post<any>(apiUrl, formData).subscribe({
+//       next: (response) => {
+//         if(response.data.resultTable.length >0){
+          
+//           this.fetchNextRecord(response.data.resultTable[0]);
+//         }
+//       },
+//       error: (error) => {
+//         this.notificationService.showNotification(
+//           'Unable to complete the skip action. Please retry.',
+//           'ERROR',
+//           'error',
+//           () => {
+//             console.log('OK clicked error'); // Callback logic
+//           }
+//         );
+//       },
+//     });
+// }
+
+onSkip() {
   const formData = {
     Id: this.id,
     InvoiceAmount: this.InvoiceAmount,
@@ -130,30 +164,54 @@ onSkip(){
     SelfBillInvoiceNumber: this.selfbillinvoice,
     InvoiceDate: this.invoiceDate,
     DueDate: this.duedate,
-    IsSkip:true
+    IsSkip: true,
   };
- 
 
-  const apiUrl = environment.API_BASE_URL+'OCRAI/ValidateRemittanceInvoice';
-    this.http.post<any>(apiUrl, formData).subscribe({
-      next: (response) => {
-        if(response.data.resultTable.length >0){
-          
-          this.fetchNextRecord(response.data.resultTable[0]);
+  const apiUrl = environment.API_BASE_URL + 'OCRAI/ValidateRemittanceInvoice';
+  this.http.post<any>(apiUrl, formData).subscribe({
+    next: (response) => {
+      if (response.data.resultTable.length > 0) {
+        const nextRecord = response.data.resultTable[0];
+
+        // Check if this is a special message indicating completion
+        if (nextRecord.Message === 'All rows complete') {
+          this.notificationService.showNotification(
+            'All records have been processed.',
+            'INFO',
+            'info',
+            () => {
+              console.log('OK clicked all complete'); // Callback logic
+            }
+          );
+        } else {
+          this.fetchNextRecord(nextRecord);
         }
-      },
-      error: (error) => {
+      } else {
+        // Handle unexpected empty result case
         this.notificationService.showNotification(
-          'Unable to complete the skip action. Please retry.',
-          'ERROR',
-          'error',
+          'No more records to process.',
+          'INFO',
+          'info',
           () => {
-            console.log('OK clicked error'); // Callback logic
+            console.log('OK clicked no records'); // Callback logic
           }
         );
-      },
-    });
+      }
+    },
+    error: (error) => {
+      this.notificationService.showNotification(
+        'Unable to complete the skip action. Please retry.',
+        'ERROR',
+        'error',
+        () => {
+          console.log('OK clicked error'); // Callback logic
+        }
+      );
+    },
+  });
 }
+
+
 
 onSubmit(form: any): void {
   this.submitted = true; // Mark the form as submitted

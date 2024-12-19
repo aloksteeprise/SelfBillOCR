@@ -35,22 +35,6 @@ export class RemittanceComponent implements OnInit, AfterViewInit {
 
   constructor(private invoiceService: InvoiceService, private dialog: MatDialog) {}
 
-  // ngOnInit() {
-  //   debugger;
-  //   this.invoiceService.getAllContractorInvoices().subscribe((result: any) => {
-  //     debugger;
-  //     this.dataSource.data = result.data; 
-  //   });
-  // }
-
-  // ngAfterViewInit() {
-  //   this.dataSource.paginator = this.paginator;
-  //   this.dataSource.sort = this.sort;
-  // }
-
-  // applyFilter(filterValue: string) {
-  //   this.dataSource.filter = filterValue.trim().toLowerCase();
-  // }
 
   ngOnInit() {
 
@@ -110,22 +94,9 @@ export class RemittanceComponent implements OnInit, AfterViewInit {
 
     this.remittanceRecord();
   }
-  // openInvoiceModal(invoiceData: any): void {
-  //   const dialogRef = this.dialog.open(AfsRemittanceComponent, {
-  //     width: '800px', // Modal width
-  //     data: invoiceData, // Data passed to the modal
-  //   });
-
-  //   // Callback after modal is closed
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     console.log('The dialog was closed', result);
-  //   });
-  // }
-
-
+  
  openInvoiceModal(invoiceData: any): void {
-  debugger;
-
+ 
     const dialogRef = this.dialog.open(RemittancePopupComponent, {
       width: '800px',
       data: invoiceData, // Pass row data to the modal
@@ -134,13 +105,7 @@ export class RemittanceComponent implements OnInit, AfterViewInit {
     // Use afterClosed() on dialogRef to handle modal close event
     dialogRef.afterClosed().subscribe(result => {
 
-      // this.name = this.name;
-      // this.invoiceno = this.invoiceno;
-      // this.startdate = this.startdate;
-      // this.enddate = this.enddate;
-
-      // this.loadInvoices();
-
+       this.remittanceRecord();
       console.log('The dialog was closed');
     });
   }
