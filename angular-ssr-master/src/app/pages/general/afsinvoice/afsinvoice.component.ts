@@ -6,6 +6,7 @@ import { NotificationPopupService } from '../notification-popup/notification-pop
 import { DownloadPdfService } from '../service/downlaodPdf.service';
 
 
+
 @Component({
   selector: 'app-afsinvoice',
   templateUrl: './afsinvoice.component.html',
@@ -13,7 +14,6 @@ import { DownloadPdfService } from '../service/downlaodPdf.service';
 })
 export class AfsinvoiceComponent implements OnInit {
   @ViewChild('myForm') myForm: any;
-  
   id:number = 0;
   conCode:string="";
   contractorname: string = '';
@@ -51,7 +51,7 @@ export class AfsinvoiceComponent implements OnInit {
     private dialogRef: MatDialogRef<AfsinvoiceComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private http: HttpClient, // Injecting HttpClient service
-    private notificationService: NotificationPopupService, // Inject service,
+    private notificationService: NotificationPopupService,
     private downloadPdfService: DownloadPdfService
   ) 
   {
@@ -294,6 +294,12 @@ this.http.post<any>(apiUrl, { CtcCode: this.conCode }).subscribe(
 
 onSkip(){
   this.loading =true;
+// for removing the error messgaes on skip button
+  const errors: any = {};
+  // errors.selectedContract = '';
+  // errors.startDate = '';
+  // errors.endDate = '';
+  this.errors = errors;
   const formData = {
     RowId: this.id,
     FirstName: this.firstnamefor,

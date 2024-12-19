@@ -250,11 +250,26 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     //alert(apiUrl);
       this.http.post<any>(apiUrl, {}).subscribe({
         next: (response) => {
-          //debugger;
+         
           console.log(response);
           if(response && response.data && response.data.length >0 && response.data[0].status ==4){
-            alert('Records have been processed successfully.');
+
+            console.log(response && response.data && response.data.length >0 && response.data[0].status ==4,)
+            
+            // console.log('Calling showNotification...');
+            this.notificationService.showNotification(
+              
+              'Records have been validated and processed successfully.',
+              'INFORMATION',
+              'success',
+              () => {
+                console.log('OK clicked 4'); // Callback logic
+              }
+            );
+       
             this.ClearSearch();
+            
+            // this.ClearSearch();
             // this.notificationService.showNotification(
             //   'Records have been processed successfully.',
             //   'INFORMATION',
