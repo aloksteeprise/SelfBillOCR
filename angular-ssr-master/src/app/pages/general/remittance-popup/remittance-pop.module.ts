@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import  { RemittancePopupComponent } from './remittance-popup.component'
 import { RemittancePopRoutingModule } from './remittance-pop-routing.module';
-
+import { SharedModule } from '../shared/shared.module';
 
 import { FormsModule } from '@angular/forms';
 import { NgxImageZoomModule } from 'ngx-image-zoom';
@@ -18,7 +18,8 @@ import { AfsInvoicesPopupModule } from "../afs-invoices-popup/afs-invoices-popup
     RemittancePopRoutingModule,
     FormsModule,
     NgxImageZoomModule,
-    AfsInvoicesPopupModule
+    AfsInvoicesPopupModule,
+    SharedModule
 ],
   exports: [
     RemittancePopupComponent  

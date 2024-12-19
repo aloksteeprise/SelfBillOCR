@@ -11,7 +11,7 @@
         <!-- Left Side: Form with Scrollbar -->
         <div class="col-12 col-lg-6 overflow-auto pe-lg-4 mb-2 mb-lg-0"
           style="max-height: 480px; border-right: 5px solid #ddd;">
-          <!-- <app-notification-popup></app-notification-popup> -->
+          <app-notification-popup></app-notification-popup>
           <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)">
             <!-- Contractor Name -->
             <div class="row mb-2 align-items-center">
@@ -196,7 +196,7 @@
                   [(ngModel)]="duedate"  required [max]="getToday()">
               </div>
             </div>  
-            <input type="hidden" id="groupNewId" name="groupNewId" [(ngModel)]="groupNewId">
+            <!-- <input type="hidden" id="groupNewId" name="groupNewId" [(ngModel)]="groupNewId"> -->
             <input type="hidden" id="gridCtcCode" name="gridCtcCode" [(ngModel)]="gridCtcCode">
           </form>
         </div>
@@ -271,7 +271,7 @@
           <!-- Button on the right -->
           <div class="col-12 col-lg-3 overflow-auto  mb-3 mb-lg-0 d-flex justify-content-start">
             <button (click)="submitForm()" class="btn btn-primary mt-3 mb-3">Validate and Next</button>
-            <button  class="btn btn-outline-dark mt-3 mb-3" style="margin-left: 20px;">Skip</button>
+            <button (click)="onSkip()" class="btn btn-outline-dark mt-3 mb-3" style="margin-left: 20px;">Skip</button>
           </div>
 
           <!-- <div class="col-12 col-lg-3 overflow-auto  mb-3 mb-lg-0 d-flex justify-content-end">

@@ -15,13 +15,7 @@ export class RemittancePopupComponent implements OnInit {
   
   id:number = 0;
   contractorname: string = '';
-  afscontractor: string = '';
-  afsContract: string = '';
-  firstnamefor:string = '';
-  lastnamefor:string = '';
-  startdate: string = '';
-  enddate: string = ''; 
-  totalAmount: string = ''; 
+  
   paidAmount:string = '';
   currencytype :string='';
   selfbillinvoice:string = '';
@@ -29,15 +23,11 @@ export class RemittancePopupComponent implements OnInit {
   duedate:string = '';
   invoiceNumber: string = '';
   invoiceDate: string = '';
-  groupNewId: string = '';
+  
   imageName: string = '';
   thumbImage: string = '';
   fullImagePath: string = '';
-  contractorOptions: { id: number; firstName: string; lastName: string;fullName: string; }[] = []; // For first dropdown
-  filteredContractOptions: { id: number; name: string }[] = []; // For filtered second dropdown
-  //selectedContract: string = ''; // Holds the selected contractor from the first dropdown
-  selectedContract: any = null; // Holds the selected contractor object
-  selectedFilteredContract: string = ''; // Holds the selected filtered contract from the second dropdown
+  
   isPopupVisible: boolean = true;
   ctcCode: number = 0;
   gridCtcCode: number = 0;
@@ -58,16 +48,12 @@ export class RemittancePopupComponent implements OnInit {
     private downloadPdfService: DownloadPdfService
   ) 
   {
-    //console.log('data');
-    //console.log(data);
+    
     this.setImagePath(data.pdF_Image_FileName, data.pdF_FileName);
   }
 
-
   
   setImagePath(filePath: string, pdfFile: string): void {
-    
-   
     this.imageName = filePath;
     this.uplodedPDFFile =pdfFile;
     //server
@@ -86,11 +72,9 @@ export class RemittancePopupComponent implements OnInit {
     console.log('Full pdfFileName  Path:', this.pdfFileName);
   }
   
-  
 
   ngOnInit(): void {
     this.initializeFormData();
-    // this.fetchContractorOptions();
   }
 
   initializeFormData(): void {
@@ -101,68 +85,25 @@ export class RemittancePopupComponent implements OnInit {
       
       this.id = this.data.id;
       this.contractorname = this.data.contractorName || '';
-      this.afscontractor = this.data.afscontractor || '';
-      this.firstnamefor = this.data.cFirstName || '';
-      this.lastnamefor = this.data.cLastName || '';
-      this.startdate = this.data.startDate || '';
-      this.enddate = this.data.endDate || '';
+      
       this.IsContractIsActiveOrNot = this.data.errorMessage;
       this.currencytype = this.data.currencyType || '';
       this.invoiceNumber = this.data.invoiceNumber || '';
       this.duedate = this.data.dueDate || '';
-      
+      this.selfbillinvoice = this.data.selfBillInvoiceNo || '';
       // Remove currency 
       this.paidAmount = this.data.paidAmount.includes(' ') ? this.data.paidAmount.split(' ')[0] : this.data.paidAmount.trim();
       this.InvoiceAmount = this.data.invoiceAmount || '';
       this.invoiceDate = this.data.invoiceDate || '';
-      this.groupNewId = this.data.grouP_NEWID || '';
+      //this.groupNewId = this.data.grouP_NEWID || '';
       this.gridCtcCode = this.data.contract_CtcCode || 0;
       console.log(this.ctcCode);
     }
   }
 
-  fetchContractorOptions(): void {
-    
-    //const apiUrl = 'https://localhost:44337/api/OCRAI/GetContractorContractListByConName'; // Replace with your API URL
-
-
-    debugger;
-    const apiUrl = environment.API_BASE_URL+'OCRAI/GetContractorContractListByConName';
-    // Sending request to API
-    
-    this.http.post<any>(apiUrl, { firstNameForAFS: this.firstnamefor,lastNameForAFS:this.lastnamefor,fullName: this.contractorname }).subscribe(
-      (response) => {
-        // Assign the list of contractors to the dropdown options
-        if (response?.data?.contractsList) {
-          
-          // Store the entire contractsList in localStorage
-          localStorage.setItem('contractsList', JSON.stringify(response.data.contractsList));
-          this.contractorOptions = response.data.contractsList.map((item: any) => ({
-            id: item.ctcCode, // Use ctcCode as ID
-            firstName: item.conFirstName, // Use conFirstName for dropdown display
-            lastName:item.conLastName,
-            fullName:item.fullName
-          }));
-          //Set the selected contract if `this.gridCtcCode` matches any option's `id`
-          this.selectedContract = this.contractorOptions.find(
-            (option) => option.id === Number(this.gridCtcCode)
-          );
-
-          if (this.selectedContract) {
-            //this.filterContractData();
-          }
-        }
-      },
-      (error) => {
-        console.error('Error fetching contractor options:', error);
-      }
-    );
-  }
-
-  
   
   onImageLoad(event: Event): void {
-    debugger;
+    
     const imgElement = event.target as HTMLImageElement;
 
     // Adjust the imageWidth to the actual width of the loaded image
@@ -171,63 +112,8 @@ export class RemittancePopupComponent implements OnInit {
     }
   }
 
-  // Filter contractor data and bind it to the second dropdown
-  filterContractData(): void {
-    console.log('Selected Contractor:', this.selectedContract);
+  
 
-    // Clear the previous filtered options
-    this.filteredContractOptions = [];
-    this.selectedFilteredContract = '';
-
-   //alert( this.IsContractIsActiveOrNot);
-    if (this.selectedContract) {
-      this.errors.selectedContract = undefined;
-    }
-    // Retrieve the contracts list from localStorage
-    const storedContractsList = JSON.parse(localStorage.getItem('contractsList')!);
-
-    console.log(storedContractsList);
-
-    if (storedContractsList && this.selectedContract) {
-        // Filter and map contracts
-        //this.IsContractIsActiveOrNot="";
-        this.filteredContractOptions = storedContractsList
-            .filter((contract: any) => contract.fullName === this.selectedContract.fullName && contract.contracts.includes('Active'))
-            .map((item: any) => ({
-                id: item.ctcCode,
-                name: item.contracts // Assuming "contracts" field is what you want to display
-            }));       
-            
-          // Select the first record by default
-          if (this.filteredContractOptions.length > 0) {
-              this.selectedFilteredContract = this.filteredContractOptions[0].name;
-              this.errors.selectedFilteredContract = undefined;
-          }
-
-          //changeName As per Contractor Change
-          let changeNameAsperContractorChange =storedContractsList
-          .filter((contract: any) => contract.fullName === this.selectedContract.fullName && contract.contracts.includes('Active'));       
-
-          if(changeNameAsperContractorChange !=undefined && changeNameAsperContractorChange[0] != undefined){
-            this.firstnamefor = changeNameAsperContractorChange[0].conFirstName;
-            this.lastnamefor = changeNameAsperContractorChange[0].conLastName;
-
-            console.log(this.firstnamefor);
-            console.log(this.lastnamefor);
-          }
-          // else{          
-          //   let filertR = storedContractsList.filter((contract: any) => contract.fullName === this.selectedContract.fullName);
-          //   if(filertR.length>0){
-          //     let resultFilter =filertR.filter((c: any) =>c.contracts.includes('Active'));
-          //     if(resultFilter.length>0){
-          //       this.IsContractIsActiveOrNot = 'Contract is not active.';
-          //     }
-          //   }
-          // }
-    }
-}
-
- // Clear validation error for a specific field
  clearValidation(field: string) {
   if ((this as any)[field]?.trim() !== '') {
     this.errors[field] = null;
@@ -237,17 +123,18 @@ export class RemittancePopupComponent implements OnInit {
 onSkip(){
 
   const formData = {
-    RowId: this.id,
-    FirstName: this.firstnamefor,
-    LastName: this.lastnamefor,
-    StartDate: this.startdate,
-    EndDate: this.enddate,
-    GroupNewId: this.groupNewId,
+    Id: this.id,
+    InvoiceAmount: this.InvoiceAmount,
+    PaidAmount: this.paidAmount,
+    InvoiceNumber: this.invoiceNumber,
+    SelfBillInvoiceNumber: this.selfbillinvoice,
+    InvoiceDate: this.invoiceDate,
+    DueDate: this.duedate,
     IsSkip:true
   };
  
 
-  const apiUrl = environment.API_BASE_URL+'OCRAI/ValidateAndMapToContractorContract';
+  const apiUrl = environment.API_BASE_URL+'OCRAI/ValidateRemittanceInvoice';
     this.http.post<any>(apiUrl, formData).subscribe({
       next: (response) => {
         if(response.data.resultTable.length >0){
@@ -256,8 +143,6 @@ onSkip(){
         }
       },
       error: (error) => {
-        //console.error('API Error:', error);
-        //alert('There was an error submitting the form. Please try again.');
         this.notificationService.showNotification(
           'Unable to complete the skip action. Please retry.',
           'ERROR',
@@ -276,239 +161,101 @@ onSubmit(form: any): void {
   const errors: any = {};
 
   
-  if (!this.selectedContract) {
-    errors.selectedContract = 'AFS Contractor is required.';
-    isValid = false;
-  }
-
-  if (!this.selectedFilteredContract) {
-    errors.selectedFilteredContract = 'AFS Contract is required.';
-    isValid = false;
-  }
-
-  // if (!this.firstnamefor || this.firstnamefor.trim() === '') {
-  //   errors.firstName = 'First Name is required.';
-  //   isValid = false;
-  // }
-
-  // if (!this.lastnamefor || this.lastnamefor.trim() === '') {
-  //   errors.lastName = 'Last Name is required.';
-  //   isValid = false;
-  // }
+  
 
   if (!this.paidAmount || this.paidAmount.trim() === '') {
     errors.paidAmount = 'paid Amount is required.';
     isValid = false;
   }
+
   if (!this.InvoiceAmount || this.InvoiceAmount.trim() === '') {
     errors.InvoiceAmount = 'Invoice Amount is required.';
     isValid = false;
   }
 
-  if (!this.totalAmount || this.totalAmount.trim() === '') {
-    errors.totalAmount = 'total Amount is required.';
-    isValid = false;
-  }
   
-
-
-  if (!this.startdate || this.startdate.trim() === '') {
-    errors.startDate = 'Start Date is required.';
-    isValid = false;
-  }
-
-  if (!this.enddate || this.enddate.trim() === '') {
-    errors.endDate = 'End Date is required.';
-    isValid = false;
-  }
-
-  if (this.startdate && this.enddate) {
-    const startDateObj = new Date(this.startdate);
-    const endDateObj = new Date(this.enddate);
-
-    if (startDateObj > endDateObj) {
-      errors.dateComparison = 'Start Date cannot be greater than End Date.';
-      isValid = false;
-    }
-  }
-  this.errors = errors; // Assign errors to the class property
-  //alert(form);
+  this.errors = errors;
+  
 
   if (isValid) {
     const formData = {
-      RowId: this.id,
-      FirstName: this.firstnamefor,
-      LastName: this.lastnamefor,
-      StartDate: this.startdate,
-      EndDate: this.enddate,
-      GroupNewId: this.groupNewId,
-      IsSkip:false
+      Id: this.id,
+      InvoiceAmount: this.InvoiceAmount,
+      PaidAmount: this.paidAmount,
+      InvoiceNumber: this.invoiceNumber,
+      SelfBillInvoiceNumber: this.selfbillinvoice,
+      InvoiceDate: this.invoiceDate,
+      DueDate: this.duedate,
+      IsSkip: false,
     };
-
+  
     console.log('formData:', formData);
-
-    //const apiUrl = 'https://localhost:44337/api/OCRAI/ValidateAndMapToContractorContract';
-    const apiUrl = environment.API_BASE_URL+'OCRAI/ValidateAndMapToContractorContract';
+  
+    const apiUrl = environment.API_BASE_URL + 'OCRAI/ValidateRemittanceInvoice';
     this.http.post<any>(apiUrl, formData).subscribe({
       next: (response) => {
-        switch (response.data.validationResult) {
-          case -1:
-            //alert('Error occurred in validation process.');
-
-            this.notificationService.showNotification(
-              'Error occurred in validation process.',
-              'ERROR',
-              'error',
-              () => {
-                console.log('OK clicked!'); // Callback logic
+        if (response.data.validationResult === 1) {
+          //Success case
+          this.notificationService.showNotification(
+            'The records have been successfully validated.',
+            'INFORMATION',
+            'success',
+            () => {
+              if (response.data.resultTable.length > 0) {
+                this.fetchNextRecord(response.data.resultTable[0]);
               }
-            );
-            break;
-  
-          case 1:
-            //alert('No row validated.');
-            //this.fetchNextRecord(response.data.resultTable[0]);
-            this.notificationService.showNotification(
-              'No row validated.',
-              'INFORMATION',
-              'success',
-              () => {
-                console.log('OK clicked 1'); // Callback logic
-                console.log('response');
-                console.log(response);
-                //this.fetchNextRecord(response.data.resultTable[0]);
-                if(response.data.resultTable.length >0){
-                  this.fetchNextRecord(response.data.resultTable[0]);
-                }
-              }
-            );
-            break;
-  
-          case 2:
-            //alert('The records have been successfully validated and moved.');
-            //this.fetchNextRecord(response.data.resultTable[0]);
-            this.notificationService.showNotification(
-              'The records have been successfully validated and moved.',
-              'INFORMATION',
-              'success',
-              () => {
-                console.log('OK clicked 2'); // Callback logic
-                console.log('response');
-                console.log(response);
-                //this.fetchNextRecord(response.data.resultTable[0]);
-                if(response.data.resultTable.length >0){
-                  this.fetchNextRecord(response.data.resultTable[0]);
-                }
-              }
-            );
-            break;
-  
-          case 3:
-            //alert('Error in validation process.');
-            //this.fetchNextRecord(response.data.resultTable[0]);
-            this.notificationService.showNotification(
-              'Error in validation process.',
-              'ERROR',
-              'error',
-              () => {
-                console.log('OK clicked 3'); // Callback logic
-                console.log('response');
-                console.log(response);
-                //this.fetchNextRecord(response.data.resultTable[0]);
-                if(response.data.resultTable.length >0){
-                  this.fetchNextRecord(response.data.resultTable[0]);
-                }
-              }
-            );
-            break;
-  
-          case 4:
-            //alert('The records have been successfully validated and moved.');
-            //this.fetchNextRecord(response.data.resultTable[0]);
-            this.notificationService.showNotification(
-              'The records have been successfully validated and moved.',
-              'INFORMATION',
-              'success',
-              () => {
-                console.log('OK clicked 4'); // Callback logic
-                console.log('response' + response.data.resultTable.length);
-                console.log(response);
-                if(response.data.resultTable.length >0){
-                  this.fetchNextRecord(response.data.resultTable[0]);
-                }
-              }
-            );
-            break;
-
-  
-          default:
-            this.notificationService.showNotification(
-              'Unhandled validation result:',
-              'WARNING',
-              'Warning',
-              () => {
-                console.log('OK clicked default'); 
-              }
-            );
-            //console.warn('Unhandled validation result:', response.data.validationResult);
-            break;
+            }
+          );
+          
+        } else {
+          
+          this.notificationService.showNotification(
+            'Error occurred during validation.',
+            'ERROR',
+            'error',
+            () => {
+              console.log('OK clicked - Validation error');
+              console.log('response:', response);
+            }
+          );
         }
       },
       error: (error) => {
-        //console.error('API Error:', error);
-        //alert('There was an error submitting the form. Please try again.');
+        // API Error handling
         this.notificationService.showNotification(
           'There was an error submitting the form. Please try again.',
           'ERROR',
           'error',
           () => {
-            console.log('OK clicked error'); // Callback logic
+            console.log('OK clicked - API error');
+            console.error('API Error:', error);
           }
         );
       },
     });
-  } 
-  // else {
-  //   alert('Please fill out all required fields.');
-  // }
+  }
 }
 
 fetchNextRecord(data: any): void {
-console.log("this.id" + this.id);
-console.log(data);
+  debugger; 
   this.id = data.ID;
   this.contractorname ='';
   this.contractorname = data.ContractorName || '';
-  this.afscontractor = data.afscontractor || '';
-  this.firstnamefor = data.CFirstName || '';
-  this.lastnamefor = data.CLastName || '';
-  this.startdate = data.StartDate || '';
-  this.enddate = data.EndDate || '';
-  this.totalAmount = data.TotalTaxAmount?.includes(' ') ? data.TotalTaxAmount.split(' ')[0] : data.TotalTaxAmount?.trim() || '';
-  this.invoiceNumber = data.invoiceNumber || '';
-  this.invoiceDate = data.SelfBillInvoiceDate || '';
-  this.groupNewId = data.GROUP_NEWID || '';
-  this.gridCtcCode = data.Contract_CtcCode || 0;
+  this.currencytype = data.CurrencyType || '';
+  this.invoiceNumber = data.InvoiceNumber || '';
+  this.selfbillinvoice = data.SelfBillInvoiceNo || '';
+  this.duedate = data.DueDate || '';
+  this.paidAmount = data.PaidAmount.includes(' ') ? data.PaidAmount.split(' ')[0] : data.PaidAmount.trim();
+  this.InvoiceAmount = data.InvoiceAmount || '';
+  this.invoiceDate = data.InvoiceDate || '';
+  this.gridCtcCode = data.contract_CtcCode || 0;
   this.imageName = data.InvoiceFilePath;
-  //this.resetAFSContractorDropdown();
-  //this.fetchContractorOptions();
-  //this.resetAFSContractDropdown();
   this.setImagePath(this.imageName, this.uplodedPDFFile);
   this.IsContractIsActiveOrNot = data.ErrorMessage;
   
-  // alert(this.data.errorMessage);
-  // alert(this.IsContractIsActiveOrNot);
 }
 
-resetAFSContractorDropdown(): void {
-  this.selectedContract = ''; // Clear the selected value
-  this.contractorOptions = []; // Clear the list of options
-}
 
-resetAFSContractDropdown(): void {
-  this.selectedFilteredContract = ''; // Clear the selected value
-  this.filteredContractOptions = []; // Clear the list of options
-}
   submitForm(): void {
     if (this.myForm) {
       this.myForm.ngSubmit.emit();
@@ -517,23 +264,6 @@ resetAFSContractDropdown(): void {
 
 
   isModalOpen = true; // Controls modal visibility
-
-  // Method to close modal
-  // closeModal() {
-  //   // Hide the modal using Bootstrap's class manipulation
-  //   const modal = document.getElementById('exampleModal');
-  //   if (modal) {
-  //     modal.classList.remove('d-block');
-  //     modal.classList.add('d-none'); // Optional: Add a 'hidden' style
-  //   }
-
-  //   // Reset opacity if modified
-  //   const modalContent = modal?.querySelector('.modal-content');
-  //   if (modalContent) {
-  //     modalContent.setAttribute('style', '');
-  //   }
-    
-  // }
 
   closeDialog(): void {
     this.dialogRef.close(); // Closes the dialog
@@ -547,9 +277,9 @@ resetAFSContractDropdown(): void {
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = 'file.pdf'; // Specify the file name
+      link.download = 'file.pdf'; 
       link.click();
-      window.URL.revokeObjectURL(url); // Clean up
+      window.URL.revokeObjectURL(url); 
     });
   }
 
