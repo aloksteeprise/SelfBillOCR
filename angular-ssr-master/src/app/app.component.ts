@@ -25,6 +25,7 @@ export class AppComponent implements OnInit {
   username: string | null = null;
   token: string | null = null;
   selfBillNotificationLink: string | null = null;
+  remittanceNotificationLink : string | null = null;
 
   constructor(
 
@@ -62,6 +63,7 @@ export class AppComponent implements OnInit {
           console.log('Token exists. Updating state.');
           this.token = urlToken;
           this.selfBillNotificationLink = `/afsselfbillnotification?token=${this.token}`;
+          this.remittanceNotificationLink = `/remittancenotification?token=${this.token}`;         
           this.sendLinkViaEmail();
         }
       });
@@ -86,9 +88,10 @@ export class AppComponent implements OnInit {
   }
 
   sendLinkViaEmail() {
-    debugger;
-    const emailBody = `Access the Self Bill Notification Component here: ${window.location.origin}${this.selfBillNotificationLink}`;
-    console.log(emailBody);
+    const selfBillNotification = `Access the Self Bill Notification Component here: ${window.location.origin}${this.selfBillNotificationLink}`;
+    const remittanceNotification = `Access the Remittance Notification Component here: ${window.location.origin}${this.remittanceNotificationLink}`;
+    console.log(selfBillNotification);
+    console.log(remittanceNotification);
   }
 
   getTruncatedUsername(): string {

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from '../constant/api-constants';
 import { Router, ActivatedRoute } from '@angular/router';
+import { NotificationPopupService } from '../notification-popup/notification-popup.service';
 
 @Component({
   selector: 'app-afsselfbillnotification',
@@ -42,8 +43,6 @@ export class AfsselfbillnotificationComponent implements OnInit {
   isFileUploadVisible: boolean = true;
   isPdf: boolean = false;
   url: SafeResourceUrl = '';
-  isValidToken: boolean = true;
-  errorMessage: string = '';
   token: string | null = null;
   errors: any = {};
   loading: boolean = false;
@@ -53,7 +52,8 @@ export class AfsselfbillnotificationComponent implements OnInit {
     private http: HttpClient,
     private sanitizer: DomSanitizer,
     private router: Router,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    private notificationService: NotificationPopupService) {
     // this.setImagePath();
     //this.setImagePath(data.invoiceFilePath, data.invoiceFileName);
   }
@@ -76,8 +76,14 @@ export class AfsselfbillnotificationComponent implements OnInit {
         this.token = urlToken;
         this.validateToken();
       } else {
-        this.isValidToken = false;
-        this.errorMessage = 'Authentication Failed: Please upload a valid PDF file to proceed.';
+        this.notificationService.showNotification(             
+          'Token is missing. Please provide a valid token to proceed.',
+          'Token Error',
+          'error',
+          () => {
+            console.log('OK clicked 1');
+          }
+        );
       }
     });
   }
@@ -93,15 +99,33 @@ export class AfsselfbillnotificationComponent implements OnInit {
       const objectUrl = URL.createObjectURL(file);
       this.url = this.sanitizer.bypassSecurityTrustResourceUrl(objectUrl);
     } else {
-      this.isValidToken = false;
-      this.errorMessage = 'Authentication Failed: Please upload a valid PDF file to proceed.';     
+      this.notificationService.showNotification(             
+        'Please upload a valid PDF file to proceed.',
+        'Unsupported File Type',
+        'error',
+        () => {
+          const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+          if (fileInput) {
+            fileInput.value = '';
+          }
+        this.selectedFile = null;
+        this.isFileUploadVisible = true;
+          console.log('OK clicked 2');
+        }
+      );
     }
   }
 
   validateToken(): void {
     if (!this.token) {
-      this.isValidToken = false;
-      this.errorMessage = 'Authentication Failed: Token is missing. Please provide a valid token to proceed.';
+      this.notificationService.showNotification(             
+        'Token is missing. Please provide a valid token to proceed.',
+        'Token Error',
+        'error',
+        () => {
+          console.log('OK clicked 3');
+        }
+      );
       return;
     }
 
@@ -112,39 +136,35 @@ export class AfsselfbillnotificationComponent implements OnInit {
           this.loading = false;
           if (response) {
             this.isFileUploadVisible = true;
-            this.isValidToken = true;
-            this.errorMessage = '';
           } else {
-            this.isValidToken = false;
-            this.errorMessage = 'Authentication Failed:  The token provided is invalid or has expired. Please provide a valid token to proceed.';
+            this.notificationService.showNotification(             
+              'The token provided is invalid or has expired. Please provide a valid token to proceed.',
+              'Authentication Error',
+              'error',
+              () => {
+                this.showErrorLabel = true; 
+                this.isFileUploadVisible = false;
+                console.log('OK clicked 4');
+              }
+            );
           }
         },
         (error) => {
           this.loading = false;
           this.isFileUploadVisible = false;
-          this.errorMessage = 'Authentication Failed: ' + error.statusText ;
+          //alert(error.statusText);
+          // this.notificationService.showNotification(             
+          //   error.statusText,
+          //   'Upload Failed',
+          //   'error',
+          //   () => {
+          //     console.log('OK clicked 5');
+          //   }
+          // );
         }
       );
   }
 
-  clearValidation(field: string) {
-    if ((this as any)[field]?.trim() !== '') {
-      this.errors[field] = null;
-    }
-  }
-
-  // onSkip(){
-  //   this.isFileUploadVisible = true;
-  //   this.isPopupVisible = false;
-  // }
-
-  // onImageLoad(event: Event): void {
-  //   const imgElement = event.target as HTMLImageElement;
-
-  //   if (imgElement && imgElement.naturalWidth) {
-  //     this.imageWidth = imgElement.naturalWidth;
-  //   }
-  // }
 
   onUpload(): void {
     if (this.selectedFile) {
@@ -152,7 +172,7 @@ export class AfsselfbillnotificationComponent implements OnInit {
       fileData.append('file', this.selectedFile, this.selectedFile.name);
       //fileData.append('token', this.token);
 
-      this.http.post<any>('https://localhost:44337/api/SelfBillNotification/GetSelfBillData', fileData).subscribe(
+      this.http.post<any>('https://localhost:44337/api/SelfBillNotification/UploadSelfBillNotification', fileData).subscribe(
         (response) => {
           // this.id = response.id || '';
           // this.contractorName = response.contractorName || '';
@@ -177,36 +197,58 @@ export class AfsselfbillnotificationComponent implements OnInit {
             fileInput.value = '';
             this.url = '';
           }
-          this.isValidToken = false;
-          this.errorMessage = 'Upload Successful: Your file has been uploaded successfully!';
+          this.notificationService.showNotification(             
+            'Your file has been uploaded successfully!',
+            'INFORMATION',
+            'success',
+            () => {
+              console.log('OK clicked 5');
+            }
+          );
         },
         (error) => {
-          this.isValidToken = false;
-          this.errorMessage = 'Authentication Failed: Something went wrong while uploading your file. Please try again.';
+          this.notificationService.showNotification(             
+            'Something went wrong while uploading your file. Please try again.',
+            'Processing Error',
+            'error',
+            () => {
+              console.log('OK clicked 6');
+            }
+          );
         }
       );
     } else {
-      this.isValidToken = false;
-      this.errorMessage = 'Authentication Failed: Please select a file before proceeding.';
+      this.notificationService.showNotification(             
+        'Please select a file before proceeding.',
+        'File Required',
+        'error',
+        () => {
+          console.log('OK clicked 7');
+        }
+      );
     }
   }
-    closeErrorPopup(): void {
-      if(this.errorMessage == "Authentication Failed:  The token provided is invalid or has expired. Please provide a valid token to proceed."){
-        this.showErrorLabel = true; 
-        this.isValidToken = true;
-        this.isFileUploadVisible = false;
-      }
-      else{
-        const fileInput = document.getElementById('fileInput') as HTMLInputElement;
-          if (fileInput) {
-            fileInput.value = '';
-          }
-        this.selectedFile = null;
-        this.isValidToken = true;
-        this.isFileUploadVisible = true;
-      }
   }
 
+    // clearValidation(field: string) {
+  //   if ((this as any)[field]?.trim() !== '') {
+  //     this.errors[field] = null;
+  //   }
+  // }
+
+  // onSkip(){
+  //   this.isFileUploadVisible = true;
+  //   this.isPopupVisible = false;
+  // }
+
+  // onImageLoad(event: Event): void {
+  //   const imgElement = event.target as HTMLImageElement;
+
+  //   if (imgElement && imgElement.naturalWidth) {
+  //     this.imageWidth = imgElement.naturalWidth;
+  //   }
+  // }
+  
   // fetchContractorOptions(): void {
 
   //   const apiUrl = environment.API_BASE_URL+'OCRAI/GetContractorContractListByConName';
@@ -488,4 +530,3 @@ export class AfsselfbillnotificationComponent implements OnInit {
   //   }
   // }
 
-}

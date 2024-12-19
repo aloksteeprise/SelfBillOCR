@@ -1,4 +1,4 @@
-
+/* 
 .confirmation-wrapper {
   position: fixed;
   top: 0;
@@ -24,7 +24,6 @@
 }
 
 .confirmation-header {
-  /* font-weight: bold; */
   font-size: 15px;
   margin-bottom: 20px;
   text-align: center;
@@ -67,7 +66,7 @@
     opacity: 1;
     transform: scale(1);
   }
-}
+} */
 
 
 /* .form-section {
