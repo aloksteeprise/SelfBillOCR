@@ -181,6 +181,7 @@ onSkip() {
             'info',
             () => {
               console.log('OK clicked all complete'); // Callback logic
+              this.dialogRef.close();
             }
           );
         } else {
@@ -193,6 +194,10 @@ onSkip() {
           'INFO',
           'info',
           () => {
+
+            
+              this.dialogRef.close();
+          
             console.log('OK clicked no records'); // Callback logic
           }
         );
@@ -324,7 +329,7 @@ fetchNextRecord(data: any): void {
   isModalOpen = true; // Controls modal visibility
 
   closeDialog(): void {
-    this.dialogRef.close(); // Closes the dialog
+    this.dialogRef.close();
   }
 
   downloadPdfFile(data: any) {
