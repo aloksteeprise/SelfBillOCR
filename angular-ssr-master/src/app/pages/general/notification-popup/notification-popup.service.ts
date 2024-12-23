@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 interface NotificationData {
   message: string;
-  header?: string;
-  type?: string; // e.g., success, error, warning
+  header?: string; // Default: 'Alert'
+  type?: string;   // Default: 'info' (e.g., success, error, warning)
   callback?: () => void; // Optional callback function
 }
 
@@ -12,9 +12,16 @@ interface NotificationData {
   providedIn: 'root',
 })
 export class NotificationPopupService {
+  private notificationVisibility = new BehaviorSubject<boolean>(false);
   private notificationSubject = new Subject<NotificationData>();
+
+  // Exposed observables
+  notificationVisibility$ = this.notificationVisibility.asObservable();
   notification$ = this.notificationSubject.asObservable();
 
+  /**
+   * Displays a notification with specified message, header, type, and an optional callback.
+   */
   showNotification(
     message: string,
     header: string = 'Alert',
@@ -22,11 +29,22 @@ export class NotificationPopupService {
     callback?: () => void
   ) {
     this.notificationSubject.next({ message, header, type, callback });
+    this.setNotificationVisibility(true);
   }
 
+  /**
+   * Sets the visibility of the notification popup.
+   */
+  setNotificationVisibility(isVisible: boolean) {
+    this.notificationVisibility.next(isVisible);
+  }
+
+  /**
+   * Executes the callback function if provided.
+   */
   triggerCallback(callback?: () => void) {
     if (callback) {
-      callback(); // Execute the callback function if provided
+      callback();
     }
   }
 }

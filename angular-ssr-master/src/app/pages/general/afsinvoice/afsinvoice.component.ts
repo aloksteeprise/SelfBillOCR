@@ -45,13 +45,14 @@ export class AfsinvoiceComponent implements OnInit {
   pdfFileName:string="";
   uplodedPDFFile:string="";
   loading: boolean = false;
+  isNotificationVisible: boolean = false
 
 
   constructor(
     private dialogRef: MatDialogRef<AfsinvoiceComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private http: HttpClient, // Injecting HttpClient service
-    private notificationService: NotificationPopupService,
+    public notificationService: NotificationPopupService,
     private downloadPdfService: DownloadPdfService
   ) 
   {
@@ -62,14 +63,14 @@ export class AfsinvoiceComponent implements OnInit {
     
     this.imageName = filePath;
     this.uplodedPDFFile =pdfFile;
-    this.thumbImage = `assets/documents/pdf/${this.imageName}`;
-    this.fullImagePath = `assets/documents/pdf/${this.imageName}`;
+    // this.thumbImage = `assets/documents/pdf/${this.imageName}`;
+    // this.fullImagePath = `assets/documents/pdf/${this.imageName}`;
     
     this.pdfFileName =`assets/documents/processed-pdf/${this.uplodedPDFFile}`;
 
     //image with good readibility
-    // this.thumbImage = `assets/documents/pdf/La fosse - SB-209461_Image20241126_120950.png`;
-    // this.fullImagePath = `assets/documents/pdf/La fosse - SB-209461_Image20241126_120950.png`;
+    this.thumbImage = `assets/documents/pdf/La fosse - SB-209461_Image20241126_120950.png`;
+    this.fullImagePath = `assets/documents/pdf/La fosse - SB-209461_Image20241126_120950.png`;
 
     // this.thumbImage = `assets/documents/pdf/invoice_18_04_2024_2_Image20241129_122116.png`;
     // this.fullImagePath = `assets/documents/pdf/invoice_18_04_2024_2_Image20241129_122116.png`;
@@ -294,9 +295,7 @@ this.http.post<any>(apiUrl, { CtcCode: this.conCode }).subscribe(
 
 onSkip() {
   this.loading = true;
-debugger;
- 
-  this.errors = {};
+  this.notificationService.setNotificationVisibility(true);
 
   const formData = {
     RowId: this.id,
@@ -322,10 +321,11 @@ debugger;
             'success',
             () => {
               this.dialogRef.close();
+              debugger
+              this.notificationService.setNotificationVisibility(false);
             }
           );
         } else {
-          
           this.fetchNextRecord(nextRecord);
         }
       } else {
@@ -335,6 +335,7 @@ debugger;
           'info',
           () => {
             this.dialogRef.close();
+            this.notificationService.setNotificationVisibility(false);
           }
         );
       }
@@ -346,12 +347,13 @@ debugger;
         'ERROR',
         'error',
         () => {
-          console.log('Error occurred during skip action');
+          this.notificationService.setNotificationVisibility(false);
         }
       );
     },
   });
 }
+
 
 
 
@@ -505,6 +507,7 @@ onSubmit(form: any): void {
                 if(response.data.resultTable.length >0){
                   this.fetchNextRecord(response.data.resultTable[0]);
                 }
+                this.notificationService.setNotificationVisibility(false);
               }
             );
             break;

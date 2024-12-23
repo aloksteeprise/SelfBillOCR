@@ -177,7 +177,7 @@ onSkip() {
         if (nextRecord.Message === 'All rows complete') {
           this.notificationService.showNotification(
             'All records have been processed.',
-            'INFO',
+            'INFORMATION',
             'info',
             () => {
               console.log('OK clicked all complete'); // Callback logic

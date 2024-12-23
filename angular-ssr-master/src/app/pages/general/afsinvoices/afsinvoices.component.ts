@@ -51,9 +51,10 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   tokenData: string = '';
   token: string = '';
   loading: boolean = false;
+  isNotificationVisible: boolean = false;
   
 
-  constructor(private apiService: ApiService, private dialog: MatDialog,  private notificationService: NotificationPopupService,private http: HttpClient ) { }
+  constructor(private apiService: ApiService, private dialog: MatDialog,  public notificationService: NotificationPopupService,private http: HttpClient ) { }
 
   ngOnInit() {
 
@@ -235,66 +236,46 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
       () => {
         console.log('Yes action clicked!');
         this.BatchValidate();
-
       },
       () => {
         console.log('No action clicked!');
       }
     );
   }
-
-
-  BatchValidate(){
- 
-    const apiUrl = environment.API_BASE_URL+'OCRAI/SelfBillBatchValidate';
-    //alert(apiUrl);
-      this.http.post<any>(apiUrl, {}).subscribe({
-        next: (response) => {
-         
-          console.log(response);
-          if(response && response.data && response.data.length >0 && response.data[0].status ==4){
-
-            console.log(response && response.data && response.data.length >0 && response.data[0].status ==4,)
-            
-            // console.log('Calling showNotification...');
-            this.notificationService.showNotification(
-              
-              'Records have been validated and processed successfully.',
-              'INFORMATION',
-              'success',
-              () => {
-                console.log('OK clicked 4'); // Callback logic
-              }
-            );
-       
-            this.ClearSearch();
-            
-            // this.ClearSearch();
-            // this.notificationService.showNotification(
-            //   'Records have been processed successfully.',
-            //   'INFORMATION',
-            //   'success',
-            //   () => {
-            //     console.log('success'); // Callback logic                
-            //   }
-            // );
-          }
-        },
-        error: (error) => {
-          //debugger;
-          //console.error('API Error:', error);
-          //alert('There was an error submitting the form. Please try again.');
+  
+  BatchValidate() {
+    const apiUrl = environment.API_BASE_URL + 'OCRAI/SelfBillBatchValidate';
+    this.notificationService.setNotificationVisibility(true);
+  
+    this.http.post<any>(apiUrl, {}).subscribe({
+      next: (response) => {
+        if (response && response.data && response.data.length > 0 && response.data[0].status === 4) {
           this.notificationService.showNotification(
-            'Unable to complete the skip action. Please retry.',
-            'ERROR',
-            'error',
+            'Records have been validated and processed successfully.',
+            'INFORMATION',
+            'success',
             () => {
-              console.log('OK clicked error'); // Callback logic
+              console.log('OK clicked 4');
+              debugger
+              this.notificationService.setNotificationVisibility(false); // Hide after OK
             }
           );
-        },
-      });
+        }
+      },
+      error: (error) => {
+        this.notificationService.showNotification(
+          'Unable to complete the action. Please retry.',
+          'ERROR',
+          'error',
+          () => {
+            console.log('Error callback');
+            this.notificationService.setNotificationVisibility(false); // Hide after OK
+          }
+        );
+      },
+    });
   }
+  
 
 
 }
