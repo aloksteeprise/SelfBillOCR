@@ -84,7 +84,7 @@ export class AfsinvoiceComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeFormData();
-    this.fetchContractorOptions(); // Fetch API data for dropdown
+    this.fetchContractorOptions(); 
   }
 
   initializeFormData(): void {
@@ -292,14 +292,12 @@ this.http.post<any>(apiUrl, { CtcCode: this.conCode }).subscribe(
   }
 }
 
-onSkip(){
-  this.loading =true;
-// for removing the error messgaes on skip button
-  const errors: any = {};
-  // errors.selectedContract = '';
-  // errors.startDate = '';
-  // errors.endDate = '';
-  this.errors = errors;
+onSkip() {
+  this.loading = true;
+debugger;
+ 
+  this.errors = {};
+
   const formData = {
     RowId: this.id,
     FirstName: this.firstnamefor,
@@ -307,34 +305,55 @@ onSkip(){
     StartDate: this.startdate,
     EndDate: this.enddate,
     GroupNewId: this.groupNewId,
-    IsSkip:true
+    IsSkip: true,
   };
- 
 
-  const apiUrl = environment.API_BASE_URL+'OCRAI/ValidateAndMapToContractorContract';
-    this.http.post<any>(apiUrl, formData).subscribe({
-      next: (response) => {
-        this.loading =false;
-        if(response.data.resultTable.length >0){
-          //debugger;
-          this.fetchNextRecord(response.data.resultTable[0]);
+  const apiUrl = environment.API_BASE_URL + 'OCRAI/ValidateAndMapToContractorContract';
+  this.http.post<any>(apiUrl, formData).subscribe({
+    next: (response) => {
+      this.loading = false;
+
+      if (response.data.resultTable.length > 0) {
+        const nextRecord = response.data.resultTable[0];
+        if (nextRecord.Message === 'All rows complete') {
+          this.notificationService.showNotification(
+            'All records have been processed.',
+            'INFORMATION',
+            'success',
+            () => {
+              this.dialogRef.close();
+            }
+          );
+        } else {
+          
+          this.fetchNextRecord(nextRecord);
         }
-      },
-      error: (error) => {
-        this.loading =false;
-        //console.error('API Error:', error);
-        //alert('There was an error submitting the form. Please try again.');
+      } else {
         this.notificationService.showNotification(
-          'Unable to complete the skip action. Please retry.',
-          'ERROR',
-          'error',
+          'No more records to process.',
+          'INFO',
+          'info',
           () => {
-            console.log('OK clicked error'); // Callback logic
+            this.dialogRef.close();
           }
         );
-      },
-    });
+      }
+    },
+    error: (error) => {
+      this.loading = false;
+      this.notificationService.showNotification(
+        'Unable to complete the skip action. Please retry.',
+        'ERROR',
+        'error',
+        () => {
+          console.log('Error occurred during skip action');
+        }
+      );
+    },
+  });
 }
+
+
 
 onSubmit(form: any): void {
   this.submitted = true; // Mark the form as submitted
