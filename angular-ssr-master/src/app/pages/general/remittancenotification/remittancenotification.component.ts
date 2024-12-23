@@ -130,7 +130,7 @@ export class RemittancenotificationComponent implements OnInit  {
       const fileData = new FormData();
       fileData.append('file', this.selectedFile, this.selectedFile.name);
 
-      this.http.post<any>('https://localhost:44337/api/RemittanceNotification/UploadRemittanceNotification', fileData).subscribe(
+      this.http.post<any>('https://localhost:44337/api/RemittanceNotification/UploadRemittanceFile', fileData).subscribe(
         (response) => {
 
           this.selectedFile = null;

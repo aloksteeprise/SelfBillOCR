@@ -172,7 +172,7 @@ export class AfsselfbillnotificationComponent implements OnInit {
       fileData.append('file', this.selectedFile, this.selectedFile.name);
       //fileData.append('token', this.token);
 
-      this.http.post<any>('https://localhost:44337/api/SelfBillNotification/UploadSelfBillNotification', fileData).subscribe(
+      this.http.post<any>('https://localhost:44337/api/SelfBillNotification/UploadSelfBillFile', fileData).subscribe(
         (response) => {
           // this.id = response.id || '';
           // this.contractorName = response.contractorName || '';

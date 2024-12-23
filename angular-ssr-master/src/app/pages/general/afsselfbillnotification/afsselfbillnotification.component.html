@@ -9,21 +9,19 @@
     </nav>
   </header>
 </div>
-<div class="d-flex align-items-center justify-content-center bg-light" style="height: 90vh">
-  <div style="position: absolute;top: 90px;left: 150px;z-index: 9999;padding: 17px;background-color: white;" *ngIf="showErrorLabel">
-    <label id="lblError"  style="color: red; font-size: 1rem;">
+<div class="d-flex align-items-center justify-content-center bg-light"style="height: 96vh">
+  <div style="position: absolute;top: 90px;z-index: 9999;padding: 17px;" *ngIf="showErrorLabel">
+    <label id="lblError"  style="color: red; font-size: x-large;">
       Authentication Error: The token provided is invalid or has expired. Please provide a valid token to proceed.
     </label>
   </div>
-  <div id="fileUpload" *ngIf="isFileUploadVisible" class="p-4 border rounded shadow-lg"
-    style="width: 30%; height: 60%; background-color: aliceblue;">
-    <h1 class="mb-4 text-center" style="color: #4CAF50; font-size: 2.5rem; font-weight: 500;">Self Bill Upload</h1>
+  <div id="fileUpload" *ngIf="isFileUploadVisible" class="p-4 border rounded shadow-lg col-lg-4"
+    style="background-color: aliceblue;">
+    <h1 class="mb-4 text-center text-success" style="font-size: 2.5rem; font-weight: 500;">Self Bill Upload</h1>
+    <p class="text-muted" style="margin: 0; font-size: 0.9rem; padding-left: 5px;">PDF <span class="text-danger">*</span></p>
     <div class="mb-3">
       <input type="file" id="fileInput" (change)="onFileSelect($event)" accept=".pdf" class="form-control"
         aria-label="Choose self bill file" style="margin-bottom: 15px;">
-    </div>
-    <div>
-      <p class="text-muted" style="margin: 0; font-size: 0.9rem;">PDF <span class="text-danger">*</span></p>
     </div>
     <button type="button" (click)="onUpload()" class="btn btn-success btn-lg" style="align-self: center; float:right;">
       Upload
