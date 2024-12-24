@@ -129,7 +129,6 @@ export class AfsinvoiceComponent implements OnInit {
     
     this.http.post<any>(apiUrl, { firstNameForAFS: this.firstnamefor,lastNameForAFS:this.lastnamefor,fullName: searchFullName }).subscribe(
       (response) => {
-        //debugger;
         // Assign the list of contractors to the dropdown options
         if (response?.data?.contractsList) {
           
@@ -182,7 +181,6 @@ export class AfsinvoiceComponent implements OnInit {
   // Filter contractor data and bind it to the second dropdown
   filterContractData(): void {
     console.log('Selected Contractor:', this.selectedContract);
-    //debugger;
     // Clear the previous filtered options
     this.filteredContractOptions = [];
     this.selectedFilteredContract = '';
@@ -321,7 +319,6 @@ onSkip() {
             'success',
             () => {
               this.dialogRef.close();
-              debugger
               this.notificationService.setNotificationVisibility(false);
             }
           );

@@ -79,7 +79,6 @@ export class RemittancePopupComponent implements OnInit {
 
   initializeFormData(): void {
     if (this.data) {
-      debugger;
 
       console.log(this.data);
       
@@ -300,7 +299,6 @@ onSubmit(form: any): void {
 }
 
 fetchNextRecord(data: any): void {
-  debugger; 
   this.id = data.ID;
   this.contractorname ='';
   this.contractorname = data.ContractorName || '';

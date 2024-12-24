@@ -42,7 +42,6 @@ export class LoginComponent {
 
       return;
     }
-
     this.loginService.postData(loginData).subscribe({
       next: (response: any) => {
 

@@ -55,7 +55,6 @@ import { PaginationResponse } from './remittance';
 
     
     // getAllContractorInvoices(): Observable<Invoice[]> {
-    //   debugger;
     //   const headers = new HttpHeaders({
     //     'Accept': '*/*',
     //     'Content-Type': 'application/json'

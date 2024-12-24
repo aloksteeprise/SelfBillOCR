@@ -383,7 +383,6 @@ export class AfsselfbillnotificationComponent implements OnInit {
 
   //     this.http.post<any>(apiUrl, formData).subscribe({
   //       next: (response) => {
-  //         debugger;
   //         switch (response.data.validationResult) {
   //           case -1:
   //             this.notificationService.showNotification(
@@ -474,7 +473,6 @@ export class AfsselfbillnotificationComponent implements OnInit {
   //         }
   //       },
   //       error: (error) => {
-  //         debugger;
   //         this.notificationService.showNotification(
   //           'There was an error submitting the form. Please try again.',
   //           'ERROR',

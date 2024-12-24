@@ -65,7 +65,6 @@ export class ApiService {
       invoiceID,
       isAdminorContractor,
     };
-   //debugger;
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });

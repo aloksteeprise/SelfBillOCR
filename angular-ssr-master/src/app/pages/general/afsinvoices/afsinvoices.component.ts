@@ -256,7 +256,6 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
             'success',
             () => {
               console.log('OK clicked 4');
-              debugger
               this.notificationService.setNotificationVisibility(false); // Hide after OK
             }
           );
