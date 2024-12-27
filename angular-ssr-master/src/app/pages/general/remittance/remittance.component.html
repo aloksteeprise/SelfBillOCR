@@ -66,12 +66,17 @@
   </ng-container>
   <ng-container matColumnDef="invoiceAmount">
     <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Invoice Amount </th>
-    <td mat-cell *matCellDef="let row" style="text-align: center;"> {{row.invoiceAmount}} {{row.currencyType}}</td>
+    <td mat-cell *matCellDef="let row" style="text-align: center;">
+      {{ row.invoiceAmount ? row.invoiceAmount + ' ' + row.currencyType : '' }}
+
   </ng-container>
   <ng-container matColumnDef="paidAmount">
     <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Paid Amount </th>
-    <td mat-cell *matCellDef="let row" style="text-align: center;"> {{row.paidAmount}} {{row.currencyType}}</td>
+    <td mat-cell *matCellDef="let row" style="text-align: center;">
+      {{ row.paidAmount ? row.paidAmount + ' ' + row.currencyType : '' }}
+    </td>
   </ng-container>
+  
 
   <!-- <ng-container matColumnDef="currencyType">
     <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Currency Type </th>
