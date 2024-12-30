@@ -12,6 +12,7 @@ export class LoginComponent {
 
   visible: boolean = true;
   changetype: boolean = true;
+  loading: boolean = false;
 
   viewpass() {
 
@@ -42,6 +43,7 @@ export class LoginComponent {
 
       return;
     }
+    this.loading = true; 
     this.loginService.postData(loginData).subscribe({
       next: (response: any) => {
 
@@ -57,6 +59,7 @@ export class LoginComponent {
           this.userService.setUsername(response.data.username);
 
           this.router.navigate(['/afsinvoices']);
+          this.loading = false; 
           // this.router.navigate(['/afsinvoices']).then(() => {
           
           //   window.location.reload();
@@ -67,6 +70,7 @@ export class LoginComponent {
           console.warn('Login failed:', response.messages[0]);
 
           this.errorMessage = response.messages[0] || 'Login failed. Please try again.';
+          this.loading = false; 
         }
       },
       error: (error: any) => {
