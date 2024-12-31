@@ -1,0 +1,125 @@
+%PDF-1.3
+3 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/Contents 4 0 R>>
+endobj
+4 0 obj
+<</Length 2785>>
+stream
+2 J
+0.56 w
+BT /F1 12.0 Tf ET
+BT /F1 7.0 Tf ET
+BT 261.46 744.54 Td (TCS AP PAYMENT ADVICE) Tj ET
+BT 31.18 714.77 Td (Payment Date :) Tj ET
+BT 201.26 714.77 Td (07-OCT-24) Tj ET
+BT 31.18 700.60 Td (From :) Tj ET
+BT 201.26 700.60 Td (Tata Consultancy Services) Tj ET
+BT 31.18 686.43 Td (To :) Tj ET
+BT 201.26 686.43 Td (The Payroll Advisor B.V.) Tj ET
+BT 31.18 672.25 Td (Type :) Tj ET
+BT 201.26 672.25 Td (Quick) Tj ET
+BT 31.18 658.08 Td (Operating Unit :) Tj ET
+BT 201.26 658.08 Td (TNDL - Amsterdam) Tj ET
+BT 31.18 643.91 Td (Document Number :) Tj ET
+BT 201.26 643.91 Td (100100159466) Tj ET
+BT 31.18 629.73 Td (Payment Amount :) Tj ET
+BT 201.26 629.73 Td (81989.6) Tj ET
+BT 31.18 615.56 Td (Currency :) Tj ET
+BT 201.26 615.56 Td (EUR) Tj ET
+BT 31.18 601.39 Td (TCS Bank Account :) Tj ET
+BT 201.26 601.39 Td (*****7436) Tj ET
+BT 31.18 587.21 Td (Vendor Bank Name :) Tj ET
+BT 201.26 587.21 Td (ING Bank N.V,Rokin 90, 1012 KX Amsterdam) Tj ET
+BT 31.18 573.04 Td (Vendor Bank Acct No. :) Tj ET
+BT 201.26 573.04 Td (*************63278) Tj ET
+28.35 556.72 212.59 -14.17 re S BT 31.18 547.53 Td (Invoice Number) Tj ET
+240.94 556.72 45.35 -14.17 re S BT 243.78 547.53 Td (Invoice Date) Tj ET
+286.30 556.72 70.86 -14.17 re S BT 289.13 547.53 Td (Invoice Amt) Tj ET
+357.16 556.72 70.86 -14.17 re S BT 360.00 547.53 Td (Paid Amt) Tj ET
+428.03 556.72 113.38 -14.17 re S BT 430.87 547.53 Td (Description) Tj ET
+28.35 542.54 212.59 -14.17 re S BT 31.18 533.36 Td (206-2800) Tj ET
+240.94 542.54 45.35 -14.17 re S BT 243.78 533.36 Td (02-SEP-24) Tj ET
+286.30 542.54 70.86 -14.17 re S BT 305.68 533.36 Td (          81989.60) Tj ET
+357.16 542.54 70.86 -14.17 re S BT 376.55 533.36 Td (          81989.60) Tj ET
+428.03 542.54 m 428.03 528.37 l S 428.03 542.54 m 541.42 542.54 l S 541.42 542.54 m 541.42 528.37 l S BT 430.87 533.36 Td (Professional Charges\(Business) Tj ET
+428.03 528.37 m 428.03 514.20 l S 541.42 528.37 m 541.42 514.20 l S BT 430.87 519.18 Td (Associates\) AUG 2024 T Standard) Tj ET
+428.03 514.20 m 428.03 500.02 l S 541.42 514.20 m 541.42 500.02 l S BT 430.87 505.01 Td (Invoice  Approved by Emp ID) Tj ET
+428.03 500.02 m 428.03 485.85 l S 541.42 500.02 m 541.42 485.85 l S 428.03 485.85 m 541.42 485.85 l S BT 430.87 490.84 Td (720983 ,Approval Comments:OK) Tj ET
+BT /F2 7.0 Tf ET
+BT 413.53 461.07 Td (*Payment will be credited within 5-7 working days.) Tj ET
+BT 31.18 431.31 Td (*The Input tax credit availment is based on matching concept as per CGST Rule 36\(4\). Therefore TCS can avail of Input tax credit only if the Invoice uploaded in the) Tj ET
+BT 31.18 417.14 Td (GSTR1 filed by you matches with Invoice details submitted to TCS. The amount equivalent to GST will be withheld from amount and will get released once the) Tj ET
+BT 31.18 402.96 Td (GSTR1 reconciles.) Tj ET
+
+endstream
+endobj
+1 0 obj
+<</Type /Pages
+/Kids [3 0 R ]
+/Count 1
+/MediaBox [0 0 612.0 792.0]
+>>
+endobj
+5 0 obj
+<</Type /Font
+/BaseFont /Helvetica
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+>>
+endobj
+6 0 obj
+<</Type /Font
+/BaseFont /Helvetica-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+>>
+endobj
+2 0 obj
+<<
+/ProcSet [/PDF /Text /ImageB /ImageC /ImageI]
+/Font <<
+/F1 5 0 R
+/F2 6 0 R
+>>
+/XObject <<
+>>
+>>
+endobj
+7 0 obj
+<<
+/Producer (PL_FPDF 0.9.3 portage pour Laclasse.com par P.G. Levallois de la version 1.53 de PHP/FPDF d'Olivier Plathey.)
+/CreationDate (D:20241007162629)
+>>
+endobj
+8 0 obj
+<<
+/Type /Catalog
+/Pages 1 0 R
+/OpenAction [3 0 R /FitH null]
+/PageLayout /OneColumn
+>>
+endobj
+xref
+0 9
+0000000000 65535 f 
+0000002922 00000 n 
+0000003204 00000 n 
+0000000009 00000 n 
+0000000087 00000 n 
+0000003007 00000 n 
+0000003103 00000 n 
+0000003318 00000 n 
+0000003493 00000 n 
+trailer
+<<
+/Size 9
+/Root 8 0 R
+/Info 7 0 R
+>>
+startxref
+3596
+%%EOF
+
