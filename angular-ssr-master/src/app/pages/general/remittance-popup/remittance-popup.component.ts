@@ -37,6 +37,8 @@ export class RemittancePopupComponent implements OnInit {
   imageWidth: number = 792;
   pdfFileName:string="";
   uplodedPDFFile:string="";
+  loading: boolean = false;
+  imageHeight: number = 490;
 
 
   constructor(
@@ -63,8 +65,8 @@ export class RemittancePopupComponent implements OnInit {
 
   //Local
     // this.pdfFileName =`assets/documents/remittance/pdf/Remittanceadvice.pdf`;
-    // this.thumbImage = `assets/documents/remittance/image/100100159466-img.png`;
-    // this.fullImagePath = `assets/documents/remittance/image/100100159466-img.png`;
+    // this.thumbImage = `assets/documents/remittance/image/xyz.png`;
+    // this.fullImagePath = `assets/documents/remittance/image/xyz.png`;
   
     console.log('Thumb Image:', this.thumbImage);
     console.log('Full Image Path:', this.fullImagePath);
@@ -102,12 +104,11 @@ debugger
 
   
   onImageLoad(event: Event): void {
-    
     const imgElement = event.target as HTMLImageElement;
-
-    // Adjust the imageWidth to the actual width of the loaded image
-    if (imgElement && imgElement.naturalWidth) {
-      this.imageWidth = imgElement.naturalWidth;  // Set the image width dynamically
+  
+    if (imgElement && imgElement.naturalWidth && imgElement.naturalHeight) {
+      this.imageWidth = imgElement.naturalWidth > 792 ? imgElement.naturalWidth : 792; // Ensure a minimum width of 492
+      this.imageHeight = imgElement.naturalHeight > 492 ? imgElement.naturalHeight : 492; // Ensure a minimum height of 492
     }
   }
 
@@ -155,6 +156,9 @@ debugger
 // }
 
 onSkip() {
+  this.loading = true;
+  const errors: any = {};
+  this.errors = errors; // Assign errors to the class property
   const formData = {
     Id: this.id,
     InvoiceAmount: this.InvoiceAmount,
@@ -169,6 +173,7 @@ onSkip() {
   const apiUrl = environment.API_BASE_URL + 'OCRAI/ValidateRemittanceInvoice';
   this.http.post<any>(apiUrl, formData).subscribe({
     next: (response) => {
+      this.loading = false;
       if (response.data.resultTable.length > 0) {
         const nextRecord = response.data.resultTable[0];
 
@@ -188,6 +193,7 @@ onSkip() {
         }
       } else {
         // Handle unexpected empty result case
+        this.loading = false;
         this.notificationService.showNotification(
           'No more records to process.',
           'INFO',

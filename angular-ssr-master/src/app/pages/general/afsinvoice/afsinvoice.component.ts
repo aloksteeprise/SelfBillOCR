@@ -42,6 +42,7 @@ export class AfsinvoiceComponent implements OnInit {
   errors: any = {};
   IsContractIsActiveOrNot:any;
   imageWidth: number = 792;
+  imageHeight: number = 490;
   pdfFileName:string="";
   uplodedPDFFile:string="";
   loading: boolean = false;
@@ -171,10 +172,10 @@ export class AfsinvoiceComponent implements OnInit {
   
   onImageLoad(event: Event): void {
     const imgElement = event.target as HTMLImageElement;
-
-    // Adjust the imageWidth to the actual width of the loaded image
-    if (imgElement && imgElement.naturalWidth) {
-      this.imageWidth = imgElement.naturalWidth;  // Set the image width dynamically
+  
+    if (imgElement && imgElement.naturalWidth && imgElement.naturalHeight) {
+      this.imageWidth = imgElement.naturalWidth > 792 ? imgElement.naturalWidth : 792; // Ensure a minimum width of 492
+      this.imageHeight = imgElement.naturalHeight > 492 ? imgElement.naturalHeight : 492; // Ensure a minimum height of 492
     }
   }
 
@@ -293,7 +294,10 @@ this.http.post<any>(apiUrl, { CtcCode: this.conCode }).subscribe(
 
 onSkip() {
   this.loading = true;
+  const errors: any = {};
+  this.errors = errors; // Assign errors to the class property
   this.notificationService.setNotificationVisibility(true);
+  
 
   const formData = {
     RowId: this.id,
@@ -304,6 +308,7 @@ onSkip() {
     GroupNewId: this.groupNewId,
     IsSkip: true,
   };
+  
 
   const apiUrl = environment.API_BASE_URL + 'OCRAI/ValidateAndMapToContractorContract';
   this.http.post<any>(apiUrl, formData).subscribe({
@@ -355,7 +360,7 @@ onSkip() {
 
 
 onSubmit(form: any): void {
-  this.submitted = true; // Mark the form as submitted
+  this.submitted = true; 
   let isValid = true;
   const errors: any = {};
 

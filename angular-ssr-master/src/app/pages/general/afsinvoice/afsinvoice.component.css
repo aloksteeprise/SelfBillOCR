@@ -111,6 +111,7 @@ padding: 19px;
 
 lib-ngx-image-zoom {
   max-width: 100%;
+  max-height: 100%;
 }
 
 input::-webkit-outer-spin-button,
@@ -188,14 +189,16 @@ input[type=number] {
 
 /* / Ensure scroll container behaves dynamically / */
 .image-scroll-container {
-  overflow-x: auto;
-  overflow-y: hidden;
-  white-space: nowrap;
+  overflow-x: auto; /* Scroll horizontally if needed */
+  overflow-y: auto !important; /* Scroll vertically if needed */
+  white-space: nowrap; /* Prevent wrapping */
+  max-width: 100%; /* Limit container width */
+  max-height: 100%; /* Limit container height */
 }
 
 ::ng-deep .ngxImageZoomContainer {
-  height: 470px !important;
-  display: block;
+  /* height: 470px !important; */
+  /* display: block; */
 }
 
 ::ng-deep .ngxImageZoomFullContainer.ngxImageZoomLensEnabled {
@@ -204,6 +207,7 @@ input[type=number] {
 }
 
 /*loding image*/
+
 .loading-overlay {
   position: fixed;
   top: 0;
@@ -218,6 +222,7 @@ input[type=number] {
   z-index: 1000;
   
 }
+
 
 .loader {
   width: 50px;

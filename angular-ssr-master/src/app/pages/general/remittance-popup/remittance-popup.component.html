@@ -182,9 +182,9 @@
             </div>
 
             <div class="row mb-2 align-items-center">
-              <label for="Invoicedate" class="col-sm-5 col-form-label fontsize14">Invoice Date:</label>
+              <label for="invoiceDate" class="col-sm-5 col-form-label fontsize14">Invoice Date:</label>
               <div class="col-sm-7">
-                <input type="date" class="form-control" id="Invoicedate" name="invoiceDate" required
+                <input type="date" class="form-control" id="invoiceDate" name="invoiceDate" 
                   [(ngModel)]="invoiceDate">
               </div>
             </div>
@@ -198,6 +198,9 @@
             </div>  
             <!-- <input type="hidden" id="groupNewId" name="groupNewId" [(ngModel)]="groupNewId"> -->
             <input type="hidden" id="gridCtcCode" name="gridCtcCode" [(ngModel)]="gridCtcCode">
+            <div class="loading-overlay" *ngIf="loading">
+              <div class="loader"></div>
+            </div>
           </form>
         </div>
 
@@ -237,7 +240,7 @@
 
         <div 
           class="image-scroll-container overflow-auto" 
-          [ngStyle]="{ 'max-width': imageWidth + 'px', 'border': '2px solid #ddd' }"
+          [ngStyle]="{ 'max-width': imageWidth + 'px', 'max-height': imageHeight + 'px', 'border': '2px solid #ddd' }"
         >
 
           <lib-ngx-image-zoom 
