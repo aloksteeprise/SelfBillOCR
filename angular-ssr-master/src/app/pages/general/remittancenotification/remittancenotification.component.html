@@ -4,14 +4,14 @@
       <nav class="container" aria-label="Main navigation">
         <a class="navbar-brand" alt="Accueil" aria-label="AFS">
           <img src="./assets/params/images/logo/ganatan-logo.png" srcset="./assets/params/images/logo/ganatan-logo.png,
-        ./assets/params/images/logo/ganatan-logo@2x.png 2x" width="25" height="25" alt="Logo AFS">
+          ./assets/params/images/logo/ganatan-logo@2x.png 2x" width="25" height="25" alt="Logo AFS">
           <span class="nga-logo mx-1">AFS</span>
         </a>
       </nav>
     </header>
   </div>
-  <div class="d-flex align-items-center justify-content-center bg-light"style="height: 96vh">
-    <div style="position: absolute;top: 90px;z-index: 9999;padding: 17px;" *ngIf="showErrorLabel">
+  <div class="d-flex align-items-center justify-content-center bg-light"style="height: 96vh;">
+    <div style="position: absolute;top: 90px;z-index: 9999;padding: 17px; line-height: 35px;" *ngIf="showErrorLabel">
       <label id="lblError"  style="color: red; font-size: x-large;">
         Authentication Error: The token provided is invalid or has expired. Please provide a valid token to proceed.
       </label>

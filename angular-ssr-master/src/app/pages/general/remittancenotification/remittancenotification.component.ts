@@ -89,8 +89,11 @@ export class RemittancenotificationComponent implements OnInit  {
       return;
     }
 
-    this.http
-      .post<any>('https://localhost:44337/api/SelfBillNotification/ValidateToken', { token: this.token })
+    const apiUrl = environment.API_BASE_URL+'SelfBillNotification/ValidateToken';
+
+    //const apiUrl = 'https://localhost:44337/api/SelfBillNotification/ValidateToken';
+
+    this.http.post<any>(apiUrl, { token: this.token })
       .subscribe(
         (response) => {
           this.loading = false;
@@ -130,7 +133,11 @@ export class RemittancenotificationComponent implements OnInit  {
       const fileData = new FormData();
       fileData.append('file', this.selectedFile, this.selectedFile.name);
 
-      this.http.post<any>('https://localhost:44337/api/RemittanceNotification/UploadRemittanceFile', fileData).subscribe(
+      const apiUrl = environment.API_BASE_URL+'RemittanceNotification/UploadRemittanceFile';
+
+      //const apiUrl = 'https://localhost:44337/api/RemittanceNotification/UploadRemittanceFile';
+
+      this.http.post<any>(apiUrl, fileData).subscribe(
         (response) => {
 
           this.selectedFile = null;

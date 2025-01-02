@@ -129,8 +129,11 @@ export class AfsselfbillnotificationComponent implements OnInit {
       return;
     }
 
-    this.http
-      .post<any>('https://localhost:44337/api/SelfBillNotification/ValidateToken', { token: this.token })
+    const apiUrl = environment.API_BASE_URL+'SelfBillNotification/ValidateToken';
+
+    //const apiUrl = 'https://localhost:44337/api/SelfBillNotification/ValidateToken';
+
+    this.http.post<any>(apiUrl, { token: this.token })
       .subscribe(
         (response) => {
           this.loading = false;
@@ -172,7 +175,11 @@ export class AfsselfbillnotificationComponent implements OnInit {
       fileData.append('file', this.selectedFile, this.selectedFile.name);
       //fileData.append('token', this.token);
 
-      this.http.post<any>('https://localhost:44337/api/SelfBillNotification/UploadSelfBillFile', fileData).subscribe(
+      const apiUrl = environment.API_BASE_URL+'SelfBillNotification/ValidateToken';
+
+      //const apiUrl = 'https://localhost:44337/api/SelfBillNotification/UploadSelfBillFile';
+
+      this.http.post<any>(apiUrl, fileData).subscribe(
         (response) => {
           // this.id = response.id || '';
           // this.contractorName = response.contractorName || '';
