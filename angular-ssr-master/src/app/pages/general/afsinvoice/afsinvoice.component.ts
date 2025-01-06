@@ -358,11 +358,29 @@ onSkip() {
 
 
 
+// validateStartDate(): void {
+//   const today = new Date(this.getToday());
+//   const inputDate = new Date(this.startdate);
+
+//   if (!this.startdate) {
+//     this.errors.startDate = "Start date is required.";
+//   } else if (isNaN(inputDate.getTime())) {
+//     this.errors.startDate = "Invalid date format. Please enter a valid date.";
+//   } else if (inputDate > today) {
+//     this.errors.startDate = "Start date cannot be in the future.";
+//   } else {
+//     this.errors.startDate = null; // Clear the error
+//   }
+// }
+
 
 onSubmit(form: any): void {
   this.submitted = true; 
   let isValid = true;
   const errors: any = {};
+  const today = new Date(this.getToday());
+  const inputDate = new Date(this.startdate);
+  const inputDate2 = new Date(this.enddate);
 
   
   if (!this.selectedContract) {
@@ -388,12 +406,31 @@ onSubmit(form: any): void {
   if (!this.startdate || this.startdate.trim() === '') {
     errors.startDate = 'Start Date is required.';
     isValid = false;
+  } else if (isNaN(inputDate.getTime())) {
+    errors.startDate = 'Invalid date format. Please enter a valid date.';
+    isValid = false;
+  } else if (inputDate > today) {
+    errors.startDate = 'Start Date cannot be in the future.';
+    isValid = false;
   }
+
+
+  // if (!this.enddate || this.enddate.trim() === '') {
+  //   errors.endDate = 'End Date is required.';
+  //   isValid = false;
+  // }
 
   if (!this.enddate || this.enddate.trim() === '') {
     errors.endDate = 'End Date is required.';
     isValid = false;
+  } else if (isNaN(inputDate2.getTime())) {
+    errors.endDate = 'Invalid date format. Please enter a valid date.';
+    isValid = false;
+  } else if (inputDate2 > today) {
+    errors.endDate = 'End Date cannot be in the future.';
+    isValid = false;
   }
+
 
   if (this.startdate && this.enddate) {
     const startDateObj = new Date(this.startdate);
