@@ -81,7 +81,7 @@ export class RemittancePopupComponent implements OnInit {
 
   initializeFormData(): void {
     if (this.data) {
-debugger
+      //debugger
       console.log(this.data);
       
       this.id = this.data.id;
@@ -305,6 +305,8 @@ onSubmit(form: any): void {
 }
 
 fetchNextRecord(data: any): void {
+  console.log('fetchNextRecord');
+  console.log(data);
   this.id = data.ID;
   this.contractorname ='';
   this.contractorname = data.ContractorName || '';
@@ -317,6 +319,7 @@ fetchNextRecord(data: any): void {
   this.invoiceDate = data.InvoiceDate || '';
   this.gridCtcCode = data.contract_CtcCode || 0;
   this.imageName = data.PDF_Image_FileName;
+  this.uplodedPDFFile =data.PDF_FileName;
   this.setImagePath(this.imageName, this.uplodedPDFFile);
   this.IsContractIsActiveOrNot = data.ErrorMessage;
   
