@@ -64,14 +64,14 @@ export class AfsinvoiceComponent implements OnInit {
     
     this.imageName = filePath;
     this.uplodedPDFFile =pdfFile;
-    // this.thumbImage = `assets/documents/pdf/${this.imageName}`;
-    // this.fullImagePath = `assets/documents/pdf/${this.imageName}`;
+    this.thumbImage = `assets/documents/pdf/${this.imageName}`;
+    this.fullImagePath = `assets/documents/pdf/${this.imageName}`;
     
     this.pdfFileName =`assets/documents/processed-pdf/${this.uplodedPDFFile}`;
 
     //image with good readibility
-    this.thumbImage = `assets/documents/pdf/La fosse - SB-209461_Image20241126_120950.png`;
-    this.fullImagePath = `assets/documents/pdf/La fosse - SB-209461_Image20241126_120950.png`;
+    // this.thumbImage = `assets/documents/pdf/La fosse - SB-209461_Image20241126_120950.png`;
+    // this.fullImagePath = `assets/documents/pdf/La fosse - SB-209461_Image20241126_120950.png`;
 
     // this.thumbImage = `assets/documents/pdf/invoice_18_04_2024_2_Image20241129_122116.png`;
     // this.fullImagePath = `assets/documents/pdf/invoice_18_04_2024_2_Image20241129_122116.png`;
@@ -602,6 +602,7 @@ console.log(data);
   this.groupNewId = data.GROUP_NEWID || '';
   this.gridCtcCode = data.Contract_CtcCode || 0;
   this.imageName = data.InvoiceFilePath;
+  this.uplodedPDFFile=data.InvoiceFileName;
   this.resetAFSContractorDropdown();
   this.fetchContractorOptions();
   this.resetAFSContractDropdown();
