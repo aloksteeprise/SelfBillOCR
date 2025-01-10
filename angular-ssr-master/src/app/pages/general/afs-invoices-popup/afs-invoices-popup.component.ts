@@ -55,7 +55,7 @@ export class AfsInvoicesPopupComponent implements OnInit {
   }
 
   closeDialog(): void {
-    this.dialogRef.close(); // Closes the dialog
+    this.dialogRef.close();
   }
   ngOnInit(): void {
     this.initializeFormData();
