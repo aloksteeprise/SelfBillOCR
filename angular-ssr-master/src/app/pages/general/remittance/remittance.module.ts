@@ -10,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';  
 // import { ConfirmationPopComponent } from '../confirmation-pop/confirmation-pop.component';
 import { SharedModule } from '../shared/shared.module'; 
+import { FormsModule } from '@angular/forms';
 
 //  import { SecurePipe } from './secure.pipe'; 
 
@@ -27,7 +28,8 @@ import { SharedModule } from '../shared/shared.module';
     MatPaginatorModule,
     MatFormFieldModule,  
     MatInputModule ,
-    SharedModule     
+    SharedModule  ,
+    FormsModule   
   ],
   exports: [
     RemittanceComponent,

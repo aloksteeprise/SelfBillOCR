@@ -29,6 +29,11 @@ import { PaginationResponse } from './remittance';
     pageSize: number,
     SortColumn: string | null = null,
     SortDirection: string | null = null,
+    name:string | null = null,
+    
+    invoiceno:string | null = null,
+    invoiceDate:string | null = null , 
+    selfBillInvoiceNo:string | null = null,
     token: string
   ): Observable<PaginationResponse<any>> {
     // Set authorization and content-type headers
@@ -43,6 +48,10 @@ import { PaginationResponse } from './remittance';
       pageSize,
       SortColumn,      
       SortDirection,
+      name,
+      invoiceno,
+      invoiceDate,
+      selfBillInvoiceNo
     };
 
     console.log('Request Body:', body); // Log the request body for debugging

@@ -32,6 +32,13 @@ export class RemittanceComponent implements OnInit, AfterViewInit {
   tokenData: string = '';
   token: string = '';
   loading: boolean = false;
+  invoiceno: string = ''
+  name:string=''
+  selfBillInvoiceNo:string=''
+  invoiceDate:string=''
+
+
+
 
   constructor(private invoiceService: InvoiceService, private dialog: MatDialog) {}
 
@@ -58,6 +65,9 @@ export class RemittanceComponent implements OnInit, AfterViewInit {
     });
   }
 
+
+
+
   remittanceRecord() {
 
     this.loading = true; 
@@ -65,10 +75,10 @@ export class RemittanceComponent implements OnInit, AfterViewInit {
     const SortDirection = this.sort?.direction || ''; 
 
     this.invoiceService
-      .getRemittanceRecord(this.pageIndex, this.pageSize, SortColumn, SortDirection, this.token)
+      .getRemittanceRecord(this.pageIndex, this.pageSize, SortColumn, SortDirection, this.name, this.invoiceno,this.invoiceDate, this.selfBillInvoiceNo,this.token)
       .subscribe({
         next: (response: any) => {
-
+        debugger;
           this.dataSource.data = response.data.data;
           this.totalRecords = response.data.totalRecords; 
           this.loading = false; 
@@ -78,6 +88,20 @@ export class RemittanceComponent implements OnInit, AfterViewInit {
           this.loading = false; 
         },
       });
+  }
+
+  SearchResults(form: any): void {
+    debugger;
+
+
+    this.pageIndex = 0;
+    this.name = this.name;
+    this.invoiceno = this.invoiceno;
+    this.selfBillInvoiceNo = this.selfBillInvoiceNo;
+    this.invoiceDate = this.invoiceDate;
+    this.IsValidatedRecord = this.IsValidatedRecord;
+
+    this.remittanceRecord();
   }
 
   onPageChanged(event: any) {
@@ -96,6 +120,7 @@ export class RemittanceComponent implements OnInit, AfterViewInit {
   }
   
  openInvoiceModal(invoiceData: any): void {
+  
  
     const dialogRef = this.dialog.open(RemittancePopupComponent, {
       width: '800px',
@@ -108,6 +133,9 @@ export class RemittanceComponent implements OnInit, AfterViewInit {
        this.remittanceRecord();
       console.log('The dialog was closed');
     });
+  }
+  getToday(): string {
+    return new Date().toISOString().split('T')[0]
   }
 
 
@@ -123,5 +151,24 @@ export class RemittanceComponent implements OnInit, AfterViewInit {
         console.log('Cancel clicked!');
       }
     );
+  }
+
+  ClearSearch(): void {
+
+    this.pageIndex = 0;
+    console.log("clearsearch clicked")
+    this.name = '';
+    this.invoiceno = '';
+    this.invoiceDate = ''; // Reset the start date
+    this.selfBillInvoiceNo = ''; // Reset the end date
+    this.IsValidatedRecord = false;
+
+    const startDateInput = document.getElementById('invoiceDate') as HTMLInputElement;
+    // const endDateInput = document.getElementById('enddate') as HTMLInputElement;
+
+    if (startDateInput) startDateInput.value = '';
+    // if (endDateInput) endDateInput.value = '';
+
+    this.remittanceRecord();
   }
 }

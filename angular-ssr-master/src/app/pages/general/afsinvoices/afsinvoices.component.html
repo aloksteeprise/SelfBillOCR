@@ -12,45 +12,54 @@
       <button type="submit" class="btn btn-outline-success" (click)="openBatchValidateConfirmationBox()" style="margin-right: 19px;">Batch Validate</button>
       <app-confirmation-pop style="position: absolute; top: 0; left: 0;"></app-confirmation-pop>
       <app-notification-popup style="position: absolute; top: 0; left: 0;"
-      *ngIf="(notificationService.notificationVisibility$ | async)"
-      ></app-notification-popup>
+  *ngIf="(notificationService.notificationVisibility$ | async)"
+></app-notification-popup>
 
 
     </div> 
   <hr />
   <!-- </div> -->
   <form (ngSubmit)="SearchResults(myForm)" #myForm="ngForm">
-    <table class="searchTable">
-      <tr>
-        <td style="padding: 20px 0px 20px 0px;"><label style="padding-left: 10px; padding-right: 10px; color: white;"
-            class="fontweight500">Name</label></td>
-        <td><input type="text" style="width: 210px;" class="form-control" id="name" name="name"
-            placeholder="First / Last name" [(ngModel)]="name" maxlength="50" appInputSanitizer="alphabet" /></td>
-        <td><label class="fontweight500" style="color: white;">Invoice No</label></td>
-        <td><input type="text" style="width: 210px;" class="form-control" id="invoiceno" name="invoiceno"
-            placeholder="Invoice No" [(ngModel)]="invoiceno" maxlength="50" appInputSanitizer="alphanumeric" />
-        </td>
-        <td><label style="padding-left: 20px; width: 100px; color: white;" class="fontweight500">Start Date</label></td>
-        <td> <input type="date" id="startdate" placeholder="MM/DD/YYYY" class="form-control" [(ngModel)]="startdate"
-            name="startdate" [max]="getToday()"/></td>
-        <td><label style="padding-left: 20px; width: 96px; color: white;" class="fontweight500">End Date</label></td>
-        <td><input type="date" id="enddate" class="form-control" [(ngModel)]="enddate" name="date" [max]="getToday()"/></td>
-        <td> <label class="fontweight500" style="color: white;padding-left: 20px; padding-right: 20px;"> Validated
-          </label>
-        </td>
-        <td><input type="checkbox" name="IsValidatedRecord" [(ngModel)]="IsValidatedRecord" /></td>
-        <td style="padding-left: 20px;">
-          <button type="submit" class="btn btn-dark">Search</button>
-        </td>
-        <td style="padding-left: 10px;">
-          <button type="submit" (click)="ClearSearch()" class="btn btn-outline-dark" style="color: white;">Clear</button>
-        </td>
-      </tr>
-    </table>
+    <div class="row g-2 searchTable">
+      <div class=" col-6 col-sm-2 marginleft20" >
+        <label class="fontweight500">Name</label>
+        <input type="text" class="form-control" id="name" name="name" placeholder="First / Last name" [(ngModel)]="name" appInputSanitizer="alphabet" />
+      </div>
+      <div class="col-6 col-sm-2 marginleft8" >
+        <label class="fontweight500">Invoice No</label>
+        <input type="text" class="form-control" id="invoiceno" name="invoiceno" placeholder="Invoice No" [(ngModel)]="invoiceno" maxlength="50" appInputSanitizer="alphanumeric"/>
+      </div>
+        <div class="col-6 col-sm-2 marginleft8" >
+          <label class="fontweight500">Start Date</label>
+          <input type="date" id="startdate" class="form-control" [(ngModel)]="startdate" name="startdate" [max]="getToday()" />
+        </div>
+      <div class="col-6 col-sm-2 marginleft8" >
+        <label class="fontweight500">End Date</label>
+        <input type="date" id="enddate" class="form-control" [(ngModel)]="enddate" name="date" [max]="getToday()" />
+      </div>
+      <!-- <div class="col-12 col-sm-2">
+        <label class="fontweight500">Validated</label>
+        <input type="checkbox" name="IsValidatedRecord"  [(ngModel)]="IsValidatedRecord" />
+      </div> -->
+  
+      <div class="form-check col-6 col-sm-1 d-flex justify-content-center align-items-center marginleft8" >
+        <input type="checkbox" name="IsValidatedRecord"  [(ngModel)]="IsValidatedRecord" />
+        <label class="form-check-label fontweight500" for="flexCheckDefault" style="margin-left: 10px; font-size: 18px;">
+          Validate
+        </label>
+      </div>
+      
+      <div class="col-6 col-sm-2 d-flex justify-content-center align-items-center marginleft8" >
+        <button type="submit" class="btn btn-dark">Search</button>
+        <button type="button" (click)="ClearSearch()" class="btn btn-outline-dark" style="margin-left: 12px; color: white;">Clear</button>
+      </div>
+    </div>
   </form>
-
-  <hr />
-
+  
+<!-- 
+  <hr /> -->
+  
+  <div style="overflow-x:auto;">
   <table mat-table [dataSource]="dataSource.data" matSort class="table">
     <ng-container matColumnDef="contractorName">
       <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Contractor Name </th>
@@ -152,6 +161,7 @@
     <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns;"
       [ngClass]="{'table-success': row.isErrorOnRow===0, 'table-danger': row.isErrorOnRow ===1}"></tr>
   </table>
+  </div>
 
   <mat-paginator [length]="totalRecords" [pageSize]="pageSize" [pageIndex]="pageIndex" (page)="onPageChanged($event)"
     [pageSizeOptions]="[5, 10, 15, 20]" [showFirstLastButtons]="true">

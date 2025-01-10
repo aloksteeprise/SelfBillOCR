@@ -6,7 +6,7 @@
 
 
 hr {
-    margin: 0.2rem 0;
+    margin: 0.5rem !important;
     color: inherit;
     border: 0;
     border-top: var(--bs-border-width) solid;
@@ -15,6 +15,20 @@ hr {
 
 .fontweight500 {
     font-weight: 500;
+    color: white;
+   
+}
+
+.marginleft8{
+    margin-left: 20px;
+}
+.marginleft20{
+    margin-left: 20px;
+}
+
+.form-control {
+
+    margin-bottom: 7px !important;
 }
 
 ::ng-deep .mat-mdc-dialog-surface{
@@ -185,3 +199,27 @@ input[type="checkbox"] {
     cursor: pointer;
   }
   
+  .table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    border: 1px solid #ddd;
+  }
+  
+  .th, .td {
+    text-align: left;
+    padding: 8px;
+  }
+  
+  .tr:nth-child(even){background-color: #f2f2f2}
+
+  @media screen and (min-width: 300px) and (max-width: 700px) {
+    .marginleft8 {
+     
+        margin-left: 0px !important;
+    }
+    .marginleft20{
+        margin-left: 0px !important;
+    }
+
+  }

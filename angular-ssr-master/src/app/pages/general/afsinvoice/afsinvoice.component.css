@@ -169,6 +169,12 @@ input[type=number] {
   ::ng-deep .custom-modal-width[_ngcontent-ng-c760026350] {
     max-width: 100% !important;
   }
+
+  .phoneresponsive{
+    display: flex !important;
+    justify-content: center !important;
+    margin-bottom: 10px !important;
+  }
 }
 
 @media (max-width: 768px) {
