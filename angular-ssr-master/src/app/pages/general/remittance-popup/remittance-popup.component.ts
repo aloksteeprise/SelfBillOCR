@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import {environment} from '../constant/api-constants';
 import { NotificationPopupService } from '../notification-popup/notification-popup.service';
 import { DownloadPdfService } from '../service/downlaodPdf.service';
+import { SharedModule } from '../shared/shared.module';
 
 @Component({
   selector: 'app-remittance-popup',
@@ -241,6 +242,15 @@ onSubmit(form: any): void {
     isValid = false;
   }
 
+  const invoiceDate = SharedModule.validateDate(this.invoiceDate, 'Invoice Date', false);
+    if (invoiceDate) {
+      isValid = false;
+      errors.invoiceDate = invoiceDate; }
+
+  const duedate = SharedModule.validateDate(this.duedate, 'Due Date', false);
+  if (duedate) {
+    isValid = false;
+    errors.duedate = duedate; }
   
   this.errors = errors;
   

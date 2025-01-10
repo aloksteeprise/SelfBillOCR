@@ -12,8 +12,8 @@
       <button type="submit" class="btn btn-outline-success" (click)="openBatchValidateConfirmationBox()" style="margin-right: 19px;">Batch Validate</button>
       <app-confirmation-pop style="position: absolute; top: 0; left: 0;"></app-confirmation-pop>
       <app-notification-popup style="position: absolute; top: 0; left: 0;"
-  *ngIf="(notificationService.notificationVisibility$ | async)"
-></app-notification-popup>
+      *ngIf="(notificationService.notificationVisibility$ | async)"
+      ></app-notification-popup>
 
 
     </div> 
@@ -25,10 +25,10 @@
         <td style="padding: 20px 0px 20px 0px;"><label style="padding-left: 10px; padding-right: 10px; color: white;"
             class="fontweight500">Name</label></td>
         <td><input type="text" style="width: 210px;" class="form-control" id="name" name="name"
-            placeholder="First / Last name" [(ngModel)]="name" maxlength="50" /></td>
+            placeholder="First / Last name" [(ngModel)]="name" maxlength="50" appInputSanitizer="alphabet" /></td>
         <td><label class="fontweight500" style="color: white;">Invoice No</label></td>
         <td><input type="text" style="width: 210px;" class="form-control" id="invoiceno" name="invoiceno"
-            placeholder="Invoice No" [(ngModel)]="invoiceno" maxlength="50" />
+            placeholder="Invoice No" [(ngModel)]="invoiceno" maxlength="50" appInputSanitizer="alphanumeric" />
         </td>
         <td><label style="padding-left: 20px; width: 100px; color: white;" class="fontweight500">Start Date</label></td>
         <td> <input type="date" id="startdate" placeholder="MM/DD/YYYY" class="form-control" [(ngModel)]="startdate"
@@ -37,8 +37,8 @@
         <td><input type="date" id="enddate" class="form-control" [(ngModel)]="enddate" name="date" [max]="getToday()"/></td>
         <td> <label class="fontweight500" style="color: white;padding-left: 20px; padding-right: 20px;"> Validated
           </label>
-          <input type="checkbox" name="IsValidatedRecord" [(ngModel)]="IsValidatedRecord" />
         </td>
+        <td><input type="checkbox" name="IsValidatedRecord" [(ngModel)]="IsValidatedRecord" /></td>
         <td style="padding-left: 20px;">
           <button type="submit" class="btn btn-dark">Search</button>
         </td>

@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import {environment} from '../constant/api-constants';
 import { NotificationPopupService } from '../notification-popup/notification-popup.service';
 import { DownloadPdfService } from '../service/downlaodPdf.service';
+import { SharedModule } from '../shared/shared.module';
 
 
 
@@ -355,9 +356,6 @@ onSkip() {
     },
   });
 }
-
-
-
 // validateStartDate(): void {
 //   const today = new Date(this.getToday());
 //   const inputDate = new Date(this.startdate);
@@ -378,9 +376,9 @@ onSubmit(form: any): void {
   this.submitted = true; 
   let isValid = true;
   const errors: any = {};
-  const today = new Date(this.getToday());
-  const inputDate = new Date(this.startdate);
-  const inputDate2 = new Date(this.enddate);
+  // const today = new Date(this.getToday());
+  // const inputDate = new Date(this.startdate);
+  // const inputDate2 = new Date(this.enddate);
 
   
   if (!this.selectedContract) {
@@ -403,33 +401,47 @@ onSubmit(form: any): void {
     isValid = false;
   }
 
-  if (!this.startdate || this.startdate.trim() === '') {
-    errors.startDate = 'Start Date is required.';
-    isValid = false;
-  } else if (isNaN(inputDate.getTime())) {
-    errors.startDate = 'Invalid date format. Please enter a valid date.';
-    isValid = false;
-  } else if (inputDate > today) {
-    errors.startDate = 'Start Date cannot be in the future.';
-    isValid = false;
-  }
+  // if (!this.startdate || this.startdate.trim() === '') {
+  //   errors.startDate = 'Start Date is required.';
+  //   isValid = false;
+  // } else if (isNaN(inputDate.getTime())) {
+  //   errors.startDate = 'Invalid date format. Please enter a valid date.';
+  //   isValid = false;
+  // } else if (inputDate > today) {
+  //   errors.startDate = 'Start Date cannot be in the future.';
+  //   isValid = false;
+  // }
+  
+  const startDate = SharedModule.validateDate(this.startdate, 'Start Date', true);
+    if (startDate) {
+      isValid = false;
+      errors.startDate = startDate; }
 
+  const endDate = SharedModule.validateDate(this.enddate, 'End Date', true);
+  if (endDate) {
+    isValid = false;
+    errors.endDate = endDate; }
+
+  const invoiceDate = SharedModule.validateDate(this.invoiceDate, 'Invoice Date', true);
+  if (invoiceDate) {
+    isValid = false;
+    errors.invoiceDate = invoiceDate; }
 
   // if (!this.enddate || this.enddate.trim() === '') {
   //   errors.endDate = 'End Date is required.';
   //   isValid = false;
   // }
 
-  if (!this.enddate || this.enddate.trim() === '') {
-    errors.endDate = 'End Date is required.';
-    isValid = false;
-  } else if (isNaN(inputDate2.getTime())) {
-    errors.endDate = 'Invalid date format. Please enter a valid date.';
-    isValid = false;
-  } else if (inputDate2 > today) {
-    errors.endDate = 'End Date cannot be in the future.';
-    isValid = false;
-  }
+  // if (!this.enddate || this.enddate.trim() === '') {
+  //   errors.endDate = 'End Date is required.';
+  //   isValid = false;
+  // } else if (isNaN(inputDate2.getTime())) {
+  //   errors.endDate = 'Invalid date format. Please enter a valid date.';
+  //   isValid = false;
+  // } else if (inputDate2 > today) {
+  //   errors.endDate = 'End Date cannot be in the future.';
+  //   isValid = false;
+  // }
 
 
   if (this.startdate && this.enddate) {
@@ -602,7 +614,7 @@ console.log(data);
   this.groupNewId = data.GROUP_NEWID || '';
   this.gridCtcCode = data.Contract_CtcCode || 0;
   this.imageName = data.InvoiceFilePath;
-  this.uplodedPDFFile=data.InvoiceFileName;
+  this.uplodedPDFFile = data.InvoiceFileName;
   this.resetAFSContractorDropdown();
   this.fetchContractorOptions();
   this.resetAFSContractDropdown();
