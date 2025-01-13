@@ -23,7 +23,7 @@
     <div class="row g-2 searchTable">
       <div class=" col-6 col-sm-2 marginleft20" >
         <label class="fontweight500">Name</label>
-        <input type="text" class="form-control" id="name" name="name" placeholder="First / Last name" [(ngModel)]="name" appInputSanitizer="alphabet" />
+        <input type="text" class="form-control" id="name" name="name" placeholder="First / Last name" [(ngModel)]="name" appInputSanitizer="alphabetwithcomma" />
       </div>
       <div class="col-6 col-sm-2 marginleft8" >
         <label class="fontweight500">Invoice No</label>
@@ -42,14 +42,14 @@
         <input type="checkbox" name="IsValidatedRecord"  [(ngModel)]="IsValidatedRecord" />
       </div> -->
   
-      <div class="form-check col-6 col-sm-1 d-flex justify-content-center align-items-center marginleft8" >
+      <div class="form-check col-6 col-sm-1 d-flex justify-content-center align-items-center marginleft8 margintop25">
         <input type="checkbox" name="IsValidatedRecord"  [(ngModel)]="IsValidatedRecord" />
         <label class="form-check-label fontweight500" for="flexCheckDefault" style="margin-left: 10px; font-size: 18px;">
           Validate
         </label>
       </div>
       
-      <div class="col-6 col-sm-2 d-flex justify-content-center align-items-center marginleft8" >
+      <div class="col-6 col-sm-2 d-flex justify-content-center align-items-center marginleft8 margintop25">
         <button type="submit" class="btn btn-dark">Search</button>
         <button type="button" (click)="ClearSearch()" class="btn btn-outline-dark" style="margin-left: 12px; color: white;">Clear</button>
       </div>

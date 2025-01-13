@@ -5,7 +5,7 @@ import { SharedModule } from '../../app/pages/general/shared/shared.module';
   selector: '[appInputSanitizer]',
 })
 export class InputSanitizerDirective {
-  @Input('appInputSanitizer') sanitizerType: 'alphabet' | 'number' | 'alphanumeric' = 'alphabet';
+  @Input('appInputSanitizer') sanitizerType: 'alphabet' |'alphabetwithcomma'| 'number' | 'alphanumeric' = 'alphabet';
 
   @HostListener('input', ['$event']) onInputChange(event: any): void {
     const input: string = event.target.value;
@@ -16,6 +16,12 @@ export class InputSanitizerDirective {
         sanitizedValue = input
           .split('')
           .filter((char: string) => SharedModule.isAlphabet(char))
+          .join('');
+        break;
+        case 'alphabetwithcomma':
+        sanitizedValue = input
+          .split('')
+          .filter((char: string) => SharedModule.isAlphabetWithComma(char))
           .join('');
         break;
         case 'number':

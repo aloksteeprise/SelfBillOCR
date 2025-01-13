@@ -25,7 +25,9 @@ hr {
 .marginleft20{
     margin-left: 20px;
 }
-
+.margintop25{
+    margin-top: 25px;
+}
 .form-control {
 
     margin-bottom: 7px !important;

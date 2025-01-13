@@ -14,13 +14,16 @@ export class SharedModule {
   static isAlphabet(value: string): boolean {
     return /^[a-zA-Z\s]*$/.test(value);
   }
+  static isAlphabetWithComma(value: string): boolean {
+    return /^[a-zA-Z\s\,]*$/.test(value);
+  }
 
   static isNumber(value: string): boolean {
     return /^\d*\.?\d*$/.test(value);
   }  
 
   static isAlphanumeric(value: string): boolean {
-    return /^[a-zA-Z0-9\s\-]*$/.test(value);
+    return /^[a-zA-Z0-9\s\-\#]*$/.test(value);
 }
 
   static validateDate(dateValue: string, fieldName: string, isRequired: boolean): string | null {
