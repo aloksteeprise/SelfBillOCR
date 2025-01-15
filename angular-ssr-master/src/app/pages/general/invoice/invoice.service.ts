@@ -20,7 +20,6 @@ import { environment } from '../constant/api-constants';
 
     
     getAllContractorInvoices(): Observable<Invoice[]> {
-      debugger;
       const headers = new HttpHeaders({
         'Accept': '*/*',
         'Content-Type': 'application/json'

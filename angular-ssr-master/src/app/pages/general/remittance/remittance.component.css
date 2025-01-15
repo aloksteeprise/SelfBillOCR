@@ -247,6 +247,9 @@ hr {
     .marginleft20{
         margin-left: 0px !important;
     }
-
+    .margintop25{
+        margin-top: -25px;
+        margin-bottom: 10px;
+    }
   }
   

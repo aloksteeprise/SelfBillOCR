@@ -29,7 +29,6 @@ export class SharedModule {
   static validateDate(dateValue: string, fieldName: string, isRequired: boolean): string | null {
     const today = new Date();
     
-    debugger;
     if (!dateValue || dateValue.trim() === '') {
       return isRequired ? `${fieldName} is required.` : null;
     }

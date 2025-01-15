@@ -78,7 +78,6 @@ export class RemittanceComponent implements OnInit, AfterViewInit {
       .getRemittanceRecord(this.pageIndex, this.pageSize, SortColumn, SortDirection, this.name, this.invoiceno,this.invoiceDate, this.selfBillInvoiceNo,this.token)
       .subscribe({
         next: (response: any) => {
-        debugger;
           this.dataSource.data = response.data.data;
           this.totalRecords = response.data.totalRecords; 
           this.loading = false; 
@@ -91,8 +90,6 @@ export class RemittanceComponent implements OnInit, AfterViewInit {
   }
 
   SearchResults(form: any): void {
-    debugger;
-
 
     this.pageIndex = 0;
     this.name = this.name;

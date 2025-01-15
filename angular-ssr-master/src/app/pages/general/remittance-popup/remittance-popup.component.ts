@@ -82,7 +82,6 @@ export class RemittancePopupComponent implements OnInit {
 
   initializeFormData(): void {
     if (this.data) {
-      //debugger
       console.log(this.data);
       
       this.id = this.data.id;
