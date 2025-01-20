@@ -23,7 +23,7 @@
               </label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" id="ContractorName" name="contractorname"
-                  [(ngModel)]="contractorname" #name="ngModel" maxlength="250"  (blur)="onContractorNameBlur()"  appInputSanitizer="alphabetwithcomma" required>
+                  [(ngModel)]="contractorname" #name="ngModel" maxlength="250"  (blur)="onContractorNameBlur()"  appInputSanitizer="alphabetwithcomma" required  autocomplete="off">
               </div>
             </div>
 
@@ -94,7 +94,7 @@
               <label for="firstnamefor" class="col-sm-4 col-form-label fontsize14">First Name: <span style="color: red;"> *</span></label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" id="firstnamefor" name="firstnamefor" [(ngModel)]="firstnamefor"
-                  required maxlength="50" (input)="clearValidation('firstName')" appInputSanitizer="alphabet" />
+                  required maxlength="50" (input)="clearValidation('firstName')" appInputSanitizer="alphabet" autocomplete="off"/>
                   <div class="error-message" *ngIf="errors.firstName">
                   <small class="text-danger" *ngIf="errors.firstName">{{ errors.firstName }}</small>
                 </div>
@@ -106,7 +106,7 @@
               <label for="lastnamefor" class="col-sm-4 col-form-label fontsize14">Last Name: <span style="color: red;"> *</span></label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" id="lastnamefor" name="lastnamefor" [(ngModel)]="lastnamefor"
-                  required maxlength="50" (input)="clearValidation('lastName')" appInputSanitizer="alphabet" />
+                  required maxlength="50" (input)="clearValidation('lastName')" appInputSanitizer="alphabet"  autocomplete="off" />
                   <div class="error-message" *ngIf="errors.lastName">
                   <small class="text-danger" *ngIf="errors.lastName">{{ errors.lastName }}</small>
                 </div>
@@ -154,7 +154,7 @@
               <label for="TotalAmount" class="col-sm-4 col-form-label fontsize14">Total Amount:</label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" id="TotalAmount" name="totalAmount" [(ngModel)]="totalAmount"
-                  required maxlength="50" appInputSanitizer="number">
+                  required maxlength="50" appInputSanitizer="number"  autocomplete="off">
               </div>
             </div>
             <!-- Invoice No -->
@@ -162,7 +162,7 @@
               <label for="InvoiceNo" class="col-sm-4 col-form-label fontsize14">Invoice no:</label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" id="InvoiceNo" name="invoiceNumber" [(ngModel)]="invoiceNumber"
-                  maxlength="500" required appInputSanitizer="alphanumeric">
+                  maxlength="500" required appInputSanitizer="alphanumeric"  autocomplete="off">
               </div>
             </div>
             <div class="row mb-2 align-items-center">

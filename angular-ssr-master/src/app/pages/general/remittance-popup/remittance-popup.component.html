@@ -19,7 +19,7 @@
               </label>
               <div class="col-sm-7">
                 <input type="text" class="form-control" id="ContractorName" name="contractorname"
-                  [(ngModel)]="contractorname" #name="ngModel" maxlength="250" required appInputSanitizer="alphabetwithcomma">
+                  [(ngModel)]="contractorname" #name="ngModel" maxlength="250" required appInputSanitizer="alphabetwithcomma"  autocomplete="off">
               </div>
             </div>
 
@@ -146,7 +146,7 @@
               <label for="InvoiceAmount" class="col-sm-5 col-form-label fontsize14">Invoice Amount <span style="font-size: 10px;">({{currencytype}}):</span> <span style="color: red;"> *</span></label>
               <div class="col-sm-7">
                 <input type="text" class="form-control" id="InvoiceAmount" name="InvoiceAmount" [(ngModel)]="InvoiceAmount"
-                  required maxlength="50" (input)="clearValidation('InvoiceAmount')" appInputSanitizer="number" >
+                  required maxlength="50" (input)="clearValidation('InvoiceAmount')" appInputSanitizer="number"  autocomplete="off">
                   <div class="error-message" *ngIf="errors.InvoiceAmount">
                     <small class="text-danger">{{ errors.InvoiceAmount }}</small>
                   </div>
@@ -157,7 +157,7 @@
               <label for="paidAmount" class="col-sm-5 col-form-label fontsize14">Paid Amount <span style="font-size: 10px;">({{currencytype}}):</span>  <span style="color: red;"> *</span></label>
               <div class="col-sm-7">
                 <input type="text" class="form-control" id="paidAmount" name="paidAmount" [(ngModel)]="paidAmount"
-                  required maxlength="50" (input)="clearValidation('paidAmount')" appInputSanitizer="number">
+                  required maxlength="50" (input)="clearValidation('paidAmount')" appInputSanitizer="number"  autocomplete="off">
                   <div class="error-message" *ngIf="errors.paidAmount">
                     <small class="text-danger">{{ errors.paidAmount }}</small>
                   </div>
@@ -169,7 +169,7 @@
               <label for="invoiceNumber" class="col-sm-5 col-form-label fontsize14">Invoice Number:</label>
               <div class="col-sm-7">
                 <input type="text" class="form-control" id="invoiceNumber" name="invoiceNumber" [(ngModel)]="invoiceNumber"
-                  maxlength="500" required appInputSanitizer="alphanumeric">
+                  maxlength="500" required appInputSanitizer="alphanumeric"  autocomplete="off">
               </div>
             </div>
 
@@ -177,7 +177,7 @@
               <label for="selfbillinvoice" class="col-sm-5 col-form-label fontsize14">SelfBill Invoice Number:</label>
               <div class="col-sm-7">
                 <input type="text" class="form-control" id="selfbillinvoice" name="selfbillinvoice" [(ngModel)]="selfbillinvoice"
-                  maxlength="500" required appInputSanitizer="alphanumeric">
+                  maxlength="500" required appInputSanitizer="alphanumeric"  autocomplete="off">
               </div>
             </div>
 
