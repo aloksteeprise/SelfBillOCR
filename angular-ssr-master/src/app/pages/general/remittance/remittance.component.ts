@@ -7,6 +7,7 @@ import { InvoiceService } from './remittance.service';
 import { Invoice } from './remittance';
 import { RemittancePopupComponent } from '../remittance-popup/remittance-popup.component';
 import { ConfirmationPopComponent } from '../confirmation-pop/confirmation-pop.component';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-remittance',
@@ -40,10 +41,20 @@ export class RemittanceComponent implements OnInit, AfterViewInit {
 
 
 
-  constructor(private invoiceService: InvoiceService, private dialog: MatDialog) {}
+  constructor(private invoiceService: InvoiceService, private dialog: MatDialog,private breakpointObserver: BreakpointObserver) {}
 
 
   ngOnInit() {
+
+    this.breakpointObserver.observe(['(max-width: 700px)']).subscribe((result) => {
+      if (result.matches) {
+        // Mobile view: Show "actions" first
+        this.displayedColumns = ['actions','contractorName','invoiceDate', 'DueDate','invoiceNumber','paidAmount','invoiceAmount','selfBillInvoiceNo','description'];
+      } else {
+        // Desktop view: Default order
+        this.displayedColumns = ['contractorName','invoiceDate', 'DueDate','invoiceNumber','paidAmount','invoiceAmount','selfBillInvoiceNo','description','actions'];
+      }
+    });
 
     const storedToken = localStorage.getItem('token');
     if (storedToken) {

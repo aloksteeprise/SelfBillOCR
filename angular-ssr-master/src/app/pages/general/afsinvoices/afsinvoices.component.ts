@@ -11,6 +11,7 @@ import { ConfirmationPopComponent } from '../confirmation-pop/confirmation-pop.c
 import {environment} from '../constant/api-constants';
 import { NotificationPopupService } from '../notification-popup/notification-popup.service';
 import { HttpClient } from '@angular/common/http';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 
 @Component({
@@ -54,10 +55,45 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   isNotificationVisible: boolean = false;
   
 
-  constructor(private apiService: ApiService, private dialog: MatDialog,  public notificationService: NotificationPopupService,private http: HttpClient ) { }
+  constructor(private apiService: ApiService, private dialog: MatDialog,  public notificationService: NotificationPopupService,private http: HttpClient,private breakpointObserver: BreakpointObserver ) { }
 
   ngOnInit() {
 
+    this.breakpointObserver.observe(['(max-width: 700px)']).subscribe((result) => {
+      if (result.matches) {
+        // Mobile view: Show "actions" first
+         this.displayedColumns = [
+           'actions',
+    'contractorName',
+    'cFirstName',
+    'cLastName',
+    'startDate',
+    'endDate',
+    'totalAmount',
+    'selfBillInvoiceNo',
+    'errorMessage',
+    'afsInvoiceStatus',
+    'isExpenseOrTimesheet'
+   
+  ];
+
+      } else {
+        // Desktop view: Default order
+        this.displayedColumns = [
+          'contractorName',
+          'cFirstName',
+          'cLastName',
+          'startDate',
+          'endDate',
+          'totalAmount',
+          'selfBillInvoiceNo',
+          'errorMessage',
+          'afsInvoiceStatus',
+          'isExpenseOrTimesheet',
+          'actions'
+        ];
+      }
+    });
     const storedToken = localStorage.getItem('token');
     if (storedToken) {
       this.token = storedToken; 
