@@ -175,6 +175,10 @@ input[type=number] {
     justify-content: center !important;
     margin-bottom: 10px !important;
   }
+
+  .buttonmargin_mobile{
+    margin-right: 15px;
+  }
 }
 
 @media (max-width: 768px) {
