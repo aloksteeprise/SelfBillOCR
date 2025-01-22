@@ -179,6 +179,12 @@ input[type=number] {
   .buttonmargin_mobile{
     margin-right: 15px;
   }
+
+  ::ng-deep .ngxImageZoomContainer {
+  
+  height: 580px !important;
+
+}
 }
 
 @media (max-width: 768px) {

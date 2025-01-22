@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterOutlet, Router,ActivatedRoute } from '@angular/router';
+import { RouterLink, RouterOutlet, Router,ActivatedRoute, NavigationStart } from '@angular/router';
 
 import { Inject, PLATFORM_ID } from '@angular/core';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { AuthService } from './auth.service';
 import { UserService } from './pages/general/service/user.service'
 import {RouterModule} from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-root',
@@ -34,19 +35,28 @@ export class AppComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     public authService: AuthService,
+    private dialog: MatDialog ,// Use MatDialog service
     private route: ActivatedRoute) { }
     
 
 
-  ngOnInit(): void {
-    this.router.events.subscribe(() => {
-
-      this.showHeader = this.router.url !== '/login';
-
-      this.userService.username$.subscribe((username) => {
-        this.username = username;
+    ngOnInit(): void {
+      this.router.events.subscribe(event => {
+        // Check if the current URL is not '/login' and update showHeader
+        this.showHeader = this.router.url !== '/login';
+    
+        // Subscribe to username updates
+        this.userService.username$.subscribe((username) => {
+          this.username = username;
+        });
+    
+        // Check if the event is a NavigationStart event and close dialogs
+        if (event instanceof NavigationStart) {
+          this.closeAllDialogs(); // Close dialogs when navigation starts
+        }
       });
-    });
+    
+    
 
 
 
@@ -107,4 +117,8 @@ export class AppComponent implements OnInit {
 
     this.router.navigate(['/login']);
   }
-} 
+
+  closeAllDialogs(): void {
+    this.dialog.closeAll(); // Closes all open dialogs
+  }
+}
