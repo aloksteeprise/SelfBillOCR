@@ -175,7 +175,7 @@ export class AfsselfbillnotificationComponent implements OnInit {
       fileData.append('file', this.selectedFile, this.selectedFile.name);
       //fileData.append('token', this.token);
 
-      const apiUrl = environment.API_BASE_URL+'SelfBillNotification/ValidateToken';
+      const apiUrl = environment.API_BASE_URL+'SelfBillNotification/UploadSelfBillFile';
 
       //const apiUrl = 'https://localhost:44337/api/SelfBillNotification/UploadSelfBillFile';
 
