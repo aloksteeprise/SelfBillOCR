@@ -1,18 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterOutlet, Router,ActivatedRoute, NavigationStart } from '@angular/router';
+import { RouterLink, RouterOutlet, Router, ActivatedRoute, NavigationStart } from '@angular/router';
 
 import { Inject, PLATFORM_ID } from '@angular/core';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { AuthService } from './auth.service';
 import { UserService } from './pages/general/service/user.service'
-import {RouterModule} from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterOutlet,RouterModule],
+  imports: [CommonModule, RouterLink, RouterOutlet, RouterModule,MatDialogModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -26,7 +27,7 @@ export class AppComponent implements OnInit {
   username: string | null = null;
   token: string | null = null;
   selfBillNotificationLink: string | null = null;
-  remittanceNotificationLink : string | null = null;
+  remittanceNotificationLink: string | null = null;
 
   constructor(
 
@@ -35,28 +36,29 @@ export class AppComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     public authService: AuthService,
-    private dialog: MatDialog ,// Use MatDialog service
+    private dialog: MatDialog,// Use MatDialog service
     private route: ActivatedRoute) { }
-    
 
 
-    ngOnInit(): void {
-      this.router.events.subscribe(event => {
-        // Check if the current URL is not '/login' and update showHeader
-        this.showHeader = this.router.url !== '/login';
-    
-        // Subscribe to username updates
-        this.userService.username$.subscribe((username) => {
-          this.username = username;
-        });
-    
-        // Check if the event is a NavigationStart event and close dialogs
-        if (event instanceof NavigationStart) {
-          this.closeAllDialogs(); // Close dialogs when navigation starts
-        }
+
+  ngOnInit(): void {
+    this.router.events.subscribe(event => {
+
+      this.showHeader = this.router.url !== '/login';
+
+      // Subscribe to username updates
+      this.userService.username$.subscribe((username) => {
+        this.username = username;
       });
-    
-    
+      if (event instanceof NavigationStart) {
+        this.closeAllDialogs();
+      }
+
+
+
+    });
+
+
 
 
 
@@ -66,6 +68,7 @@ export class AppComponent implements OnInit {
         this.userService.setUsername(storedUsername);
       }
 
+
       this.route.queryParams.subscribe(params => {
         var urlToken = localStorage.getItem('token');
         // var urlToken = params['token'];      
@@ -73,7 +76,7 @@ export class AppComponent implements OnInit {
           console.log('Token exists. Updating state.');
           this.token = urlToken;
           this.selfBillNotificationLink = `/afsselfbillnotification?token=${this.token}`;
-          this.remittanceNotificationLink = `/remittancenotification?token=${this.token}`;         
+          this.remittanceNotificationLink = `/remittancenotification?token=${this.token}`;
           this.sendLinkViaEmail();
         }
       });
@@ -92,9 +95,9 @@ export class AppComponent implements OnInit {
           }
         }
       }
-      
+
     }
-    
+
   }
 
   sendLinkViaEmail() {
