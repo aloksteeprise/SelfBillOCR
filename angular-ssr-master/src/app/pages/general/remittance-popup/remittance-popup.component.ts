@@ -23,6 +23,7 @@ export class RemittancePopupComponent implements OnInit {
   InvoiceAmount:string = '';
   duedate:string = '';
   invoiceNumber: string = '';
+  InvoicePendingAmount : string ='';
   invoiceDate: string = '';
   
   imageName: string = '';
@@ -66,8 +67,8 @@ export class RemittancePopupComponent implements OnInit {
 
   //Local
     // this.pdfFileName =`assets/documents/remittance/pdf/Remittanceadvice.pdf`;
-    // this.thumbImage = `assets/documents/remittance/image/xyz.png`;
-    // this.fullImagePath = `assets/documents/remittance/image/xyz.png`;
+    // this.thumbImage = `assets/documents/remittance/image/2-AccessFinancialEUR7thNov_1_Image20250120_155215.png`;
+    // this.fullImagePath = `assets/documents/remittance/image/2-AccessFinancialEUR7thNov_1_Image20250120_155215.png`;
   
     console.log('Thumb Image:', this.thumbImage);
     console.log('Full Image Path:', this.fullImagePath);
@@ -94,6 +95,7 @@ export class RemittancePopupComponent implements OnInit {
       this.selfbillinvoice = this.data.selfBillInvoiceNo || '';
       // Remove currency 
       this.paidAmount = this.data.paidAmount.includes(' ') ? this.data.paidAmount.split(' ')[0] : this.data.paidAmount.trim();
+      this.InvoicePendingAmount= this.data.invoicePendingAmount || '';
       this.InvoiceAmount = this.data.invoiceAmount || '';
       this.invoiceDate = this.data.invoiceDate || '';
       //this.groupNewId = this.data.grouP_NEWID || '';
@@ -166,6 +168,7 @@ onSkip() {
     InvoiceNumber: this.invoiceNumber,
     SelfBillInvoiceNumber: this.selfbillinvoice,
     InvoiceDate: this.invoiceDate,
+    invoicePendingAmount: this.InvoicePendingAmount,  
     DueDate: this.duedate,
     IsSkip: true,
   };
@@ -241,6 +244,11 @@ onSubmit(form: any): void {
     isValid = false;
   }
 
+  if (!this.InvoicePendingAmount || this.InvoicePendingAmount.trim() === '') {
+    errors.InvoicePendingAmount = 'Invoice Pending Amount is required.';
+    isValid = false;
+  }
+
   const invoiceDate = SharedModule.validateDate(this.invoiceDate, 'Invoice Date', false);
     if (invoiceDate) {
       isValid = false;
@@ -260,6 +268,7 @@ onSubmit(form: any): void {
       InvoiceAmount: this.InvoiceAmount,
       PaidAmount: this.paidAmount,
       InvoiceNumber: this.invoiceNumber,
+      invoicePendingAmount: this.InvoicePendingAmount,
       SelfBillInvoiceNumber: this.selfbillinvoice,
       InvoiceDate: this.invoiceDate,
       DueDate: this.duedate,
@@ -324,6 +333,7 @@ fetchNextRecord(data: any): void {
   this.selfbillinvoice = data.SelfBillInvoiceNo || '';
   this.duedate = data.DueDate || '';
   this.paidAmount = data.PaidAmount.includes(' ') ? data.PaidAmount.split(' ')[0] : data.PaidAmount.trim();
+  this.InvoicePendingAmount = data.invoicePendingAmount || '';
   this.InvoiceAmount = data.InvoiceAmount || '';
   this.invoiceDate = data.InvoiceDate || '';
   this.gridCtcCode = data.contract_CtcCode || 0;
@@ -331,6 +341,7 @@ fetchNextRecord(data: any): void {
   this.uplodedPDFFile =data.PDF_FileName;
   this.setImagePath(this.imageName, this.uplodedPDFFile);
   this.IsContractIsActiveOrNot = data.ErrorMessage;
+
   
 }
 

@@ -22,8 +22,6 @@
                   [(ngModel)]="contractorname" #name="ngModel" maxlength="250" required appInputSanitizer="alphabetwithcomma"  autocomplete="off" disabled>
               </div>
             </div>
-
-
             <!-- AFS Contractor DropDown -->
             <!-- <div class="row mb-2 align-items-center">
               <label for="afscontractor" class="col-sm-5 col-form-label fontsize14">AFS Contractor:</label>
@@ -143,21 +141,42 @@
 
             <!-- Total Amount -->
             <div class="row mb-2 align-items-center">
-              <label for="InvoiceAmount" class="col-sm-5 col-form-label fontsize14">Invoice Amount <span style="font-size: 10px;">({{currencytype}}):</span> <span style="color: red;"> *</span></label>
-              <div class="col-sm-7">
+              <label for="InvoiceAmount" class="col-sm-5 col-form-label fontsize14">Invoice Amount <span style="font-size: 10px;">(Incl. VAT)</span> <span style="color: red;"> *</span></label>
+              <div class="col-sm-7 ">
+                <div class="input-group">
+                <span class="input-group-text " style="font-size: 12px;">{{currencytype}}</span>
                 <input type="text" class="form-control" id="InvoiceAmount" name="InvoiceAmount" [(ngModel)]="InvoiceAmount"
                   required maxlength="50" (input)="clearValidation('InvoiceAmount')" appInputSanitizer="number"  autocomplete="off">
+                </div>
                   <div class="error-message" *ngIf="errors.InvoiceAmount">
                     <small class="text-danger">{{ errors.InvoiceAmount }}</small>
                   </div>
               </div>
             </div>
+
+            <div class="row mb-2 align-items-center">
+              <label for="InvoicePendingAmount" class="col-sm-5 col-form-label fontsize14">Invoice Pending Amount<span style="color: red;"> *</span></label>
+              <div class="col-sm-7">
+                <div class="input-group">
+                <span class="input-group-text " style="font-size: 12px;">{{currencytype}}</span>
+                <input type="text" class="form-control" id="InvoicePendingAmount" name="InvoicePendingAmount" [(ngModel)]="InvoicePendingAmount"
+                  required maxlength="50" (input)="clearValidation('InvoicePendingAmount')" appInputSanitizer="number"  autocomplete="off">
+                  </div>
+                  <div class="error-message" *ngIf="errors.InvoicePendingAmount">
+                    <small class="text-danger">{{ errors.InvoicePendingAmount }}</small>
+                  </div>
+              </div>
+            </div>
+
             <div class="row mb-2 align-items-center">
               
-              <label for="paidAmount" class="col-sm-5 col-form-label fontsize14">Paid Amount <span style="font-size: 10px;">({{currencytype}}):</span>  <span style="color: red;"> *</span></label>
+              <label for="paidAmount" class="col-sm-5 col-form-label fontsize14">Paid Amount <span style="color: red;"> *</span></label>
               <div class="col-sm-7">
+                <div class="input-group">
+                  <span class="input-group-text " style="font-size: 12px;">{{currencytype}}</span>
                 <input type="text" class="form-control" id="paidAmount" name="paidAmount" [(ngModel)]="paidAmount"
                   required maxlength="50" (input)="clearValidation('paidAmount')" appInputSanitizer="number"  autocomplete="off">
+                  </div>
                   <div class="error-message" *ngIf="errors.paidAmount">
                     <small class="text-danger">{{ errors.paidAmount }}</small>
                   </div>
