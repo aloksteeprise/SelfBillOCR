@@ -11,7 +11,7 @@
       <div class="row g-2 searchTable">
         <div class=" col-6 col-sm-2 marginleft20" >
           <label class="fontweight500">Contractor Name</label>
-          <input type="text" class="form-control" id="name" name="name  " placeholder="Contractor Name" [(ngModel)]="name"  autocomplete="off" />
+          <input type="text" class="form-control" id="name" name="name  " placeholder="Contractor Name" [(ngModel)]="name"  autocomplete="off"/>
         </div>
         <div class="col-6 col-sm-2 marginleft8" >
           <label class="fontweight500">Invoice No</label>
@@ -48,65 +48,65 @@
     <!-- <hr/> -->
 
     <div style="overflow-x:auto;">
-<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 table table-striped " >
+<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 table " >
 
   <ng-container matColumnDef="contractorName">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Contractor Name </th>
-    <td mat-cell *matCellDef="let row"> {{row.contractorName}} </td>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite break-words"> Contractor Name </th>
+    <td mat-cell *matCellDef="let row" class="break-words"> {{row.contractorName}} </td>
   </ng-container>
   <ng-container matColumnDef="invoiceDate">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Invoice Date </th>
-    <td mat-cell *matCellDef="let row"> {{row.invoiceDate}} </td>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite break-word"> Invoice Date </th>
+    <td mat-cell *matCellDef="let row" class="break-word"> {{row.invoiceDate}} </td>
   </ng-container>
   <ng-container matColumnDef="DueDate">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Invoice DueDate </th>
-    <td mat-cell *matCellDef="let row"> {{row.dueDate}} </td>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite break-word"> Invoice DueDate </th>
+    <td mat-cell *matCellDef="let row" class="break-word"> {{row.dueDate}} </td>
   </ng-container>
   <ng-container matColumnDef="invoiceAmount">
-    <th mat-header-cell *matHeaderCellDef class="coloredwhite"> Invoice Amount </th>
-    <td mat-cell *matCellDef="let row">
+    <th mat-header-cell *matHeaderCellDef class="coloredwhite break-word"> Invoice Amount </th>
+    <td mat-cell *matCellDef="let row" class="break-word">
       {{ row.invoiceAmount ? row.invoiceAmount + ' ' + row.currencyType : '' }}
 
   </ng-container>
   <ng-container matColumnDef="paidAmount">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Paid Amount </th>
-    <td mat-cell *matCellDef="let row">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite break-word"> Paid Amount </th>
+    <td mat-cell *matCellDef="let row" class="break-word">
       {{ row.paidAmount ? row.paidAmount + ' ' + row.currencyType : '' }}
     </td>
   </ng-container>
   
 
   <!-- <ng-container matColumnDef="currencyType">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Currency Type </th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite break-word"> Currency Type </th>
     <td mat-cell *matCellDef="let row" style="text-align: center;"> {{row.currencyType}} </td>
   </ng-container> -->
 
   <ng-container matColumnDef="invoiceNumber">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Invoice Number </th>
-    <td mat-cell *matCellDef="let row" > {{row.invoiceNumber}} </td>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite break-word"> Invoice Number </th>
+    <td mat-cell *matCellDef="let row"class="break-word" > {{row.invoiceNumber}} </td>
   </ng-container>
  
   <ng-container matColumnDef="selfBillInvoiceNo">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> SelfBill InvoiceNo </th>
-    <td mat-cell *matCellDef="let row"> {{row.selfBillInvoiceNo}} </td>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite break-word"> SelfBill InvoiceNo </th>
+    <td mat-cell *matCellDef="let row " class="break-word"> {{row.selfBillInvoiceNo}} </td>
   </ng-container>
 
  
   <ng-container matColumnDef="description">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Description </th>
-    <td mat-cell *matCellDef="let row" class="break-word"> {{row.description}} </td>
+    <th mat-header-cell *matHeaderCellDef class="coloredwhite break-word-description"> Description </th>
+    <td mat-cell *matCellDef="let row" class="break-word-description"> {{row.description}} </td>
   </ng-container>
   <!-- <ng-container matColumnDef="isMapedContract">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> isMapedContract </th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite break-word"> isMapedContract </th>
     <td mat-cell *matCellDef="let row" class="break-word"> {{row.isMapedContract}} </td>
   </ng-container>
   <ng-container matColumnDef="isActiveContract">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> isActiveContract </th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite break-word"> isActiveContract </th>
     <td mat-cell *matCellDef="let row" class="break-word"> {{row.isActiveContract}} </td>
   </ng-container> -->
 
   <ng-container matColumnDef="actions">
-    <th mat-header-cell *matHeaderCellDef class="coloredwhite"> Actions </th>
+    <th mat-header-cell *matHeaderCellDef class="coloredwhite break-word"> Actions </th>
     <td mat-cell *matCellDef="let element">
       <button mat-button class="btn btn-outline-success" (click)="openInvoiceModal(element)" >Validate</button>
     </td>
@@ -126,9 +126,11 @@
 
   <!-- Table Header and Row -->
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
+  <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns;"
+    [ngClass]="{'table-danger': row.isRecordValidated === false, 'table-success': row.isRecordValidated === true}">
+</tr>
 
-  
 
 </table>
 </div>
