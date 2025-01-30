@@ -86,7 +86,7 @@ export class RemittanceComponent implements OnInit, AfterViewInit {
     const SortDirection = this.sort?.direction || ''; 
 
     this.invoiceService
-      .getRemittanceRecord(this.pageIndex, this.pageSize, SortColumn, SortDirection, this.name, this.invoiceno,this.invoiceDate, this.selfBillInvoiceNo,this.token)
+      .getRemittanceRecord(this.pageIndex, this.pageSize, SortColumn, SortDirection, this.name, this.invoiceno,this.invoiceDate, this.selfBillInvoiceNo, this.IsValidatedRecord,this.token)
       .subscribe({
         next: (response: any) => {
           this.dataSource.data = response.data.data;

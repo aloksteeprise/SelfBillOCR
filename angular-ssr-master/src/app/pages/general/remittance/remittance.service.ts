@@ -34,6 +34,7 @@ import { PaginationResponse } from './remittance';
     invoiceno:string | null = null,
     invoiceDate:string | null = null , 
     selfBillInvoiceNo:string | null = null,
+    IsValidatedRecord: boolean,
     token: string
   ): Observable<PaginationResponse<any>> {
     // Set authorization and content-type headers
@@ -51,7 +52,8 @@ import { PaginationResponse } from './remittance';
       name,
       invoiceno,
       invoiceDate,
-      selfBillInvoiceNo
+      selfBillInvoiceNo,
+      IsValidatedRecord
     };
 
     console.log('Request Body:', body); // Log the request body for debugging

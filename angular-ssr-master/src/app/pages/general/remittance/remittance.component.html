@@ -37,7 +37,12 @@
             Validate
           </label>
         </div> -->
-        <div class="form-check col-6 col-sm-1 d-flex justify-content-center align-items-center marginleft8" >
+
+        <div class="form-check col-6 col-sm-1 d-flex justify-content-center align-items-center marginleft8 margintop25">
+          <input type="checkbox" name="IsValidatedRecord"  [(ngModel)]="IsValidatedRecord" />
+          <label class="form-check-label fontweight500" for="flexCheckDefault" style="margin-left: 10px; font-size: 18px;">
+            Validate
+          </label>
         </div>
         <div class="col-12 col-sm-2 d-flex justify-content-center align-items-center marginleft8 margintop25" >
           <button type="submit" class="btn btn-dark">Search</button>
