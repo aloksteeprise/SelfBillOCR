@@ -342,15 +342,9 @@ fetchNextRecord(data: any): void {
   this.invoiceNumber = data.InvoiceNumber || '';
   this.selfbillinvoice = data.SelfBillInvoiceNo || '';
   this.duedate = data.DueDate || '';
-  this.paidAmount = this.data.paidAmount 
-  ? parseFloat(this.data.paidAmount.split(' ')[0].trim()).toFixed(2) 
-  : '0.00';
-  this.InvoicePendingAmount = this.data.invoicePendingAmount 
-  ? parseFloat(this.data.invoicePendingAmount).toFixed(2) 
-  : '0.00';
-  this.InvoiceAmount = this.data.invoiceAmount 
-  ? parseFloat(this.data.invoiceAmount).toFixed(2) 
-  : '0.00';
+  this.paidAmount = data.PaidAmount.includes(' ') ? data.PaidAmount.split(' ')[0] : data.PaidAmount.trim();
+  this.InvoicePendingAmount = data.invoicePendingAmount || '0.00';
+  this.InvoiceAmount = data.InvoiceAmount || '';
   this.invoiceDate = data.InvoiceDate || '';
   this.gridCtcCode = data.contract_CtcCode || 0;
   this.imageName = data.PDF_Image_FileName;
