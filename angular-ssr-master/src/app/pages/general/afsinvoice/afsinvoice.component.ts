@@ -48,6 +48,7 @@ export class AfsinvoiceComponent implements OnInit {
   uplodedPDFFile:string="";
   loading: boolean = false;
   isNotificationVisible: boolean = false
+  currencytype :string='';
 
 
   constructor(
@@ -86,13 +87,14 @@ export class AfsinvoiceComponent implements OnInit {
   
 
   ngOnInit(): void {
+   
     this.initializeFormData();
-    this.fetchContractorOptions(); 
+    this.fetchContractorOptions();
+
   }
 
   initializeFormData(): void {
     if (this.data) {
-
       console.log(this.data);
       //alert(this.data.contract_CtcContractor);
       this.id = this.data.id;
@@ -104,6 +106,7 @@ export class AfsinvoiceComponent implements OnInit {
       this.startdate = this.data.startDate || '';
       this.enddate = this.data.endDate || '';
       this.IsContractIsActiveOrNot = this.data.errorMessage;
+      this.currencytype = this.data.currencyType || '';
       
       // Remove currency 
       this.totalAmount = this.data.totalAmount.includes(' ') ? this.data.totalAmount.split(' ')[0] : this.data.totalAmount.trim();
@@ -330,6 +333,7 @@ onSkip() {
           );
         } else {
           this.fetchNextRecord(nextRecord);
+        
         }
       } else {
         this.notificationService.showNotification(
@@ -613,6 +617,7 @@ console.log(data);
   this.invoiceDate = data.SelfBillInvoiceDate || '';
   this.groupNewId = data.GROUP_NEWID || '';
   this.gridCtcCode = data.Contract_CtcCode || 0;
+  this.currencytype = data.CurrencyType || '';
   this.imageName = data.InvoiceFilePath;
   this.uplodedPDFFile = data.InvoiceFileName;
   this.resetAFSContractorDropdown();
@@ -661,7 +666,7 @@ resetAFSContractDropdown(): void {
   // }
 
   closeDialog(): void {
-    this.dialogRef.close(); // Closes the dialog
+    this.dialogRef.close(); 
   }
 
   downloadPdfFile(data: any) {

@@ -153,8 +153,11 @@
             <div class="row mb-2 align-items-center">
               <label for="TotalAmount" class="col-sm-4 col-form-label fontsize14">Total Amount:</label>
               <div class="col-sm-8">
+                <div class="input-group">
+                  <span class="input-group-text " style="font-size: 12px;">{{currencytype}}</span>
                 <input type="text" class="form-control" id="TotalAmount" name="totalAmount" [(ngModel)]="totalAmount"
                   required maxlength="50" appInputSanitizer="number"  autocomplete="off">
+                </div>
               </div>
             </div>
             <!-- Invoice No -->

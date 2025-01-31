@@ -1,107 +1,115 @@
+<div style="margin-top: 63px;">
+  <div class="d-flex align-items-center justify-content-between">
+    <p style="font-weight: 1000; font-size: x-large; margin: 0; padding-left: 14px; ">Remittance Invoice</p>
+    <button type="submit" class="btn btn-outline-success" (click)="openConfirmationBox()"
+      style="margin-right: 19px;">Batch Validate</button>
+    <app-confirmation-pop style="position: absolute; top: 0; left: 0;"></app-confirmation-pop>
+  </div>
 
-  <div style="margin-top: 63px;" >
-    <div class="d-flex align-items-center justify-content-between"> 
-      <p style="font-weight: 1000; font-size: x-large; margin: 0; padding-left: 14px; ">Remittance Invoice</p>
-      <button type="submit" class="btn btn-outline-success" (click)="openConfirmationBox()" style="margin-right: 19px;">Batch Validate</button>
-      <app-confirmation-pop style="position: absolute; top: 0; left: 0;"></app-confirmation-pop>
-    </div>
+  <hr />
+  <form (ngSubmit)="SearchResults(myForm)" #myForm="ngForm">
+    <div class="row g-2 searchTable">
+      <div class=" col-6 col-sm-2 marginleft20">
+        <label class="fontweight500">Contractor Name</label>
+        <input type="text" class="form-control" id="name" name="name  " placeholder="Contractor Name" [(ngModel)]="name"
+          autocomplete="off" />
+      </div>
+      <div class="col-6 col-sm-2 marginleft8">
+        <label class="fontweight500">Invoice No</label>
+        <input type="text" class="form-control" id="invoiceno" name="invoiceno" placeholder="Invoice No"
+          [(ngModel)]="invoiceno" maxlength="50" autocomplete="off" />
+      </div>
+      <div class="col-6 col-sm-2 marginleft8">
+        <label class="fontweight500">SelfBill Invoice No</label>
+        <input type="text" id="selfBillInvoiceNo" class="form-control" [(ngModel)]="selfBillInvoiceNo"
+          name="selfBillInvoiceNo" placeholder="SelfBill Invoice No" autocomplete="off" />
+      </div>
+      <div class="col-6 col-sm-2 marginleft8">
+        <label class="fontweight500">Invoice Date</label>
+        <input type="date" id="invoiceDate" class="form-control" [(ngModel)]="invoiceDate" name="invoiceDate"
+          [max]="getToday()" />
+      </div>
 
-    <hr />
-    <form (ngSubmit)="SearchResults(myForm)" #myForm="ngForm">
-      <div class="row g-2 searchTable">
-        <div class=" col-6 col-sm-2 marginleft20" >
-          <label class="fontweight500">Contractor Name</label>
-          <input type="text" class="form-control" id="name" name="name  " placeholder="Contractor Name" [(ngModel)]="name"  autocomplete="off"/>
-        </div>
-        <div class="col-6 col-sm-2 marginleft8" >
-          <label class="fontweight500">Invoice No</label>
-          <input type="text" class="form-control" id="invoiceno" name="invoiceno" placeholder="Invoice No" [(ngModel)]="invoiceno" maxlength="50"  autocomplete="off"/>
-        </div>
-        <div class="col-6 col-sm-2 marginleft8" >
-          <label class="fontweight500">SelfBill Invoice No</label>
-          <input type="text" id="selfBillInvoiceNo" class="form-control" [(ngModel)]="selfBillInvoiceNo" name="selfBillInvoiceNo" placeholder="SelfBill Invoice No"  autocomplete="off"/>
-        </div>
-          <div class="col-6 col-sm-2 marginleft8" >
-            <label class="fontweight500">Invoice Date</label>
-            <input type="date" id="invoiceDate" class="form-control" [(ngModel)]="invoiceDate" name="invoiceDate" [max]="getToday()" />
-          </div>
-    
-        <!-- <div class="col-12 col-sm-2">
+      <!-- <div class="col-12 col-sm-2">
           <label class="fontweight500">Validated</label>
           <input type="checkbox" name="IsValidatedRecord"  [(ngModel)]="IsValidatedRecord" />
         </div> -->
-    
-        <!-- <div class="form-check col-6 col-sm-1 d-flex justify-content-center align-items-center marginleft8" >
+
+      <!-- <div class="form-check col-6 col-sm-1 d-flex justify-content-center align-items-center marginleft8" >
           <input type="checkbox" name="IsValidatedRecord"  [(ngModel)]="IsValidatedRecord" />
           <label class="form-check-label fontweight500" for="flexCheckDefault" style="margin-left: 10px; font-size: 18px;">
             Validate
           </label>
         </div> -->
 
-        <div class="form-check col-6 col-sm-1 d-flex justify-content-center align-items-center marginleft8 margintop25">
-          <input type="checkbox" name="IsValidatedRecord"  [(ngModel)]="IsValidatedRecord" />
-          <label class="form-check-label fontweight500" for="flexCheckDefault" style="margin-left: 10px; font-size: 18px;">
-            Validate
-          </label>
-        </div>
-        <div class="col-12 col-sm-2 d-flex justify-content-center align-items-center marginleft8 margintop25" >
-          <button type="submit" class="btn btn-dark">Search</button>
-          <button type="button"  class="btn btn-outline-dark" (click)="ClearSearch()" style="margin-left: 12px; color: white;">Clear</button>
-        </div>
+      <div class="form-check col-6 col-sm-1 d-flex justify-content-center align-items-center marginleft8 margintop25">
+        <input type="checkbox" name="IsValidatedRecord" [(ngModel)]="IsValidatedRecord" />
+        <label class="form-check-label fontweight500" for="flexCheckDefault"
+          style="margin-left: 10px; font-size: 18px;">
+          Validate
+        </label>
       </div>
-    </form>
-    <!-- <hr/> -->
+      <div class="col-12 col-sm-2 d-flex justify-content-center align-items-center marginleft8 margintop25">
+        <button type="submit" class="btn btn-dark">Search</button>
+        <button type="button" class="btn btn-outline-dark" (click)="ClearSearch()"
+          style="margin-left: 12px; color: white;">Clear</button>
+      </div>
+    </div>
+  </form>
+  <!-- <hr/> -->
 
-    <div style="overflow-x:auto;">
-<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 table " >
+  <div style="overflow-x:auto;">
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 table ">
 
-  <ng-container matColumnDef="contractorName">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite break-words"> Contractor Name </th>
-    <td mat-cell *matCellDef="let row" class="break-words"> {{row.contractorName}} </td>
-  </ng-container>
-  <ng-container matColumnDef="invoiceDate">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite break-word"> Invoice Date </th>
-    <td mat-cell *matCellDef="let row" class="break-word"> {{row.invoiceDate}} </td>
-  </ng-container>
-  <ng-container matColumnDef="DueDate">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite break-word"> Invoice DueDate </th>
-    <td mat-cell *matCellDef="let row" class="break-word"> {{row.dueDate}} </td>
-  </ng-container>
-  <ng-container matColumnDef="invoiceAmount">
-    <th mat-header-cell *matHeaderCellDef class="coloredwhite break-word"> Invoice Amount </th>
-    <td mat-cell *matCellDef="let row" class="break-word">
-      {{ row.invoiceAmount ? row.invoiceAmount + ' ' + row.currencyType : '' }}
+      <ng-container matColumnDef="contractorName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite break-words"> Contractor Name </th>
+        <td mat-cell *matCellDef="let row" class="break-words"> {{row.contractorName}} </td>
+      </ng-container>
+      <ng-container matColumnDef="invoiceDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite break-word"> Invoice Date </th>
+        <td mat-cell *matCellDef="let row" class="break-word"> {{row.invoiceDate}} </td>
+      </ng-container>
+      <ng-container matColumnDef="DueDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite break-word"> Invoice DueDate </th>
+        <td mat-cell *matCellDef="let row" class="break-word"> {{row.dueDate}} </td>
+      </ng-container>
+      <ng-container matColumnDef="invoiceAmount">
+        <th mat-header-cell *matHeaderCellDef class="coloredwhite break-word"> Invoice Amount </th>
+        <td mat-cell *matCellDef="let row" class="break-word">
+          {{ formatAmount(row.invoiceAmount) }} {{ row.currencyType }}
+        </td>
+      </ng-container>
 
-  </ng-container>
-  <ng-container matColumnDef="paidAmount">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite break-word"> Paid Amount </th>
-    <td mat-cell *matCellDef="let row" class="break-word">
-      {{ row.paidAmount ? row.paidAmount + ' ' + row.currencyType : '' }}
-    </td>
-  </ng-container>
-  
 
-  <!-- <ng-container matColumnDef="currencyType">
+      <ng-container matColumnDef="paidAmount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite break-word"> Paid Amount </th>
+        <td mat-cell *matCellDef="let row" class="break-word">
+          {{ row.paidAmount ? row.paidAmount + ' ' + row.currencyType : '' }}
+        </td>
+      </ng-container>
+
+
+      <!-- <ng-container matColumnDef="currencyType">
     <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite break-word"> Currency Type </th>
     <td mat-cell *matCellDef="let row" style="text-align: center;"> {{row.currencyType}} </td>
   </ng-container> -->
 
-  <ng-container matColumnDef="invoiceNumber">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite break-word"> Invoice Number </th>
-    <td mat-cell *matCellDef="let row"class="break-word" > {{row.invoiceNumber}} </td>
-  </ng-container>
- 
-  <ng-container matColumnDef="selfBillInvoiceNo">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite break-word"> SelfBill InvoiceNo </th>
-    <td mat-cell *matCellDef="let row " class="break-word"> {{row.selfBillInvoiceNo}} </td>
-  </ng-container>
+      <ng-container matColumnDef="invoiceNumber">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite break-word"> Invoice Number </th>
+        <td mat-cell *matCellDef="let row" class="break-word"> {{row.invoiceNumber}} </td>
+      </ng-container>
 
- 
-  <ng-container matColumnDef="description">
-    <th mat-header-cell *matHeaderCellDef class="coloredwhite break-word-description"> Description </th>
-    <td mat-cell *matCellDef="let row" class="break-word-description"> {{row.description}} </td>
-  </ng-container>
-  <!-- <ng-container matColumnDef="isMapedContract">
+      <ng-container matColumnDef="selfBillInvoiceNo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite break-word"> SelfBill InvoiceNo </th>
+        <td mat-cell *matCellDef="let row " class="break-word"> {{row.selfBillInvoiceNo}} </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef class="coloredwhite break-word-description"> Description </th>
+        <td mat-cell *matCellDef="let row" class="break-word-description"> {{row.description}} </td>
+      </ng-container>
+      <!-- <ng-container matColumnDef="isMapedContract">
     <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite break-word"> isMapedContract </th>
     <td mat-cell *matCellDef="let row" class="break-word"> {{row.isMapedContract}} </td>
   </ng-container>
@@ -110,18 +118,34 @@
     <td mat-cell *matCellDef="let row" class="break-word"> {{row.isActiveContract}} </td>
   </ng-container> -->
 
-  <ng-container matColumnDef="actions">
-    <th mat-header-cell *matHeaderCellDef class="coloredwhite break-word"> Actions </th>
-    <td mat-cell *matCellDef="let element">
-      <button mat-button class="btn btn-outline-success" (click)="openInvoiceModal(element)" >Validate</button>
-    </td>
-  </ng-container>
-  
-  
-  
-  
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="coloredwhite break-word"> Actions </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-button class="btn btn-outline-success" (click)="openInvoiceModal(element)">Validate</button>
+        </td>
+      </ng-container>
 
-  <!-- <ng-container matColumnDef="actions">
+
+      <!-- <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="coloredwhite"> Actions </th>
+        <td mat-cell *matCellDef="let element"> -->
+          <!-- If element.isRecordValidated is true, show text -->
+          <!-- <ng-container *ngIf="element.isRecordValidated; else showButton">
+  
+            <strong class="p-2" style="color:green;font-size: small;">Validated</strong>
+          </ng-container> -->
+          <!-- If not true, show the button -->
+          <!-- <ng-template #showButton>
+            <button type="button" (click)="openInvoiceModal(element)" class="btn btn-outline-success">Validate</button>
+          </ng-template>
+        </td>
+      </ng-container> -->
+
+
+
+
+
+      <!-- <ng-container matColumnDef="actions">
     <th mat-header-cell *matHeaderCellDef> Actions </th>
     <td mat-cell *matCellDef="let row">
     
@@ -129,17 +153,17 @@
     </td>
   </ng-container> -->
 
-  <!-- Table Header and Row -->
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
-  <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns;"
-    [ngClass]="{'table-danger': row.isRecordValidated === false, 'table-success': row.isRecordValidated === true}">
-</tr>
+      <!-- Table Header and Row -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
+      <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns;"
+        [ngClass]="{'table-danger': row.isRecordValidated === false, 'table-success': row.isRecordValidated === true}">
+      </tr>
 
 
-</table>
-</div>
-<mat-paginator [length]="totalRecords" [pageSize]="pageSize" [pageIndex]="pageIndex" (page)="onPageChanged($event)"
+    </table>
+  </div>
+  <mat-paginator [length]="totalRecords" [pageSize]="pageSize" [pageIndex]="pageIndex" (page)="onPageChanged($event)"
     [pageSizeOptions]="[5, 10, 15, 20]" [showFirstLastButtons]="true">
   </mat-paginator>
 

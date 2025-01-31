@@ -89,7 +89,7 @@ export class RemittanceComponent implements OnInit, AfterViewInit {
       .getRemittanceRecord(this.pageIndex, this.pageSize, SortColumn, SortDirection, this.name, this.invoiceno,this.invoiceDate, this.selfBillInvoiceNo, this.IsValidatedRecord,this.token)
       .subscribe({
         next: (response: any) => {
-          this.dataSource.data = response.data.data;
+          this.dataSource.data = response.data.data;       
           this.totalRecords = response.data.totalRecords; 
           this.loading = false; 
         },
@@ -108,7 +108,7 @@ export class RemittanceComponent implements OnInit, AfterViewInit {
     this.selfBillInvoiceNo = this.selfBillInvoiceNo;
     this.invoiceDate = this.invoiceDate;
     this.IsValidatedRecord = this.IsValidatedRecord;
-
+  
     this.remittanceRecord();
   }
 
@@ -179,4 +179,9 @@ export class RemittanceComponent implements OnInit, AfterViewInit {
 
     this.remittanceRecord();
   }
+
+  formatAmount(amount: any): string {
+    return amount ? parseFloat(amount).toFixed(2) : '0.00';
+  }
+  
 }

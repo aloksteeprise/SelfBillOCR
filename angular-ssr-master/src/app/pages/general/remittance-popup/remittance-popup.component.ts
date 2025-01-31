@@ -83,6 +83,7 @@ export class RemittancePopupComponent implements OnInit {
 
   initializeFormData(): void {
     if (this.data) {
+      
       console.log(this.data);
       
       this.id = this.data.id;
@@ -94,9 +95,16 @@ export class RemittancePopupComponent implements OnInit {
       this.duedate = this.data.dueDate || '';
       this.selfbillinvoice = this.data.selfBillInvoiceNo || '';
       // Remove currency 
-      this.paidAmount = this.data.paidAmount.includes(' ') ? this.data.paidAmount.split(' ')[0] : this.data.paidAmount.trim();
-      this.InvoicePendingAmount= this.data.invoicePendingAmount || '';
-      this.InvoiceAmount = this.data.invoiceAmount || '';
+      this.paidAmount = this.data.paidAmount 
+      ? parseFloat(this.data.paidAmount.split(' ')[0].trim()).toFixed(2) 
+      : '0.00';
+    
+      this.InvoicePendingAmount = this.data.invoicePendingAmount 
+      ? parseFloat(this.data.invoicePendingAmount).toFixed(2) 
+      : '0.00';
+      this.InvoiceAmount = this.data.invoiceAmount 
+      ? parseFloat(this.data.invoiceAmount).toFixed(2) 
+      : '0.00';
       this.invoiceDate = this.data.invoiceDate || '';
       //this.groupNewId = this.data.grouP_NEWID || '';
       this.gridCtcCode = this.data.contract_CtcCode || 0;
@@ -169,6 +177,7 @@ onSkip() {
     SelfBillInvoiceNumber: this.selfbillinvoice,
     InvoiceDate: this.invoiceDate,
     invoicePendingAmount: this.InvoicePendingAmount,  
+   
     DueDate: this.duedate,
     IsSkip: true,
   };
@@ -179,6 +188,7 @@ onSkip() {
       this.loading = false;
       if (response.data.resultTable.length > 0) {
         const nextRecord = response.data.resultTable[0];
+        
 
         // Check if this is a special message indicating completion
         if (nextRecord.Message === 'All rows complete') {
@@ -332,9 +342,15 @@ fetchNextRecord(data: any): void {
   this.invoiceNumber = data.InvoiceNumber || '';
   this.selfbillinvoice = data.SelfBillInvoiceNo || '';
   this.duedate = data.DueDate || '';
-  this.paidAmount = data.PaidAmount.includes(' ') ? data.PaidAmount.split(' ')[0] : data.PaidAmount.trim();
-  this.InvoicePendingAmount = data.invoicePendingAmount || '';
-  this.InvoiceAmount = data.InvoiceAmount || '';
+  this.paidAmount = this.data.paidAmount 
+  ? parseFloat(this.data.paidAmount.split(' ')[0].trim()).toFixed(2) 
+  : '0.00';
+  this.InvoicePendingAmount = this.data.invoicePendingAmount 
+  ? parseFloat(this.data.invoicePendingAmount).toFixed(2) 
+  : '0.00';
+  this.InvoiceAmount = this.data.invoiceAmount 
+  ? parseFloat(this.data.invoiceAmount).toFixed(2) 
+  : '0.00';
   this.invoiceDate = data.InvoiceDate || '';
   this.gridCtcCode = data.contract_CtcCode || 0;
   this.imageName = data.PDF_Image_FileName;
