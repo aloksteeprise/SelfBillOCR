@@ -85,6 +85,7 @@ export class RemittancePopupComponent implements OnInit {
     if (this.data) {
       
       console.log(this.data);
+    
       
       this.id = this.data.id;
       this.contractorname = this.data.contractorName || '';
@@ -188,7 +189,6 @@ onSkip() {
       this.loading = false;
       if (response.data.resultTable.length > 0) {
         const nextRecord = response.data.resultTable[0];
-        
 
         // Check if this is a special message indicating completion
         if (nextRecord.Message === 'All rows complete') {
@@ -202,6 +202,7 @@ onSkip() {
             }
           );
         } else {
+         
           this.fetchNextRecord(nextRecord);
         }
       } else {
@@ -343,8 +344,11 @@ fetchNextRecord(data: any): void {
   this.selfbillinvoice = data.SelfBillInvoiceNo || '';
   this.duedate = data.DueDate || '';
   this.paidAmount = data.PaidAmount.includes(' ') ? data.PaidAmount.split(' ')[0] : data.PaidAmount.trim();
-  this.InvoicePendingAmount = data.invoicePendingAmount || '0.00';
-  this.InvoiceAmount = data.InvoiceAmount || '';
+  this.InvoicePendingAmount = data.InvoicePendingAmount || '';
+  this.InvoiceAmount = data.InvoiceAmount 
+  ? parseFloat(data.InvoiceAmount).toFixed(2) 
+  : '0.00';
+
   this.invoiceDate = data.InvoiceDate || '';
   this.gridCtcCode = data.contract_CtcCode || 0;
   this.imageName = data.PDF_Image_FileName;
