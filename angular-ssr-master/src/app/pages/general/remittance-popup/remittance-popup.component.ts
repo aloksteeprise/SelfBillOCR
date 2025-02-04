@@ -41,6 +41,8 @@ export class RemittancePopupComponent implements OnInit {
   uplodedPDFFile:string="";
   loading: boolean = false;
   imageHeight: number = 490;
+  isRecordValidated: string="";
+  isRecordValidate: boolean = false;
 
 
   constructor(
@@ -85,6 +87,7 @@ export class RemittancePopupComponent implements OnInit {
     if (this.data) {
       
       console.log(this.data);
+      debugger;
     
       
       this.id = this.data.id;
@@ -110,6 +113,15 @@ export class RemittancePopupComponent implements OnInit {
       //this.groupNewId = this.data.grouP_NEWID || '';
       this.gridCtcCode = this.data.contract_CtcCode || 0;
       console.log(this.ctcCode);
+      debugger
+      if(this.data.isRecordValidated){
+        this.isRecordValidate = true;
+        this.isRecordValidated = "The record has been successfully mapped and validated by the AFS system.";
+      }
+      else{
+        this.isRecordValidate = false;
+        this.isRecordValidated = "The record could not be mapped or validated by the AFS system.";
+      }
     }
   }
 
@@ -355,6 +367,14 @@ fetchNextRecord(data: any): void {
   this.uplodedPDFFile =data.PDF_FileName;
   this.setImagePath(this.imageName, this.uplodedPDFFile);
   this.IsContractIsActiveOrNot = data.ErrorMessage;
+  debugger
+  if (data.IsRecordValidated) {
+    this.isRecordValidate = true;
+    this.isRecordValidated = "The record has been successfully mapped and validated by the AFS system.";
+  } else {
+    this.isRecordValidate = false;
+    this.isRecordValidated = "The record could not be mapped or validated by the AFS system.";
+  }
 
   
 }
