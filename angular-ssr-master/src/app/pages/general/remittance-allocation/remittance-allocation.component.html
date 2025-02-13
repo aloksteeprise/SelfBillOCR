@@ -1,1 +1,175 @@
-<p>remittance-allocation works!</p>
+<!-- Button to Open Modal -->
+<!-- <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#allocationModal">
+    Open Allocation Screen
+  </button> -->
+  
+  <!-- Allocation Modal -->
+  <div class="modal d-block" id="allocationModal" tabindex="-1" aria-labelledby="allocationModalLabel" aria-hidden="true" style="margin-top: 35px;">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header color text-black" style="height: 50px; background-color: white !important;">
+          <h5 class="modal-title" id="allocationModalLabel">Allocation</h5>
+          <button type="button" class="btn-close"  (click)="closeDialog()" aria-label="Close"></button>
+        </div>
+  
+        <div class="modal-body">
+          <!-- Agency and Invoice Selection -->
+          <div class="d-flex justify-content-between align-items-center color p-1 text-white">
+            <div>
+              <label>Agency:</label>
+              <select class="mx-2 form-select d-inline w-auto">
+                <option>Linksap Europe Ltd (UK) LINKSAP</option>
+              </select>
+            </div>
+            <div>
+              <label>Invoice:</label>
+              <select class="mx-2 form-select d-inline w-auto">
+                <option>701 - 10651 | 01/05/2023 | 5600.00 | 5600</option>
+              </select>
+            </div>
+            <button class="btn btn-primary">Allocation</button>
+            <button class="btn btn-primary">Multi-select of Invoices</button>
+          </div>
+  
+          <!-- Allocation Section -->
+          <div class="border p-2 mt-1 bg-light">
+            <h6 class="color text-white p-1">Allocate</h6>
+            <div class="table-responsive">
+              <table class="table table-bordered text-center">
+                <thead class="color text-white">
+                  <tr>
+                    <th style="width: 135px;">Allocation Type</th>
+                    <th>Item</th>
+                    <th>Amount To Allocate</th>
+                    <th>Agency Commission</th>
+                    <th>Our Fee</th>
+                    <th>Contractor Due</th>
+                    <th>VAT/GST</th>
+                    <th>Due by ag. (Vat Incl.)</th>
+                    <th>Bank Charges Contractor</th>
+                    <th>Tax Withheld</th>
+                    <th>Factoring</th>
+                    <th>Pending Left Due</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <select class="form-select" style="font-size: 12px;">
+                        <option >Select</option>
+                      </select>
+                    </td>
+                    <td><select class="form-select d-inline w-auto">
+                      <option>Linksap >
+                    </select></td>
+                    <td><input type="number" class="form-control"></td>
+                    <td><input type="number" class="form-control" value="0"></td>
+                    <td><input type="number" class="form-control" value="0"></td>
+                    <td><input type="number" class="form-control" value="0"></td>
+                    <td><input type="number" class="form-control" value="0"></td>
+                    <td><input type="number" class="form-control" value="0"></td>
+                    <td><input type="number" class="form-control" value="0"></td>
+                    <td><input type="number" class="form-control" value="0"></td>
+                    <td><input type="number" class="form-control" value="0"></td>
+                    <td><input type="number" class="form-control" value="0"></td>
+                  </tr>
+                  <tr>
+                    <td>Description</td>
+                    <td colspan="6"><input type="text" class="form-control"></td> 
+                    <td colspan="5" class="text-end">
+                      <button class="btn btn-primary">Add</button>
+                      <button class="btn btn-warning mx-3">Reset</button>
+                      <button class="btn btn-secondary">Auto</button>
+                    </td>
+                  </tr>
+                  
+                  
+                  <tr>
+                    <td class="border  bg-danger text-white" colspan="1">
+                      <strong style="font-size: 10px; color: white;">Other Currency Invoice</strong>
+                    </td>
+                    <td colspan="6"> <input type="text" class="form-control" value="0"></td>
+                    <td colspan="5"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+  
+            <!-- <div class="d-flex justify-content-end gap-2">
+              
+            </div> -->
+          </div>
+  
+          <!-- Other Currency Invoice -->
+          <!-- <div class="border p-2 mt-2 bg-danger text-white">
+            <strong>Other Currency Invoice</strong>
+          </div> -->
+  
+          <!-- Allocation Summary -->
+           <div class="border p-2 mt-1 bg-light">
+            <h6 class="color text-white p-1">Allocation Summary</h6>
+            <div class="table-responsive">
+              <table class="table table-bordered text-center">
+                <thead class="color text-white">
+                  <tr>
+                    <th>Allocation Type</th>
+                    <th>Item</th>
+                    <th>Amount To Allocate</th>
+                    <th>Agency Commission</th>
+                    <th>Our Fee</th>
+                    <th>Contractor Due</th>
+                    <th>VAT</th>
+                    <th>Description</th>
+                    <th class="width1">Due by ag. (Vat Incl.)</th>
+                    <th>Bank Charges Contractor</th>
+                    <th>Tax Withheld</th>
+                    <th>Factoring</th>
+                    <th>Pending Left Due</th>
+                    <th class="width">Actions</th>
+                  </tr>
+                </thead>
+                <tbody class="bg-light">
+                  <tr>
+                    <td>Invoice</td>
+                    <td>701 - 10651</td>
+                    <td>2100</td>
+                    <td>0.00</td>
+                    <td>0.00</td>
+                    <td>0.00</td>
+                    <td>0.00</td>
+                    <td>Payment of Invoice 701 - 10651</td>
+                    <td>5600.00</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>3500</td>
+                    <td>
+                      <a href="javascript:void(0)" class="text-primary">Update</a> |
+                      <a href="javascript:void(0)" class="text-danger">Delete</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="table-responsive" style="text-align: center; font-size: 14px;">
+              <div class="d-flex justify-content-center align-items-center mt-1">
+                <label class="me-2">Total available for allocation:</label>
+                <input type="text" class="form-control w-auto">
+              </div>
+            
+              <div class="d-flex justify-content-center align-items-center mt-1">
+                <label class="me-2">Total allocated (Confirmed):</label>
+                <input type="text" class="form-control w-auto">
+              </div>
+            
+              <div class="d-flex justify-content-center align-items-center mt-1 position-relative">
+                <label class="me-2">Total available for allocation:</label>
+                <input type="text" class="form-control w-auto">
+                <button class="btn btn-primary position-absolute" style="right: 0;">Submit Allocation</button>
+              </div>
+            </div>      
+        </div>
+      </div>
+    </div>
+  </div>
+  

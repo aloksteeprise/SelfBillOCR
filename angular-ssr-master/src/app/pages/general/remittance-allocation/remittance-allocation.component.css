@@ -1,0 +1,26 @@
+.width{
+    width: 120px;
+  }
+  .width1{
+    width: 100px;
+  }
+
+  .btn-close {
+    --bs-btn-close-color: white!important;
+  }
+  @media (min-width: 1200px) {
+    ::ng-deep .modal-xl {
+        --bs-modal-width: 1400px;
+    }
+  }
+  .color{
+    background-color: #000000;
+  }
+  .text-center {
+    font-size: 12px;
+    text-align: left !important;
+    color: black;
+  }
+  .text-black{
+    color: black;
+  }

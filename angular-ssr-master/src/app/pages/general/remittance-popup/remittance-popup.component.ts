@@ -303,13 +303,17 @@ onSubmit(form: any): void {
     const apiUrl = environment.API_BASE_URL + 'OCRAI/ValidateRemittanceInvoice';
     this.http.post<any>(apiUrl, formData).subscribe({
       next: (response) => {
+        
         if (response.data.validationResult === 1) {
+          debugger;
           //Success case
           this.notificationService.showNotification(
             'The records have been successfully validated.',
             'INFORMATION',
             'success',
             () => {
+              debugger
+              console.log("ok clicked ")
               if (response.data.resultTable.length > 0) {
                 this.fetchNextRecord(response.data.resultTable[0]);
               }

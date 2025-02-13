@@ -8,6 +8,8 @@ import { Invoice } from './remittance';
 import { RemittancePopupComponent } from '../remittance-popup/remittance-popup.component';
 import { ConfirmationPopComponent } from '../confirmation-pop/confirmation-pop.component';
 import { BreakpointObserver } from '@angular/cdk/layout';
+import { RemittanceAllocationComponent } from '../remittance-allocation/remittance-allocation.component';
+
 
 @Component({
   selector: 'app-remittance',
@@ -127,21 +129,39 @@ export class RemittanceComponent implements OnInit, AfterViewInit {
     this.remittanceRecord();
   }
   
- openInvoiceModal(invoiceData: any): void {
+//  openInvoiceModal(invoiceData: any): void {
   
  
-    const dialogRef = this.dialog.open(RemittancePopupComponent, {
-      width: '800px',
-      data: invoiceData, // Pass row data to the modal
-    });
+//     const dialogRef = this.dialog.open(RemittancePopupComponent, {
+//       width: '800px',
+//       data: invoiceData, // Pass row data to the modal
+//     });
 
-    // Use afterClosed() on dialogRef to handle modal close event
-    dialogRef.afterClosed().subscribe(result => {
+//     // Use afterClosed() on dialogRef to handle modal close event
+//     dialogRef.afterClosed().subscribe(result => {
 
-       this.remittanceRecord();
-      console.log('The dialog was closed');
-    });
-  }
+//        this.remittanceRecord();
+//       console.log('The dialog was closed');
+//     });
+//   }
+
+openValidateModal(invoiceData: any): void {
+  const dialogRef = this.dialog.open(RemittancePopupComponent, {
+    width: '800px',
+    data: invoiceData, 
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    this.remittanceRecord();
+    console.log('The validation dialog was closed');
+  });
+}
+
+openAllocationModal(invoiceData: any): void {
+  this.dialog.open(RemittanceAllocationComponent, {});
+}
+
+
   getToday(): string {
     return new Date().toISOString().split('T')[0]
   }
@@ -183,5 +203,26 @@ export class RemittanceComponent implements OnInit, AfterViewInit {
   formatAmount(amount: any): string {
     return amount ? parseFloat(amount).toFixed(2) : '0.00';
   }
+
+    openAllocationpopup(): void {
+  
+      const dialogRef = this.dialog.open(RemittanceAllocationComponent, {
+        // width: '800px',
+        // data: invoiceData, 
+      });
+  
+      // Use afterClosed() on dialogRef to handle modal close event
+      dialogRef.afterClosed().subscribe(result => {
+  
+        // this.name = this.name;
+        // this.invoiceno = this.invoiceno;
+        // this.startdate = this.startdate;
+        // this.enddate = this.enddate;
+  
+        // this.loadInvoices();
+  
+        console.log('The dialog was closed');
+      });
+    }
   
 }
