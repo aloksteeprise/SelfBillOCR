@@ -4,23 +4,39 @@
   .width1{
     width: 100px;
   }
+  .responsivelabel{
+    margin-left: 154px;
+  }
+
+ 
 
   .btn-close {
     --bs-btn-close-color: white!important;
   }
-  @media (min-width: 1200px) {
+  /* @media (min-width: 1200px) {
     ::ng-deep .modal-xl {
         --bs-modal-width: 1400px;
     }
-  }
+  } */
   .color{
     background-color: #ffffff;
   }
   .text-center {
     font-size: 12px;
-    text-align: left !important;
+    text-align: center !important;
     color: black;
   }
   .text-black{
     color: black;
+  }
+
+  @media screen and (min-width: 300px) and (max-width: 700px) {
+    .responsivelabel{
+      margin-left: 0px !important;
+    }
+    .w-mobile{
+
+      width: 100%!important;
+    }
+    
   }

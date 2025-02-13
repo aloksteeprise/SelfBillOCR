@@ -4,32 +4,39 @@
   </button> -->
   
   <!-- Allocation Modal -->
-  <div class="modal d-block" id="allocationModal" tabindex="-1" aria-labelledby="allocationModalLabel" aria-hidden="true" style="margin-top: 35px;">
+  <div class="modal d-block" id="allocationModal" tabindex="-1" aria-labelledby="allocationModalLabel" aria-hidden="true" style="margin-top: 45px; overflow-y: hidden;">
     <div class="modal-dialog modal-xl">
-      <div class="modal-content">
+      <div class="modal-content" style="max-height: 630px; height: 700px; overflow:overlay;">
         <div class="modal-header color text-black" style="height: 50px; background-color: white !important;">
-          <h5 class="modal-title" id="allocationModalLabel">Allocation</h5>
+          <h5 class="modal-title" id="allocationModalLabel" style="margin-top: 13px;">Allocation</h5>
           <button type="button" class="btn-close"  (click)="closeDialog()" aria-label="Close"></button>
         </div>
   
-        <div class="modal-body">
+        <div class="modal-body" >
           <!-- Agency and Invoice Selection -->
-          <div class="d-flex justify-content-between align-items-center color p-1 text-black">
-            <div>
-              <label>Agency:</label>
-              <select class="mx-2 form-select d-inline w-auto">
-                <option>Linksap Europe Ltd (UK) LINKSAP</option>
-              </select>
+          <div class="container-fluid">
+            <div class="row align-items-center color  text-black">
+              <div class="col-12 col-sm-auto d-flex align-items-center mb-2 mb-sm-0">
+                <label class="mb-0">Agency:</label>
+                <select class=" form-select w-auto w-mobile">
+                  <option>Linksap Europe Ltd (UK) LINKSAP</option>
+                </select>
+              </div>
+              
+              <div class="col-12 col-sm-auto d-flex align-items-center mb-2 mb-sm-0">
+                <label class="mb-0">Invoice:</label>
+                <select class=" form-select w-auto w-mobile">
+                  <option>701 - 10651 | 01/05/2023 | 5600.00 | 5600</option>
+                </select>
+              </div>
+              
+              <div class="col-12 col-sm-auto d-flex gap-2">
+                <button class="btn btn-primary">Allocation</button>
+                <button class="btn btn-primary">Multi-select of Invoices</button>
+              </div>
             </div>
-            <div>
-              <label>Invoice:</label>
-              <select class="mx-2 form-select d-inline w-auto">
-                <option>701 - 10651 | 01/05/2023 | 5600.00 | 5600</option>
-              </select>
-            </div>
-            <button class="btn btn-primary">Allocation</button>
-            <button class="btn btn-primary">Multi-select of Invoices</button>
           </div>
+          
   
           <!-- Allocation Section -->
           <div class="border p-2 mt-1 bg-light">
@@ -70,7 +77,8 @@
                     <td><input type="text" class="form-control" value="0"></td>
                     <td><input type="text" class="form-control" value="0"></td>
                     <td><input type="text" class="form-control" value="0"></td>
-                    <td><input type="text" class="form-control" value="0"></td>
+                    <td><input type="text"class ="form-control" value="0"></td>
+                    <td><input type="text"class ="form-control" value="0"></td>
                   </tr>
                   <tr>
                     <td>Description</td>
@@ -150,23 +158,42 @@
                 </tbody>
               </table>
             </div>
-            <div class="table-responsive" style="text-align: center; font-size: 14px;">
-              <div class="d-flex justify-content-center align-items-center mt-1">
-                <label class="">  Total available for allocation:</label>
-                <input type="text" class="form-control w-auto" style="margin-left: 15px;">
-              </div>
+            <div class="table-responsive text-center" style="font-size: 14px;">
+              <div class="container">
             
-              <div class="d-flex justify-content-center align-items-center mt-1">
-                <label class="">  Total allocated (Confirmed):</label>
-                <input type="text" class="form-control w-auto" style="margin-left: 22px;">
-              </div>
+                <div class="row align-items-center mt-1 justify-content-center">
+                  <div class="col-auto">
+                    <label>Total available for allocation:</label>
+                  </div>
+                  <div class="col-auto">
+                    <input type="text" class="form-control w-auto">
+                  </div>
+                </div>
             
-              <div class="d-flex justify-content-center align-items-center mt-1 position-relative">
-                <label class="">  Total available for allocation:</label>
-                <input type="text" class="form-control w-auto" style="margin-left: 17px;">
-                <button class="btn btn-primary position-absolute" style="right: 0;">Submit Allocation</button>
+                <div class="row align-items-center mt-1 justify-content-center">
+                  <div class="col-auto">
+                    <label>Total allocated (Confirmed):</label>
+                  </div>
+                  <div class="col-auto">
+                    <input type="text" class="form-control w-auto">
+                  </div>
+                </div>
+            
+                <div class="row align-items-center mt-1 justify-content-center">
+                  <div class="col-auto">
+                    <label class="responsivelabel">Total available for allocation:</label>
+                  </div>
+                  <div class="col-auto">
+                    <input type="text" class="form-control w-auto">
+                  </div>
+                  <div class="col-auto">
+                    <button class="btn btn-primary">Submit Allocation</button>
+                  </div>
+                </div>
+            
               </div>
-            </div>      
+            </div>
+               
         </div>
       </div>
     </div>
