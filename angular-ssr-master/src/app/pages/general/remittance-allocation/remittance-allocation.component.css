@@ -8,19 +8,36 @@
     margin-left: 154px;
   }
 
- 
 
+.width120{
+  width: 120px !important;
+}
   .btn-close {
     --bs-btn-close-color: white!important;
   }
-  /* @media (min-width: 1200px) {
+  @media (min-width: 1200px) {
     ::ng-deep .modal-xl {
-        --bs-modal-width: 1400px;
+        --bs-modal-width: 1210px;
     }
-  } */
+  }
   .color{
     background-color: #ffffff;
   }
+.form-control {
+  height: 26px;
+}
+.form-select{
+  padding: 3px 30px 3px 3px;
+  font-size: 14px;
+  height: 26px;
+}
+
+::ng-deep .mat-typography h6 {
+  font-size: 17px !important;
+  font: 0, sans-serif !important;
+  letter-spacing: 0 !important;
+  margin: 0 !important;
+}
   .text-center {
     font-size: 12px;
     text-align: center !important;
