@@ -1,5 +1,6 @@
 import { Directive, HostListener, Input } from '@angular/core';
-import { SharedModule } from '../../app/pages/general/shared/shared.module';
+import { SharedUtils } from '../../app/pages/general/shared/shared-utils'; // Import the utility functions
+//import { SharedModule } from '../../app/pages/general/shared/shared.module';
 
 @Directive({
   selector: '[appInputSanitizer]',
@@ -15,25 +16,25 @@ export class InputSanitizerDirective {
       case 'alphabet':
         sanitizedValue = input
           .split('')
-          .filter((char: string) => SharedModule.isAlphabet(char))
+          .filter((char: string) => SharedUtils.isAlphabet(char))
           .join('');
         break;
         case 'alphabetwithcomma':
         sanitizedValue = input
           .split('')
-          .filter((char: string) => SharedModule.isAlphabetWithComma(char))
+          .filter((char: string) => SharedUtils.isAlphabetWithComma(char))
           .join('');
         break;
         case 'number':
           sanitizedValue = input
             .split('')
-            .filter((char: string) => SharedModule.isNumber(char))
+            .filter((char: string) => SharedUtils.isNumber(char))
             .join('');
           break;        
       case 'alphanumeric':
         sanitizedValue = input
           .split('')
-          .filter((char: string) => SharedModule.isAlphanumeric(char))
+          .filter((char: string) => SharedUtils.isAlphanumeric(char))
           .join('');
         break;
     }
@@ -43,6 +44,6 @@ export class InputSanitizerDirective {
   }
 
   validateDateField(dateValue: string, fieldName: string, isRequired: boolean): string | null {
-    return SharedModule.validateDate(dateValue, fieldName, isRequired);
+    return SharedUtils.validateDate(dateValue, fieldName, isRequired);
   }
 }
