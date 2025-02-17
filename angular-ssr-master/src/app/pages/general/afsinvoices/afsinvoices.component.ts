@@ -5,14 +5,13 @@ import { MatSort } from '@angular/material/sort';
 import { ApiService } from '../afsinvoices/afsinvoices.service';
 import { afsInvoice } from '../afsinvoices/afsinvoices.model';
 import { MatDialog } from '@angular/material/dialog';
-import { AfsInvoicesPopupComponent } from '../afs-invoices-popup/afs-invoices-popup.component';
+// import { AfsInvoicesPopupComponent } from '../afs-invoices-popup/afs-invoices-popup.component';
 import { AfsinvoiceComponent } from '../afsinvoice/afsinvoice.component';
 import { ConfirmationPopComponent } from '../confirmation-pop/confirmation-pop.component';
 import {environment} from '../constant/api-constants';
 import { NotificationPopupService } from '../notification-popup/notification-popup.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BreakpointObserver } from '@angular/cdk/layout';
-
 
 @Component({
   selector: 'app-afsinvoices',
@@ -246,7 +245,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     const invoiceID = row.afsInvoiceStatus;
     const isAdminorContractor = 0;
 
-    this.apiService.generateInvoicePDF(invoiceID, isAdminorContractor).subscribe(
+    this.apiService.generateInvoicePDF(invoiceID, isAdminorContractor,this.token).subscribe(
       (response: any) => {
         if (response.succeeded) {
           const pdfPath = response.messages[0];
@@ -282,8 +281,12 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   BatchValidate() {
     const apiUrl = environment.API_BASE_URL + 'OCRAI/SelfBillBatchValidate';
     this.notificationService.setNotificationVisibility(true);
-  
-    this.http.post<any>(apiUrl, {}).subscribe({
+    const headers = new HttpHeaders({
+        Authorization: `Bearer ${this.token}`,
+        'Content-Type': 'application/json',
+      });
+
+    this.http.post<any>(apiUrl, {headers}).subscribe({
       next: (response) => {
         if (response && response.data && response.data.length > 0 && response.data[0].status === 4) {
           this.notificationService.showNotification(
@@ -310,7 +313,5 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
       },
     });
   }
-  
-
 
 }

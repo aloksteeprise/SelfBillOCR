@@ -57,7 +57,7 @@ export class ApiService {
     return this.http.post<PaginationResponse<any>>(this.apiUrl, body, { headers });
   }
 
-  generateInvoicePDF(invoiceID: number, isAdminorContractor: number): Observable<any> {
+  generateInvoicePDF(invoiceID: number, isAdminorContractor: number, token: string): Observable<any> {
     const url = environment.API_BASE_URL + 'Invoice/GenerateInvoicePDF';
   
     // Construct the request body
@@ -65,7 +65,9 @@ export class ApiService {
       invoiceID,
       isAdminorContractor,
     };
+
     const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     });
   

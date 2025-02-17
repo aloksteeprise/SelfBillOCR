@@ -1,10 +1,11 @@
 import { Component, Inject, OnInit,ViewChild  } from '@angular/core';
 import { MatDialogRef,MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpHeaders } from '@angular/common/http';
 import {environment} from '../constant/api-constants';
 import { NotificationPopupService } from '../notification-popup/notification-popup.service';
 import { DownloadPdfService } from '../service/downlaodPdf.service';
-import { SharedModule } from '../shared/shared.module';
+//import { SharedModule } from '../shared/shared.module';
+import { SharedUtils  } from '../shared/shared-utils';
 
 @Component({
   selector: 'app-remittance-popup',
@@ -43,7 +44,7 @@ export class RemittancePopupComponent implements OnInit {
   imageHeight: number = 490;
   isRecordValidated: string="";
   isRecordValidate: boolean = false;
-
+  token: string = '';
 
   constructor(
     
@@ -63,14 +64,14 @@ export class RemittancePopupComponent implements OnInit {
     this.imageName = filePath;
     this.uplodedPDFFile =pdfFile;
     //server
-    this.thumbImage = `assets/documents/remittance/image/${this.imageName}`;
-    this.fullImagePath = `assets/documents/remittance/image/${this.imageName}`;
-    this.pdfFileName =`assets/documents/remittance/pdf/${this.uplodedPDFFile}`;
+    // this.thumbImage = `assets/documents/remittance/image/${this.imageName}`;
+    // this.fullImagePath = `assets/documents/remittance/image/${this.imageName}`;
+    // this.pdfFileName =`assets/documents/remittance/pdf/${this.uplodedPDFFile}`;
 
   //Local
-    // this.pdfFileName =`assets/documents/remittance/pdf/Remittanceadvice.pdf`;
-    // this.thumbImage = `assets/documents/remittance/image/2-AccessFinancialEUR7thNov_1_Image20250120_155215.png`;
-    // this.fullImagePath = `assets/documents/remittance/image/2-AccessFinancialEUR7thNov_1_Image20250120_155215.png`;
+    this.pdfFileName =`assets/documents/remittance/pdf/Remittanceadvice.pdf`;
+    this.thumbImage = `assets/documents/remittance/image/2-AccessFinancialEUR7thNov_1_Image20250120_155215.png`;
+    this.fullImagePath = `assets/documents/remittance/image/2-AccessFinancialEUR7thNov_1_Image20250120_155215.png`;
   
     console.log('Thumb Image:', this.thumbImage);
     console.log('Full Image Path:', this.fullImagePath);
@@ -81,13 +82,19 @@ export class RemittancePopupComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeFormData();
+    const storedToken = localStorage.getItem('token');
+    if (storedToken) {
+      this.token = storedToken; 
+    } else {
+      console.error('Token not found in localStorage.');
+     
+    }
   }
 
   initializeFormData(): void {
     if (this.data) {
       
       console.log(this.data);
-      debugger;
     
       
       this.id = this.data.id;
@@ -195,8 +202,13 @@ onSkip() {
     IsSkip: true,
   };
 
+  const headers = new HttpHeaders({
+    Authorization: `Bearer ${this.token}`,
+    'Content-Type': 'application/json',
+  });
+
   const apiUrl = environment.API_BASE_URL + 'OCRAI/ValidateRemittanceInvoice';
-  this.http.post<any>(apiUrl, formData).subscribe({
+  this.http.post<any>(apiUrl, formData,{headers}).subscribe({
     next: (response) => {
       this.loading = false;
       if (response.data.resultTable.length > 0) {
@@ -272,12 +284,12 @@ onSubmit(form: any): void {
     isValid = false;
   }
 
-  const invoiceDate = SharedModule.validateDate(this.invoiceDate, 'Invoice Date', false);
+  const invoiceDate = SharedUtils.validateDate(this.invoiceDate, 'Invoice Date', false);
     if (invoiceDate) {
       isValid = false;
       errors.invoiceDate = invoiceDate; }
 
-  const duedate = SharedModule.validateDate(this.duedate, 'Due Date', false);
+  const duedate = SharedUtils.validateDate(this.duedate, 'Due Date', false);
   if (duedate) {
     isValid = false;
     errors.duedate = duedate; }
@@ -299,9 +311,13 @@ onSubmit(form: any): void {
     };
   
     console.log('formData:', formData);
-  
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.token}`,
+      'Content-Type': 'application/json',
+    });
+
     const apiUrl = environment.API_BASE_URL + 'OCRAI/ValidateRemittanceInvoice';
-    this.http.post<any>(apiUrl, formData).subscribe({
+    this.http.post<any>(apiUrl, formData,{headers}).subscribe({
       next: (response) => {
         
         if (response.data.validationResult === 1) {

@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef,MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {environment} from '../constant/api-constants';
 
 @Component({
@@ -33,6 +33,7 @@ export class AfsInvoicesPopupComponent implements OnInit {
   isPopupVisible: boolean = true;
   ctcCode: number = 0;
   gridCtcCode: number = 0;
+  token: string = '';
   
   constructor(
     public dialogRef: MatDialogRef<AfsInvoicesPopupComponent>,
@@ -60,6 +61,14 @@ export class AfsInvoicesPopupComponent implements OnInit {
   ngOnInit(): void {
     this.initializeFormData();
     this.fetchContractorOptions(); // Fetch API data for dropdown
+
+    const storedToken = localStorage.getItem('token');
+    if (storedToken) {
+      this.token = storedToken; 
+    } else {
+      console.error('Token not found in localStorage.');
+     
+    }
   }
 
   initializeFormData(): void {
@@ -74,7 +83,8 @@ export class AfsInvoicesPopupComponent implements OnInit {
       this.enddate = this.data.endDate || '';
       
       // Remove currency 
-      this.totalAmount = this.data.totalAmount.includes(' ') ? this.data.totalAmount.split(' ')[0] : this.data.totalAmount.trim();
+      //this.totalAmount = this.data.totalAmount.includes(' ') ? this.data.totalAmount.split(' ')[0] : this.data.totalAmount.trim();
+      this.totalAmount = (this.data.totalAmount && this.data.totalAmount.includes(' ')) ? this.data.totalAmount.split(' ')[0] : (this.data.totalAmount || '').trim();
       this.invoiceNumber = this.data.selfBillInvoiceNo || '';
       this.invoiceDate = this.data.selfBillInvoiceDate || '';
       this.groupNewId = this.data.grouP_NEWID || '';
@@ -89,8 +99,18 @@ export class AfsInvoicesPopupComponent implements OnInit {
     
     const apiUrl = environment.API_BASE_URL+'OCRAI/GetContractorContractListByConName';
     // Sending request to API
-    
-    this.http.post<any>(apiUrl, { firstNameForAFS: this.firstnamefor,lastNameForAFS:this.lastnamefor,fullName: this.contractorname }).subscribe(
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.token}`,
+      'Content-Type': 'application/json',
+    });
+
+    const body = {
+      firstNameForAFS: this.firstnamefor,
+      lastNameForAFS: this.lastnamefor,
+      fullName: this.contractorname,
+    };
+
+    this.http.post<any>(apiUrl, body, { headers }).subscribe(
       (response) => {
         // Assign the list of contractors to the dropdown options
         if (response?.data?.contractsList) {
@@ -159,10 +179,15 @@ export class AfsInvoicesPopupComponent implements OnInit {
       };
   
       console.log('formData:', formData);
-  
+
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${this.token}`,
+        'Content-Type': 'application/json',
+      });
+
       //const apiUrl = 'https://localhost:44337/api/OCRAI/ValidateAndMapToContractorContract';
       const apiUrl = environment.API_BASE_URL+'OCRAI/ValidateAndMapToContractorContract';
-      this.http.post<any>(apiUrl, formData).subscribe({
+      this.http.post<any>(apiUrl, formData, {headers}).subscribe({
         next: (response) => {
           switch (response.data.validationResult) {
             case -1:
@@ -216,7 +241,8 @@ export class AfsInvoicesPopupComponent implements OnInit {
     this.lastnamefor = data.CLastName || '';
     this.startdate = data.StartDate || '';
     this.enddate = data.EndDate || '';
-    this.totalAmount = data.TotalTaxAmount?.includes(' ') ? data.TotalTaxAmount.split(' ')[0] : data.TotalTaxAmount?.trim() || '';
+    //this.totalAmount = data.TotalTaxAmount?.includes(' ') ? data.TotalTaxAmount.split(' ')[0] : data.TotalTaxAmount?.trim() || '';
+    this.totalAmount = (this.data.totalAmount && this.data.totalAmount.includes(' ')) ? this.data.totalAmount.split(' ')[0] : (this.data.totalAmount || '').trim();
     this.invoiceNumber = data.SelfBillInvoiceNo || '';
     this.invoiceDate = data.SelfBillInvoiceDate || '';
     this.groupNewId = data.GROUP_NEWID || '';

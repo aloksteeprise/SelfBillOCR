@@ -1,10 +1,11 @@
 import { Component, Inject, OnInit,ViewChild  } from '@angular/core';
 import { MatDialogRef,MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {environment} from '../constant/api-constants';
 import { NotificationPopupService } from '../notification-popup/notification-popup.service';
 import { DownloadPdfService } from '../service/downlaodPdf.service';
-import { SharedModule } from '../shared/shared.module';
+//import { SharedModule } from '../shared/shared.module';
+import { SharedUtils  } from '../shared/shared-utils';
 
 
 
@@ -49,6 +50,7 @@ export class AfsinvoiceComponent implements OnInit {
   loading: boolean = false;
   isNotificationVisible: boolean = false
   currencytype :string='';
+  token: string = '';
 
 
   constructor(
@@ -66,14 +68,14 @@ export class AfsinvoiceComponent implements OnInit {
     
     this.imageName = filePath;
     this.uplodedPDFFile =pdfFile;
-    this.thumbImage = `assets/documents/pdf/${this.imageName}`;
-    this.fullImagePath = `assets/documents/pdf/${this.imageName}`;
+    // this.thumbImage = `assets/documents/pdf/${this.imageName}`;
+    // this.fullImagePath = `assets/documents/pdf/${this.imageName}`;
     
     this.pdfFileName =`assets/documents/processed-pdf/${this.uplodedPDFFile}`;
 
     //image with good readibility
-    // this.thumbImage = `assets/documents/pdf/La fosse - SB-209461_Image20241126_120950.png`;
-    // this.fullImagePath = `assets/documents/pdf/La fosse - SB-209461_Image20241126_120950.png`;
+    this.thumbImage = `assets/documents/pdf/La fosse - SB-209461_Image20241126_120950.png`;
+    this.fullImagePath = `assets/documents/pdf/La fosse - SB-209461_Image20241126_120950.png`;
 
     // this.thumbImage = `assets/documents/pdf/invoice_18_04_2024_2_Image20241129_122116.png`;
     // this.fullImagePath = `assets/documents/pdf/invoice_18_04_2024_2_Image20241129_122116.png`;
@@ -91,6 +93,13 @@ export class AfsinvoiceComponent implements OnInit {
     this.initializeFormData();
     this.fetchContractorOptions();
 
+    const storedToken = localStorage.getItem('token');
+    if (storedToken) {
+      this.token = storedToken; 
+    } else {
+      console.error('Token not found in localStorage.');
+     
+    }
   }
 
   initializeFormData(): void {
@@ -110,7 +119,8 @@ export class AfsinvoiceComponent implements OnInit {
       this.currencytype = this.data.currencyType || '';
       
       // Remove currency 
-      this.totalAmount = this.data.totalAmount.includes(' ') ? this.data.totalAmount.split(' ')[0] : this.data.totalAmount.trim();
+      // this.totalAmount = this.data.totalAmount.includes(' ') ? this.data.totalAmount.split(' ')[0] : this.data.totalAmount.trim();
+      this.totalAmount = this.data.totalAmount ? (this.data.totalAmount.includes(' ') ? this.data.totalAmount.split(' ')[0] : this.data.totalAmount.trim()) : ''; // Ensure a default empty string if totalAmount is undefined
       this.invoiceNumber = this.data.selfBillInvoiceNo || '';
       this.invoiceDate = this.data.selfBillInvoiceDate || '';
       this.groupNewId = this.data.grouP_NEWID || '';
@@ -122,7 +132,7 @@ export class AfsinvoiceComponent implements OnInit {
   fetchContractorOptions(): void {
     
     //const apiUrl = 'https://localhost:44337/api/OCRAI/GetContractorContractListByConName'; // Replace with your API URL
-    
+
     const apiUrl = environment.API_BASE_URL+'OCRAI/GetContractorContractListByConName';
     // Sending request to API
     let searchFullName="";
@@ -133,7 +143,18 @@ export class AfsinvoiceComponent implements OnInit {
       searchFullName= this.contractorname ;
     }
     
-    this.http.post<any>(apiUrl, { firstNameForAFS: this.firstnamefor,lastNameForAFS:this.lastnamefor,fullName: searchFullName }).subscribe(
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.token}`,
+      'Content-Type': 'application/json',
+    });
+
+    const body = {
+      firstNameForAFS: this.firstnamefor,
+      lastNameForAFS: this.lastnamefor,
+      fullName: searchFullName,
+    };
+
+    this.http.post<any>(apiUrl,body, {headers }).subscribe(
       (response) => {
         // Assign the list of contractors to the dropdown options
         if (response?.data?.contractsList) {
@@ -206,7 +227,16 @@ console.log(apiUrl);
 console.log('this.ctcCode');
 console.log(this.ctcCode);
 
-this.http.post<any>(apiUrl, { CtcCode: this.conCode }).subscribe(
+const headers = new HttpHeaders({
+  Authorization: `Bearer ${this.token}`,
+  'Content-Type': 'application/json',
+});
+
+const body = {
+  CtcCode: this.conCode
+};
+
+this.http.post<any>(apiUrl,body, { headers}).subscribe(
   (response) => {
     // Assign the list of contractors to the dropdown options
     console.log('GetContractorActiveContract API');
@@ -314,9 +344,13 @@ onSkip() {
     IsSkip: true,
   };
   
+  const headers = new HttpHeaders({
+    Authorization: `Bearer ${this.token}`,
+    'Content-Type': 'application/json',
+  });
 
   const apiUrl = environment.API_BASE_URL + 'OCRAI/ValidateAndMapToContractorContract';
-  this.http.post<any>(apiUrl, formData).subscribe({
+  this.http.post<any>(apiUrl, formData,{headers}).subscribe({
     next: (response) => {
       this.loading = false;
 
@@ -418,17 +452,17 @@ onSubmit(form: any): void {
   //   isValid = false;
   // }
   
-  const startDate = SharedModule.validateDate(this.startdate, 'Start Date', true);
+  const startDate = SharedUtils.validateDate(this.startdate, 'Start Date', true);
     if (startDate) {
       isValid = false;
       errors.startDate = startDate; }
 
-  const endDate = SharedModule.validateDate(this.enddate, 'End Date', true);
+  const endDate = SharedUtils.validateDate(this.enddate, 'End Date', true);
   if (endDate) {
     isValid = false;
     errors.endDate = endDate; }
 
-  const invoiceDate = SharedModule.validateDate(this.invoiceDate, 'Invoice Date', true);
+  const invoiceDate = SharedUtils.validateDate(this.invoiceDate, 'Invoice Date', true);
   if (invoiceDate) {
     isValid = false;
     errors.invoiceDate = invoiceDate; }
@@ -475,10 +509,14 @@ onSubmit(form: any): void {
 
     console.log('formData:', formData);
 
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.token}`,
+      'Content-Type': 'application/json',
+    });
+
     //const apiUrl = 'https://localhost:44337/api/OCRAI/ValidateAndMapToContractorContract';
     const apiUrl = environment.API_BASE_URL+'OCRAI/ValidateAndMapToContractorContract';
-    // const apiUrl =""
-    this.http.post<any>(apiUrl, formData).subscribe({
+    this.http.post<any>(apiUrl, formData,{headers}).subscribe({
       next: (response) => {
        
        
@@ -647,7 +685,8 @@ console.log(data);
   this.lastnamefor = data.CLastName || '';
   this.startdate = data.StartDate || '';
   this.enddate = data.EndDate || '';
-  this.totalAmount = data.TotalAmount?.includes(' ') ? data.TotalAmount.split(' ')[0] : data.TotalAmount?.trim() || '';  this.invoiceNumber = data.SelfBillInvoiceNo || '';
+  this.totalAmount = this.data.totalAmount ? (this.data.totalAmount.includes(' ') ? this.data.totalAmount.split(' ')[0] : this.data.totalAmount.trim()) : ''; // Ensure a default empty string if totalAmount is undefined
+  // this.totalAmount = data.TotalAmount?.includes(' ') ? data.TotalAmount.split(' ')[0] : data.TotalAmount?.trim() || '';  this.invoiceNumber = data.SelfBillInvoiceNo || '';
   this.invoiceDate = data.SelfBillInvoiceDate || '';
   this.groupNewId = data.GROUP_NEWID || '';
   this.gridCtcCode = data.Contract_CtcCode || 0;
