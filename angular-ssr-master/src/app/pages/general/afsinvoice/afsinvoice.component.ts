@@ -68,14 +68,14 @@ export class AfsinvoiceComponent implements OnInit {
     
     this.imageName = filePath;
     this.uplodedPDFFile =pdfFile;
-    // this.thumbImage = `assets/documents/pdf/${this.imageName}`;
-    // this.fullImagePath = `assets/documents/pdf/${this.imageName}`;
+    this.thumbImage = `assets/documents/pdf/${this.imageName}`;
+    this.fullImagePath = `assets/documents/pdf/${this.imageName}`;
     
     this.pdfFileName =`assets/documents/processed-pdf/${this.uplodedPDFFile}`;
 
     //image with good readibility
-    this.thumbImage = `assets/documents/pdf/La fosse - SB-209461_Image20241126_120950.png`;
-    this.fullImagePath = `assets/documents/pdf/La fosse - SB-209461_Image20241126_120950.png`;
+    // this.thumbImage = `assets/documents/pdf/La fosse - SB-209461_Image20241126_120950.png`;
+    // this.fullImagePath = `assets/documents/pdf/La fosse - SB-209461_Image20241126_120950.png`;
 
     // this.thumbImage = `assets/documents/pdf/invoice_18_04_2024_2_Image20241129_122116.png`;
     // this.fullImagePath = `assets/documents/pdf/invoice_18_04_2024_2_Image20241129_122116.png`;
@@ -119,8 +119,8 @@ export class AfsinvoiceComponent implements OnInit {
       this.currencytype = this.data.currencyType || '';
       
       // Remove currency 
-      // this.totalAmount = this.data.totalAmount.includes(' ') ? this.data.totalAmount.split(' ')[0] : this.data.totalAmount.trim();
-      this.totalAmount = this.data.totalAmount ? (this.data.totalAmount.includes(' ') ? this.data.totalAmount.split(' ')[0] : this.data.totalAmount.trim()) : ''; // Ensure a default empty string if totalAmount is undefined
+      this.totalAmount = this.data.totalAmount.includes(' ') ? this.data.totalAmount.split(' ')[0] : this.data.totalAmount.trim();
+      //this.totalAmount = this.data.totalAmount ? (this.data.totalAmount.includes(' ') ? this.data.totalAmount.split(' ')[0] : this.data.totalAmount.trim()) : ''; // Ensure a default empty string if totalAmount is undefined
       this.invoiceNumber = this.data.selfBillInvoiceNo || '';
       this.invoiceDate = this.data.selfBillInvoiceDate || '';
       this.groupNewId = this.data.grouP_NEWID || '';
@@ -685,8 +685,8 @@ console.log(data);
   this.lastnamefor = data.CLastName || '';
   this.startdate = data.StartDate || '';
   this.enddate = data.EndDate || '';
-  this.totalAmount = this.data.totalAmount ? (this.data.totalAmount.includes(' ') ? this.data.totalAmount.split(' ')[0] : this.data.totalAmount.trim()) : ''; // Ensure a default empty string if totalAmount is undefined
-  // this.totalAmount = data.TotalAmount?.includes(' ') ? data.TotalAmount.split(' ')[0] : data.TotalAmount?.trim() || '';  this.invoiceNumber = data.SelfBillInvoiceNo || '';
+  //this.totalAmount = this.data.totalAmount ? (this.data.totalAmount.includes(' ') ? this.data.totalAmount.split(' ')[0] : this.data.totalAmount.trim()) : ''; // Ensure a default empty string if totalAmount is undefined
+  this.totalAmount = data.TotalAmount?.includes(' ') ? data.TotalAmount.split(' ')[0] : data.TotalAmount?.trim() || '';  this.invoiceNumber = data.SelfBillInvoiceNo || '';
   this.invoiceDate = data.SelfBillInvoiceDate || '';
   this.groupNewId = data.GROUP_NEWID || '';
   this.gridCtcCode = data.Contract_CtcCode || 0;
