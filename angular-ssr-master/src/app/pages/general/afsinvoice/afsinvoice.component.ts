@@ -96,6 +96,7 @@ export class AfsinvoiceComponent implements OnInit {
   initializeFormData(): void {
     if (this.data) {
       console.log(this.data);
+     
       //alert(this.data.contract_CtcContractor);
       this.id = this.data.id;
       this.conCode = this.data.contract_CtcContractor || '';
@@ -377,6 +378,7 @@ onSkip() {
 
 
 onSubmit(form: any): void {
+ 
   this.submitted = true; 
   let isValid = true;
   const errors: any = {};
@@ -475,10 +477,14 @@ onSubmit(form: any): void {
 
     //const apiUrl = 'https://localhost:44337/api/OCRAI/ValidateAndMapToContractorContract';
     const apiUrl = environment.API_BASE_URL+'OCRAI/ValidateAndMapToContractorContract';
+    // const apiUrl =""
     this.http.post<any>(apiUrl, formData).subscribe({
       next: (response) => {
+       
+       
         switch (response.data.validationResult) {
           case -1:
+            
             //alert('Error occurred in validation process.');
 
             this.notificationService.showNotification(
@@ -532,6 +538,7 @@ onSubmit(form: any): void {
           case 3:
             //alert('Error in validation process.');
             //this.fetchNextRecord(response.data.resultTable[0]);
+           
             this.notificationService.showNotification(
               'Error in validation process.',
               'ERROR',
@@ -549,13 +556,17 @@ onSubmit(form: any): void {
             break;
   
           case 4:
+            console.log("case 4 is clicked ")
             //alert('The records have been successfully validated and moved.');
             //this.fetchNextRecord(response.data.resultTable[0]);
+        
             this.notificationService.showNotification(
               'The records have been successfully validated and moved.',
               'INFORMATION',
               'success',
               () => {
+         
+
                 console.log('OK clicked 4'); // Callback logic
                 console.log('response' + response.data.resultTable.length);
                 console.log(response);
@@ -566,6 +577,30 @@ onSubmit(form: any): void {
               }
             );
             break;
+
+
+            case 5:
+              console.log("case 5 is clicked ")
+              //alert('The records have been successfully validated and moved.');
+              //this.fetchNextRecord(response.data.resultTable[0]);
+          
+              this.notificationService.showNotification(
+                'The selected period must fall within the contracts start and end dates.',
+                'INFORMATION',
+                'success',
+                () => {
+                 
+  
+                  console.log('OK clicked 5'); // Callback logic
+                  console.log('response' + response.data.resultTable.length);
+                  console.log(response);
+                  if(response.data.resultTable.length >0){
+                    this.fetchNextRecord(response.data.resultTable[0]);
+                  }
+                  this.notificationService.setNotificationVisibility(false);
+                }
+              );
+              break;
 
   
           default:
