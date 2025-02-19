@@ -281,37 +281,47 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   BatchValidate() {
     const apiUrl = environment.API_BASE_URL + 'OCRAI/SelfBillBatchValidate';
     this.notificationService.setNotificationVisibility(true);
+    
     const headers = new HttpHeaders({
         Authorization: `Bearer ${this.token}`,
         'Content-Type': 'application/json',
-      });
-
-    this.http.post<any>(apiUrl, {headers}).subscribe({
-      next: (response) => {
-        if (response && response.data && response.data.length > 0 && response.data[0].status === 4) {
-          this.notificationService.showNotification(
-            'Records have been validated and processed successfully.',
-            'INFORMATION',
-            'success',
-            () => {
-              console.log('OK clicked 4');
-              this.notificationService.setNotificationVisibility(false); // Hide after OK
-            }
-          );
-        }
-      },
-      error: (error) => {
-        this.notificationService.showNotification(
-          'Unable to complete the action. Please retry.',
-          'ERROR',
-          'error',
-          () => {
-            console.log('Error callback');
-            this.notificationService.setNotificationVisibility(false); // Hide after OK
-          }
-        );
-      },
     });
-  }
+
+    console.log(headers, "batch validate");
+
+    const body = {}; // Provide necessary request payload if required
+
+    this.http.post<any>(apiUrl, body, { headers }).subscribe({
+        next: (response) => {
+          
+            if (response && response.data && response.data.length > 0 && response.data[0].status === 4) {
+                this.notificationService.showNotification(
+                    'Records have been validated and processed successfully.',
+                    'INFORMATION',
+                    'success',
+                    () => {
+                        console.log('OK clicked 4');
+                        this.notificationService.setNotificationVisibility(false);
+                        window.location.reload();
+                    }
+                );
+            }
+        },
+        error: (error) => {
+            debugger;
+            console.error("Error Response:", error); // Log error details
+            this.notificationService.showNotification(
+                'Unable to complete the action. Please retry.',
+                'ERROR',
+                'error',
+                () => {
+                    console.log('Error callback');
+                    this.notificationService.setNotificationVisibility(false);
+                }
+            );
+        },
+    });
+}
+
 
 }

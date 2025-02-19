@@ -518,12 +518,12 @@ onSubmit(form: any): void {
     const apiUrl = environment.API_BASE_URL+'OCRAI/ValidateAndMapToContractorContract';
     this.http.post<any>(apiUrl, formData,{headers}).subscribe({
       next: (response) => {
-       
+       //response.data.validationResult = -1
        
         switch (response.data.validationResult) {
           case -1:
             
-            //alert('Error occurred in validation process.');
+            //alert('Erro r occurred in validation process.');
 
             this.notificationService.showNotification(
               'Error occurred in validation process.',
@@ -531,6 +531,8 @@ onSubmit(form: any): void {
               'error',
               () => {
                 console.log('OK clicked!'); // Callback logic
+                this.notificationService.setNotificationVisibility(false);
+
               }
             );
             break;
@@ -589,6 +591,7 @@ onSubmit(form: any): void {
                 if(response.data.resultTable.length >0){
                   this.fetchNextRecord(response.data.resultTable[0]);
                 }
+                this.notificationService.setNotificationVisibility(false);
               }
             );
             break;
