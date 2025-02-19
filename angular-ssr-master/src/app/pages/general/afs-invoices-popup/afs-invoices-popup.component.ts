@@ -59,9 +59,6 @@ export class AfsInvoicesPopupComponent implements OnInit {
     this.dialogRef.close();
   }
   ngOnInit(): void {
-    this.initializeFormData();
-    this.fetchContractorOptions(); // Fetch API data for dropdown
-
     const storedToken = localStorage.getItem('token');
     if (storedToken) {
       this.token = storedToken; 
@@ -69,6 +66,11 @@ export class AfsInvoicesPopupComponent implements OnInit {
       console.error('Token not found in localStorage.');
      
     }
+    
+    this.initializeFormData();
+    this.fetchContractorOptions(); // Fetch API data for dropdown
+
+    
   }
 
   initializeFormData(): void {

@@ -89,9 +89,6 @@ export class AfsinvoiceComponent implements OnInit {
   
 
   ngOnInit(): void {
-   
-    this.initializeFormData();
-    this.fetchContractorOptions();
 
     const storedToken = localStorage.getItem('token');
     if (storedToken) {
@@ -100,6 +97,9 @@ export class AfsinvoiceComponent implements OnInit {
       console.error('Token not found in localStorage.');
      
     }
+       
+    this.initializeFormData();
+    this.fetchContractorOptions();
   }
 
   initializeFormData(): void {

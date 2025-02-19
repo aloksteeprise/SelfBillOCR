@@ -81,7 +81,6 @@ export class RemittancePopupComponent implements OnInit {
   
 
   ngOnInit(): void {
-    this.initializeFormData();
     const storedToken = localStorage.getItem('token');
     if (storedToken) {
       this.token = storedToken; 
@@ -89,6 +88,8 @@ export class RemittancePopupComponent implements OnInit {
       console.error('Token not found in localStorage.');
      
     }
+
+    this.initializeFormData();
   }
 
   initializeFormData(): void {
@@ -120,7 +121,6 @@ export class RemittancePopupComponent implements OnInit {
       //this.groupNewId = this.data.grouP_NEWID || '';
       this.gridCtcCode = this.data.contract_CtcCode || 0;
       console.log(this.ctcCode);
-      debugger
       if(this.data.isRecordValidated){
         this.isRecordValidate = true;
         this.isRecordValidated = "The record has been successfully mapped and validated by the AFS system.";
@@ -321,14 +321,12 @@ onSubmit(form: any): void {
       next: (response) => {
         
         if (response.data.validationResult === 1) {
-          debugger;
           //Success case
           this.notificationService.showNotification(
             'The records have been successfully validated.',
             'INFORMATION',
             'success',
             () => {
-              debugger
               console.log("ok clicked ")
               if (response.data.resultTable.length > 0) {
                 this.fetchNextRecord(response.data.resultTable[0]);
@@ -387,7 +385,6 @@ fetchNextRecord(data: any): void {
   this.uplodedPDFFile =data.PDF_FileName;
   this.setImagePath(this.imageName, this.uplodedPDFFile);
   this.IsContractIsActiveOrNot = data.ErrorMessage;
-  debugger
   if (data.IsRecordValidated) {
     this.isRecordValidate = true;
     this.isRecordValidated = "The record has been successfully mapped and validated by the AFS system.";
