@@ -100,6 +100,8 @@
   <ng-container matColumnDef="mvtReconciled">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Reconciled </th>
     <td mat-cell *matCellDef="let element"> 
+
+      {{element.mvtReconciled ? 'Yes' : 'No'}}
       <!-- <mat-checkbox [checked]="element.mvtReconciled"></mat-checkbox> -->
     </td>
   </ng-container>
@@ -143,7 +145,7 @@
   <!-- PIStatus Column -->
   <ng-container matColumnDef="PIStatus">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> PI Status </th>
-    <td mat-cell *matCellDef="let element"> {{ element.PIStatus ? 'Active' : 'Inactive' }} </td>
+    <td mat-cell *matCellDef="let element"> {{ element.PIStatus ? 'yes' : 'No' }} </td>
   </ng-container>
 
   <!-- MvtlRef Column -->
