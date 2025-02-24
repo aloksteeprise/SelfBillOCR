@@ -18,3 +18,8 @@
 ::ng-deep .mat-sort-header-arrow {
   color: white !important;
 }
+
+.mvt-date-column {
+  min-width: 110px;
+  /* max-width: 110px; */
+}

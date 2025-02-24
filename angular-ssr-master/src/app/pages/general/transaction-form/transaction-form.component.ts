@@ -15,28 +15,27 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = [
     'mvtID',
     'mvtKey',
-    'MvtDate',
-    'MvtValueDate',
-    'MvtDateReconciled',
-    'RefRem',
-    'MvtCurrency',
-    'MvtAmountSent',
+    'mvtDate',
+    'mvtValueDate',
+    'mvtDateReconciled',
+    'refRem',
+    'mvtAmountSent',
     'mvtAmountRcvd',
-    'MvtReconciled',
-    'MvtBkClearing',
-    'MvtBkAccount',
-    'MvtType',
-    'MvtUserReconciled',
-    'MvtDtLastUpdate',
-    'MvtDtUser',
+    'mvtCurrency',
+    'mvtReconciled',
+    'mvtBkClearing',
+    'mvtBkAccount',
+    'mvtType',
+    'mvtUserReconciled',
+    'mvtDtLastUpdate',
+    'mvtDtUser',
     'PIStatus',
-    'MvtlRef',
-    'MvtDtCreated',
-    'BkiAccountName',
-    'CieDesc',
+    'mvtlRef',
+    'mvtDtCreated',
+    'bkiAccountName',
+    'cieDesc',
     'actions'
   ];
-  @ViewChild(MatSort) sort!: MatSort;
 
   Company: number = 0;
   BankAccount: string | null = null;
@@ -46,18 +45,24 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
   BankDateTo: Date | null = null;
   Currency: string | null = null;
   BatchType: string | null = null;
-  
+  originalData: any[] = [];
+  filteredData: any[] = []; 
 
+  searchCriteria = {
+    mvtKey: '',
+    mvtDate: '',
+    mvtDtCreated: ''
+  };
 
 
    dataSource = new MatTableDataSource<TransactionForm>([]);
 
+   @ViewChild(MatSort) sort!: MatSort;
+
   constructor(private dialog: MatDialog, private transactionFormService: TransactionFormService) {}
   ngOnInit() {
-    console.log('ngOnInit() executed'); // Debugging
     this.loadInvoices();
-  }
-
+  }  
 
 
  ngAfterViewInit() {
@@ -87,6 +92,8 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
       .subscribe({
         next: (response: any) => {
           console.log('API Response:', response);
+          this.originalData = response.data.data; // Store original data
+          this.filteredData = [...this.originalData]; 
           
           // Ensure data is assigned properly
           this.dataSource = new MatTableDataSource(response.data.data);
@@ -100,15 +107,58 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
       });
   }
   
-  
-  
-  
-  
-  
-  
-  
-
   openAllocationModal(invoiceData: any): void {
     this.dialog.open(RemittanceAllocationComponent, { data: invoiceData });
+  }
+  
+  applyFilter(event: Event) {
+    event.preventDefault();
+  
+    const formattedMvtDate = this.searchCriteria.mvtDate
+      ? new Date(this.searchCriteria.mvtDate).toISOString().split('T')[0]
+      : '';
+  
+    const formattedDateCreated = this.searchCriteria.mvtDtCreated
+      ? new Date(this.searchCriteria.mvtDtCreated).toISOString().split('T')[0]
+      : '';
+  
+    const searchObj = {
+      mvtKey: this.searchCriteria.mvtKey.trim().toLowerCase(),
+      mvtDate: formattedMvtDate,
+      mvtDtCreated: formattedDateCreated
+    };
+  
+    console.log('Search Criteria:', searchObj);
+  
+    this.filteredData = this.originalData.filter((item: any) => {
+      const mvtKeyMatch = searchObj.mvtKey
+        ? String(item.mvtKey || '').toLowerCase().includes(searchObj.mvtKey)
+        : true;
+  
+      const mvtDateMatch = searchObj.mvtDate
+        ? item.mvtDate 
+          ? item.mvtDate.split('T')[0] === searchObj.mvtDate
+          : false
+        : true;
+  
+      const dateCreatedMatch = searchObj.mvtDtCreated
+        ? item.mvtDtCreated 
+          ? item.mvtDtCreated.split('T')[0] === searchObj.mvtDtCreated
+          : false
+        : true;
+  
+      return mvtKeyMatch && mvtDateMatch && dateCreatedMatch;
+    });
+  
+    console.log('Filtered Data:', this.filteredData);
+  
+    // Update Grid
+    this.dataSource.data = this.filteredData;
+  }
+  
+  resetFilter() {
+    this.searchCriteria = { mvtKey: '', mvtDate: '', mvtDtCreated: '' };
+    this.filteredData = [...this.originalData];
+    this.dataSource.data = this.filteredData;
   }
 }

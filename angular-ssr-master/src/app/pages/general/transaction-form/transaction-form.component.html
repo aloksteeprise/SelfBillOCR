@@ -1,5 +1,36 @@
+
+<div style="margin-top: 63px;">
+<form (submit)="applyFilter($event)">
+  <div class="row g-2 searchTable">
+    <div class=" col-6 col-sm-2 marginleft20">
+      <label class="fontweight500"> Mvt Key </label>
+      <input type="text" class="form-control" id="mvtKey" name="mvtKey" placeholder="Mvt Key" 
+        matInput [(ngModel)]="searchCriteria.mvtKey" />
+    </div>
+
+    <div class="col-6 col-sm-2 marginleft8">
+      <label class="fontweight500">Mvt Date</label>
+      <input type="date" class="form-control" id="mvtDate" name="mvtDate" placeholder="Mvt Date"
+         maxlength="50" [(ngModel)]="searchCriteria.mvtDate"/>
+    </div>
+
+    <div class="col-6 col-sm-2 marginleft8">
+      <label class="fontweight500">Mvt Date Created</label>
+      <input type="date" id="mvtDtCreated" class="form-control" matInput [(ngModel)]="searchCriteria.mvtDtCreated"
+        name="mvtDtCreated" placeholder="MvtDtCreated" autocomplete="off" />
+    </div>
+
+    <div class="col-6 col-sm-2 d-flex justify-content-center align-items-center marginleft8 margintop25">
+      <button type="submit" class="btn btn-dark">Search</button>
+    </div>
+    <div class="col-6 col-sm-2 d-flex justify-content-center align-items-center marginleft8 margintop25">
+      <button type="button" class="btn btn-secondary" (click)="resetFilter()">Reset</button>
+    </div>
+  </div>
+</form>
+</div>
 <div style="overflow-x:auto;">
-<table mat-table [dataSource]="dataSource" matSort  style="margin-top: 60px;">
+<table mat-table [dataSource]="dataSource" matSort  style="margin-top: 5px;">
 
   <!-- MvtID Column -->
   <ng-container matColumnDef="mvtID">
@@ -15,42 +46,36 @@
   
 
   <!-- MvtDate Column -->
-  <ng-container matColumnDef="MvtDate">
-    <th mat-header-cell *matHeaderCellDef> Mvt Date </th>
-    <td mat-cell *matCellDef="let element"> {{ element.mvtDate | date:'yyyy-MM-dd' }} </td>
+  <ng-container matColumnDef="mvtDate">
+    <th mat-header-cell *matHeaderCellDef  mat-sort-header class="mvt-date-column"> Mvt Date </th>
+    <td mat-cell *matCellDef="let element" class="mvt-date-column"> {{ element.mvtDate | date:'yyyy-MM-dd' }} </td>
 
   </ng-container>
 
   <!-- MvtValueDate Column -->
-  <ng-container matColumnDef="MvtValueDate">
-    <th mat-header-cell *matHeaderCellDef> Value Date </th>
-    <td mat-cell *matCellDef="let element"> {{ element.mvtValueDate | date:'yyyy-MM-dd' }} </td>
+  <ng-container matColumnDef="mvtValueDate">
+    <th mat-header-cell *matHeaderCellDef  mat-sort-header class="mvt-date-column"> Value Date </th>
+    <td mat-cell *matCellDef="let element" class="mvt-date-column"> {{ element.mvtValueDate | date:'yyyy-MM-dd' }} </td>
   </ng-container>
 
   <!-- MvtDateReconciled Column -->
-  <ng-container matColumnDef="MvtDateReconciled">
-    <th mat-header-cell *matHeaderCellDef> Date Reconciled </th>
-    <td mat-cell *matCellDef="let element">
+  <ng-container matColumnDef="mvtDateReconciled">
+    <th mat-header-cell *matHeaderCellDef  mat-sort-header class="mvt-date-column"> Date Reconciled </th>
+    <td mat-cell *matCellDef="let element" class="mvt-date-column">
       {{ element.mvtDateReconciled === '0001-01-01T00:00:00' ? '' : (element.mvtDate | date: 'yyyy-MM-dd') }}
     </td>
     
   </ng-container>
 
   <!-- RefRem Column -->
-  <ng-container matColumnDef="RefRem">
-    <th mat-header-cell *matHeaderCellDef> Reference </th>
+  <ng-container matColumnDef="refRem">
+    <th mat-header-cell *matHeaderCellDef  mat-sort-header> Reference </th>
     <td mat-cell *matCellDef="let element"> {{ element.refRem }} </td>
   </ng-container>
 
-  <!-- MvtCurrency Column -->
-  <ng-container matColumnDef="MvtCurrency">
-    <th mat-header-cell *matHeaderCellDef> Currency </th>
-    <td mat-cell *matCellDef="let element"> {{ element.mvtCurrency }} </td>
-  </ng-container>
-
   <!-- MvtAmountSent Column -->
-  <ng-container matColumnDef="MvtAmountSent">
-    <th mat-header-cell *matHeaderCellDef> Amount Sent </th>
+  <ng-container matColumnDef="mvtAmountSent">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Amount Sent </th>
     <td mat-cell *matCellDef="let element"> {{ element.mvtAmountSent }} </td>
   </ng-container>
 
@@ -60,77 +85,83 @@
     <td mat-cell *matCellDef="let element"> {{ element.mvtAmountRcvd }} </td>
   </ng-container>
 
+  <!-- MvtCurrency Column -->
+  <ng-container matColumnDef="mvtCurrency">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Currency </th>
+    <td mat-cell *matCellDef="let element"> {{ element.mvtCurrency }} </td>
+  </ng-container>
+
   <!-- MvtReconciled Column -->
-  <ng-container matColumnDef="MvtReconciled">
-    <th mat-header-cell *matHeaderCellDef> Reconciled </th>
+  <ng-container matColumnDef="mvtReconciled">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Reconciled </th>
     <td mat-cell *matCellDef="let element"> 
-      <!-- <mat-checkbox [checked]="element.MvtReconciled"></mat-checkbox> -->
+      <!-- <mat-checkbox [checked]="element.mvtReconciled"></mat-checkbox> -->
     </td>
   </ng-container>
 
   <!-- MvtBkClearing Column -->
-  <ng-container matColumnDef="MvtBkClearing">
-    <th mat-header-cell *matHeaderCellDef> Clearing </th>
-    <td mat-cell *matCellDef="let element"> {{ element.mvtBkClearing }} </td>
+  <ng-container matColumnDef="mvtBkClearing">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Clearing </th>
+    <td mat-cell *matCellDef="let element"> {{ element.mvtBkClearing }} </td> 
   </ng-container>
 
   <!-- MvtBkAccount Column -->
-  <ng-container matColumnDef="MvtBkAccount">
+  <ng-container matColumnDef="mvtBkAccount">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Bank Account </th>
     <td mat-cell  *matCellDef="let element"> {{ element.mvtBkAccount }} </td>
   </ng-container>
 
   <!-- MvtType Column -->
-  <ng-container matColumnDef="MvtType">
-    <th mat-header-cell *matHeaderCellDef> Type </th>
+  <ng-container matColumnDef="mvtType">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Type </th>
     <td mat-cell *matCellDef="let element"> {{ element.mvtType }} </td>
   </ng-container>
 
   <!-- MvtUserReconciled Column -->
-  <ng-container matColumnDef="MvtUserReconciled">
-    <th mat-header-cell *matHeaderCellDef> User Reconciled </th>
+  <ng-container matColumnDef="mvtUserReconciled">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> User Reconciled </th>
     <td mat-cell *matCellDef="let element"> {{ element.mvtUserReconciled }} </td>
   </ng-container>
 
   <!-- MvtDtLastUpdate Column -->
-  <ng-container matColumnDef="MvtDtLastUpdate">
-    <th mat-header-cell *matHeaderCellDef> Last Update </th>
-    <td mat-cell *matCellDef="let element"> {{ element.mvtDtLastUpdate | date:'yyyy-MM-dd' }} </td>
+  <ng-container matColumnDef="mvtDtLastUpdate">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="mvt-date-column"> Last Update </th>
+    <td mat-cell *matCellDef="let element" class="mvt-date-column"> {{ element.mvtDtLastUpdate | date:'yyyy-MM-dd' }} </td>
   </ng-container>
 
   <!-- MvtDtUser Column -->
-  <ng-container matColumnDef="MvtDtUser">
-    <th mat-header-cell *matHeaderCellDef> User </th>
+  <ng-container matColumnDef="mvtDtUser">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> User </th>
     <td mat-cell *matCellDef="let element"> {{ element.mvtDtUser }} </td>
   </ng-container>
 
   <!-- PIStatus Column -->
   <ng-container matColumnDef="PIStatus">
-    <th mat-header-cell *matHeaderCellDef> PI Status </th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> PI Status </th>
     <td mat-cell *matCellDef="let element"> {{ element.PIStatus ? 'Active' : 'Inactive' }} </td>
   </ng-container>
 
   <!-- MvtlRef Column -->
-  <ng-container matColumnDef="MvtlRef">
-    <th mat-header-cell *matHeaderCellDef> Reference </th>
+  <ng-container matColumnDef="mvtlRef">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Reference </th>
     <td mat-cell *matCellDef="let element"> {{ element.mvtlRef }} </td>
   </ng-container>
 
   <!-- MvtDtCreated Column -->
-  <ng-container matColumnDef="MvtDtCreated">
-    <th mat-header-cell *matHeaderCellDef> Date Created </th>
-    <td mat-cell *matCellDef="let element"> {{ element.mvtDtCreated | date:'yyyy-MM-dd'  }} </td>
+  <ng-container matColumnDef="mvtDtCreated">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header class="mvt-date-column"> Date Created </th>
+    <td mat-cell *matCellDef="let element" class="mvt-date-column"> {{ element.mvtDtCreated | date:'yyyy-MM-dd'  }} </td>
   </ng-container>
 
   <!-- BkiAccountName Column -->
-  <ng-container matColumnDef="BkiAccountName">
-    <th mat-header-cell *matHeaderCellDef> Account Name </th>
+  <ng-container matColumnDef="bkiAccountName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Account Name </th>
     <td mat-cell *matCellDef="let element"> {{ element.bkiAccountName }} </td>
   </ng-container>
 
   <!-- CieDesc Column -->
-  <ng-container matColumnDef="CieDesc">
-    <th mat-header-cell *matHeaderCellDef> Description </th>
+  <ng-container matColumnDef="cieDesc">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
     <td mat-cell *matCellDef="let element"> {{ element.cieDesc }} </td>
   </ng-container>
 
