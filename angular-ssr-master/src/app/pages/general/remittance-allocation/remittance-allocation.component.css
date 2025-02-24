@@ -1,32 +1,50 @@
-.width{
-    width: 120px;
-  }
-  .width1{
-    width: 100px;
-  }
-  .responsivelabel{
-    margin-left: 154px;
-  }
-
-
-.width120{
-  width: 135px !important;
+.width {
+  width: 120px;
 }
-  .btn-close {
-    --bs-btn-close-color: white!important;
+
+.width1 {
+  width: 100px;
+}
+
+.responsivelabel {
+  margin-left: 154px;
+}
+
+.custom-bottom {
+  margin-bottom: 0px !important;
+}
+
+
+.width120 {
+  width: 122px !important;
+}
+
+.custom-height {
+  overflow: overlay;
+  /* max-height: 650px; 
+  height: 700px;  */
+
+}
+
+.btn-close {
+  --bs-btn-close-color: white !important;
+}
+
+@media (min-width: 1200px) {
+  ::ng-deep .modal-xl {
+    --bs-modal-width: 1210px;
   }
-  @media (min-width: 1200px) {
-    ::ng-deep .modal-xl {
-        --bs-modal-width: 1210px;
-    }
-  }
-  .color{
-    background-color: #ffffff;
-  }
+}
+
+.color {
+  background-color: #ffffff;
+}
+
 .form-control {
   height: 26px;
 }
-.form-select{
+
+.form-select {
   padding: 3px 28px 3px 3px;
   font-size: 14px;
   height: 26px;
@@ -38,22 +56,79 @@
   letter-spacing: 0 !important;
   margin: 0 !important;
 }
-  .text-center {
-    font-size: 12px;
-    text-align: center !important;
-    color: black;
-  }
-  .text-black{
-    color: black;
+
+.text-center {
+  font-size: 12px;
+  text-align: center !important;
+  color: black;
+}
+
+.text-black {
+  color: black;
+}
+
+.btn-close {
+
+  margin-left: 100px;
+  margin-top: 6px;
+
+
+}
+
+
+
+
+@media screen and (min-width: 300px) and (max-width: 700px) {
+  .responsivelabel {
+    margin-left: 0px !important;
   }
 
-  @media screen and (min-width: 300px) and (max-width: 700px) {
-    .responsivelabel{
-      margin-left: 0px !important;
-    }
-    .w-mobile{
+  .w-mobile {
 
-      width: 100%!important;
-    }
-    
+    width: 100% !important;
   }
+
+  .btn-close {
+
+    margin-left: 7px;
+    margin-top: 4px;
+    border: 2px solid;
+
+  }
+
+  .custom-height {
+    overflow: overlay;
+    max-height: 650px;
+    height: 700px;
+
+  }
+
+  .mb-sm-0 {
+    margin-bottom: 8px !important;
+  }
+
+
+
+}
+
+@media only screen and (min-width: 767px) {
+
+  .custom-height {
+    overflow: auto;
+    max-height: 650px;
+    height: 700px;
+
+  }
+
+  .mb-sm-0 {
+    margin-bottom: 8px !important;
+  }
+
+  .mb-0 {
+    margin-bottom: 8px !important;
+  }
+
+  .width123 {
+    margin-left: 7px !important;
+  }
+}

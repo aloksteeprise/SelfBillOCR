@@ -128,7 +128,7 @@
       <button mat-button class="btn btn-outline-success" (click)="openValidateModal(element)">Validate</button>
   
 
-      <button *ngIf="element.isRecordValidated" mat-button class="btn btn-outline-secondary mx-2" (click)="openAllocationModal(element)">Allocation</button>
+      <!-- <button *ngIf="element.isRecordValidated" mat-button class="btn btn-outline-secondary mx-2" (click)="openAllocationModal(element)">Allocation</button> -->
     </td>
   </ng-container>
   
@@ -161,9 +161,9 @@
     </td>
   </ng-container> -->
 
-      <!-- Table Header and Row -->
+    
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
+     
       <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns;"
         [ngClass]="{'table-danger': row.isRecordValidated === false, 'table-success': row.isRecordValidated === true}">
       </tr>

@@ -13,6 +13,7 @@ import { RemittancePopupComponent } from './pages/general/remittance-popup/remit
 import { RemittanceComponent } from './pages/general/remittance/remittance.component';
 // import {RemittanceComponent} from './pages/general/remittance/remittance.component'
 // import {InvoiceComponent} from './pages/general/invoice/invoice.component'
+import {TransactionFormComponent} from './pages/general/transaction-form/transaction-form.component'
  
 
 export const routes: Routes = [
@@ -72,6 +73,11 @@ export const routes: Routes = [
     path: 'remittance', component: RemittanceComponent, canActivate: [AuthGuard],
     loadChildren: () => import('./pages/general/remittance/remittance.module')
       .then(mod => mod.RemittanceModule)
+  },
+  {
+    path: 'transaction', component: TransactionFormComponent,
+    loadChildren: () => import('./pages/general/transaction-form/transaction-form.module')
+      .then(mod => mod.TransactionFormModule)
   },
   {
     path: 'remittancepop', component: RemittancePopupComponent, canActivate: [AuthGuard],

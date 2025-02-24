@@ -2,50 +2,53 @@
 <!-- <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#allocationModal">
     Open Allocation Screen
   </button> -->
-  
-  <!-- Allocation Modal -->
-  <div class="modal d-block" id="allocationModal" tabindex="-1" aria-labelledby="allocationModalLabel" aria-hidden="true" style="margin-top: 45px; overflow-y: hidden;">
-    <div class="modal-dialog modal-xl">
-      <div class="modal-content" style="max-height: 650px; height: 700px;">
-        <!-- <div class="modal-header color text-black" style="height: 50px; background-color: white !important;">
+
+<!-- Allocation Modal -->
+<div class="modal d-block" id="allocationModal" tabindex="-1" aria-labelledby="allocationModalLabel" aria-hidden="true"
+  style="margin-top: 45px; overflow-y: hidden;">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content custom-height" >
+      <!-- <div class="modal-header color text-black" style="height: 50px; background-color: white !important;">
           <h5 class="modal-title" id="allocationModalLabel" style="margin-top: 13px;">Allocation</h5>
           <button type="button" class="btn-close"  (click)="closeDialog()" aria-label="Close"></button>
         </div> -->
-  
-        <div class="modal-body" >
-          <!-- Agency and Invoice Selection -->
-          <div class="container-fluid">
-            <div class="row align-items-center color  text-black">
-              <div class="col-12 col-sm-auto d-flex align-items-center mb-2 mb-sm-0">
-                <label class="mb-0">Agency:</label>
-                <select class=" form-select w-auto w-mobile">
-                  <option>Linksap Europe Ltd (UK) LINKSAP</option>
-                </select>
+
+      <div class="modal-body">
+        <!-- Agency and Invoice Selection -->
+        <div class="container-fluid">
+          <div class="row align-items-center color  text-black">
+            <div class="col-12 col-sm-auto d-flex align-items-center mb-2 mb-sm-0">
+              <label class="mb-0">Agency:</label>
+              <select class=" form-select w-auto w-mobile">
+                <option>Linksap Europe Ltd (UK) LINKSAP</option>
+              </select>
+            </div>
+
+            <div class="col-12 col-sm-auto d-flex align-items-center mb-2 mb-sm-0">
+              <label class="mb-0">Invoice:</label>
+              <select class=" form-select w-auto w-mobile">
+                <option>701 - 10651 | 01/05/2023 | 5600.00 | 5600</option>
+              </select>
+            </div>
+
+            <div class="col-12 col-sm-auto d-flex gap-2">
+              <button class="btn btn-primary">Allocation</button>
+              <button class="btn btn-primary">Multi-select of Invoices</button>
+              <!-- </div>
+              <div class="col-12 col-sm-auto d-flex gap-2"> -->
+              <div>
+                <button type="button" class="btn-close" (click)="closeDialog()" aria-label="Close"></button>
               </div>
-              
-              <div class="col-12 col-sm-auto d-flex align-items-center mb-2 mb-sm-0">
-                <label class="mb-0">Invoice:</label>
-                <select class=" form-select w-auto w-mobile">
-                  <option>701 - 10651 | 01/05/2023 | 5600.00 | 5600</option>
-                </select>
-              </div>
-              
-              <div class="col-12 col-sm-auto d-flex gap-2">
-                <button class="btn btn-primary">Allocation</button>
-                <button class="btn btn-primary">Multi-select of Invoices</button>
-              </div>
-              <div class="col-12 col-sm-auto d-flex gap-2">
-                <button type="button" class="btn-close"  (click)="closeDialog()" aria-label="Close" style="margin-left: 130px;"></button>
-              </div>
+              <!-- </div> -->
             </div>
           </div>
-          
-  
+
+
           <!-- Allocation Section -->
           <div class="border p-1 mt-1 bg-light">
             <h6 class="color text-black" style="padding-left: 10px;">Allocate</h6>
             <div class="table-responsive">
-              <table class="table table-bordered text-center">
+              <table class="table table-bordered text-center custom-bottom">
                 <thead class="color text-black">
                   <tr>
                     <th class="width1">Allocation Type</th>
@@ -66,12 +69,12 @@
                   <tr>
                     <td>
                       <select class="form-select" style="font-size: 12px;">
-                        <option >Select</option>
+                        <option>Select</option>
                       </select>
                     </td>
                     <td><select class="form-select d-inline w-auto ">
-                      <option>Linksap >
-                    </select></td>
+                        <option>Linksap >
+                      </select></td>
                     <td><input type="text" class="form-control"></td>
                     <td><input type="text" class="form-control" value="0"></td>
                     <td><input type="text" class="form-control" value="0"></td>
@@ -81,20 +84,20 @@
                     <td><input type="text" class="form-control" value="0"></td>
                     <td><input type="text" class="form-control" value="0"></td>
                     <td><input type="text" class="form-control" value="0"></td>
-                    <td><input type="text"class ="form-control" value="0"></td>
-                    <td><input type="text"class ="form-control" value="0"></td>
+                    <td><input type="text" class="form-control" value="0"></td>
+                    <td><input type="text" class="form-control" value="0"></td>
                   </tr>
                   <tr>
                     <td>Description</td>
-                    <td colspan="6"><input type="text" class="form-control"></td> 
+                    <td colspan="6"><input type="text" class="form-control"></td>
                     <td colspan="6" class="text-end">
                       <button class="btn btn-primary">Add</button>
                       <button class="btn btn-warning mx-3">Reset</button>
                       <button class="btn btn-secondary">Auto split</button>
                     </td>
                   </tr>
-                  
-                  
+
+
                   <tr>
                     <td class="border  bg-danger text-black" colspan="1">
                       <strong style="font-size: 10px; color: white;">Other Currency Invoice</strong>
@@ -105,19 +108,19 @@
                 </tbody>
               </table>
             </div>
-  
+
             <!-- <div class="d-flex justify-content-end gap-2">
               
             </div> -->
           </div>
-  
+
           <!-- Other Currency Invoice -->
           <!-- <div class="border p-2 mt-2 bg-danger text-white">
             <strong>Other Currency Invoice</strong>
           </div> -->
-  
+
           <!-- Allocation Summary -->
-           <div class="border p-1 mt-1 bg-light">
+          <div class="border p-1 mt-1 bg-light">
             <h6 class="color text-black" style="padding-left: 10px;">Allocation Summary</h6>
             <div class="table-responsive">
               <table class="table table-bordered text-center">
@@ -196,32 +199,31 @@
                 </div>
             
               </div> -->
-              <div class="container-fluid">
-                <div class="row align-items-center text-black">
-                  <div class="col d-flex align-items-center">
-                    <label class="mb-0 me-2">Total available for allocation:</label>
-                    <input type="text" class="form-control width120">
-                  </div>
-                  <div class="col d-flex align-items-center">
-                    <label class="mb-0 me-2">Total allocated (Confirmed):</label>
-                    <input type="text" class="form-control width120">
-                  </div>
-                  <div class="col d-flex align-items-center">
-                    <label class="mb-0 me-2">Total available for allocation:</label>
-                    <input type="text" class="form-control width120">
-                  </div>
+            <div class="container-fluid">
+              <div class="row align-items-center text-black">
+                <div class="col d-flex align-items-center mb-0">
+                  <label class=" me-2">Total available for allocation:</label>
+                  <input type="text" class="form-control width120">
                 </div>
-                <div class="row">
-                  <div style="justify-content: end;align-items: end;display: flex;">
-                    <button class="btn btn-primary" style="margin-top: 10px;">Submit Allocation</button>
-                  </div>
+                <div class="col d-flex align-items-center mb-0">
+                  <label class="me-2">Total allocated (Confirmed):</label>
+                  <input type="text" class="form-control width120 width123">
+                </div>
+                <div class="col d-flex align-items-center mb-0">
+                  <label class="me-2">Total available for allocation:</label>
+                  <input type="text" class="form-control width120 ">
                 </div>
               </div>
-              
+              <div class="row">
+                <div style="justify-content: end;align-items: end;display: flex;">
+                  <button class="btn btn-primary" style="margin-top: 10px;">Submit Allocation</button>
+                </div>
+              </div>
             </div>
-               
+
+          </div>
+
         </div>
       </div>
     </div>
   </div>
-  
