@@ -51,7 +51,8 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
   searchCriteria = {
     mvtKey: '',
     mvtDate: '',
-    mvtDtCreated: ''
+    mvtDtCreated: '',
+    mvtAmountRcvd:''
   };
 
 
@@ -125,7 +126,8 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
     const searchObj = {
       mvtKey: this.searchCriteria.mvtKey.trim().toLowerCase(),
       mvtDate: formattedMvtDate,
-      mvtDtCreated: formattedDateCreated
+      mvtDtCreated: formattedDateCreated,
+      mvtAmountRcvd: this.searchCriteria.mvtAmountRcvd.trim().toLowerCase()
     };
   
     console.log('Search Criteria:', searchObj);
@@ -146,8 +148,12 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
           ? item.mvtDtCreated.split('T')[0] === searchObj.mvtDtCreated
           : false
         : true;
+
+        const mvtAmountMatch = searchObj.mvtAmountRcvd
+        ? String(item.mvtAmountRcvd || '').toLowerCase().includes(searchObj.mvtAmountRcvd)
+        : true;
   
-      return mvtKeyMatch && mvtDateMatch && dateCreatedMatch;
+      return mvtKeyMatch && mvtDateMatch && dateCreatedMatch && mvtAmountMatch;
     });
   
     console.log('Filtered Data:', this.filteredData);
@@ -156,8 +162,8 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
     this.dataSource.data = this.filteredData;
   }
   
-  resetFilter() {
-    this.searchCriteria = { mvtKey: '', mvtDate: '', mvtDtCreated: '' };
+  ClearSearch() {
+    this.searchCriteria = { mvtKey: '', mvtDate: '', mvtDtCreated: '',mvtAmountRcvd:'' };
     this.filteredData = [...this.originalData];
     this.dataSource.data = this.filteredData;
   }
