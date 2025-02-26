@@ -5,6 +5,7 @@ import { TransactionFormService } from '../transaction-form/transaction-form.ser
 import { MatTableDataSource } from '@angular/material/table';
 import { TransactionForm } from './transaction-form';
 import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-transaction-form',
@@ -19,6 +20,7 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
     'mvtValueDate',
     'mvtDateReconciled',
     'refRem',
+    'invoiceNumber',
     'mvtAmountSent',
     'mvtAmountRcvd',
     'mvtCurrency',
@@ -34,137 +36,110 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
     'mvtDtCreated',
     'bkiAccountName',
     'cieDesc',
+    'notes',
     'actions'
   ];
 
-  Company: number = 0;
-  BankAccount: string | null = null;
-  TypesOfMovements: number = 0;
-  Money: number = 0;
-  BankDateFrom: Date | null = null;
-  BankDateTo: Date | null = null;
-  Currency: string | null = null;
-  BatchType: string | null = null;
-  originalData: any[] = [];
-  filteredData: any[] = []; 
+  pageIndex: number = 0;
+  pageSize: number = 10;
+  name: string = '';
+  invoiceNumber: string = '';
+  mvtDate: string = '';
+  mvtValueDate: string = '';
+  mvtType: string = '';
+  mvtKey: string = '';
+  loading: boolean = false;
+  mvtDtCreated: string = '';
+  IsRecordAllocated = false;
+  totalRecords: number = 0;
+  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  searchCriteria = {
-    mvtKey: '',
-    mvtDate: '',
-    mvtDtCreated: '',
-    mvtAmountRcvd:''
-  };
+  dataSource = new MatTableDataSource<TransactionForm>([]);
+  constructor(private dialog: MatDialog, private transactionFormService: TransactionFormService) { }
 
-
-   dataSource = new MatTableDataSource<TransactionForm>([]);
-
-   @ViewChild(MatSort) sort!: MatSort;
-
-  constructor(private dialog: MatDialog, private transactionFormService: TransactionFormService) {}
   ngOnInit() {
     this.loadInvoices();
-  }  
+  }
 
 
- ngAfterViewInit() {
-    setTimeout(() => {
-      console.log('MatSort:', this.sort);
-      this.dataSource.sort = this.sort;
+  ngAfterViewInit() {
+    this.sort.sortChange.subscribe(() => {
+
+      this.pageIndex = 0;
+      this.loadInvoices();
     });
   }
-  
+
   loadInvoices() {
-    const formattedBankDateFrom: Date | null = new Date('2021-01-01T00:00:00');
-    const formattedBankDateTo: Date | null = new Date('2023-06-28T00:00:00');
-  
-    console.log('Formatted Dates:', formattedBankDateFrom, formattedBankDateTo); // Debugging
-  
+    this.loading = true;
+    const SortColumn = this.sort?.active || '';
+    const SortDirection = this.sort?.direction || '';
+
+
     this.transactionFormService
       .getTransaction(
-        this.Company,
-        this.BankAccount,
-        this.TypesOfMovements,
-        this.Money,
-        formattedBankDateFrom,
-        formattedBankDateTo,
-        this.Currency,
-        this.BatchType
+        this.pageIndex,
+        this.pageSize,
+        SortColumn,
+        SortDirection,
+        this.invoiceNumber,
+        this.mvtDate,
+        this.mvtValueDate,
+        this.mvtType,
+        this.IsRecordAllocated
+
       )
       .subscribe({
         next: (response: any) => {
           console.log('API Response:', response);
-          this.originalData = response.data.data; // Store original data
-          this.filteredData = [...this.originalData]; 
-          
+
+
           // Ensure data is assigned properly
           this.dataSource = new MatTableDataSource(response.data.data);
-          this.dataSource.sort = this.sort;
-          
-          console.log('Sorted Data:', this.dataSource.data);
+          this.totalRecords = response.data.totalRecords;
+          this.loading = false;
         },
         error: (err) => {
           console.error('API Error:', err);
+          this.loading = false;
         }
       });
   }
-  
+
+
+  onPageChanged(event: any) {
+
+    if (this.pageSize !== event.pageSize) {
+
+      this.pageSize = event.pageSize;
+      this.pageIndex = 0;
+
+    } else {
+
+      this.pageIndex = event.pageIndex;
+    }
+
+    this.loadInvoices();
+  }
+
   openAllocationModal(invoiceData: any): void {
     this.dialog.open(RemittanceAllocationComponent, { data: invoiceData });
   }
-  
-  applyFilter(event: Event) {
-    event.preventDefault();
-  
-    const formattedMvtDate = this.searchCriteria.mvtDate
-      ? new Date(this.searchCriteria.mvtDate).toISOString().split('T')[0]
-      : '';
-  
-    const formattedDateCreated = this.searchCriteria.mvtDtCreated
-      ? new Date(this.searchCriteria.mvtDtCreated).toISOString().split('T')[0]
-      : '';
-  
-    const searchObj = {
-      mvtKey: this.searchCriteria.mvtKey.trim().toLowerCase(),
-      mvtDate: formattedMvtDate,
-      mvtDtCreated: formattedDateCreated,
-      mvtAmountRcvd: this.searchCriteria.mvtAmountRcvd.trim().toLowerCase()
-    };
-  
-    console.log('Search Criteria:', searchObj);
-  
-    this.filteredData = this.originalData.filter((item: any) => {
-      const mvtKeyMatch = searchObj.mvtKey
-        ? String(item.mvtKey || '').toLowerCase().includes(searchObj.mvtKey)
-        : true;
-  
-      const mvtDateMatch = searchObj.mvtDate
-        ? item.mvtDate 
-          ? item.mvtDate.split('T')[0] === searchObj.mvtDate
-          : false
-        : true;
-  
-      const dateCreatedMatch = searchObj.mvtDtCreated
-        ? item.mvtDtCreated 
-          ? item.mvtDtCreated.split('T')[0] === searchObj.mvtDtCreated
-          : false
-        : true;
 
-        const mvtAmountMatch = searchObj.mvtAmountRcvd
-        ? String(item.mvtAmountRcvd || '').toLowerCase().includes(searchObj.mvtAmountRcvd)
-        : true;
-  
-      return mvtKeyMatch && mvtDateMatch && dateCreatedMatch && mvtAmountMatch;
-    });
-  
-    console.log('Filtered Data:', this.filteredData);
-  
-    // Update Grid
-    this.dataSource.data = this.filteredData;
+  applyFilter(form: any): void {
+    // this.loadInvoices();
   }
-  
-  ClearSearch() {
-    this.searchCriteria = { mvtKey: '', mvtDate: '', mvtDtCreated: '',mvtAmountRcvd:'' };
-    this.filteredData = [...this.originalData];
-    this.dataSource.data = this.filteredData;
+
+
+    ClearSearch() {
+      this.pageIndex = 0;
+      console.log("clearsearch clicked")
+      this.mvtType=''
+      this.mvtDate = '';
+      this.invoiceNumber = ''; 
+      this.mvtValueDate = '';
+      this.IsRecordAllocated = false;
+      this.loadInvoices();
   }
 }

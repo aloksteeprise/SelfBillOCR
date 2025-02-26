@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 
 
@@ -14,7 +15,8 @@ import { MatSortModule } from '@angular/material/sort';
       CommonModule, 
       FormsModule, 
       MatTableModule,
-      MatSortModule
+      MatSortModule,
+      MatPaginatorModule
 
     ],
     exports: [TransactionFormComponent] // Export if needed elsewhere

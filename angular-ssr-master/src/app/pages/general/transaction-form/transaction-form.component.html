@@ -1,32 +1,52 @@
 
 <div style="margin-top: 58px;">
-<form (submit)="applyFilter($event)" class="backgroundcolorform" style="padding: 9px;">
+ <!-- <form (ngSubmit)="applyFilter(myForm)" #myForm="ngForm" class="backgroundcolorform" style="padding: 9px;">  -->
+  <form  #myForm="ngForm" class="backgroundcolorform" style="padding: 9px;">
   <div class="row g-2 searchTable">
-    <div class=" col-6 col-sm-2 marginleft20">
-      <label class="fontweight500"> Mvt Key </label>
-      <input type="text" class="form-control" id="mvtKey" name="mvtKey" placeholder="Mvt Key" 
-        matInput [(ngModel)]="searchCriteria.mvtKey" />
+
+
+    <div class="col-6 col-sm-2 marginleft8">
+      <label class="fontweight500">Invoice Number</label>
+      <input type="text" id="invoiceNumber" class="form-control" matInput [(ngModel)]="invoiceNumber"
+        name="invoiceNumber" placeholder="Invoice Number" autocomplete="off" />
     </div>
 
     <div class="col-6 col-sm-2 marginleft8">
       <label class="fontweight500">Mvt Date</label>
       <input type="date" class="form-control" id="mvtDate" name="mvtDate" placeholder="Mvt Date"
-         maxlength="50" [(ngModel)]="searchCriteria.mvtDate"/>
+         maxlength="50" [(ngModel)]="mvtDate"/>
     </div>
+   
+    
 
     <div class="col-6 col-sm-2 marginleft8">
-      <label class="fontweight500">Mvt Date Created</label>
-      <input type="date" id="mvtDtCreated" class="form-control" matInput [(ngModel)]="searchCriteria.mvtDtCreated"
-        name="mvtDtCreated" placeholder="MvtDtCreated" autocomplete="off" />
+      <label class="fontweight500">Mvt Value Date</label>
+      <input type="date" id="mvtValueDate" class="form-control" matInput [(ngModel)]="mvtValueDate"
+        name="mvtValueDate" placeholder="mvt Value Date" autocomplete="off" />
+    </div>
+    <div class=" col-6 col-sm-2 marginleft20">
+      <label class="fontweight500"> Mvt Type </label>
+      <input type="text" class="form-control" id="mvtType" name="mvtType" placeholder="Mvt Type" 
+        matInput [(ngModel)]="mvtType" />
     </div>
 
-    <div class="col-6 col-sm-2 marginleft8">
+   
+
+    <div class="form-check col-6 col-sm-1 d-flex justify-content-center align-items-center custom-styling" >
+      <input type="checkbox" name="IsRecordAllocated" [(ngModel)]="IsRecordAllocated" />
+      <label class="form-check-label fontweight500" for="flexCheckDefault"
+        style="margin-left: 10px; font-size: 18px;">
+        Validate
+      </label>
+    </div>
+
+    <!-- <div class="col-6 col-sm-2 marginleft8">
       <label class="fontweight500">Amount Received</label>
       <input type="text" id="mvtAmountRcvd" class="form-control" matInput [(ngModel)]="searchCriteria.mvtAmountRcvd"
         name="mvtAmountRcvd" placeholder="Mvt Amount Rcvd" autocomplete="off" />
-    </div>
+    </div> -->
 
-    <div class="col-12 col-sm-3 customdisplay">
+    <div class="col-6 col-sm-2 customdisplay">
       <button type="submit" class="btn btn-dark">Search</button>
       <button type="button" class="btn btn-outline-dark" (click)="ClearSearch()"
           style="margin-left: 12px; color: white;">Clear</button>
@@ -39,7 +59,7 @@
 
   <!-- MvtID Column -->
   <ng-container matColumnDef="mvtID">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Mvt ID </th>
+    <th mat-header-cell *matHeaderCellDef > Mvt ID </th>
     <td mat-cell *matCellDef="let element"> {{ element.mvtID }} </td>
   </ng-container>
 
@@ -52,7 +72,7 @@
 
   <!-- MvtDate Column -->
   <ng-container matColumnDef="mvtDate">
-    <th mat-header-cell *matHeaderCellDef  mat-sort-header class="mvt-date-column"> Mvt Date </th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header  class="mvt-date-column"> Mvt Date </th>
     <td mat-cell *matCellDef="let element" class="mvt-date-column"> {{ element.mvtDate | date:'yyyy-MM-dd' }} </td>
 
   </ng-container>
@@ -65,7 +85,7 @@
 
   <!-- MvtDateReconciled Column -->
   <ng-container matColumnDef="mvtDateReconciled">
-    <th mat-header-cell *matHeaderCellDef  mat-sort-header class="mvt-date-column"> Date Reconciled </th>
+    <th mat-header-cell *matHeaderCellDef   class="mvt-date-column"> Date Reconciled </th>
     <td mat-cell *matCellDef="let element" class="mvt-date-column">
       {{ element.mvtDateReconciled === '0001-01-01T00:00:00' ? '' : (element.mvtDate | date: 'yyyy-MM-dd') }}
     </td>
@@ -74,31 +94,37 @@
 
   <!-- RefRem Column -->
   <ng-container matColumnDef="refRem">
-    <th mat-header-cell *matHeaderCellDef  mat-sort-header> Reference </th>
+    <th mat-header-cell *matHeaderCellDef  > Reference </th>
     <td mat-cell *matCellDef="let element"> {{ element.refRem }} </td>
+  </ng-container>
+
+  <!-- Invoice number -->
+  <ng-container matColumnDef="invoiceNumber">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Invoice Number</th>
+    <td mat-cell *matCellDef="let element" class="mvt-date-column"> {{ element.invoiceNumber }} </td>
   </ng-container>
 
   <!-- MvtAmountSent Column -->
   <ng-container matColumnDef="mvtAmountSent">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Amount Sent </th>
-    <td mat-cell *matCellDef="let element"> {{ element.mvtAmountSent }} </td>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header > Amount Sent </th>
+    <td mat-cell *matCellDef="let element"> {{ element.mvtAmountSent}} </td>
   </ng-container>
 
   <!-- MvtAmountRcvd Column -->
   <ng-container matColumnDef="mvtAmountRcvd">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Amount Received </th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header > Amount Received </th>
     <td mat-cell *matCellDef="let element"> {{ element.mvtAmountRcvd }} </td>
   </ng-container>
 
   <!-- MvtCurrency Column -->
   <ng-container matColumnDef="mvtCurrency">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Currency </th>
+    <th mat-header-cell *matHeaderCellDef > Currency </th>
     <td mat-cell *matCellDef="let element"> {{ element.mvtCurrency }} </td>
   </ng-container>
 
   <!-- MvtReconciled Column -->
   <ng-container matColumnDef="mvtReconciled">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Reconciled </th>
+    <th mat-header-cell *matHeaderCellDef > Reconciled </th>
     <td mat-cell *matCellDef="let element"> 
 
       {{element.mvtReconciled ? 'Yes' : 'No'}}
@@ -108,7 +134,7 @@
 
   <!-- MvtBkClearing Column -->
   <ng-container matColumnDef="mvtBkClearing">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Clearing </th>
+    <th mat-header-cell *matHeaderCellDef > Clearing </th>
     <td mat-cell *matCellDef="let element"> {{ element.mvtBkClearing }} </td> 
   </ng-container>
 
@@ -126,19 +152,19 @@
 
   <!-- MvtUserReconciled Column -->
   <ng-container matColumnDef="mvtUserReconciled">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> User Reconciled </th>
+    <th mat-header-cell *matHeaderCellDef > User Reconciled </th>
     <td mat-cell *matCellDef="let element"> {{ element.mvtUserReconciled }} </td>
   </ng-container>
 
   <!-- MvtDtLastUpdate Column -->
   <ng-container matColumnDef="mvtDtLastUpdate">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header class="mvt-date-column"> Last Update </th>
+    <th mat-header-cell *matHeaderCellDef  class="mvt-date-column"> Last Update </th>
     <td mat-cell *matCellDef="let element" class="mvt-date-column"> {{ element.mvtDtLastUpdate | date:'yyyy-MM-dd' }} </td>
   </ng-container>
 
   <!-- MvtDtUser Column -->
   <ng-container matColumnDef="mvtDtUser">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> User </th>
+    <th mat-header-cell *matHeaderCellDef > User </th>
     <td mat-cell *matCellDef="let element"> {{ element.mvtDtUser }} </td>
   </ng-container>
 
@@ -150,26 +176,31 @@
 
   <!-- MvtlRef Column -->
   <ng-container matColumnDef="mvtlRef">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Reference </th>
+    <th mat-header-cell *matHeaderCellDef > Reference </th>
     <td mat-cell *matCellDef="let element"> {{ element.mvtlRef }} </td>
   </ng-container>
 
   <!-- MvtDtCreated Column -->
   <ng-container matColumnDef="mvtDtCreated">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header class="mvt-date-column"> Date Created </th>
+    <th mat-header-cell *matHeaderCellDef  class="mvt-date-column"> Date Created </th>
     <td mat-cell *matCellDef="let element" class="mvt-date-column"> {{ element.mvtDtCreated | date:'yyyy-MM-dd'  }} </td>
   </ng-container>
 
   <!-- BkiAccountName Column -->
   <ng-container matColumnDef="bkiAccountName">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Account Name </th>
+    <th mat-header-cell *matHeaderCellDef > Account Name </th>
     <td mat-cell *matCellDef="let element"> {{ element.bkiAccountName }} </td>
   </ng-container>
 
   <!-- CieDesc Column -->
   <ng-container matColumnDef="cieDesc">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
+    <th mat-header-cell *matHeaderCellDef > Description </th>
     <td mat-cell *matCellDef="let element"> {{ element.cieDesc }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="notes">
+    <th mat-header-cell *matHeaderCellDef > Notes </th>
+    <td mat-cell *matCellDef="let element"> {{ element.notes }} </td>
   </ng-container>
 
   <!-- Actions Column -->
@@ -186,3 +217,10 @@
 
 </table>
 </div>
+<mat-paginator [length]="totalRecords" [pageSize]="pageSize" [pageIndex]="pageIndex" (page)="onPageChanged($event)"
+[pageSizeOptions]="[5, 10, 15, 20]" >
+</mat-paginator>
+<!-- 
+<div class="loading-overlay" *ngIf="loading">
+  <div class="loader"></div>
+</div> -->

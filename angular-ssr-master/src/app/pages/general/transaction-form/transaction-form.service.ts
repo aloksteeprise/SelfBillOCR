@@ -13,27 +13,29 @@ export class TransactionFormService {
   constructor(private http: HttpClient) { }
 
   getTransaction(
-    Company: number | null = null,
-    BankAccount: string | null = null,
-    TypesOfMovements: number | null = null,
-    Money: number | null = null,
-    BankDateFrom: Date | null = null,  
-    BankDateTo: Date | null = null,   
-    Currency: string | null = null,
-    BatchType: string | null = null
+    pageIndex: number,
+    pageSize: number,
+    SortColumn: string | null = null,
+    SortDirection: string | null = null,
+    invoiceNumber:string | null = null,
+    mvtDate:string | null = null , 
+    mvtValueDate:string | null = null,
+    mvtType:string | null = null,
+    IsRecordAllocated: boolean,
   ): Observable<PaginationResponse<any>> {
   
-
+  
 
     const body = {
-      Company,
-      BankAccount,
-      TypesOfMovements,
-      Money,
-      BankDateFrom,
-      BankDateTo, 
-      Currency,
-      BatchType
+      pageIndex,
+      pageSize,
+      SortColumn,      
+      SortDirection,
+      invoiceNumber,
+      mvtDate,
+      mvtValueDate,
+      mvtType,
+      IsRecordAllocated
     };
     
 
