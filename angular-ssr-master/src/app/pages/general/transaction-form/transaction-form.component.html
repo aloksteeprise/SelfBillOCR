@@ -112,38 +112,38 @@
   </ng-container>
 
   <!-- MvtAmountSent Column -->
-  <ng-container matColumnDef="mvtAmountSent">
+  <!-- <ng-container matColumnDef="mvtAmountSent">
     <th mat-header-cell *matHeaderCellDef mat-sort-header > Amount Sent </th>
     <td mat-cell *matCellDef="let element"> {{ element.mvtAmountSent}} </td>
-  </ng-container>
+  </ng-container> -->
 
   <!-- MvtAmountRcvd Column -->
   <ng-container matColumnDef="mvtAmountRcvd">
     <th mat-header-cell *matHeaderCellDef mat-sort-header > Amount Received </th>
-    <td mat-cell *matCellDef="let element"> {{ element.mvtAmountRcvd }} </td>
+    <td mat-cell *matCellDef="let element"> {{ element.mvtAmountRcvd + ' ' + element.mvtCurrency }} </td>
   </ng-container>
 
   <!-- MvtCurrency Column -->
-  <ng-container matColumnDef="mvtCurrency">
+  <!-- <ng-container matColumnDef="mvtCurrency">
     <th mat-header-cell *matHeaderCellDef > Currency </th>
-    <td mat-cell *matCellDef="let element"> {{ element.mvtCurrency }} </td>
-  </ng-container>
+    <td mat-cell *matCellDef="let element"> {{  }} </td>
+  </ng-container> -->
 
   <!-- MvtReconciled Column -->
-  <ng-container matColumnDef="mvtReconciled">
+  <!-- <ng-container matColumnDef="mvtReconciled">
     <th mat-header-cell *matHeaderCellDef > Reconciled </th>
     <td mat-cell *matCellDef="let element"> 
 
       {{element.mvtReconciled ? 'Yes' : 'No'}}
-      <!-- <mat-checkbox [checked]="element.mvtReconciled"></mat-checkbox> -->
+     
     </td>
-  </ng-container>
+  </ng-container> -->
 
   <!-- MvtBkClearing Column -->
-  <ng-container matColumnDef="mvtBkClearing">
+  <!-- <ng-container matColumnDef="mvtBkClearing">
     <th mat-header-cell *matHeaderCellDef > Clearing </th>
     <td mat-cell *matCellDef="let element"> {{ element.mvtBkClearing }} </td> 
-  </ng-container>
+  </ng-container> -->
 
   <!-- MvtBkAccount Column -->
   <ng-container matColumnDef="mvtBkAccount">
@@ -158,40 +158,40 @@
   </ng-container>
 
   <!-- MvtUserReconciled Column -->
-  <ng-container matColumnDef="mvtUserReconciled">
+  <!-- <ng-container matColumnDef="mvtUserReconciled">
     <th mat-header-cell *matHeaderCellDef > User Reconciled </th>
     <td mat-cell *matCellDef="let element"> {{ element.mvtUserReconciled }} </td>
-  </ng-container>
+  </ng-container> -->
 
   <!-- MvtDtLastUpdate Column -->
-  <ng-container matColumnDef="mvtDtLastUpdate">
+  <!-- <ng-container matColumnDef="mvtDtLastUpdate">
     <th mat-header-cell *matHeaderCellDef  class="mvt-date-column"> Last Update </th>
     <td mat-cell *matCellDef="let element" class="mvt-date-column"> {{ element.mvtDtLastUpdate | date:'yyyy-MM-dd' }} </td>
-  </ng-container>
+  </ng-container> -->
 
   <!-- MvtDtUser Column -->
-  <ng-container matColumnDef="mvtDtUser">
+  <!-- <ng-container matColumnDef="mvtDtUser">
     <th mat-header-cell *matHeaderCellDef > User </th>
     <td mat-cell *matCellDef="let element"> {{ element.mvtDtUser }} </td>
-  </ng-container>
+  </ng-container> -->
 
   <!-- PIStatus Column -->
-  <ng-container matColumnDef="PIStatus">
+  <!-- <ng-container matColumnDef="PIStatus">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> PI Status </th>
     <td mat-cell *matCellDef="let element"> {{ element.PIStatus ? 'yes' : 'No' }} </td>
-  </ng-container>
+  </ng-container> -->
 
   <!-- MvtlRef Column -->
-  <ng-container matColumnDef="mvtlRef">
+  <!-- <ng-container matColumnDef="mvtlRef">
     <th mat-header-cell *matHeaderCellDef > Reference </th>
     <td mat-cell *matCellDef="let element"> {{ element.mvtlRef }} </td>
-  </ng-container>
+  </ng-container> -->
 
   <!-- MvtDtCreated Column -->
-  <ng-container matColumnDef="mvtDtCreated">
+  <!-- <ng-container matColumnDef="mvtDtCreated">
     <th mat-header-cell *matHeaderCellDef  class="mvt-date-column"> Date Created </th>
     <td mat-cell *matCellDef="let element" class="mvt-date-column"> {{ element.mvtDtCreated | date:'yyyy-MM-dd'  }} </td>
-  </ng-container>
+  </ng-container> -->
 
   <!-- BkiAccountName Column -->
   <ng-container matColumnDef="bkiAccountName">
@@ -200,10 +200,10 @@
   </ng-container>
 
   <!-- CieDesc Column -->
-  <ng-container matColumnDef="cieDesc">
+  <!-- <ng-container matColumnDef="cieDesc">
     <th mat-header-cell *matHeaderCellDef > Description </th>
     <td mat-cell *matCellDef="let element"> {{ element.cieDesc }} </td>
-  </ng-container>
+  </ng-container> -->
 
   <!-- <ng-container matColumnDef="notes">
     <th mat-header-cell *matHeaderCellDef > Notes </th>
