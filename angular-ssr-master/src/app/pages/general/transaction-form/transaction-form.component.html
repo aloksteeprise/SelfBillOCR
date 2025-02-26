@@ -112,6 +112,11 @@
     <td mat-cell *matCellDef="let element" class="mvt-date-column"> {{ element.invoiceNumber }} </td>
   </ng-container>
 
+  <ng-container matColumnDef="Selfbill">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Self Bill</th>
+    <td mat-cell *matCellDef="let element" class="mvt-date-column"> {{ element.selfbillNumber }} </td>
+  </ng-container>
+
   <!-- MvtAmountSent Column -->
   <!-- <ng-container matColumnDef="mvtAmountSent">
     <th mat-header-cell *matHeaderCellDef mat-sort-header > Amount Sent </th>

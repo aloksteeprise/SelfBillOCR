@@ -23,6 +23,7 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
     'mvtDateReconciled',
     'refRem',
     'invoiceNumber',
+    'Selfbill',
     // 'mvtAmountSent',
     'mvtAmountRcvd',
     // 'mvtCurrency',
