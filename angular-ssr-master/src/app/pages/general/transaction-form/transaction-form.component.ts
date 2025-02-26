@@ -27,7 +27,7 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
     // 'mvtReconciled',
     // 'mvtBkClearing',
     'mvtBkAccount',
-    'mvtType',
+    // 'mvtType',
     // 'mvtUserReconciled',
     // 'mvtDtLastUpdate',
     // 'mvtDtUser',
