@@ -128,18 +128,18 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
   }
 
   applyFilter(form: any): void {
-    // this.loadInvoices();
+    this.loadInvoices();
   }
 
 
     ClearSearch() {
-      // this.pageIndex = 0;
-      // console.log("clearsearch clicked")
-      // this.mvtType=''
-      // this.mvtDate = '';
-      // this.invoiceNumber = ''; 
-      // this.mvtValueDate = '';
-      // this.IsRecordAllocated = false;
-      // this.loadInvoices();
+      this.pageIndex = 0;
+      console.log("clearsearch clicked")
+      this.mvtType=''
+      this.mvtDate = '';
+      this.invoiceNumber = ''; 
+      this.mvtValueDate = '';
+      this.IsRecordAllocated = false;
+      this.loadInvoices();
   }
 }
