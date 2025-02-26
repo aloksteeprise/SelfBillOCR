@@ -225,7 +225,7 @@
   <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
 
   <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns;"
-  [ngClass]="{'table-danger': row.notFoundInviceNumberOrSelfBill === 0, 'table-success': row.notFoundInviceNumberOrSelfBill === 1}">
+  [ngClass]="{'table-danger': row.notFoundInviceNumberOrSelfBill === 1, 'table-success': row.notFoundInviceNumberOrSelfBill === 0}">
 </tr>
 
 </table>
