@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { TransactionForm } from './transaction-form';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import { ConfirmationPopComponent } from '../confirmation-pop/confirmation-pop.component';
 
 @Component({
   selector: 'app-transaction-form',
@@ -13,6 +14,7 @@ import { MatPaginator } from '@angular/material/paginator';
   styleUrls: ['./transaction-form.component.css']
 })
 export class TransactionFormComponent implements OnInit, AfterViewInit {
+  @ViewChild(ConfirmationPopComponent) popupComponent!: ConfirmationPopComponent;
   displayedColumns: string[] = [
     'mvtID',
     'mvtKey',
@@ -141,5 +143,18 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
       this.mvtValueDate = '';
       this.IsRecordAllocated = false;
       this.loadInvoices();
+  }
+  openConfirmationBox() {
+    this.popupComponent.openPopup(
+      'Confirmation',
+      'Are you sure that you want to proceed?',
+      'warning',
+      () => {
+        console.log('Save clicked!');
+      },
+      () => {
+        console.log('Cancel clicked!');
+      }
+    );
   }
 }

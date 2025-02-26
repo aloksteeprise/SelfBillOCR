@@ -1,8 +1,9 @@
 <div style="margin-top: 63px;">
   <div class="d-flex align-items-center justify-content-between">
     <p style="font-weight: 1000; font-size: x-large; margin: 0; padding-left: 14px; ">Transactions Allocation</p>
-    <button type="submit" class="btn btn-outline-success" 
+    <button type="submit" class="btn btn-outline-success" (click)="openConfirmationBox()"
       style="margin-right: 19px;" >Batch Validate</button>
+      <app-confirmation-pop style="position: absolute; top: 0; left: 0;"></app-confirmation-pop>
   
   </div>
 
@@ -101,7 +102,7 @@
 
   <!-- RefRem Column -->
   <ng-container matColumnDef="refRem">
-    <th mat-header-cell *matHeaderCellDef  > Reference </th>
+    <th mat-header-cell *matHeaderCellDef  > RefRem </th>
     <td mat-cell *matCellDef="let element"> {{ element.refRem }} </td>
   </ng-container>
 

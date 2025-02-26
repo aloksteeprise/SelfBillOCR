@@ -6,6 +6,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { SharedModule } from '../shared/shared.module'; 
 
 
 
@@ -16,7 +17,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
       FormsModule, 
       MatTableModule,
       MatSortModule,
-      MatPaginatorModule
+      MatPaginatorModule,
+      SharedModule
 
     ],
     exports: [TransactionFormComponent] // Export if needed elsewhere
