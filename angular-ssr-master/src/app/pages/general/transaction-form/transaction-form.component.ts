@@ -36,7 +36,7 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
     'mvtDtCreated',
     'bkiAccountName',
     'cieDesc',
-    'notes',
+    // 'notes',
     'actions'
   ];
 
@@ -133,13 +133,13 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
 
 
     ClearSearch() {
-      this.pageIndex = 0;
-      console.log("clearsearch clicked")
-      this.mvtType=''
-      this.mvtDate = '';
-      this.invoiceNumber = ''; 
-      this.mvtValueDate = '';
-      this.IsRecordAllocated = false;
-      this.loadInvoices();
+      // this.pageIndex = 0;
+      // console.log("clearsearch clicked")
+      // this.mvtType=''
+      // this.mvtDate = '';
+      // this.invoiceNumber = ''; 
+      // this.mvtValueDate = '';
+      // this.IsRecordAllocated = false;
+      // this.loadInvoices();
   }
 }

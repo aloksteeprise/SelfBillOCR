@@ -1,7 +1,14 @@
+<div style="margin-top: 63px;">
+  <div class="d-flex align-items-center justify-content-between">
+    <p style="font-weight: 1000; font-size: x-large; margin: 0; padding-left: 14px; ">Transactions Allocation</p>
+    <button type="submit" class="btn btn-outline-success" 
+      style="margin-right: 19px;" disabled>Batch Validate</button>
+  
+  </div>
 
-<div style="margin-top: 58px;">
- <!-- <form (ngSubmit)="applyFilter(myForm)" #myForm="ngForm" class="backgroundcolorform" style="padding: 9px;">  -->
-  <form  #myForm="ngForm" class="backgroundcolorform" style="padding: 9px;">
+  <!-- <hr /> -->
+<div style="margin-top: 5px;">
+<form (ngSubmit)="applyFilter(myForm)" #myForm="ngForm" class="backgroundcolorform" style="padding: 9px;">
   <div class="row g-2 searchTable">
 
 
@@ -198,10 +205,10 @@
     <td mat-cell *matCellDef="let element"> {{ element.cieDesc }} </td>
   </ng-container>
 
-  <ng-container matColumnDef="notes">
+  <!-- <ng-container matColumnDef="notes">
     <th mat-header-cell *matHeaderCellDef > Notes </th>
-    <td mat-cell *matCellDef="let element"> {{ element.notes }} </td>
-  </ng-container>
+    <td mat-cell *matCellDef="let element" class="noteswidth"> {{ element.notes }} </td>
+  </ng-container> -->
 
   <!-- Actions Column -->
   <ng-container matColumnDef="actions">
@@ -211,16 +218,22 @@
     </td>
   </ng-container>
 
+  
+
   <!-- Table Header and Row Definitions -->
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
+
+  <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns;"
+  [ngClass]="{'table-danger': row.notFoundInviceNumberOrSelfBill === 0, 'table-success': row.notFoundInviceNumberOrSelfBill === 1}">
+</tr>
 
 </table>
 </div>
 <mat-paginator [length]="totalRecords" [pageSize]="pageSize" [pageIndex]="pageIndex" (page)="onPageChanged($event)"
 [pageSizeOptions]="[5, 10, 15, 20]" >
 </mat-paginator>
-<!-- 
-<div class="loading-overlay" *ngIf="loading">
+
+<!-- <div class="loading-overlay" *ngIf="loading">
   <div class="loader"></div>
 </div> -->

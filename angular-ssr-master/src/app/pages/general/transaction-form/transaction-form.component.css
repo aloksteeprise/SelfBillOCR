@@ -35,6 +35,21 @@ margin-left: 5px;
   color: white !important;
 }
 
+.noteswidth{
+  width: 150px !important;
+}
+
+.table-danger {
+  background-color: #fcd4dc!important;
+  /* color: #721c24 !important; */
+}
+
+.table-success {
+  background-color: #d4edda !important;
+  /* color: #155724 !important; */
+}
+
+
 .mvt-date-column {
   min-width: 118px;
   /* max-width: 110px; */
