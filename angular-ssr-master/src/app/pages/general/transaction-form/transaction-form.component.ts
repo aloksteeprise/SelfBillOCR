@@ -7,6 +7,7 @@ import { TransactionForm } from './transaction-form';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { ConfirmationPopComponent } from '../confirmation-pop/confirmation-pop.component';
+import { SharedUtils  } from '../shared/shared-utils';
 
 @Component({
   selector: 'app-transaction-form',
@@ -168,5 +169,13 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
         console.log('Cancel clicked!');
       }
     );
+  }
+
+  getToday(): string {
+    return new Date().toISOString().split('T')[0]
+  }
+
+  formatAmount(amount: any): string {
+    return amount ? parseFloat(amount).toFixed(2) : '0.00';
   }
 }
