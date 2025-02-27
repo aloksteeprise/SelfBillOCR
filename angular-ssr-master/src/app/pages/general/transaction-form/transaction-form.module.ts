@@ -7,6 +7,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { SharedModule } from '../shared/shared.module'; 
+import {MatTooltipModule} from '@angular/material/tooltip';
+
 
 
 
@@ -18,7 +20,8 @@ import { SharedModule } from '../shared/shared.module';
       MatTableModule,
       MatSortModule,
       MatPaginatorModule,
-      SharedModule
+      SharedModule,
+      MatTooltipModule
 
     ],
     exports: [TransactionFormComponent] // Export if needed elsewhere

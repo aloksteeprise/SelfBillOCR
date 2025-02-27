@@ -15,7 +15,7 @@
   color: white;
 }
 
-.backgroundcolorform{
+.backgroundcolorform {
   background: inherit;
   background-color: #7a7777;
   color: white;
@@ -26,21 +26,26 @@ input[type="checkbox"] {
   transform: scale(2.2);
 }
 
-.custom-styling{
-margin-top: 25px;
-margin-left: 5px;
+.custom-styling {
+  margin-top: 35px;
+  margin-left: 5px;
 }
+
+::ng-deep .btn-outline-dark {
+  --bs-btn-border-color: white !important;
+}
+
 
 ::ng-deep .mat-sort-header-arrow {
   color: white !important;
 }
 
-.noteswidth{
+.noteswidth {
   width: 150px !important;
 }
 
 .table-danger {
-  background-color: #fcd4dc!important;
+  background-color: #fcd4dc !important;
   /* color: #721c24 !important; */
 }
 
@@ -55,19 +60,21 @@ margin-left: 5px;
   /* max-width: 110px; */
 }
 
-.marginleft8{
+.marginleft8 {
   margin-left: 20px;
 }
-.marginleft20{
+
+.marginleft20 {
   margin-left: 3px;
 }
-.margintop25{
+
+.margintop25 {
   margin-top: 25px;
 }
 
 
 
-.customdisplay{
+.customdisplay {
   display: flex;
   justify-content: end;
   align-items: end;
@@ -80,12 +87,12 @@ margin-left: 5px;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  
+
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  
+
 }
 
 .loader {
@@ -99,11 +106,11 @@ margin-left: 5px;
 }
 
 .custom-success {
-background-color: #f7f7c9;
+  background-color: #f7f7c9;
 }
 
 .custom-danger {
-background-color: #effdec;
+  background-color: #effdec;
 }
 
 
@@ -129,7 +136,7 @@ background-color: #effdec;
 
 @keyframes l16 {
   100% {
-      transform: rotate(1turn);
+    transform: rotate(1turn);
   }
 }
 
@@ -137,28 +144,31 @@ background-color: #effdec;
 
 @media screen and (min-width: 300px) and (max-width: 700px) {
   .marginleft8 {
-   
-      margin-left: 0px !important;
-  }
-  .marginleft20{
-      margin-left: 0px !important;
-  }
-  .margintop25{
-      margin-top: 5px;
-      margin-bottom: 10px;
-  }
-  .mx-2 {
-      margin-right: 0px !important;
-      margin-left: 0px !important;
+
+    margin-left: 0px !important;
   }
 
-  .customdisplay{
+  .marginleft20 {
+    margin-left: 0px !important;
+  }
+
+  .margintop25 {
+    margin-top: 5px;
+    margin-bottom: 10px;
+  }
+
+  .mx-2 {
+    margin-right: 0px !important;
+    margin-left: 0px !important;
+  }
+
+  .customdisplay {
     display: flex;
     justify-content: center;
     align-items: center;
   }
 
-  .custom-styling{
+  .custom-styling {
     margin-left: 0px !important;
-    }
+  }
 }

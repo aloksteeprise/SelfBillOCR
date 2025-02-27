@@ -2,141 +2,147 @@
   <div class="d-flex align-items-center justify-content-between">
     <p style="font-weight: 1000; font-size: x-large; margin: 0; padding-left: 14px; ">Transactions Allocation</p>
     <button type="submit" class="btn btn-outline-success" (click)="openConfirmationBox()"
-      style="margin-right: 19px;" >Batch Validate</button>
-      <app-confirmation-pop style="position: absolute; top: 0; left: 0;"></app-confirmation-pop>
-  
+      style="margin-right: 19px;">Batch Validate</button>
+    <app-confirmation-pop style="position: absolute; top: 0; left: 0;"></app-confirmation-pop>
+
   </div>
 
   <!-- <hr /> -->
-<div style="margin-top: 5px;">
-<form (ngSubmit)="applyFilter(myForm)" #myForm="ngForm" class="backgroundcolorform" style="padding: 9px;">
-  <div class="row g-2 searchTable">
+  <div style="margin-top: 5px;">
+    <form (ngSubmit)="applyFilter(myForm)" #myForm="ngForm" class="backgroundcolorform" style="padding: 9px;">
+      <div class="row g-2 searchTable">
 
 
-    <div class="col-6 col-sm-2 marginleft8">
-      <label class="fontweight500">Invoice Number</label>
-      <input type="text" id="invoiceNumber" class="form-control" matInput [(ngModel)]="invoiceNumber"
-        name="invoiceNumber" placeholder="Invoice Number" autocomplete="off" />
-    </div>
+        <div class="col-6 col-sm-2 marginleft8">
+          <label class="fontweight500">Invoice Number</label>
+          <input type="text" id="invoiceNumber" class="form-control" matInput [(ngModel)]="invoiceNumber"
+            name="invoiceNumber" placeholder="Invoice Number" autocomplete="off" />
+        </div>
 
-    <div class="col-6 col-sm-2 marginleft8">
-      <label class="fontweight500">Mvt Date</label>
-      <input type="date" class="form-control" id="mvtDate" name="mvtDate" placeholder="Mvt Date"
-         maxlength="50" [(ngModel)]="mvtDate"/>
-    </div>
-   
-    
+        <div class="col-6 col-sm-2 marginleft8">
+          <label class="fontweight500">Mvt Date</label>
+          <input type="date" class="form-control" id="mvtDate" name="mvtDate" placeholder="Mvt Date" maxlength="50"
+            [(ngModel)]="mvtDate" />
+        </div>
 
-    <div class="col-6 col-sm-2 marginleft8">
-      <label class="fontweight500">Mvt Value Date</label>
-      <input type="date" id="mvtValueDate" class="form-control" matInput [(ngModel)]="mvtValueDate"
-        name="mvtValueDate" placeholder="mvt Value Date" autocomplete="off" />
-    </div>
-    <div class=" col-6 col-sm-2 marginleft20">
-      <label class="fontweight500"> Mvt Type </label>
-      <input type="text" class="form-control" id="mvtType" name="mvtType" placeholder="Mvt Type" 
-        matInput [(ngModel)]="mvtType" />
-    </div>
 
-   
 
-    <div class="form-check col-6 col-sm-1 d-flex justify-content-center align-items-center custom-styling" >
-      <input type="checkbox" name="IsRecordAllocated" [(ngModel)]="IsRecordAllocated" />
-      <label class="form-check-label fontweight500" for="flexCheckDefault"
-        style="margin-left: 10px; font-size: 18px;">
-        Allocated
-      </label>
-    </div>
+        <div class="col-6 col-sm-2 marginleft8">
+          <label class="fontweight500">Mvt Value Date</label>
+          <input type="date" id="mvtValueDate" class="form-control" matInput [(ngModel)]="mvtValueDate"
+            name="mvtValueDate" placeholder="mvt Value Date" autocomplete="off" />
+        </div>
+        <div class="col-6 col-sm-2 marginleft20">
+          <label class="fontweight500"> Mvt Type </label>
+          <select class="form-select" id="mvtType" name="mvtType" [(ngModel)]="mvtType" >  //(change)="applyFilter(myForm)"
+            <option value="" disabled selected>Select</option>
+            <option *ngFor="let type of mvtTypeList" [value]="type">{{ type }}</option>
+          </select>
+        </div>
 
-    <!-- <div class="col-6 col-sm-2 marginleft8">
+        <div class="form-check col-6 col-sm-1 d-flex justify-content-center align-items-center custom-styling">
+          <input type="checkbox" name="IsRecordAllocated" [(ngModel)]="IsRecordAllocated" />
+          <label class="form-check-label fontweight500" for="flexCheckDefault"
+            style="margin-left: 10px; font-size: 18px;">
+            Allocated
+          </label>
+        </div>
+
+        <!-- <div class="col-6 col-sm-2 marginleft8">
       <label class="fontweight500">Amount Received</label>
       <input type="text" id="mvtAmountRcvd" class="form-control" matInput [(ngModel)]="searchCriteria.mvtAmountRcvd"
         name="mvtAmountRcvd" placeholder="Mvt Amount Rcvd" autocomplete="off" />
     </div> -->
 
-    <div class="col-6 col-sm-2 customdisplay">
-      <button type="submit" class="btn btn-dark">Search</button>
-      <button type="button" class="btn btn-outline-dark" (click)="ClearSearch()"
-          style="margin-left: 12px; color: white;">Clear</button>
-    </div>
+        <div class="col-6 col-sm-2 customdisplay">
+          <button type="submit" class="btn btn-dark">Search</button>
+          <button type="button" class="btn btn-outline-dark" (click)="ClearSearch()"
+            style="margin-left: 12px; color: white;">Clear</button>
+        </div>
+      </div>
+    </form>
   </div>
-</form>
-</div>
-<div style="overflow-x:auto; margin-top: -4px;" >
-<table mat-table [dataSource]="dataSource" matSort  style="margin-top: 5px;">
+  <div style="overflow-x:auto; margin-top: -4px;">
+    <table mat-table [dataSource]="dataSource" matSort style="margin-top: 5px;">
 
-  <!-- MvtID Column -->
-  <ng-container matColumnDef="mvtID">
-    <th mat-header-cell *matHeaderCellDef > Mvt ID </th>
-    <td mat-cell *matCellDef="let element"> {{ element.mvtID }} </td>
-  </ng-container>
+      <!-- MvtID Column -->
+      <ng-container matColumnDef="mvtID">
+        <th mat-header-cell *matHeaderCellDef> Mvt ID </th>
+        <td mat-cell *matCellDef="let element"> {{ element.mvtID }} </td>
+      </ng-container>
 
-  <!-- MvtKey Column -->
-  <ng-container matColumnDef="mvtKey">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Mvt Key </th>
-    <td mat-cell *matCellDef="let element"> {{ element.mvtKey }} </td>
-  </ng-container>
-  
+      <!-- MvtKey Column -->
+      <ng-container matColumnDef="mvtKey">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Mvt Key </th>
+        <td mat-cell *matCellDef="let element"> {{ element.mvtKey }} </td>
+      </ng-container>
 
-  <!-- MvtDate Column -->
-  <ng-container matColumnDef="mvtDate">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header  class="mvt-date-column"> Mvt Date </th>
-    <td mat-cell *matCellDef="let element" class="mvt-date-column"> {{ element.mvtDate | date:'yyyy-MM-dd' }} </td>
 
-  </ng-container>
+      <!-- MvtDate Column -->
+      <ng-container matColumnDef="mvtDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="mvt-date-column"> Mvt Date </th>
+        <td mat-cell *matCellDef="let element" class="mvt-date-column"> {{ element.mvtDate | date:'yyyy-MM-dd' }} </td>
 
-  <!-- MvtValueDate Column -->
-  <ng-container matColumnDef="mvtValueDate">
-    <th mat-header-cell *matHeaderCellDef  mat-sort-header class="mvt-date-column"> Value Date </th>
-    <td mat-cell *matCellDef="let element" class="mvt-date-column"> {{ element.mvtValueDate | date:'yyyy-MM-dd' }} </td>
-  </ng-container>
+      </ng-container>
 
-  <!-- MvtDateReconciled Column -->
-  <ng-container matColumnDef="mvtDateReconciled">
-    <th mat-header-cell *matHeaderCellDef   class="mvt-date-column"> Date Reconciled </th>
-    <td mat-cell *matCellDef="let element" class="mvt-date-column">
-      {{ element.mvtDateReconciled === '0001-01-01T00:00:00' ? '' : (element.mvtDate | date: 'yyyy-MM-dd') }}
-    </td>
-    
-  </ng-container>
+      <!-- MvtValueDate Column -->
+      <ng-container matColumnDef="mvtValueDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="mvt-date-column"> Value Date </th>
+        <td mat-cell *matCellDef="let element" class="mvt-date-column"> {{ element.mvtValueDate | date:'yyyy-MM-dd' }}
+        </td>
+      </ng-container>
 
-  <!-- RefRem Column -->
-  <ng-container matColumnDef="refRem">
-    <th mat-header-cell *matHeaderCellDef  > RefRem </th>
-    <td mat-cell *matCellDef="let element"> {{ element.refRem }} </td>
-  </ng-container>
+      <!-- MvtDateReconciled Column -->
+      <ng-container matColumnDef="mvtDateReconciled">
+        <th mat-header-cell *matHeaderCellDef class="mvt-date-column"> Date Reconciled </th>
+        <td mat-cell *matCellDef="let element" class="mvt-date-column">
+          {{ element.mvtDateReconciled === '0001-01-01T00:00:00' ? '' : (element.mvtDate | date: 'yyyy-MM-dd') }}
+        </td>
 
-  <!-- Invoice number -->
-  <ng-container matColumnDef="invoiceNumber">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Invoice Number</th>
-    <td mat-cell *matCellDef="let element" class="mvt-date-column"> {{ element.invoiceNumber }} </td>
-  </ng-container>
+      </ng-container>
 
-  <ng-container matColumnDef="Selfbill">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Self Bill</th>
-    <td mat-cell *matCellDef="let element" class="mvt-date-column"> {{ element.selfbillNumber }} </td>
-  </ng-container>
+      <!-- RefRem Column -->
+      <ng-container matColumnDef="refRem">
+        <th mat-header-cell *matHeaderCellDef> RefRem </th>
+        <td mat-cell *matCellDef="let element">
+          <span matTooltip="{{ element.refRem }}" matTooltipPosition="above">
+            {{ element.refRem | slice:0:10 }}{{ element.refRem.length > 10 ? '...' : '' }}
+          </span>
+        </td>
+      </ng-container>
 
-  <!-- MvtAmountSent Column -->
-  <!-- <ng-container matColumnDef="mvtAmountSent">
+
+      <!-- Invoice number -->
+      <ng-container matColumnDef="invoiceNumber">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Invoice Number</th>
+        <td mat-cell *matCellDef="let element" class="mvt-date-column"> {{ element.invoiceNumber }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Selfbill">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Self Bill</th>
+        <td mat-cell *matCellDef="let element" class="mvt-date-column"> {{ element.selfbillNumber }} </td>
+      </ng-container>
+
+      <!-- MvtAmountSent Column -->
+      <!-- <ng-container matColumnDef="mvtAmountSent">
     <th mat-header-cell *matHeaderCellDef mat-sort-header > Amount Sent </th>
     <td mat-cell *matCellDef="let element"> {{ element.mvtAmountSent}} </td>
   </ng-container> -->
 
-  <!-- MvtAmountRcvd Column -->
-  <ng-container matColumnDef="mvtAmountRcvd">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header > Amount Received </th>
-    <td mat-cell *matCellDef="let element"> {{ element.mvtAmountRcvd + ' ' + element.mvtCurrency }} </td>
-  </ng-container>
+      <!-- MvtAmountRcvd Column -->
+      <ng-container matColumnDef="mvtAmountRcvd">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Amount Received </th>
+        <td mat-cell *matCellDef="let element"> {{ element.mvtAmountRcvd + ' ' + element.mvtCurrency }} </td>
+      </ng-container>
 
-  <!-- MvtCurrency Column -->
-  <!-- <ng-container matColumnDef="mvtCurrency">
+      <!-- MvtCurrency Column -->
+      <!-- <ng-container matColumnDef="mvtCurrency">
     <th mat-header-cell *matHeaderCellDef > Currency </th>
     <td mat-cell *matCellDef="let element"> {{  }} </td>
   </ng-container> -->
 
-  <!-- MvtReconciled Column -->
-  <!-- <ng-container matColumnDef="mvtReconciled">
+      <!-- MvtReconciled Column -->
+      <!-- <ng-container matColumnDef="mvtReconciled">
     <th mat-header-cell *matHeaderCellDef > Reconciled </th>
     <td mat-cell *matCellDef="let element"> 
 
@@ -145,101 +151,101 @@
     </td>
   </ng-container> -->
 
-  <!-- MvtBkClearing Column -->
-  <!-- <ng-container matColumnDef="mvtBkClearing">
+      <!-- MvtBkClearing Column -->
+      <!-- <ng-container matColumnDef="mvtBkClearing">
     <th mat-header-cell *matHeaderCellDef > Clearing </th>
     <td mat-cell *matCellDef="let element"> {{ element.mvtBkClearing }} </td> 
   </ng-container> -->
 
-  <!-- MvtBkAccount Column -->
-  <ng-container matColumnDef="mvtBkAccount">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Bank Account </th>
-    <td mat-cell  *matCellDef="let element"> {{ element.mvtBkAccount }} </td>
-  </ng-container>
+      <!-- MvtBkAccount Column -->
+      <ng-container matColumnDef="mvtBkAccount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Bank Account </th>
+        <td mat-cell *matCellDef="let element"> {{ element.mvtBkAccount }} </td>
+      </ng-container>
 
-  <!-- MvtType Column -->
-  <!-- <ng-container matColumnDef="mvtType">
+      <!-- MvtType Column -->
+      <!-- <ng-container matColumnDef="mvtType">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Type </th>
     <td mat-cell *matCellDef="let element"> {{ element.mvtType }} </td>
   </ng-container> -->
 
-  <!-- MvtUserReconciled Column -->
-  <!-- <ng-container matColumnDef="mvtUserReconciled">
+      <!-- MvtUserReconciled Column -->
+      <!-- <ng-container matColumnDef="mvtUserReconciled">
     <th mat-header-cell *matHeaderCellDef > User Reconciled </th>
     <td mat-cell *matCellDef="let element"> {{ element.mvtUserReconciled }} </td>
   </ng-container> -->
 
-  <!-- MvtDtLastUpdate Column -->
-  <!-- <ng-container matColumnDef="mvtDtLastUpdate">
+      <!-- MvtDtLastUpdate Column -->
+      <!-- <ng-container matColumnDef="mvtDtLastUpdate">
     <th mat-header-cell *matHeaderCellDef  class="mvt-date-column"> Last Update </th>
     <td mat-cell *matCellDef="let element" class="mvt-date-column"> {{ element.mvtDtLastUpdate | date:'yyyy-MM-dd' }} </td>
   </ng-container> -->
 
-  <!-- MvtDtUser Column -->
-  <!-- <ng-container matColumnDef="mvtDtUser">
+      <!-- MvtDtUser Column -->
+      <!-- <ng-container matColumnDef="mvtDtUser">
     <th mat-header-cell *matHeaderCellDef > User </th>
     <td mat-cell *matCellDef="let element"> {{ element.mvtDtUser }} </td>
   </ng-container> -->
 
-  <!-- PIStatus Column -->
-  <!-- <ng-container matColumnDef="PIStatus">
+      <!-- PIStatus Column -->
+      <!-- <ng-container matColumnDef="PIStatus">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> PI Status </th>
     <td mat-cell *matCellDef="let element"> {{ element.PIStatus ? 'yes' : 'No' }} </td>
   </ng-container> -->
 
-  <!-- MvtlRef Column -->
-  <!-- <ng-container matColumnDef="mvtlRef">
+      <!-- MvtlRef Column -->
+      <!-- <ng-container matColumnDef="mvtlRef">
     <th mat-header-cell *matHeaderCellDef > Reference </th>
     <td mat-cell *matCellDef="let element"> {{ element.mvtlRef }} </td>
   </ng-container> -->
 
-  <!-- MvtDtCreated Column -->
-  <!-- <ng-container matColumnDef="mvtDtCreated">
+      <!-- MvtDtCreated Column -->
+      <!-- <ng-container matColumnDef="mvtDtCreated">
     <th mat-header-cell *matHeaderCellDef  class="mvt-date-column"> Date Created </th>
     <td mat-cell *matCellDef="let element" class="mvt-date-column"> {{ element.mvtDtCreated | date:'yyyy-MM-dd'  }} </td>
   </ng-container> -->
 
-  <!-- BkiAccountName Column -->
-  <ng-container matColumnDef="bkiAccountName">
-    <th mat-header-cell *matHeaderCellDef > Account Name </th>
-    <td mat-cell *matCellDef="let element"> {{ element.bkiAccountName }} </td>
-  </ng-container>
+      <!-- BkiAccountName Column -->
+      <ng-container matColumnDef="bkiAccountName">
+        <th mat-header-cell *matHeaderCellDef> Account Name </th>
+        <td mat-cell *matCellDef="let element"> {{ element.bkiAccountName }} </td>
+      </ng-container>
 
-  <!-- CieDesc Column -->
-  <!-- <ng-container matColumnDef="cieDesc">
+      <!-- CieDesc Column -->
+      <!-- <ng-container matColumnDef="cieDesc">
     <th mat-header-cell *matHeaderCellDef > Description </th>
     <td mat-cell *matCellDef="let element"> {{ element.cieDesc }} </td>
   </ng-container> -->
 
-  <!-- <ng-container matColumnDef="notes">
+      <!-- <ng-container matColumnDef="notes">
     <th mat-header-cell *matHeaderCellDef > Notes </th>
     <td mat-cell *matCellDef="let element" class="noteswidth"> {{ element.notes }} </td>
   </ng-container> -->
 
-  <!-- Actions Column -->
-  <ng-container matColumnDef="actions">
-    <th mat-header-cell *matHeaderCellDef> Actions </th>
-    <td mat-cell *matCellDef="let element">
-      <button class="btn btn-outline-success" (click)="openAllocationModal(element)">Allocate</button>
-    </td>
-  </ng-container>
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let element">
+          <button class="btn btn-outline-success" (click)="openAllocationModal(element)">Allocate</button>
+        </td>
+      </ng-container>
 
-  
 
-  <!-- Table Header and Row Definitions -->
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
 
-  <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns;"
-  [ngClass]="{'table-danger': row.notFoundInviceNumberOrSelfBill === 1, 'table-success': row.notFoundInviceNumberOrSelfBill === 0}">
-</tr>
+      <!-- Table Header and Row Definitions -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
 
-</table>
-</div>
-<mat-paginator [length]="totalRecords" [pageSize]="pageSize" [pageIndex]="pageIndex" (page)="onPageChanged($event)"
-[pageSizeOptions]="[5, 10, 15, 20]" >
-</mat-paginator>
+      <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns;"
+        [ngClass]="{'table-danger': row.notFoundInviceNumberOrSelfBill === 1, 'table-success': row.notFoundInviceNumberOrSelfBill === 0}">
+      </tr>
 
-<!-- <div class="loading-overlay" *ngIf="loading">
+    </table>
+  </div>
+  <mat-paginator [length]="totalRecords" [pageSize]="pageSize" [pageIndex]="pageIndex" (page)="onPageChanged($event)"
+    [pageSizeOptions]="[5, 10, 15, 20]">
+  </mat-paginator>
+
+  <!-- <div class="loading-overlay" *ngIf="loading">
   <div class="loader"></div>
 </div> -->

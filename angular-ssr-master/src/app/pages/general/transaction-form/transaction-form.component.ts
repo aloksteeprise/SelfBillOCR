@@ -49,7 +49,9 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
   invoiceNumber: string = '';
   mvtDate: string = '';
   mvtValueDate: string = '';
-  mvtType: string = '';
+  mvtTypeList: string[] = ['PrevDay', 'IntraDay']; // Replace with actual values
+  mvtType: string = ''; // Stores the selected value
+
   mvtKey: string = '';
   loading: boolean = false;
   mvtDtCreated: string = '';
@@ -131,19 +133,28 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
   }
 
   applyFilter(form: any): void {
+    console.log('Selected Mvt Type:', this.mvtType);
     this.loadInvoices();
   }
 
 
-    ClearSearch() {
-      this.pageIndex = 0;
-      console.log("clearsearch clicked")
-      this.mvtType=''
-      this.mvtDate = '';
-      this.invoiceNumber = ''; 
-      this.mvtValueDate = '';
-      this.IsRecordAllocated = false;
-      this.loadInvoices();
+  ClearSearch() {
+    this.pageIndex = 0;
+    console.log("clearsearch clicked")
+    this.mvtType = ''
+    this.mvtDate = '';
+    this.invoiceNumber = '';
+    this.mvtValueDate = '';
+    this.IsRecordAllocated = false;
+
+    const valuedate = document.getElementById('mvtValueDate') as HTMLInputElement;
+    const mvtdates = document.getElementById('mvtDate') as HTMLInputElement;
+ 
+
+    if (valuedate) valuedate.value = '';
+    if (mvtdates) mvtdates.value = '';
+
+    this.loadInvoices();
   }
   openConfirmationBox() {
     this.popupComponent.openPopup(

@@ -69,13 +69,19 @@
 
 .btn-close {
 
-  margin-left: 100px;
+  margin-left: 65px;
   margin-top: 6px;
 
 
 }
 
+.form-controldarker{
+  border: #36373866 1px solid !important;
+}
 
+.custom-marginleft{
+  margin-left: 30px;
+}
 
 
 @media screen and (min-width: 300px) and (max-width: 700px) {
@@ -96,6 +102,16 @@
 
   }
 
+
+
+
+  .custom-bottom{
+    margin-bottom: -18px!important;
+  }
+
+
+ 
+
   .custom-height {
     overflow: overlay;
     max-height: 650px;
@@ -108,10 +124,28 @@
   }
 
 
+  .custom-marginleft{
+    margin-left: 10px;
+  }
+
+  .custom-top{
+    margin-top: 5px;
+  }
+
+
 
 }
 
 @media only screen and (min-width: 767px) {
+
+  .custom-marginleft{
+    margin-left: 10px;
+  }
+
+  .custom-top{
+    margin-top: 5px;
+  }
+
 
   .custom-height {
     overflow: auto;
