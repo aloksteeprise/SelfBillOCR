@@ -148,12 +148,12 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
     this.mvtValueDate = '';
     this.IsRecordAllocated = false;
 
-    const valuedate = document.getElementById('mvtValueDate') as HTMLInputElement;
-    const mvtdates = document.getElementById('mvtDate') as HTMLInputElement;
+    // const valuedate = document.getElementById('mvtValueDate') as HTMLInputElement;
+    // const mvtdates = document.getElementById('mvtDate') as HTMLInputElement;
  
 
-    if (valuedate) valuedate.value = '';
-    if (mvtdates) mvtdates.value = '';
+    // if (valuedate) valuedate.value = '';
+    // if (mvtdates) mvtdates.value = '';
 
     this.loadInvoices();
   }
