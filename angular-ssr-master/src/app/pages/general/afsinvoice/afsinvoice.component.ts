@@ -105,8 +105,6 @@ export class AfsinvoiceComponent implements OnInit {
   initializeFormData(): void {
     if (this.data) {
       console.log(this.data);
-      debugger
-     
       //alert(this.data.contract_CtcContractor);
       this.id = this.data.id;
       this.conCode = this.data.contract_CtcContractor || '';
@@ -358,6 +356,7 @@ onSkip() {
 
       if (response.data.resultTable.length > 0) {
         const nextRecord = response.data.resultTable[0];
+        
         if (nextRecord.Message === 'All rows complete') {
           this.notificationService.showNotification(
             'All records have been processed.',
@@ -464,7 +463,7 @@ onSubmit(form: any): void {
     isValid = false;
     errors.endDate = endDate; }
 
-  const invoiceDate = SharedUtils.validateDate(this.invoiceDate, 'Invoice Date', true);
+  const invoiceDate = SharedUtils.validateDate(this.invoiceDate, 'Invoice Date', false);
   if (invoiceDate) {
     isValid = false;
     errors.invoiceDate = invoiceDate; }
@@ -532,6 +531,7 @@ onSubmit(form: any): void {
               'ERROR',
               'error',
               () => {
+                this.dialogRef.close();
                 console.log('OK clicked!'); // Callback logic
                 this.notificationService.setNotificationVisibility(false);
 
@@ -680,7 +680,6 @@ onSubmit(form: any): void {
 
 fetchNextRecord(data: any): void {
 console.log("this.id" + this.id);
-console.log(data);
   this.id = data.ID;
   this.conCode = data.Contract_CtcContractor || '';
   this.contractorname ='';
