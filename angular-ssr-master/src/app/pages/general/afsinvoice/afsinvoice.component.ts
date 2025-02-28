@@ -354,7 +354,7 @@ onSkip() {
   this.http.post<any>(apiUrl, formData,{headers}).subscribe({
     next: (response) => {
       this.loading = false;
-      this.notificationService.setNotificationVisibility(true);
+      //this.notificationService.setNotificationVisibility(true);
 
       if (response.data.resultTable.length > 0) {
         const nextRecord = response.data.resultTable[0];
