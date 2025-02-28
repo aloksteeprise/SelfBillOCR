@@ -105,6 +105,7 @@ export class AfsinvoiceComponent implements OnInit {
   initializeFormData(): void {
     if (this.data) {
       console.log(this.data);
+      debugger
      
       //alert(this.data.contract_CtcContractor);
       this.id = this.data.id;
@@ -331,7 +332,7 @@ onSkip() {
   this.loading = true;
   const errors: any = {};
   this.errors = errors; // Assign errors to the class property
-  this.notificationService.setNotificationVisibility(true);
+  this.notificationService.setNotificationVisibility(false);
   
 
   const formData = {
@@ -353,6 +354,7 @@ onSkip() {
   this.http.post<any>(apiUrl, formData,{headers}).subscribe({
     next: (response) => {
       this.loading = false;
+      this.notificationService.setNotificationVisibility(true);
 
       if (response.data.resultTable.length > 0) {
         const nextRecord = response.data.resultTable[0];

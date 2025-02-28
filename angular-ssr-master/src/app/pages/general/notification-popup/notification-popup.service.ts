@@ -13,7 +13,7 @@ interface NotificationData {
 })
 export class NotificationPopupService {
   private notificationVisibility = new BehaviorSubject<boolean>(false);
-  private notificationSubject = new Subject<NotificationData>();
+  private notificationSubject =new BehaviorSubject<NotificationData | null>(null);// new Subject<NotificationData>();
 
   // Exposed observables
   notificationVisibility$ = this.notificationVisibility.asObservable();
@@ -29,6 +29,8 @@ export class NotificationPopupService {
     callback?: () => void
   ) {
     this.notificationSubject.next({ message, header, type, callback });
+
+    debugger
     this.setNotificationVisibility(true);
   }
 

@@ -37,6 +37,8 @@ export class ApiService {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     });
+    
+  //  console.log(headers,"akash 2nd console")
 
     // Construct the request body
     const body = {

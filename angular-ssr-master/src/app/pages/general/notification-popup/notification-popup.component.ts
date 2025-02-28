@@ -15,6 +15,8 @@ export class NotificationPopupComponent {
 
   constructor(private notificationService: NotificationPopupService) {
     this.notificationService.notification$.subscribe((data) => {
+
+      if (!data) return; // Ignore null initial value 
       this.message = data.message;
       this.header = data.header || 'Alert';
       this.type = data.type || 'info';
