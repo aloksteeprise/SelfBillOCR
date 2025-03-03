@@ -64,14 +64,14 @@ export class RemittancePopupComponent implements OnInit {
     this.imageName = filePath;
     this.uplodedPDFFile =pdfFile;
     //server
-    // this.thumbImage = `assets/documents/remittance/image/${this.imageName}`;
-    // this.fullImagePath = `assets/documents/remittance/image/${this.imageName}`;
-    // this.pdfFileName =`assets/documents/remittance/pdf/${this.uplodedPDFFile}`;
+    this.thumbImage = `assets/documents/remittance/image/${this.imageName}`;
+    this.fullImagePath = `assets/documents/remittance/image/${this.imageName}`;
+    this.pdfFileName =`assets/documents/remittance/pdf/${this.uplodedPDFFile}`;
 
   //Local
-    this.pdfFileName =`assets/documents/remittance/pdf/Remittanceadvice.pdf`;
-    this.thumbImage = `assets/documents/remittance/image/2-AccessFinancialEUR7thNov_1_Image20250120_155215.png`;
-    this.fullImagePath = `assets/documents/remittance/image/2-AccessFinancialEUR7thNov_1_Image20250120_155215.png`;
+    // this.pdfFileName =`assets/documents/remittance/pdf/Remittanceadvice.pdf`;
+    // this.thumbImage = `assets/documents/remittance/image/2-AccessFinancialEUR7thNov_1_Image20250120_155215.png`;
+    // this.fullImagePath = `assets/documents/remittance/image/2-AccessFinancialEUR7thNov_1_Image20250120_155215.png`;
   
     console.log('Thumb Image:', this.thumbImage);
     console.log('Full Image Path:', this.fullImagePath);
