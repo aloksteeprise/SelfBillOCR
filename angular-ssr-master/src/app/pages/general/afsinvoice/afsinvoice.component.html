@@ -202,20 +202,21 @@
         style="max-width: 792px; max-height: 490px; margin-left: 6px;"
       >
       <a target="_blank"  style="display: contents;"  href="{{pdfFileName}}" >
-        <i 
-        class="fa fa-download" 
-        style="
-     font-size: 20px;
-    position: absolute;
-    z-index: 10;
-    color: #fff;
-    top: 1px;
-    background: rgba(0, 0, 0, 0.5);
-    padding: 5px;
-    border-radius: 50%;
-    right: 60px;
-    background-color: green;"
-      ></i>
+        <div id="downloadicon" *ngIf="!uplodedPDFFile?.includes('.xlsx')"><i 
+          class="fa fa-download" 
+          style="
+       font-size: 20px;
+      position: absolute;
+      z-index: 10;
+      color: #fff;
+      top: 1px;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 5px;
+      border-radius: 50%;
+      right: 60px;
+      background-color: green;"
+        ></i></div>
+        
       </a>
 
 
