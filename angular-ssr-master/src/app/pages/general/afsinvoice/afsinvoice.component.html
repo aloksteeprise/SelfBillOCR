@@ -201,23 +201,53 @@
         class="col-12 col-lg-6 d-flex justify-content-center align-items-center"
         style="max-width: 792px; max-height: 490px; margin-left: 6px;"
       >
-      <a target="_blank"  style="display: contents;"  href="{{pdfFileName}}" download >
-        <div id="downloadicon" *ngIf="!uplodedPDFFile?.includes('.pdf')"><i 
+      <a 
+      *ngIf="uplodedPDFFile?.includes('.pdf')" 
+      [href]="pdfFileName" 
+      target="_blank" 
+      style="display: contents;"
+    >
+      <div id="downloadicon">
+        <i 
+        class="fa fa-download" 
+        style="
+          font-size: 20px;
+          position: absolute;
+          z-index: 10;
+          color: #fff;
+          top: 1px;
+          background: rgba(0, 0, 0, 0.5);
+          padding: 5px;
+          border-radius: 50%;
+          right: 60px;
+          background-color: green;"
+      ></i>
+      </div>
+    </a>
+    
+    <a 
+      *ngIf="uplodedPDFFile?.includes('.xlsx')" 
+      [href]="pdfFileName" 
+      download 
+      style="display: contents;"
+    >
+      <div id="downloadicon">
+        <i 
           class="fa fa-download" 
           style="
-       font-size: 20px;
-      position: absolute;
-      z-index: 10;
-      color: #fff;
-      top: 1px;
-      background: rgba(0, 0, 0, 0.5);
-      padding: 5px;
-      border-radius: 50%;
-      right: 60px;
-      background-color: green;"
-        ></i></div>
-        
-      </a>
+            font-size: 20px;
+            position: absolute;
+            z-index: 10;
+            color: #fff;
+            top: 1px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 5px;
+            border-radius: 50%;
+            right: 60px;
+            background-color: green;"
+        ></i>
+      </div>
+    </a>    
 
 
         <div 
