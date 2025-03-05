@@ -18,6 +18,7 @@ export interface afsInvoice {
     errorID:number;
     errorMessage:string;
     afsInvoiceStatus:string;
+    isChecked?: boolean;  // Add this property
     // Add other fields as needed
   }
   

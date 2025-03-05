@@ -15,6 +15,7 @@ import { AfsInvoicesPopupModule } from '../afs-invoices-popup/afs-invoices-popup
 import { FormsModule } from '@angular/forms';
 // import { ConfirmationPopComponent } from '../confirmation-pop/confirmation-pop.component';
 import { SharedModule } from '../shared/shared.module';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 @NgModule({
   declarations: [
     AfsInvoicesComponent,
@@ -31,7 +32,8 @@ import { SharedModule } from '../shared/shared.module';
     MatDialogModule,
     FormsModule,
     AfsInvoicesPopupModule,
-    SharedModule
+    SharedModule,
+    MatCheckboxModule
   ],
   exports: [
     AfsInvoicesComponent,

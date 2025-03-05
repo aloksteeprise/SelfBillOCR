@@ -56,7 +56,9 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   IsSelfBill:boolean=false;
   CsmTeam:string='';
   csmTeamarr: string[] = ['Row Team', 'Swiss Team'];
-
+  IsAllRecord: boolean = false; 
+  selectedRecords: number[] = []; 
+  allRecords: any[] = []; // Ensure this holds all records loaded in the table
   isChecked = false;
   
 
@@ -131,12 +133,13 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
 
     this.apiService
     
-      .getInvoices(this.pageIndex, this.pageSize, SortColumn, SortDirection, this.name, this.invoiceno, this.startdate, this.enddate, this.IsValidatedRecord, this.IsSelfBill ,this.CsmTeam, this.token)
+    .getInvoices(this.pageIndex, this.pageSize, SortColumn, SortDirection, this.name, this.invoiceno, this.startdate, this.enddate, this.IsValidatedRecord, this.IsSelfBill, this.CsmTeam, this.token)
+
       .subscribe({
         next: (response: any) => {
 
           this.dataSource.data = response.data.data;
-          debugger
+          console.log(response.data.data,"Incoming data from Api")
           this.totalRecords = response.data.totalRecords; 
           this.loading = false; 
         },
@@ -146,6 +149,9 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
         },
       });
   }
+
+  
+
 
   // onFilter(event: KeyboardEvent) {
   //   // Check if the key pressed is Enter (key code 13)
@@ -241,6 +247,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     this.IsValidatedRecord = false;
     this.CsmTeam = '';
     this.IsSelfBill = false;
+    this.IsAllRecord = false
     const startDateInput = document.getElementById('startdate') as HTMLInputElement;
     const endDateInput = document.getElementById('enddate') as HTMLInputElement;
 
@@ -277,6 +284,24 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     );
   }
 
+  toggleAllRecords(event: any) {
+    this.IsAllRecord = event.target.checked;
+    console.log(this.IsAllRecord, "IsAllRecord status updated");
+}
+
+  
+  
+onCheckboxChange(event: any, id: number) {
+  if (event.target.checked) {
+      this.selectedRecords.push(id);
+  } else {
+      this.selectedRecords = this.selectedRecords.filter(recordId => recordId !== id);
+  }
+  console.log(this.selectedRecords, "Selected Records after checkbox change");
+}
+
+
+
   openBatchValidateConfirmationBox() {
     this.popupComponent.openPopup(
       'Confirmation',
@@ -292,63 +317,126 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     );
   }
   
-  BatchValidate() {
-    // Get selected rows
-    const selectedRecords = this.dataSource.data.filter(row => row.isChecked);
+//   BatchValidate() {
+//     // Determine the records to send
+//     let recordsToSend: number[];
+//     console.log(this.selectedRecords,"akashs")
+//     if (this.IsAllRecord) {
+//         // If "Is All Record" is checked, send all valid records
+//         recordsToSend = this.allRecords
+//             .filter(row => row.isErrorOnRow !== 1) // Exclude rows with errors
+//             .map(row => row.id);
+//     } else {
+//         // Otherwise, send only manually selected records
+//         recordsToSend = this.selectedRecords;
+//     }
 
-    if (selectedRecords.length === 0) {
-      debugger
-        // Show alert if no records are selected
-        this.notificationService.showNotification(
-            'Please select at least one record to validate.',
-            'WARNING',
-            'warning',
-            () => {
-                this.notificationService.setNotificationVisibility(false);
-            }
-        );
-        return;
-    }
+//     if (recordsToSend.length === 0) {
+//         alert("Please select at least one record to validate.");
+//         return;
+//     }
+
+//     console.log(recordsToSend, "Records to be validated");
+
+//     const apiUrl = environment.API_BASE_URL + 'OCRAI/SelfBillBatchValidate';
+//     this.notificationService.setNotificationVisibility(true);
     
+//     const headers = new HttpHeaders({
+//         Authorization: `Bearer ${this.token}`,
+//         'Content-Type': 'application/json',
+//     });
 
-    const apiUrl = environment.API_BASE_URL + 'OCRAI/SelfBillBatchValidate';
-    this.notificationService.setNotificationVisibility(true);
+//     const body = {
+//       selectedIds: recordsToSend, // ✅ Match backend's "SelectedIds"
+//       IsAllRecord: this.IsAllRecord // ✅ Match backend's "IsAllRecord"
+//   };
+  
     
-    const headers = new HttpHeaders({
-        Authorization: `Bearer ${this.token}`,
-        'Content-Type': 'application/json',
-    });
+//     // Send the records to be validated
 
-    console.log(headers, "batch validate");
+//     this.http.post<any>(apiUrl, body, { headers }).subscribe({
+//         next: (response) => {
+//             if (response && response.data && response.data.length > 0 && response.data[0].status === 4) {
+//                 this.notificationService.showNotification(
+//                     'Records have been validated and processed successfully.',
+//                     'INFORMATION',
+//                     'success',
+//                     () => {
+//                         console.log('OK clicked 4');
+//                         this.notificationService.setNotificationVisibility(false);
+//                         window.location.reload();
+//                     }
+//                 );
+//             }
+//         },
+//         error: (error) => {
+//             console.error("Error Response:", error);
+//             this.notificationService.showNotification(
+//                 'Unable to complete the action. Please retry.',
+//                 'ERROR',
+//                 'error',
+//                 () => {
+//                     console.log('Error callback');
+//                     this.notificationService.setNotificationVisibility(false);
+//                 }
+//             );
+//         },
+//     });
+// }
 
-    const body = { records: selectedRecords }; // Send selected records to API
+BatchValidate() {
 
-    this.http.post<any>(apiUrl, body, { headers }).subscribe({
-        next: (response) => {
-            if (response && response.data && response.data.length > 0 && response.data[0].status === 4) {
-                this.notificationService.showNotification(
-                    'Records have been validated and processed successfully.',
-                    'INFORMATION',
-                    'success',
-                    () => {
-                        console.log('OK clicked 4');
-                        this.notificationService.setNotificationVisibility(false);
-                        window.location.reload();
-                    }
-                );
-            }
-        },
-        error: (error) => {
-            console.error("Error Response:", error);
-            this.notificationService.showNotification(
-                'Unable to complete the action. Please retry.',
-                'ERROR',
-                'error',
-                () => {
-                    this.notificationService.setNotificationVisibility(false);
-                }
-            );
-        },
-    });
+//   if (this.selectedRecords.length === 0) {
+//     alert("Please select at least one record to validate.");
+//     return;
+// }
+  const apiUrl = environment.API_BASE_URL + 'OCRAI/SelfBillBatchValidate';
+  this.notificationService.setNotificationVisibility(true);
+
+  const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.token}`,
+      'Content-Type': 'application/json',
+  });
+
+  console.log("Headers:", headers);
+
+  const body = {
+      selectedIds: this.selectedRecords, // ✅ Send selected record IDs
+      IsAllRecord: this.IsAllRecord      // ✅ Send boolean flag
+  };
+
+  console.log("Payload Sent to API:", body);
+
+  this.http.post<any>(apiUrl, body, { headers }).subscribe({
+      next: (response) => {
+          if (response?.data?.length > 0 && response.data[0].status === 4) {
+              this.notificationService.showNotification(
+                  'Records have been validated and processed successfully.',
+                  'INFORMATION',
+                  'success',
+                  () => {
+                      console.log('OK clicked 4');
+                      this.notificationService.setNotificationVisibility(false);
+                      window.location.reload();
+                  }
+              );
+          }
+      },
+      error: (error) => {
+          console.error("Error Response:", error);
+          this.notificationService.showNotification(
+              'Unable to complete the action. Please retry.',
+              'ERROR',
+              'error',
+              () => {
+                  console.log('Error callback');
+                  this.notificationService.setNotificationVisibility(false);
+              }
+          );
+      },
+  });
 }
 }
+
+
+

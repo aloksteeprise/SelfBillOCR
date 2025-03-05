@@ -30,9 +30,8 @@ export class ApiService {
     startdate: string | null = null,
     enddate: string | null = null,
     IsValidatedRecord: boolean,
-
-    IsSelfBill:boolean,
-    CsmTeam:string,
+    IsSelfBill: boolean,  
+    CsmTeam: string,
     token: string
   ): Observable<PaginationResponse<any>> {
     // Set authorization and content-type headers
@@ -47,8 +46,8 @@ export class ApiService {
     const body = {
       pageIndex,
       pageSize,
-      SortColumn,      // Add SortColumn to the request
-      SortDirection,   // Add SortDirection to the request
+      SortColumn,
+      SortDirection,
       name,
       invoiceno,
       startdate,
