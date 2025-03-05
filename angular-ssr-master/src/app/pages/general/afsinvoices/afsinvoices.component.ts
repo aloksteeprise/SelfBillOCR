@@ -33,7 +33,8 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     'errorMessage',
     'afsInvoiceStatus',
     'isExpenseOrTimesheet',
-    'actions'
+    'actions',
+    'CsmTeam'
   ];
 
   dataSource = new MatTableDataSource<afsInvoice>([]);
@@ -52,6 +53,11 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   token: string = '';
   loading: boolean = false;
   isNotificationVisible: boolean = false;
+  IsSelfBill:boolean=false;
+  CsmTeam:string='';
+  csmTeamarr: string[] = ['Row Team', 'Swiss Team'];
+
+  isChecked = false;
   
 
   constructor(private apiService: ApiService, private dialog: MatDialog,  public notificationService: NotificationPopupService,private http: HttpClient,private breakpointObserver: BreakpointObserver ) { }
@@ -89,10 +95,14 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
           'errorMessage',
           'afsInvoiceStatus',
           'isExpenseOrTimesheet',
-          'actions'
+          'actions',
+           'CsmTeam'
         ];
       }
     });
+
+    //Assigning the token here 
+
     const storedToken = localStorage.getItem('token');
     if (storedToken) {
       this.token = storedToken; 
@@ -120,11 +130,13 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     const SortDirection = this.sort?.direction || ''; 
 
     this.apiService
-      .getInvoices(this.pageIndex, this.pageSize, SortColumn, SortDirection, this.name, this.invoiceno, this.startdate, this.enddate, this.IsValidatedRecord, this.token)
+    
+      .getInvoices(this.pageIndex, this.pageSize, SortColumn, SortDirection, this.name, this.invoiceno, this.startdate, this.enddate, this.IsValidatedRecord, this.IsSelfBill ,this.CsmTeam, this.token)
       .subscribe({
         next: (response: any) => {
 
           this.dataSource.data = response.data.data;
+          debugger
           this.totalRecords = response.data.totalRecords; 
           this.loading = false; 
         },
@@ -214,6 +226,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     this.startdate = this.startdate;
     this.enddate = this.enddate;
     this.IsValidatedRecord = this.IsValidatedRecord;
+    this.isChecked = this.isChecked;
 
     this.loadInvoices();
   }
@@ -226,7 +239,8 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     this.startdate = ''; // Reset the start date
     this.enddate = ''; // Reset the end date
     this.IsValidatedRecord = false;
-
+    this.CsmTeam = '';
+    this.IsSelfBill = false;
     const startDateInput = document.getElementById('startdate') as HTMLInputElement;
     const endDateInput = document.getElementById('enddate') as HTMLInputElement;
 
@@ -279,6 +293,24 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   }
   
   BatchValidate() {
+    // Get selected rows
+    const selectedRecords = this.dataSource.data.filter(row => row.isChecked);
+
+    if (selectedRecords.length === 0) {
+      debugger
+        // Show alert if no records are selected
+        this.notificationService.showNotification(
+            'Please select at least one record to validate.',
+            'WARNING',
+            'warning',
+            () => {
+                this.notificationService.setNotificationVisibility(false);
+            }
+        );
+        return;
+    }
+    
+
     const apiUrl = environment.API_BASE_URL + 'OCRAI/SelfBillBatchValidate';
     this.notificationService.setNotificationVisibility(true);
     
@@ -289,11 +321,10 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
 
     console.log(headers, "batch validate");
 
-    const body = {}; // Provide necessary request payload if required
+    const body = { records: selectedRecords }; // Send selected records to API
 
     this.http.post<any>(apiUrl, body, { headers }).subscribe({
         next: (response) => {
-          
             if (response && response.data && response.data.length > 0 && response.data[0].status === 4) {
                 this.notificationService.showNotification(
                     'Records have been validated and processed successfully.',
@@ -308,20 +339,16 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
             }
         },
         error: (error) => {
-            debugger;
-            console.error("Error Response:", error); // Log error details
+            console.error("Error Response:", error);
             this.notificationService.showNotification(
                 'Unable to complete the action. Please retry.',
                 'ERROR',
                 'error',
                 () => {
-                    console.log('Error callback');
                     this.notificationService.setNotificationVisibility(false);
                 }
             );
         },
     });
 }
-
-
 }
