@@ -645,6 +645,28 @@ onSubmit(form: any): void {
               );
               break;
 
+              case 6:
+              console.log("case 6 is clicked ")
+              //alert('The records have been successfully validated and moved.');
+              //this.fetchNextRecord(response.data.resultTable[0]);
+          
+              this.notificationService.showNotification(
+                'The selected timesheet period is already registered in the contract.',
+                'INFORMATION',
+                'success',
+                () => {
+                 
+  
+                  console.log('OK clicked 6'); // Callback logic
+                  console.log('response' + response.data.resultTable.length);
+                  console.log(response);
+                  if(response.data.resultTable.length >0){
+                    this.fetchNextRecord(response.data.resultTable[0]);
+                  }
+                  this.notificationService.setNotificationVisibility(false);
+                }
+              );
+              break;
   
           default:
             this.notificationService.showNotification(
@@ -652,6 +674,7 @@ onSubmit(form: any): void {
               'WARNING',
               'Warning',
               () => {
+                this.notificationService.setNotificationVisibility(false);
                 console.log('OK clicked default'); 
               }
             );
