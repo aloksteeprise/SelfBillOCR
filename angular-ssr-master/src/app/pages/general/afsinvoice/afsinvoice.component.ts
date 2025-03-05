@@ -696,9 +696,7 @@ onSubmit(form: any): void {
       },
     });
   } 
-  // else {
-  //   alert('Please fill out all required fields.');
-  // }
+
 }
 
 fetchNextRecord(data: any): void {
