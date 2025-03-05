@@ -30,6 +30,9 @@ export class ApiService {
     startdate: string | null = null,
     enddate: string | null = null,
     IsValidatedRecord: boolean,
+
+    IsSelfBill:boolean,
+    CsmTeam:string,
     token: string
   ): Observable<PaginationResponse<any>> {
     // Set authorization and content-type headers
@@ -51,6 +54,8 @@ export class ApiService {
       startdate,
       enddate,
       IsValidatedRecord,
+      IsSelfBill,
+      CsmTeam
     };
 
     console.log('Request Body:', body); // Log the request body for debugging
