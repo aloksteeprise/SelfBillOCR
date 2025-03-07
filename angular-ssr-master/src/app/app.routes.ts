@@ -14,6 +14,7 @@ import { RemittanceComponent } from './pages/general/remittance/remittance.compo
 // import {RemittanceComponent} from './pages/general/remittance/remittance.component'
 // import {InvoiceComponent} from './pages/general/invoice/invoice.component'
 import {TransactionFormComponent} from './pages/general/transaction-form/transaction-form.component'
+import {ManualAllocationPopupComponent} from './pages/general/manual-allocation-popup/manual-allocation-popup.component'
  
 
 export const routes: Routes = [
@@ -92,7 +93,10 @@ export const routes: Routes = [
     path: 'remittancenotification',
     loadChildren: () => import('./pages/general/remittancenotification/remittancenotification.module').then(mod => mod.RemittanceNotificationModule)
   },
-
+  {
+    path: 'manualallocation',component: ManualAllocationPopupComponent,
+    loadChildren: () => import('./pages/general/manual-allocation-popup/manual-allocation-popup.module').then(mod => mod.ManualAllocationPopupModule)
+  },
 
   { path: '**', component: NotFoundComponent }
 ];
