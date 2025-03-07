@@ -262,7 +262,6 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   }
 
   onDownloadInvoice(row: any) {
-
     const invoiceID = row.afsInvoiceStatus;
     const isAdminorContractor = 0;
 
@@ -270,11 +269,16 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
       (response: any) => {
         if (response.succeeded) {
           const pdfPath = response.messages[0];
-          console.log("pdfPath : "+ pdfPath)
-          const fullPdfUrl = `https://wfmapi.accessfinancial.com/${pdfPath.replace(/\\/g, '/')}`;
-          window.open(fullPdfUrl, '_blank');
+          if(pdfPath){
+            console.log("pdfPath : "+ pdfPath)
+            const fullPdfUrl = `https://wfmapi.accessfinancial.com/${pdfPath.replace(/\\/g, '/')}`;
+            window.open(fullPdfUrl, '_blank');
+          }
+          else{
+            //alert('Failed to generate the invoice.');
+          }
         } else {
-          alert('Failed to generate the invoice.');
+          alert('We are unable to display the invoice file. Please contact the system administrator.');
         }
       },
       (error) => {

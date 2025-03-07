@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders  } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../constant/api-constants';
 import { PaginationResponse } from '../transaction-form/transaction-form';
@@ -8,7 +8,7 @@ import { PaginationResponse } from '../transaction-form/transaction-form';
   providedIn: 'root'
 })
 export class TransactionFormService {
-  private apiUrl = environment.API_BASE_URL + 'OCRAI/GetIntraDayStatemenData';
+  private apiUrl = environment.API_BASE_URL + 'OCRAI';
 
   constructor(private http: HttpClient) { }
 
@@ -17,30 +17,71 @@ export class TransactionFormService {
     pageSize: number,
     SortColumn: string | null = null,
     SortDirection: string | null = null,
-    invoiceNumber:string | null = null,
-    mvtDate:string | null = null , 
-    mvtValueDate:string | null = null,
+    mvtFromDate:string | null = null,
+    mvtToDate:string | null = null , 
+    MvtValueFromDate:string | null = null,
+    MvtValueToDate:string | null =null,
     mvtType:string | null = null,
+    internalCompany:string | null = null , 
+    bankAccount:string | null = null,
+    money:boolean,
     IsRecordAllocated: boolean,
+    token:string
   ): Observable<PaginationResponse<any>> {
-  
-  
-
     const body = {
       pageIndex,
       pageSize,
       SortColumn,      
       SortDirection,
-      invoiceNumber,
-      mvtDate,
-      mvtValueDate,
+      mvtFromDate,
+      mvtToDate,
+      MvtValueFromDate,
+      MvtValueToDate,
       mvtType,
-      IsRecordAllocated
+      internalCompany,
+      bankAccount,
+      money,
+      IsRecordAllocated,
+      token
     };
     
 
-    console.log('Request Body:', body); // Log the request body for debugging
+    console.log('Request Body:', body);
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
 
-    return this.http.post<PaginationResponse<any>>(this.apiUrl, body);
+    return this.http.post<PaginationResponse<any>>(
+      `${this.apiUrl}/GetIntraDayStatemenData`,
+      body,
+      {headers}
+    );
   }
+
+  getCompanyList(token: string): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+  
+    return this.http.post(`${this.apiUrl}/GetCompanyListData`, {}, { headers });
+  }
+  
+  getBankAccountList(cieCode: number, bkiCurrency: string | null = null,token : string): Observable<any> {
+    const body = {
+      CieCode: cieCode,
+      BkiCurrency: bkiCurrency
+    };
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+
+    return this.http.post(
+      `${this.apiUrl}/GetBankAccountListData`,
+      body,
+      { headers }
+    );
+  }  
 }
