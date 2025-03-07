@@ -205,3 +205,6 @@ label {
       max-width: 1500px;
   }
 }
+.white-color{
+  color: white !important;
+}
