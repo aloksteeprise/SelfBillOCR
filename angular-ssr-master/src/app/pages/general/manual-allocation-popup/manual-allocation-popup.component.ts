@@ -16,12 +16,12 @@ export class ManualAllocationPopupComponent implements OnInit{
   @ViewChild('myForm') myForm: any;
 
   bankPaymentDate : string = '';
-  amountPaid : number = 0;
-  invoiceNo : number = 0;
+  amountPaid : string = '';
+  invoiceNo : string = '';
   fundSource : string = '';
   fundDescription : string = '';
   token: string = '';
-  loading: boolean = false;
+  // loading: boolean = false;
   
   constructor(private dialogRef: MatDialogRef<ManualAllocationPopupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,

@@ -9,14 +9,19 @@
             
             <div class="form-group">
               <label for="bankPaymentDate">Bank Payment Date:</label>
-              <input type="date" id="bankPaymentDate" name="bankPaymentDate" [(ngModel)]="bankPaymentDate" />
+              <input type="date" id="bankPaymentDate" name="bankPaymentDate" [(ngModel)]="bankPaymentDate" style="width: 30%;"/>
             </div>
   
             <div class="form-group">
               <label for="amountPaid">Amount Paid:</label>
-              <input type="text" id="amountPaid" name="amountPaid" [(ngModel)]="amountPaid" maxlength="50" autocomplete="off"/>
+              <input type="text" id="amountPaid" name="amountPaid" [(ngModel)]="amountPaid" maxlength="50" autocomplete="off" style="width: 30%;"/>
             </div>
-  
+
+            <div class="form-group">
+                <label for="invoiceNo">Invoice No:</label>
+                <input type="text" id="invoiceNo" name="invoiceNo" [(ngModel)]="invoiceNo" maxlength="50" autocomplete="off" style="width: 30%;"/>
+            </div>
+
             <div class="form-group">
               <label for="fundSource">Fund Source:</label>
               <input type="text" id="fundSource" name="fundSource" [(ngModel)]="fundSource" maxlength="200" autocomplete="off" />
