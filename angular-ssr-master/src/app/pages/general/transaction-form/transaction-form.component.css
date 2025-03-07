@@ -35,6 +35,12 @@ input[type="checkbox"] {
 ::ng-deep .btn-outline-dark {
   --bs-btn-border-color: white !important;
 }
+.custom-heading{
+  font-weight: 1000;
+  font-size: x-large;
+  margin: 0;
+  padding: 14px;
+}
 
 
 ::ng-deep .mat-sort-header-arrow {
@@ -139,6 +145,12 @@ input[type="checkbox"] {
   margin: 8px;
 }
 
+.custom-label{
+
+  font-size: .8rem;
+  font-weight: bold;
+}
+
 @keyframes l16 {
   100% {
     transform: rotate(1turn);
@@ -193,10 +205,9 @@ input[type="checkbox"] {
 .form-label {
   margin-bottom: 0.2rem;
 }
-label {
-  font-size: .8rem;
-  font-weight: bold;
-}
+/* label {
+
+} */
 .custom-checkbox {
   transform: scale(1.8) !important; /* Adjust the size */
 }

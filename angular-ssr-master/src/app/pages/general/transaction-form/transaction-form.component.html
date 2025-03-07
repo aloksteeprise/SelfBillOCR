@@ -1,6 +1,6 @@
 <div style="margin-top: 63px;">
   <div class="d-flex align-items-center justify-content-between">
-    <p style="font-weight: 1000; font-size: x-large; margin: 0; padding-left: 14px; ">Transactions Allocation</p>
+    <p class="custom-heading">Transactions Allocation</p>
     <button type="submit" class="btn btn-outline-success" (click)="openConfirmationBox()"
       style="margin-right: 19px;">Batch Validate</button>
     <app-confirmation-pop style="position: absolute; top: 0; left: 0;"></app-confirmation-pop>
@@ -13,7 +13,7 @@
     <form (ngSubmit)="applyFilter(myForm)" #myForm="ngForm" class="backgroundcolorform" style="padding: 9px;">
       <div class="row g-2 searchTable">
         <div class="col-6 col-sm-2">
-          <label for="internalCompany" class="form-label me-2">Internal Company:</label>
+          <label for="internalCompany" class="form-label me-2 custom-label">Internal Company:</label>
           <select id="internalCompany" class="form-select flex-grow-1" [(ngModel)]="selectedCompany"
             name="selectedCompany" (change)="onCompanyChange()">
             <option value="null" disabled selected>Select Company</option>
@@ -23,7 +23,7 @@
           </select>
         </div>
         <div class="col-6 col-sm-2">
-          <label for="mvtFrom" class="form-label me-2">Mvt From:</label>
+          <label for="mvtFrom" class="form-label me-2 custom-label">Mvt From:</label>
           <input type="date" id="mvtFrom" class="form-control" name="mvtFrom" [(ngModel)]="mvtFromDate"
             >
         </div>
@@ -32,7 +32,7 @@
           <input type="date" id="mvtTo" class="form-control" name="mvtTo" [(ngModel)]="mvtToDate">
         </div>
         <div class="col-6 col-sm-2">
-          <label for="mvtType" class="form-label me-2">Type of Movements:</label>
+          <label for="mvtType" class="form-label me-2 custom-label">Type of Movements:</label>
           <select id="mvtType" class="form-select flex-grow-1" [(ngModel)]="mvtType" name="mvtType">
             <option value="" disabled selected>Select</option>
             <option *ngFor="let type of mvtTypeList" [value]="type">{{ type }}</option>
@@ -42,13 +42,13 @@
           <button type="button" class="btn btn-outline-info white-color" (click)="openManualAllocationModal()">Manual Allocation</button>
         </div>
         <div class="col-6 col-sm-2" style="padding-top: 21px;">
-          <button type="button" class="btn btn-outline-info white-color">USB Bank Statements</button>
+          <button type="button" class="btn btn-outline-info white-color custom-label">USB Bank Statements</button>
         </div>
       </div>
 
       <div class="row g-2 searchTable">
         <div class="col-6 col-sm-2">
-          <label for="bankAccount" class="form-label me-2">Bank Account:</label>
+          <label for="bankAccount" class="form-label me-2 custom-label">Bank Account:</label>
           <select id="bankAccount" class="form-select" [(ngModel)]="selectedBankAccount" name="bankAccount">
             <option value="" disabled selected>Select Bank Account</option>
             <option *ngFor="let account of bankAccountList" [value]="account.bkiAccountName">
@@ -58,21 +58,21 @@
         </div>
 
         <div class="col-6 col-sm-2">
-          <label for="valueFrom" class="form-label me-2">Value From:</label>
+          <label for="valueFrom" class="form-label me-2 custom-label">Value From:</label>
           <input type="date" id="valueFrom" class="form-control" name="valueFrom" [(ngModel)]="mvtValueFromDate"
             >
         </div>
         <div class="col-6 col-sm-2">
-          <label for="valueTo" class="form-label me-2">To:</label>
+          <label for="valueTo" class="form-label me-2 custom-label">To:</label>
           <input type="date" id="valueTo" class="form-control" name="valueTo" [(ngModel)]="mvtValueToDate"
             >
         </div>
         <div class="col-6 col-sm-2" style="padding-top: 30px;">
-          <label class="form-label">Money:</label>
+          <label class="form-label custom-label">Money:</label>
           &nbsp;&nbsp;
           <input type="radio" id="received" name="money" class="form-check-input" [(ngModel)]="money" [value]="true">
-          <label for="received" class="form-check-label"
-            style="font-weight: normal; padding-left: 5px;">Received</label>
+          <label for="received" class="form-check-label custom-label"
+            style="font-weight: normal; padding-left: 5px; ">Received</label>
 
           &nbsp;
           <input type="radio" id="sent" name="money" class="form-check-input" [(ngModel)]="money" [value]="false">
@@ -86,7 +86,7 @@
           </label>
         </div>
         <div class="col-4 col-sm-2" style="padding-top: 21px;">
-          <button type="submit" class="btn btn-outline-info white-color">Other Bank Statements</button>
+          <button type="submit" class="btn btn-outline-info white-color custom-label">Other Bank Statements</button>
         </div>
       </div>
       <div class="row g-2 searchTable">
