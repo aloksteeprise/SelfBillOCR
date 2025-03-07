@@ -1,0 +1,40 @@
+<div class="custom-modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="false">
+    <div class="custom-modal-dialog">
+      <div class="custom-modal-content">
+        <div class="custom-modal-header">
+          <span class="drag-header">Manual Allocation</span>
+        </div>
+        <div class="custom-modal-body">
+          <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)">
+            
+            <div class="form-group">
+              <label for="bankPaymentDate">Bank Payment Date:</label>
+              <input type="date" id="bankPaymentDate" name="bankPaymentDate" [(ngModel)]="bankPaymentDate" />
+            </div>
+  
+            <div class="form-group">
+              <label for="amountPaid">Amount Paid:</label>
+              <input type="text" id="amountPaid" name="amountPaid" [(ngModel)]="amountPaid" maxlength="50" autocomplete="off"/>
+            </div>
+  
+            <div class="form-group">
+              <label for="fundSource">Fund Source:</label>
+              <input type="text" id="fundSource" name="fundSource" [(ngModel)]="fundSource" maxlength="200" autocomplete="off" />
+            </div>
+  
+            <div class="form-group">
+              <label for="fundDescription">Fund Description:</label>
+              <textarea id="fundDescription" name="fundDescription" [(ngModel)]="fundDescription" maxlength="200" autocomplete="off" style="max-height: 300px;"></textarea>
+            </div>
+  
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">OK</button>
+              <button type="button" class="btn btn-secondary" (click)="closeDialog()">Cancel</button>
+            </div>
+  
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  

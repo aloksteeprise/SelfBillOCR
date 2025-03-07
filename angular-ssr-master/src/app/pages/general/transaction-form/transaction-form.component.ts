@@ -10,6 +10,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { ConfirmationPopComponent } from '../confirmation-pop/confirmation-pop.component';
 import { SharedUtils  } from '../shared/shared-utils';
 import { FormsModule } from '@angular/forms';
+import {ManualAllocationPopupComponent} from '../manual-allocation-popup/manual-allocation-popup.component'
 
 @Component({
   selector: 'app-transaction-form',
@@ -250,5 +251,15 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
     );
   }  
   
+openManualAllocationModal(): void {
+    const dialogRef = this.dialog.open(ManualAllocationPopupComponent, {
+      width: '800px',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+      console.log('The dialog was closed');
+    });
+  }
 
 }

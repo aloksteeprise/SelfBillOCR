@@ -25,11 +25,11 @@
         <div class="col-6 col-sm-2">
           <label for="mvtFrom" class="form-label me-2">Mvt From:</label>
           <input type="date" id="mvtFrom" class="form-control" name="mvtFrom" [(ngModel)]="mvtFromDate"
-            [max]="getToday()">
+            >
         </div>
         <div class="col-6 col-sm-2">
           <label for="mvtTo" class="form-label me-2">To:</label>
-          <input type="date" id="mvtTo" class="form-control" name="mvtTo" [(ngModel)]="mvtToDate" [max]="getToday()">
+          <input type="date" id="mvtTo" class="form-control" name="mvtTo" [(ngModel)]="mvtToDate">
         </div>
         <div class="col-6 col-sm-2">
           <label for="mvtType" class="form-label me-2">Type of Movements:</label>
@@ -39,7 +39,7 @@
           </select>
         </div>
         <div class="col-6 col-sm-2" style="padding-top: 21px;">
-          <button type="submit" class="btn btn-outline-info white-color">Manual Allocation</button>
+          <button type="button" class="btn btn-outline-info white-color" (click)="openManualAllocationModal()">Manual Allocation</button>
         </div>
         <div class="col-6 col-sm-2" style="padding-top: 21px;">
           <button type="button" class="btn btn-outline-info white-color">USB Bank Statements</button>
@@ -60,22 +60,13 @@
         <div class="col-6 col-sm-2">
           <label for="valueFrom" class="form-label me-2">Value From:</label>
           <input type="date" id="valueFrom" class="form-control" name="valueFrom" [(ngModel)]="mvtValueFromDate"
-            [max]="getToday()">
+            >
         </div>
         <div class="col-6 col-sm-2">
           <label for="valueTo" class="form-label me-2">To:</label>
           <input type="date" id="valueTo" class="form-control" name="valueTo" [(ngModel)]="mvtValueToDate"
-            [max]="getToday()">
+            >
         </div>
-        <!-- <div class="col-6 col-sm-2" style="padding-top: 30px;">
-          <label class="form-label">Money:</label>
-              &nbsp;&nbsp;<input type="radio" id="received" name="money" class="form-check-input" checked [(ngModel)]="money">
-              <label for="received" class="form-check-label"
-                style="font-weight: normal; padding-left: 5px;">Received</label>
-  
-              &nbsp;<input type="radio" id="sent" name="money" class="form-check-input" [(ngModel)]="money">
-              <label for="sent" class="form-check-label" style="font-weight: normal; padding-left: 5px;">Sent</label>
-        </div> -->
         <div class="col-6 col-sm-2" style="padding-top: 30px;">
           <label class="form-label">Money:</label>
           &nbsp;&nbsp;
@@ -90,7 +81,7 @@
         <div class="form-check col-6 col-sm-2" style="padding-top: 30px;">
           <input type="checkbox" name="IsRecordAllocated" [(ngModel)]="IsRecordAllocated" />
           <label class="form-check-label fontweight500" for="flexCheckDefault"
-            style="margin-left: 10px; font-size: 16px;">
+            style="margin-left: 10px;">
             Is Allocated
           </label>
         </div>
