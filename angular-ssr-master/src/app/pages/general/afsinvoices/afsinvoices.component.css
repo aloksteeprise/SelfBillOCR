@@ -31,6 +31,12 @@ hr {
     margin-left: 20px;
 }
 
+.custom-label{
+
+    font-size: .8rem;
+    font-weight: bold;
+  }
+
 .margintop25 {
     margin-top: 5px;
 }
@@ -226,6 +232,15 @@ input[type="checkbox"] {
 
 .tr:nth-child(even) {
     background-color: #f2f2f2
+}
+
+
+
+@media (min-width: 576px) {
+    .col-sm-2 {
+        flex: 0 0 auto;
+        width: 17.666667%;
+    }
 }
 
 @media screen and (min-width: 300px) and (max-width: 700px) {

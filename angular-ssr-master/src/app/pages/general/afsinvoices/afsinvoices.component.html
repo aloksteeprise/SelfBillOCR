@@ -41,60 +41,62 @@
         <input type="checkbox" name="IsValidatedRecord"  [(ngModel)]="IsValidatedRecord" />
       </div> -->
 
-      <div class="col-6 col-sm-2 marginleft20 " >
-        <label class="fontweight500">CSM Team</label>
-        <select class="form-select" id="CsmTeam" name="CsmTeam"  [(ngModel)]="CsmTeam"> 
-          <option value="" disabled selected>Select</option>
-          <option *ngFor="let type of csmTeamarr" [value]="type">{{ type }}</option>
-        </select>
-      </div>
+        <div class="col-6 col-sm-2 marginleft20 ">
+          <label class="fontweight500">CSM Team</label>
+          <select class="form-select" id="CsmTeam" name="CsmTeam" [(ngModel)]="CsmTeam">
+            <option value="" disabled selected>Select</option>
+            <option *ngFor="let type of csmTeamarr" [value]="type">{{ type }}</option>
+          </select>
+        </div>
       </div>
 
-      <div class="row"> 
+      <div class="row">
 
 
         <div class="col-6 col-sm-2 d-flex justify-content-center align-items-center margintop25">
           <input type="checkbox" [(ngModel)]="IsAllRecord" name="IsAllRecord" (change)="toggleAllRecords($event)" />
-          <label class="form-check-label fontweight500" style="margin-left: 10px; font-size: 18px;">
+          <label class="form-check-label fontweight500 ml-2" style="margin-left: 10px;">
             Is All Batch Records?
           </label>
-      </div>
-      
+        </div>
+
         <div class="col-6 col-sm-2  d-flex justify-content-center align-items-center  margintop25">
           <input type="checkbox" name="IsSelfBill" [(ngModel)]="IsSelfBill" />
           <label class="form-check-label fontweight500" for="flexCheckDefault"
-            style="margin-left: 10px; font-size: 18px;">
+            style="margin-left: 10px; ">
             Is Self Bill?
           </label>
         </div>
-  
-          <div class="form-check col-6 col-sm-3 d-flex justify-content-center align-items-center  margintop25">
-            <input type="checkbox" name="IsValidatedRecord" [(ngModel)]="IsValidatedRecord" />
-            <label class="form-check-label fontweight500" for="flexCheckDefault"
-              style="margin-left: 10px; font-size: 18px;">
-              Validated and Invoice created?
-            </label>
-          </div>
 
-
-        
-  
-          <div class="col-6 col-sm-2 d-flex justify-content-center align-items-center margintop25 " style="padding: 5px;">
-            <button type="button" class="btn btn-success" (click)="openBatchValidateConfirmationBox()" style="color: white;">Batch
-              Validate</button>
-            <app-confirmation-pop style="position: absolute; top: 0; left: 0;"></app-confirmation-pop>
-            <app-notification-popup style="position: absolute; top: 0; left: 0;"
-              *ngIf="(notificationService.notificationVisibility$ | async)"></app-notification-popup>
-          </div>
-  
-          <div class="col-6 col-sm-2 d-flex justify-content-center align-items-center marginleft8 margintop25" style="padding: 5px;">
-            <button type="submit" class="btn btn-dark">Search</button>
-            <button type="button" (click)="ClearSearch()" class="btn btn-outline-dark"
-              style="margin-left: 12px; color: white;">Clear</button>
-          </div>
-  
-         
+        <div class="form-check col-6 col-sm-3 d-flex justify-content-center align-items-center  margintop25">
+          <input type="checkbox" name="IsValidatedRecord" [(ngModel)]="IsValidatedRecord" />
+          <label class="form-check-label fontweight500" for="flexCheckDefault"
+            style="margin-left: 10px; ">
+            Validated and Invoice created?
+          </label>
         </div>
+
+
+
+
+        <div class="col-6 col-sm-2 d-flex justify-content-center align-items-center margintop25 " style="padding: 5px;">
+          <button type="button" class="btn btn-success" (click)="openBatchValidateConfirmationBox()"
+            style="color: white;">Batch
+            Validate</button>
+          <app-confirmation-pop style="position: absolute; top: 0; left: 0;"></app-confirmation-pop>
+          <app-notification-popup style="position: absolute; top: 0; left: 0;"
+            *ngIf="(notificationService.notificationVisibility$ | async)"></app-notification-popup>
+        </div>
+
+        <div class="col-6 col-sm-2 d-flex justify-content-end align-items-end marginleft8 margintop25"
+          style="padding: 5px;">
+          <button type="submit" class="btn btn-dark">Search</button>
+          <button type="button" (click)="ClearSearch()" class="btn btn-outline-dark"
+            style="margin-left: 12px; color: white;">Clear</button>
+        </div>
+
+
+      </div>
     </form>
 
     <!-- 
@@ -104,16 +106,17 @@
       <table mat-table [dataSource]="dataSource.data" matSort class="table">
         <ng-container matColumnDef="contractorName">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Contractor Name </th>
-          
           <td mat-cell *matCellDef="let row">
-            <input type="checkbox" [checked]="selectedRecords.includes(row.id)" (change)="onCheckboxChange($event, row.id)" class="custom-checkbox" [disabled]="row.isErrorOnRow === 1"
-            />
+            <!-- ✅ Row Checkboxes -->
+            <!-- Only show checkbox if IsValidatedRecord is false -->
+            <input *ngIf="!row.isMovedInOriginaldb" type="checkbox" [checked]="selectedRecords.includes(row.id)"
+              (change)="onCheckboxChange($event, row.id)" class="custom-checkbox" [disabled]="row.isErrorOnRow === 1" />
+
             {{ row.contractorName }}
           </td>
-          
         </ng-container>
-        
-        
+
+
 
         <ng-container matColumnDef="cFirstName">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> First Name</th>
@@ -149,7 +152,7 @@
 
         <ng-container matColumnDef="errorMessage">
           <th mat-header-cell *matHeaderCellDef class="coloredwhite"> Read Status </th>
-          <td mat-cell *matCellDef="let row" style="max-width: 240px;">
+          <td mat-cell *matCellDef="let row" style="width: 130px;">
             <ng-container *ngIf="row.isErrorOnRow; else okTemplate">
               <!-- <span class="error-icon" aria-hidden="true">❌</span> -->
               <i class="fa-solid fa-triangle-exclamation"></i>
@@ -178,12 +181,12 @@
                 {{row.afsInvoiceStatus}} <i class="fa-solid fa-download" style="margin-right: 5px;"></i>
               </a>
             </div>
-            
+
             <div *ngIf="!row.afsInvoiceStatus && row.isRecordValidated">
-              
+
             </div>
             <div *ngIf="row.isRecordValidated; else pendingTemplate">
-              
+
             </div>
 
             <ng-template #pendingTemplate>
@@ -199,6 +202,12 @@
             <span *ngIf="row.isExpenseOrTimesheet =='T'">Timesheet</span>
             <span *ngIf="row.isExpenseOrTimesheet =='E'">Expense</span>
           </td>
+        </ng-container>
+
+        
+        <ng-container matColumnDef="CsmTeam">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite">Csm Team</th>
+          <td mat-cell *matCellDef="let row"> {{row.csmTeam}}</td>
         </ng-container>
 
         <ng-container matColumnDef="actions">
@@ -218,10 +227,6 @@
         </ng-container>
 
 
-        <ng-container matColumnDef="CsmTeam">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> CSM Team </th>
-          <td mat-cell *matCellDef="let row"> {{row.csmTeam}}</td>
-        </ng-container>
 
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

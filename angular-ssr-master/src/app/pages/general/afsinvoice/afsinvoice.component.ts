@@ -51,6 +51,7 @@ export class AfsinvoiceComponent implements OnInit {
   isNotificationVisible: boolean = false
   currencytype :string='';
   token: string = '';
+  contract_CtcCode:string='';
 
 
   constructor(
@@ -105,6 +106,8 @@ export class AfsinvoiceComponent implements OnInit {
   initializeFormData(): void {
     if (this.data) {
       console.log(this.data);
+      debugger
+  
       //alert(this.data.contract_CtcContractor);
       this.id = this.data.id;
       this.conCode = this.data.contract_CtcContractor || '';
@@ -124,6 +127,8 @@ export class AfsinvoiceComponent implements OnInit {
       this.invoiceDate = this.data.selfBillInvoiceDate || '';
       this.groupNewId = this.data.grouP_NEWID || '';
       this.gridCtcCode = this.data.contract_CtcCode || 0;
+       this.contract_CtcCode = this.data.contract_CtcCode || '';
+
       console.log(this.ctcCode);
     }
   }
@@ -369,6 +374,7 @@ onSkip() {
           );
         } else {
           this.fetchNextRecord(nextRecord);
+          this.notificationService.setNotificationVisibility(false);
         
         }
       } else {
@@ -531,7 +537,7 @@ onSubmit(form: any): void {
               'ERROR',
               'error',
               () => {
-                this.dialogRef.close();
+                // this.dialogRef.close();
                 console.log('OK clicked!'); // Callback logic
                 this.notificationService.setNotificationVisibility(false);
 
@@ -646,7 +652,7 @@ onSubmit(form: any): void {
               break;
 
               case 6:
-              console.log("case 6 is clicked ")
+              console.log("case 5 is clicked ")
               //alert('The records have been successfully validated and moved.');
               //this.fetchNextRecord(response.data.resultTable[0]);
           
@@ -657,7 +663,7 @@ onSubmit(form: any): void {
                 () => {
                  
   
-                  console.log('OK clicked 6'); // Callback logic
+                  console.log('OK clicked 5'); // Callback logic
                   console.log('response' + response.data.resultTable.length);
                   console.log(response);
                   if(response.data.resultTable.length >0){
@@ -667,6 +673,9 @@ onSubmit(form: any): void {
                 }
               );
               break;
+
+             
+
   
           default:
             this.notificationService.showNotification(
@@ -674,8 +683,8 @@ onSubmit(form: any): void {
               'WARNING',
               'Warning',
               () => {
-                this.notificationService.setNotificationVisibility(false);
                 console.log('OK clicked default'); 
+                this.notificationService.setNotificationVisibility(false);
               }
             );
             //console.warn('Unhandled validation result:', response.data.validationResult);
@@ -696,11 +705,14 @@ onSubmit(form: any): void {
       },
     });
   } 
-
+  // else {
+  //   alert('Please fill out all required fields.');
+  // }
 }
 
 fetchNextRecord(data: any): void {
 console.log("this.id" + this.id);
+
   this.id = data.ID;
   this.conCode = data.Contract_CtcContractor || '';
   this.contractorname ='';
@@ -713,6 +725,8 @@ console.log("this.id" + this.id);
   // this.totalAmount = this.data.totalAmount ? (this.data.totalAmount.includes(' ') ? this.data.totalAmount.split(' ')[0] : this.data.totalAmount.trim()) : ''; // Ensure a default empty string if totalAmount is undefined
   this.totalAmount = data.TotalAmount?.includes(' ') ? data.TotalAmount.split(' ')[0] : data.TotalAmount?.trim() || '';  this.invoiceNumber = data.SelfBillInvoiceNo || '';
   this.invoiceDate = data.SelfBillInvoiceDate || '';
+  this.contract_CtcCode = data.Contract_CtcCode || '';
+
   this.groupNewId = data.GROUP_NEWID || '';
   this.gridCtcCode = data.Contract_CtcCode || 0;
   this.currencytype = data.CurrencyType || '';
@@ -724,6 +738,7 @@ console.log("this.id" + this.id);
   this.setImagePath(this.imageName, this.uplodedPDFFile);
   this.IsContractIsActiveOrNot = data.ErrorMessage;
   
+  
   // alert(this.data.errorMessage);
   // alert(this.IsContractIsActiveOrNot);
 }
@@ -732,6 +747,7 @@ resetAFSContractorDropdown(): void {
   this.selectedContract = ''; // Clear the selected value
   this.contractorOptions = []; // Clear the list of options
 }
+
 
 resetAFSContractDropdown(): void {
   this.selectedFilteredContract = ''; // Clear the selected value

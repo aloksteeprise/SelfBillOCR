@@ -34,7 +34,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     'afsInvoiceStatus',
     'isExpenseOrTimesheet',
     'actions',
-    'CsmTeam'
+    // 'CsmTeam'
   ];
 
   dataSource = new MatTableDataSource<afsInvoice>([]);
@@ -97,8 +97,9 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
           'errorMessage',
           'afsInvoiceStatus',
           'isExpenseOrTimesheet',
+          'CsmTeam',
           'actions',
-           'CsmTeam'
+        
         ];
       }
     });
@@ -126,29 +127,26 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   }
 
   loadInvoices() {
-
     this.loading = true; 
     const SortColumn = this.sort?.active || ''; 
     const SortDirection = this.sort?.direction || ''; 
 
     this.apiService
-    
     .getInvoices(this.pageIndex, this.pageSize, SortColumn, SortDirection, this.name, this.invoiceno, this.startdate, this.enddate, this.IsValidatedRecord, this.IsSelfBill, this.CsmTeam, this.token)
-
       .subscribe({
         next: (response: any) => {
-
+          this.allRecords = response.data.data;  // ✅ Store data in allRecords
           this.dataSource.data = response.data.data;
-          console.log(response.data.data,"Incoming data from Api")
+          console.log("✅ Incoming Data from API:", this.allRecords);
           this.totalRecords = response.data.totalRecords; 
           this.loading = false; 
         },
         error: (err) => {
-          console.error('API Error:', err);
+          console.error('❌ API Error:', err);
           this.loading = false; 
         },
       });
-  }
+}
 
   
 
@@ -261,6 +259,13 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     return new Date().toISOString().split('T')[0]
   }
 
+  getLimitedWords(text: string, wordLimit: number): string {
+    if (!text) return '';
+    const words = text.split(' '); 
+    return words.length > wordLimit ? words.slice(0, wordLimit).join(' ') + '...' : text;
+  }
+  
+
   onDownloadInvoice(row: any) {
     const invoiceID = row.afsInvoiceStatus;
     const isAdminorContractor = 0;
@@ -291,17 +296,50 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   toggleAllRecords(event: any) {
     this.IsAllRecord = event.target.checked;
     console.log(this.IsAllRecord, "IsAllRecord status updated");
+
+    setTimeout(() => {
+        if (!this.allRecords || this.allRecords.length === 0) {
+            console.warn("⚠️ No records found in allRecords!");  
+            this.selectedRecords = []; // Ensure it's an empty array instead of null
+            return;  
+        }
+
+    if (this.IsAllRecord) {
+        // ✅ Select all visible rows (excluding errors)
+        this.selectedRecords = this.allRecords
+            .filter(row => row.isErrorOnRow !== 1) // Exclude error rows
+            .map(row => row.id);
+    } else {
+        // ❌ Unselect all
+        this.selectedRecords = [];
+    }
+
+    // ✅ Ensure Angular detects changes
+    this.selectedRecords = [...this.selectedRecords];
+
+    console.log("✅ Selected Records:", this.selectedRecords);
+  }, 500); // Wait for 0.5 sec to ensure data is loaded
 }
+
 
   
   
 onCheckboxChange(event: any, id: number) {
   if (event.target.checked) {
+      // ✅ Add to selected records
       this.selectedRecords.push(id);
   } else {
+      // ❌ Remove from selected records
       this.selectedRecords = this.selectedRecords.filter(recordId => recordId !== id);
+      
+      // 🚨 If any row is unchecked, uncheck "Is All Batch Records?"
+      this.IsAllRecord = false;
   }
-  console.log(this.selectedRecords, "Selected Records after checkbox change");
+
+  // ✅ Ensure Angular detects changes
+  this.selectedRecords = [...this.selectedRecords];
+
+  console.log("Updated Selected Records:", this.selectedRecords);
 }
 
 
@@ -389,11 +427,17 @@ onCheckboxChange(event: any, id: number) {
 // }
 
 BatchValidate() {
+  // ✅ Show warning popup if no records are selected
+  if (!this.selectedRecords || this.selectedRecords.length === 0) {
+      this.notificationService.showNotification(
+          'Please select at least one record to batch validate.',
+          'WARNING',
+          'warning',
+          () => console.log('User acknowledged warning') 
+      );
+      return;
+  }
 
-//   if (this.selectedRecords.length === 0) {
-//     alert("Please select at least one record to validate.");
-//     return;
-// }
   const apiUrl = environment.API_BASE_URL + 'OCRAI/SelfBillBatchValidate';
   this.notificationService.setNotificationVisibility(true);
 
@@ -440,6 +484,7 @@ BatchValidate() {
       },
   });
 }
+
 }
 
 

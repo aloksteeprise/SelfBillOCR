@@ -10,11 +10,10 @@
       <div class="modal-body d-flex flex-column flex-lg-row">
         <!-- Left Side: Form with Scrollbar -->
         <div class="col-12 col-lg-6 overflow-auto pe-lg-4 mb-2 mb-lg-0"
-          style="max-height: 480px; border-right: 5px solid #ddd;">
+          style="max-height: 497px; border-right: 5px solid #ddd;">
           <app-notification-popup
-          *ngIf="(notificationService.notificationVisibility$ | async)"
-        ></app-notification-popup>
-        
+            *ngIf="(notificationService.notificationVisibility$ | async)"></app-notification-popup>
+
 
           <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)">
             <!-- Contractor Name -->
@@ -23,7 +22,8 @@
               </label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" id="ContractorName" name="contractorname"
-                  [(ngModel)]="contractorname" #name="ngModel" maxlength="250"  (blur)="onContractorNameBlur()"  appInputSanitizer="alphabetwithcomma" required  autocomplete="off">
+                  [(ngModel)]="contractorname" #name="ngModel" maxlength="250" (blur)="onContractorNameBlur()"
+                  appInputSanitizer="alphabetwithcomma" required autocomplete="off">
               </div>
             </div>
 
@@ -42,7 +42,8 @@
             </div> -->
 
             <div class="row mb-2 align-items-center">
-              <label for="afscontractor" class="col-sm-4 col-form-label fontsize14">AFS Contractor: <span style="color: red;"> *</span> </label>
+              <label for="afscontractor" class="col-sm-4 col-form-label fontsize14">AFS Contractor: <span
+                  style="color: red;"> *</span> </label>
               <div class="col-sm-8">
                 <select class="form-select" id="AFSContractorDropdown" name="Contractor" (change)="filterContractData()"
                   required [(ngModel)]="selectedContract">
@@ -71,7 +72,9 @@
             </div> -->
 
             <div class="row mb-2 align-items-center">
-              <label for="afscontact" class="col-sm-4 col-form-label fontsize14">AFS Contract <span style="font-size: 13px; color: grey;">(Active Only)</span>: <span style="color: red;"> *</span></label>
+              <label for="afscontact" class="col-sm-4 col-form-label fontsize14">AFS Contract <span
+                  style="font-size: 13px; color: grey;">(Active Only)</span>: <span style="color: red;">
+                  *</span></label>
               <div class="col-sm-8">
                 <select class="form-select" id="AFSContactDropdown" name="afscontact" required
                   [(ngModel)]="selectedFilteredContract">
@@ -84,18 +87,20 @@
                   <small class="text-danger">{{ errors.selectedFilteredContract }}</small>
                 </div>
                 <div *ngIf="IsContractIsActiveOrNot ==='Contract is not active.'">
-                  <span  style="color: rgb(225, 21, 21);"> Contract is not active.</span>
+                  <span style="color: rgb(225, 21, 21);"> Contract is not active.</span>
                 </div>
               </div>
             </div>
 
             <!-- First Name -->
             <div class="row mb-2 align-items-center">
-              <label for="firstnamefor" class="col-sm-4 col-form-label fontsize14">First Name: <span style="color: red;"> *</span></label>
+              <label for="firstnamefor" class="col-sm-4 col-form-label fontsize14">First Name: <span
+                  style="color: red;"> *</span></label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" id="firstnamefor" name="firstnamefor" [(ngModel)]="firstnamefor"
-                  required maxlength="50" (input)="clearValidation('firstName')" appInputSanitizer="alphabet" autocomplete="off"/>
-                  <div class="error-message" *ngIf="errors.firstName">
+                  required maxlength="50" (input)="clearValidation('firstName')" appInputSanitizer="alphabet"
+                  autocomplete="off" />
+                <div class="error-message" *ngIf="errors.firstName">
                   <small class="text-danger" *ngIf="errors.firstName">{{ errors.firstName }}</small>
                 </div>
               </div>
@@ -103,11 +108,13 @@
 
             <!-- Last Name -->
             <div class="row mb-2 align-items-center">
-              <label for="lastnamefor" class="col-sm-4 col-form-label fontsize14">Last Name: <span style="color: red;"> *</span></label>
+              <label for="lastnamefor" class="col-sm-4 col-form-label fontsize14">Last Name: <span style="color: red;">
+                  *</span></label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" id="lastnamefor" name="lastnamefor" [(ngModel)]="lastnamefor"
-                  required maxlength="50" (input)="clearValidation('lastName')" appInputSanitizer="alphabet"  autocomplete="off" />
-                  <div class="error-message" *ngIf="errors.lastName">
+                  required maxlength="50" (input)="clearValidation('lastName')" appInputSanitizer="alphabet"
+                  autocomplete="off" />
+                <div class="error-message" *ngIf="errors.lastName">
                   <small class="text-danger" *ngIf="errors.lastName">{{ errors.lastName }}</small>
                 </div>
               </div>
@@ -120,28 +127,22 @@
               </label>
               <div class="col-sm-8">
                 <input type="date" class="form-control" id="startDate" name="startdates" [(ngModel)]="startdate"
-                  required (input)="clearValidation('startDate')"  [max]="getToday()"/>
-                  <div class="error-message" *ngIf="errors.startDate">
-                    <small class="text-danger" *ngIf="errors.startDate">{{ errors.startDate }}</small>
-                  </div>
-                  <small class="text-danger" *ngIf="errors.dateComparison">{{ errors.dateComparison }}</small>
+                  required (input)="clearValidation('startDate')" [max]="getToday()" />
+                <div class="error-message" *ngIf="errors.startDate">
+                  <small class="text-danger" *ngIf="errors.startDate">{{ errors.startDate }}</small>
+                </div>
+                <small class="text-danger" *ngIf="errors.dateComparison">{{ errors.dateComparison }}</small>
               </div>
             </div>
-            
+
 
             <!-- End Date -->
             <div class="row mb-2 align-items-center">
-              <label for="endDate" class="col-sm-4 col-form-label fontsize14">End Date: <span style="color: red;"> *</span></label>
+              <label for="endDate" class="col-sm-4 col-form-label fontsize14">End Date: <span style="color: red;">
+                  *</span></label>
               <div class="col-sm-8">
-                <input
-                  type="date"
-                  class="form-control"
-                  id="endDate"
-                  name="enddates"
-                  [(ngModel)]="enddate"
-                  (input)="clearValidation('endDate')" 
-                   [max]="getToday()"
-                />
+                <input type="date" class="form-control" id="endDate" name="enddates" [(ngModel)]="enddate"
+                  (input)="clearValidation('endDate')" [max]="getToday()" />
                 <!-- Only show the div if there is an error -->
                 <div class="error-message" *ngIf="errors.endDate">
                   <small class="text-danger">{{ errors.endDate }}</small>
@@ -155,8 +156,8 @@
               <div class="col-sm-8">
                 <div class="input-group">
                   <span class="input-group-text " style="font-size: 12px;">{{currencytype}}</span>
-                <input type="text" class="form-control" id="TotalAmount" name="totalAmount" [(ngModel)]="totalAmount"
-                  required maxlength="50" appInputSanitizer="number"  autocomplete="off">
+                  <input type="text" class="form-control" id="TotalAmount" name="totalAmount" [(ngModel)]="totalAmount"
+                    required maxlength="50" appInputSanitizer="number" autocomplete="off">
                 </div>
               </div>
             </div>
@@ -165,7 +166,7 @@
               <label for="InvoiceNo" class="col-sm-4 col-form-label fontsize14">Invoice no:</label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" id="InvoiceNo" name="invoiceNumber" [(ngModel)]="invoiceNumber"
-                  maxlength="500" required appInputSanitizer="alphanumeric"  autocomplete="off">
+                  maxlength="500" required appInputSanitizer="alphanumeric" autocomplete="off">
               </div>
             </div>
             <div class="row mb-2 align-items-center">
@@ -173,14 +174,23 @@
               <div class="col-sm-8">
                 <input type="date" class="form-control" id="Invoicedate" name="invoiceDate" required
                   [(ngModel)]="invoiceDate">
-                  <div class="error-message" *ngIf="errors.invoiceDate">
-                    <small class="text-danger">{{ errors.invoiceDate }}</small>
-                  </div>
+                <div class="error-message" *ngIf="errors.invoiceDate">
+                  <small class="text-danger">{{ errors.invoiceDate }}</small>
+                </div>
               </div>
             </div>
+
+            <strong class="" style="font-size: 12px; visibility: hidden;"  [ngClass]="{contract_CtcCode}" >
+              Contractor ID :- {{ contract_CtcCode }}
+            </strong>
+            
+
+
+
+
             <input type="hidden" id="groupNewId" name="groupNewId" [(ngModel)]="groupNewId">
             <input type="hidden" id="gridCtcCode" name="gridCtcCode" [(ngModel)]="gridCtcCode">
-            <input type="hidden"   id="hiddenField"   name="hiddenData"   [(ngModel)]="conCode">
+            <input type="hidden" id="hiddenField" name="hiddenData" [(ngModel)]="conCode">
             <div class="loading-overlay" *ngIf="loading">
               <div class="loader"></div>
             </div>
@@ -250,30 +260,17 @@
     </a>    
 
 
-        <div 
-          class="image-scroll-container overflow-auto" 
-          [ngStyle]="{ 'max-width': imageWidth + 'px', 'max-height': imageHeight + 'px', 'border': '2px solid #ddd' }"
-        > 
+          <div class="image-scroll-container overflow-auto"
+            [ngStyle]="{ 'max-width': imageWidth + 'px', 'max-height': imageHeight + 'px', 'border': '2px solid #ddd' }">
 
-          <lib-ngx-image-zoom 
-            *ngIf="thumbImage && fullImagePath" 
-            [thumbImage]="thumbImage"
-            [fullImage]="fullImagePath" 
-            [magnification]="1.5" 
-            [enableScrollZoom]="false" 
-            [enableLens]="true"
-            [lensWidth]="140" 
-            [lensHeight]="140" 
-            [minZoomRatio]="0.5" 
-            [maxZoomRatio]="1" 
-            [circularLens]="true"
-            [scrollStepSize]="1"
-            (imageLoaded)="onImageLoad($event)"
-          >
-          </lib-ngx-image-zoom>
+            <lib-ngx-image-zoom *ngIf="thumbImage && fullImagePath" [thumbImage]="thumbImage"
+              [fullImage]="fullImagePath" [magnification]="1.5" [enableScrollZoom]="false" [enableLens]="true"
+              [lensWidth]="140" [lensHeight]="140" [minZoomRatio]="0.5" [maxZoomRatio]="1" [circularLens]="true"
+              [scrollStepSize]="1" (imageLoaded)="onImageLoad($event)">
+            </lib-ngx-image-zoom>
+          </div>
         </div>
-      </div>
-      
+
 
       </div>
       <div class="col-12 phoneresponsive">
