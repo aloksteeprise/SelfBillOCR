@@ -28,7 +28,7 @@
             >
         </div>
         <div class="col-6 col-sm-2">
-          <label for="mvtTo" class="form-label me-2">To:</label>
+          <label for="mvtTo" class="form-label me-2 custom-label">To:</label>
           <input type="date" id="mvtTo" class="form-control" name="mvtTo" [(ngModel)]="mvtToDate">
         </div>
         <div class="col-6 col-sm-2">
@@ -179,14 +179,14 @@
     </ng-container>
 
     <ng-container matColumnDef="allocation">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Allocate </th>
+      <th mat-header-cell *matHeaderCellDef> Allocate </th>
       <td mat-cell *matCellDef="let element">
         <a [href]="'your-url/' + element.id" target="_blank">allocate</a>
       </td>
     </ng-container>
 
     <ng-container matColumnDef="validate">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Validate </th>
+      <th mat-header-cell *matHeaderCellDef> Validate </th>
       <td mat-cell *matCellDef="let element">
         <a [href]="'your-url/' + element.id" target="_blank">validate</a>
       </td>

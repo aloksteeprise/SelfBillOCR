@@ -12,12 +12,11 @@ export class SharedUtils {
     }
   
     static isAlphanumeric(value: string): boolean {
-      return /^[a-zA-Z0-9\s\-\#\,]*$/.test(value);
+      return /^[a-zA-Z0-9\s\-\#]*$/.test(value);
     }
   
     static validateDate(dateValue: string, fieldName: string, isRequired: boolean): string | null {
       const today = new Date();
-      
       if (!dateValue || dateValue.trim() === '') {
         return isRequired ? `${fieldName} is required.` : null;
       }

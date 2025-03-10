@@ -1,84 +1,137 @@
 /* Modal Container */
 .custom-modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #f4f7fc;
-    border: 1px solid #aaa;
-    width: 600px;
-    border-radius: 10px;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #f4f7fc;
+  border: 1px solid #aaa;
+  width: 600px;
+  max-width: 90%;
+  border-radius: 10px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+}
+
+/* Modal Dialog */
+.custom-modal-dialog {
+  width: 100%;
+  padding: 10px;
+}
+
+/* Modal Content */
+.custom-modal-content {
+  background: white;
+  padding: 15px;
+}
+
+/* Header - Dragging Section */
+.custom-modal-header {
+  background: #ccc;
+  padding: 8px;
+  cursor: move;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: left;
+  color: #333;
+  margin-bottom: 13px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Form Fields */
+.form-group {
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-group label {
+  width: 130px;
+  font-size: 13px;
+  color: #5a5151;
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 70%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+/* Button Styling */
+.form-actions {
+  display: flex;
+  justify-content: end;
+  margin-top: 15px;
+}
+
+.btn {
+  padding: 5px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-secondary {
+  background-color: #ddd;
+  color: black;
+  margin-left: 10px;
+}
+
+.custom_width{
+  width: 30% !important;
+  border-radius: 5px;
+}
+/* Media Query for Mobile View */
+@media (max-width: 600px) {
+  .custom-modal {
+    width: 95%;
+    padding: 5px;
   }
-  
-  /* Modal Dialog */
-  .custom-modal-dialog {
-    width: 100%;
+
+  .custom-modal-header {
+    font-size: 16px;
     padding: 10px;
   }
-  
-  /* Modal Content */
-  .custom-modal-content {
-    background: white;
-    padding: 15px;
-  }
-  
-  /* Header - Dragging Section */
-  .custom-modal-header {
-    background: #ccc;
-    padding: 8px;
-    cursor: move;
-    font-size: 18px;
-    font-weight: bold;
-    text-align: left;
-    color: #333;
-    margin-bottom: 13px;
-  }
-  
-  /* Form Fields */
+
   .form-group {
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
+    flex-direction: column; /* Stack label and input */
+    align-items: flex-start;
   }
-  
+
   .form-group label {
-    width: 130px;
-    font-size: 13px;
-    color: #5a5151;
-    font-weight: bold;
+    width: 100%;
+    margin-bottom: 5px;
+    font-size: 14px;
   }
-  
+
   .form-group input,
   .form-group textarea {
-    width: 70%;
-    padding: 5px;
-    border: 1px solid #ccc;
-    font-size: 14px;
+    width: 100% !important; /* Full width on mobile */
   }
-  
-  /* Button Styling */
+
   .form-actions {
-    display: flex;
-    justify-content: end;
-    margin-top: 15px;
+    justify-content: end; /* Center buttons */
   }
-  
+
   .btn {
-    padding: 5px 15px;
-    font-size: 14px;
-    cursor: pointer;
-    border: none;
+    width: 25%; /* Full width buttons */
+    margin-bottom: 10px;
   }
-  
-  .btn-primary {
-    background-color: #007bff;
-    color: white;
-  }
-  
+
   .btn-secondary {
-    background-color: #ddd;
-    color: black;
-    margin-left: 10px;
+    margin-left: 0;
   }
-  
+}

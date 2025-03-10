@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import {  Component, OnInit, ViewChild, AfterViewInit, input } from '@angular/core';
 import { RemittanceAllocationComponent } from '../remittance-allocation/remittance-allocation.component';
 import { MatDialog } from '@angular/material/dialog';
 import { TransactionFormService } from '../transaction-form/transaction-form.service';
