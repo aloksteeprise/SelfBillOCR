@@ -231,6 +231,9 @@ padding-top: 10px;
   .custom-styling {
     margin-left: 0px !important;
   }
+  .custom-mobile{
+    margin-left: 63px;
+  }
 }
 
 .form-control {
