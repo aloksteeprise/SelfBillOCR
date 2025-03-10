@@ -34,11 +34,11 @@
         <div class="col-6 col-sm-2">
           <label for="mvtType" class="form-label me-2 custom-label">Type of Movements:</label>
           <select id="mvtType" class="form-select flex-grow-1" [(ngModel)]="mvtType" name="mvtType">
-            <option value="" disabled selected>Select</option>
+            <option value="" disabled  selected>Select</option>
             <option *ngFor="let type of mvtTypeList" [value]="type">{{ type }}</option>
           </select>
         </div>
-        <div class="col-6 col-sm-1" style="padding-top: 21px; margin-left: 90px;">
+        <div class="col-6 col-sm-1 custom-manualallocation" >
           <button type="button" class="btn btn-outline-info white-color custom-label" (click)="openManualAllocationModal()">Manual Allocation</button>
         </div>
         <div class="col-6 col-sm-1 mx-2" style="padding-top: 21px;">

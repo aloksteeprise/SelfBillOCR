@@ -164,6 +164,12 @@ padding-top: 10px;
   padding-bottom: 7px;
 }
 
+/* style="padding-top: 21px; margin-left: 90px;" */
+.custom-manualallocation{
+  padding-top: 21px;
+  margin-left: 90px;
+}
+
 .custom-padding{
   padding: 30px;
 }
@@ -187,6 +193,11 @@ padding-top: 10px;
 
     margin-left: 0px !important;
   }
+  .custom-manualallocation{
+    padding-top: 21px;
+    margin-left: 0px;
+  }
+  
 
   .custom-heading{
     font-size: large;
