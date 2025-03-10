@@ -11,6 +11,9 @@ import { ConfirmationPopComponent } from '../confirmation-pop/confirmation-pop.c
 import { SharedUtils  } from '../shared/shared-utils';
 import { FormsModule } from '@angular/forms';
 import {ManualAllocationPopupComponent} from '../manual-allocation-popup/manual-allocation-popup.component'
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-transaction-form',
@@ -73,9 +76,53 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   dataSource = new MatTableDataSource<TransactionForm>([]);
-  constructor(private dialog: MatDialog, private transactionFormService: TransactionFormService) { }
+  constructor(private dialog: MatDialog, private transactionFormService: TransactionFormService,private breakpointObserver: BreakpointObserver,  @Inject(PLATFORM_ID) private platformId: object,) { }
 
   ngOnInit() {
+
+    this.breakpointObserver.observe(['(max-width: 700px)']).subscribe((result) => {
+      if (result.matches) {
+  
+   this.displayedColumns = [
+          
+    'actions',
+    'mvtDate',
+    'mvtValueDate',
+    'refRem',
+    'mvtAmountSent',
+    'mvtAmountRcvd',
+    'mvtCurrency',
+    'mvtBkAccount',
+    'mvtType',
+    'bkiAccountName',
+    'allocation',
+    'validate',
+  ];
+
+      } else {
+        // Desktop view: Default order
+        this.displayedColumns = [
+           //'mvtID',
+    //'mvtKey',
+    'mvtDate',
+    'mvtValueDate',
+    'refRem',
+    'mvtAmountSent',
+    'mvtAmountRcvd',
+    'mvtCurrency',
+    'mvtBkAccount',
+    'mvtType',
+    'bkiAccountName',
+    'allocation',
+    'validate',
+    'actions'
+        
+        ];
+      }
+    });
+
+
+if (isPlatformBrowser(this.platformId)) {
     const storedToken = localStorage.getItem('token');
     if (storedToken) {
       this.token = storedToken; 
@@ -92,6 +139,7 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
     this.selectedBankAccount = '';
     this.selectedCompany = null;
   }
+}
 
 
   ngAfterViewInit() {

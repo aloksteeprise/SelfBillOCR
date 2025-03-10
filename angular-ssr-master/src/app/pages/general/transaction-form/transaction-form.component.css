@@ -151,6 +151,29 @@ input[type="checkbox"] {
   font-weight: bold;
 }
 
+
+/* .custom-headerlayout{
+padding-left: 98px;
+padding-top: 10px;
+
+} */
+
+.form-check {
+
+  padding-top: 27px;
+  padding-bottom: 7px;
+}
+
+.custom-padding{
+  padding: 30px;
+}
+
+.custom-padding1{
+  padding: 21px;
+}
+
+
+
 @keyframes l16 {
   100% {
     transform: rotate(1turn);
@@ -163,6 +186,15 @@ input[type="checkbox"] {
   .marginleft8 {
 
     margin-left: 0px !important;
+  }
+
+  .custom-heading{
+    font-size: large;
+  }
+
+  .custom-headerlayout{
+    padding-left: 0px!important;
+    padding-top: 25px!important;
   }
 
   .marginleft20 {

@@ -50,10 +50,10 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="row custom-height">
 
 
-        <div class="col-6 col-sm-2 d-flex justify-content-center align-items-center margintop25">
+        <div class="col-6 col-sm-2 d-flex justify-content-center align-items-center margintop25 ">
           <input type="checkbox" [(ngModel)]="IsAllRecord" name="IsAllRecord" (change)="toggleAllRecords($event)" />
           <label class="form-check-label fontweight500 ml-2" style="margin-left: 10px;">
             Is All Batch Records?
@@ -69,8 +69,8 @@
         </div>
 
         <div class="form-check col-6 col-sm-3 d-flex justify-content-center align-items-center  margintop25">
-          <input type="checkbox" name="IsValidatedRecord" [(ngModel)]="IsValidatedRecord" />
-          <label class="form-check-label fontweight500" for="flexCheckDefault"
+          <input type="checkbox" name="IsValidatedRecord" [(ngModel)]="IsValidatedRecord" class="custom-marginmobile"/>
+          <label class="form-check-label fontweight500 " for="flexCheckDefault"
             style="margin-left: 10px; ">
             Validated and Invoice created?
           </label>
@@ -88,7 +88,7 @@
             *ngIf="(notificationService.notificationVisibility$ | async)"></app-notification-popup>
         </div>
 
-        <div class="col-6 col-sm-2 d-flex justify-content-end align-items-end marginleft8 margintop25"
+        <div class="col-12 col-sm-2 d-flex justify-content-end align-items-end marginleft8 margintop25 custom-center"
           style="padding: 5px;">
           <button type="submit" class="btn btn-dark">Search</button>
           <button type="button" (click)="ClearSearch()" class="btn btn-outline-dark"

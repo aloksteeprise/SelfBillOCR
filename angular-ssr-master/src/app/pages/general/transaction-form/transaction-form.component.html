@@ -38,11 +38,15 @@
             <option *ngFor="let type of mvtTypeList" [value]="type">{{ type }}</option>
           </select>
         </div>
-        <div class="col-6 col-sm-2" style="padding-top: 21px;">
-          <button type="button" class="btn btn-outline-info white-color" (click)="openManualAllocationModal()">Manual Allocation</button>
+        <div class="col-6 col-sm-1" style="padding-top: 21px; margin-left: 90px;">
+          <button type="button" class="btn btn-outline-info white-color custom-label" (click)="openManualAllocationModal()">Manual Allocation</button>
         </div>
-        <div class="col-6 col-sm-2" style="padding-top: 21px;">
+        <div class="col-6 col-sm-1 mx-2" style="padding-top: 21px;">
           <button type="button" class="btn btn-outline-info white-color custom-label">USB Bank Statements</button>
+        </div>
+
+        <div class="col-4 col-sm-1" style="padding-top: 21px;">
+          <button type="submit" class="btn btn-outline-info white-color custom-label">Other Bank Statements</button>
         </div>
       </div>
 
@@ -85,18 +89,25 @@
             Is Allocated
           </label>
         </div>
-        <div class="col-4 col-sm-2" style="padding-top: 21px;">
-          <button type="submit" class="btn btn-outline-info white-color custom-label">Other Bank Statements</button>
-        </div>
-      </div>
-      <div class="row g-2 searchTable">
-        <div class="d-flex justify-content-end" style="padding-right: 98px; padding-top: 10px;">
+
+        <div class="form-check col-6 col-sm-2" >
           <button type="submit" class="btn btn-dark">Search</button>
           <button type="button" class="btn btn-outline-dark" (click)="ClearSearch()"
             style="margin-left: 12px; color: white;">
             Clear
           </button>
         </div>
+      
+       
+      </div>
+      <div class="row g-2 searchTable">
+        <!-- <div class="d-flex justify-content-end" style="padding-right: 98px; padding-top: 10px;">
+          <button type="submit" class="btn btn-dark">Search</button>
+          <button type="button" class="btn btn-outline-dark" (click)="ClearSearch()"
+            style="margin-left: 12px; color: white;">
+            Clear
+          </button>
+        </div> -->
       </div>
     </form>
   </div>

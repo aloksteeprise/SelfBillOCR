@@ -195,7 +195,7 @@ hr {
 }
 
 input[type="checkbox"] {
-    transform: scale(2.2);
+    transform: scale(1.8);
 }
 
 .fa-triangle-exclamation {
@@ -256,5 +256,15 @@ input[type="checkbox"] {
     .margintop25 {
         margin-top: 5px;
         margin-bottom: 10px;
+    }
+    .custom-center{
+
+        justify-content: center!important;
+    }
+    .custom-height{
+        margin-top: 10px;
+    }
+    .custom-marginmobile{
+        margin-left: -8px;
     }
 }
