@@ -269,11 +269,12 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   onDownloadInvoice(row: any) {
     const invoiceID = row.afsInvoiceStatus;
     const isAdminorContractor = 0;
-
+  this.loading=true;
     this.apiService.generateInvoicePDF(invoiceID, isAdminorContractor,this.token).subscribe(
       (response: any) => {
         if (response.succeeded) {
-          const pdfPath = response.messages[0];
+          const pdfPath = response.messages[0];  
+          this.loading=false;
           if(pdfPath){
             console.log("pdfPath : "+ pdfPath)
             const fullPdfUrl = `https://wfmapi.accessfinancial.com/${pdfPath.replace(/\\/g, '/')}`;
@@ -281,14 +282,17 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
           }
           else{
             //alert('Failed to generate the invoice.');
+            this.loading=false;
           }
         } else {
           alert('We are unable to display the invoice file. Please contact the system administrator.');
+          this.loading=false;
         }
       },
       (error) => {
         console.error('Error generating invoice:', error);
         alert('An error occurred while generating the invoice.');
+        this.loading=false;
       }
     );
   }

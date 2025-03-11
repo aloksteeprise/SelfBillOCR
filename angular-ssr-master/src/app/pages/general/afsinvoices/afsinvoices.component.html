@@ -185,7 +185,7 @@
           <td mat-cell *matCellDef="let row" style="padding-left: 30px;">
             <div *ngIf="row.afsInvoiceStatus && row.isRecordValidated;">
               <a href="javascript:void(0)" (click)="onDownloadInvoice(row)" class="invoice-link">
-                {{row.afsInvoiceStatus}} <i class="fa-solid fa-download" style="margin-right: 5px;"></i>
+                {{row.afsInvoiceNumber}} <i class="fa-solid fa-download" style="margin-right: 5px;"></i>
               </a>
             </div>
 
