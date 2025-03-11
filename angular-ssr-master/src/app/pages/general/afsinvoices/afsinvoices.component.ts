@@ -168,10 +168,14 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
 
       this.pageSize = event.pageSize;
       this.pageIndex = 0; // Reset to the first page if page size changes
+      this.IsAllRecord = false
+      // this.selectedRecords = [];
 
     } else {
 
       this.pageIndex = event.pageIndex; // Adjust for 1-based indexing
+      this.IsAllRecord = false
+      this.selectedRecords = [];
     }
 
     this.loadInvoices();
