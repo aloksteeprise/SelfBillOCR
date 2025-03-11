@@ -345,6 +345,17 @@ onCheckboxChange(event: any, id: number) {
 
 
   openBatchValidateConfirmationBox() {
+    if (!this.selectedRecords || this.selectedRecords.length === 0) {
+      this.notificationService.showNotification(
+          'Please select at least one record to batch validate.',
+          'WARNING',
+          'warning',
+          () => console.log('User acknowledged warning') 
+      );
+      return;
+  }
+  else{
+
     this.popupComponent.openPopup(
       'Confirmation',
       'Are you sure that you want to proceed?',
@@ -358,6 +369,7 @@ onCheckboxChange(event: any, id: number) {
       }
     );
   }
+}
   
 //   BatchValidate() {
 //     // Determine the records to send
@@ -428,15 +440,7 @@ onCheckboxChange(event: any, id: number) {
 
 BatchValidate() {
   // ✅ Show warning popup if no records are selected
-  if (!this.selectedRecords || this.selectedRecords.length === 0) {
-      this.notificationService.showNotification(
-          'Please select at least one record to batch validate.',
-          'WARNING',
-          'warning',
-          () => console.log('User acknowledged warning') 
-      );
-      return;
-  }
+ 
 
   const apiUrl = environment.API_BASE_URL + 'OCRAI/SelfBillBatchValidate';
   this.notificationService.setNotificationVisibility(true);
