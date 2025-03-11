@@ -46,7 +46,7 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
     'bkiAccountName',
     // 'cieDesc',
     // 'notes',
-    'allocation',
+    // 'allocation',
     'validate',
     'actions'
 
@@ -95,7 +95,7 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
     'mvtBkAccount',
     'mvtType',
     'bkiAccountName',
-    'allocation',
+    // 'allocation',
     'validate',
   ];
 
@@ -113,7 +113,7 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
     'mvtBkAccount',
     'mvtType',
     'bkiAccountName',
-    'allocation',
+    // 'allocation',
     'validate',
     'actions'
         
