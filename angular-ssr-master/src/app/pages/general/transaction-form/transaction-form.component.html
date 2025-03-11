@@ -80,7 +80,7 @@
 
             &nbsp;
           <input type="radio" id="sent" name="money" class="form-check-input custom-mobile" [(ngModel)]="money" [value]="false">
-          <label for="sent" class="form-check-label" style="font-weight: normal; padding-left: 5px;">Sent</label>
+          <label for="sent" class="form-check-label custom-label" style="font-weight: normal; padding-left: 5px;">Sent</label>
         </div>
         <div class="form-check col-6 col-sm-2" style="padding-top: 30px;">
           <input type="checkbox" name="IsRecordAllocated" [(ngModel)]="IsRecordAllocated" />
@@ -97,6 +97,9 @@
             Clear
           </button>
         </div>
+        <!-- <div class="form-check col-6 col-sm-2" >
+       
+    </div> -->
       
        
       </div>
@@ -185,17 +188,32 @@
       </td>
     </ng-container> -->
 
-    <ng-container matColumnDef="validate">
+    <!-- <ng-container matColumnDef="validate">
       <th mat-header-cell *matHeaderCellDef> Validate </th>
       <td mat-cell *matCellDef="let element">
-        <a [href]="'your-url/' + element.id" target="_blank">validate</a>
+
+          Validate
+        </button>
       </td>
-    </ng-container>
+    </ng-container>  
+     -->
+    
 
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef> Actions </th>
       <td mat-cell *matCellDef="let element">
+        <!-- (click)="validateRecord(element.id)" -->
+        <button class="btn btn-outline-danger" *ngIf="element.isRecordValidated === false"  >
+          Validate
+        </button>
+        &nbsp;
+        <span *ngIf="element.isRecordValidated === true" style="color: green; padding-right: 25px;" >Validated</span>
+        
+      
         <button class="btn btn-outline-success" (click)="openAllocationModal(element)">Allocate</button>
+      
+        
+
       </td>
     </ng-container>
 

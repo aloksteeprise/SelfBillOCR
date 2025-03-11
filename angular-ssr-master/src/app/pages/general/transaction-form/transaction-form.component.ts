@@ -47,7 +47,7 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
     // 'cieDesc',
     // 'notes',
     // 'allocation',
-    'validate',
+    // 'validate',
     'actions'
 
   ];
@@ -69,8 +69,10 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
   mvtType: string = '';
   loading: boolean = false;
   IsRecordAllocated = false;
+  IsRecordValidated =false
   money = true;
   totalRecords: number = 0;
+  
   token: string = '';
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -96,7 +98,7 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
     'mvtType',
     'bkiAccountName',
     // 'allocation',
-    'validate',
+    // 'validate',
   ];
 
       } else {
@@ -114,7 +116,7 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
     'mvtType',
     'bkiAccountName',
     // 'allocation',
-    'validate',
+    // 'validate',
     'actions'
         
         ];
@@ -176,6 +178,7 @@ if (isPlatformBrowser(this.platformId)) {
           console.log('API Response:', response);
 
           this.dataSource = new MatTableDataSource(response.data.data);
+          console.log(this.dataSource)
           this.totalRecords = response.data.totalRecords;
           this.loading = false;
         },
@@ -204,6 +207,21 @@ if (isPlatformBrowser(this.platformId)) {
   applyFilter(form: any): void {
     this.loadInvoices();
   }
+
+  // validateRecord(id: number): void {
+  //   console.log('Validating record with ID:', id);
+
+  //   this.transactionFormService.ValidateManualBankAllocation(id).subscribe(
+  //     (response) => {
+  //       console.log('Validation successful:', response);
+  //       // this.fetchData(); 
+  //     },
+  //     (error) => {
+  //       console.error('Error during validation:', error);
+  //     }
+  //   );
+  // }
+  
 
 
   ClearSearch() {
@@ -309,5 +327,20 @@ openManualAllocationModal(): void {
       console.log('The dialog was closed');
     });
   }
+
+
+  // openManualAllocationModal(): void {
+  //   if (this.selectedCompany && this.selectedBankAccount) {
+  //     const dialogRef = this.dialog.open(ManualAllocationPopupComponent, {
+  //       width: '800px',
+  //     });
+  
+  //     dialogRef.afterClosed().subscribe(result => {
+  //       console.log('The dialog was closed');
+  //     });
+  //   } else {
+  //     console.log('Please select a company and a bank account before proceeding.');
+  //   }
+  // }
 
 }

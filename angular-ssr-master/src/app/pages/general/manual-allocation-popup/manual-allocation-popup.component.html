@@ -1,46 +1,82 @@
 <div class="custom-modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="false">
-    <div class="custom-modal-dialog">
-      <div class="custom-modal-content">
-        <div class="custom-modal-header">
-          <span class="drag-header">Manual Allocation</span>
-          <button type="button" class="btn-close buttonmargin_mobile" style="float: right;" (click)="closeDialog()" aria-label="Close"></button>
-        </div>
-        <div class="custom-modal-body">
-          <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)">
-            
-            <div class="form-group">
-              <label for="bankPaymentDate">Bank Payment Date:</label>
-              <input type="date" id="bankPaymentDate" name="bankPaymentDate" [(ngModel)]="bankPaymentDate" class="custom_width"/>
-            </div>
-  
-            <div class="form-group">
-              <label for="amountPaid">Amount Paid:</label>
-              <input type="text" id="amountPaid" name="amountPaid" [(ngModel)]="amountPaid" maxlength="50" autocomplete="off" class="custom_width"/>
-            </div>
-
-            <div class="form-group">
-                <label for="invoiceNo">Invoice No:</label>
-                <input type="text" id="invoiceNo" name="invoiceNo" [(ngModel)]="invoiceNo" maxlength="50" autocomplete="off" class="custom_width"/>
-            </div>
-
-            <div class="form-group">
-              <label for="fundSource">Fund Source:</label>
-              <input type="text" id="fundSource" name="fundSource" [(ngModel)]="fundSource" maxlength="200" autocomplete="off" style="border-radius: 5px;"/>
-            </div>
-  
-            <div class="form-group">
-              <label for="fundDescription">Fund Description:</label>
-              <textarea id="fundDescription" name="fundDescription" [(ngModel)]="fundDescription" maxlength="200" autocomplete="off" style="max-height: 300px; border-radius: 5px;"></textarea>
-            </div>
-  
-            <div class="form-actions">
-              <button type="submit" class="btn btn-primary">Add</button>
-              <!-- <button type="button" class="btn btn-secondary" (click)="closeDialog()">Cancel</button> -->
-            </div>
-  
-          </form>
-        </div>
+  <div class="custom-modal-dialog">
+    <div class="custom-modal-content">
+      <div class="custom-modal-header">
+        <span class="drag-header">Manual Allocation</span>
+        <button type="button" class="btn-close buttonmargin_mobile" style="float: right;" (click)="closeDialog()"
+          aria-label="Close"></button>
       </div>
+      <div class="custom-modal-body">
+        <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)">
+          
+          <div class="row mb-2 align-items-center">
+            <label for="bankPaymentDate" class="col-sm-4 col-form-label">Bank Payment Date:</label>
+            <div class="col-sm-5">
+              <input type="date" id="bankPaymentDate" name="bankPaymentDate" [(ngModel)]="bankPaymentDate"
+                class="form-control" required />
+              <div class="error-message" *ngIf="errors.bankPaymentDate">
+                <small class="text-danger">{{ errors.bankPaymentDate }}</small>
+              </div>
+            </div>
+          </div>
+      
+          <div class="row mb-2 align-items-center">
+            <label for="amountPaid" class="col-sm-4 col-form-label">Amount Paid:</label>
+            <div class="col-sm-5">
+              <input type="text" id="amountPaid" name="amountPaid" [(ngModel)]="amountPaid" maxlength="50"
+                autocomplete="off" class="form-control" required />
+              <div class="error-message" *ngIf="errors.amountPaid">
+                <small class="text-danger">{{ errors.amountPaid }}</small>
+              </div>
+            </div>
+          </div>
+      
+          <div class="row mb-2 align-items-center">
+            <label for="invoiceNo" class="col-sm-4 col-form-label">Invoice No:</label>
+            <div class="col-sm-8">
+              <div class="input-group">
+                <span class="input-group-text" style="font-size: 12px;">USD</span>
+                <input type="text" id="invoiceNo" name="invoiceNo" [(ngModel)]="invoiceNo" maxlength="50"
+                  autocomplete="off" class="form-control" required />
+               <label for="" style="font-size: 13px; color: darkgray;">If multiple invoice numbers, separated by commas.</label>
+              </div>
+              <div class="error-message" *ngIf="errors.invoiceNo">
+                <small class="text-danger">{{ errors.invoiceNo }}</small>
+              </div>
+            </div>
+            
+          </div>
+      
+          <div class="row mb-2 align-items-center">
+            <label for="fundSource" class="col-sm-4 col-form-label">Fund Source:</label>
+            <div class="col-sm-8">
+              <input type="text" id="fundSource" name="fundSource" [(ngModel)]="fundSource" maxlength="200"
+                autocomplete="off" class="form-control" required />
+              <div class="error-message" *ngIf="errors.fundSource">
+                <small class="text-danger">{{ errors.fundSource }}</small>
+              </div>
+            </div>
+          </div>
+      
+          <div class="row mb-2 align-items-center">
+            <label for="fundDescription" class="col-sm-4 col-form-label">Fund Description:</label>
+            <div class="col-sm-8">
+              <textarea id="fundDescription" name="fundDescription" [(ngModel)]="fundDescription" maxlength="200"
+                autocomplete="off" class="form-control" required></textarea>
+              <div class="error-message" *ngIf="errors.fundDescription">
+                <small class="text-danger">{{ errors.fundDescription }}</small>
+              </div>
+            </div>
+          </div>
+      
+          <div class="form-actions text-center mt-3">
+            <button type="submit" class="btn btn-primary">Add</button>
+            <button type="button" class="btn btn-secondary ms-2" (click)="clearform()">Clear</button>
+          </div>
+      
+        </form>
+      </div>
+      
     </div>
   </div>
-  
+</div>

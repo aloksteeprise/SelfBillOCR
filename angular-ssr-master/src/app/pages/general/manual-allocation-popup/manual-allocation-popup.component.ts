@@ -21,6 +21,7 @@ export class ManualAllocationPopupComponent implements OnInit{
   fundSource : string = '';
   fundDescription : string = '';
   token: string = '';
+  errors: any = {};
   // loading: boolean = false;
   
   constructor(private dialogRef: MatDialogRef<ManualAllocationPopupComponent>,
@@ -38,13 +39,20 @@ export class ManualAllocationPopupComponent implements OnInit{
      
     }
   }
+  
 
-  onSubmit(form: any): void {
-    // Handle form submission logic here
-  }
+
 
   closeDialog(): void {
     this.dialogRef.close();
+  }
+  
+  clearform():void{
+    this.bankPaymentDate=''
+    this.fundDescription=''
+    this.fundSource=''
+    this.invoiceNo=''
+    this.amountPaid=''
   }
 
   submitForm(): void {
@@ -52,4 +60,41 @@ export class ManualAllocationPopupComponent implements OnInit{
       this.myForm.ngSubmit.emit();
     }
   }
+
+  onSubmit(form: any): void {
+    let isValid = true;
+    this.errors = {}; // Reset previous errors
+  
+    if (!this.amountPaid) {
+      this.errors.amountPaid = 'Amount Paid is required.';
+      isValid = false;
+    }
+  
+    if (!this.bankPaymentDate) {
+      this.errors.bankPaymentDate = 'Bank Payment Date is required.';
+      isValid = false;
+    }
+  
+    if (!this.fundDescription) {
+      this.errors.fundDescription = 'Fund Description is required.';
+      isValid = false;
+    }
+  
+    if (!this.fundSource) {
+      this.errors.fundSource = 'Fund Source is required.';
+      isValid = false;
+    }
+  
+    if (!this.invoiceNo) {
+      this.errors.invoiceNo = 'Invoice No is required.';
+      isValid = false;
+    }
+  
+    if (!isValid) {
+      return; // Stop form submission if validation fails
+    }
+  
+    console.log("Form submitted successfully", form.value);
+  }
+  
 }
