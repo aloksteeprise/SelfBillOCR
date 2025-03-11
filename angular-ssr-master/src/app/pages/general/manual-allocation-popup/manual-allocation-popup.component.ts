@@ -60,10 +60,15 @@ export class ManualAllocationPopupComponent implements OnInit{
       this.myForm.ngSubmit.emit();
     }
   }
+  clearValidation(field: string) {
+    if ((this as any)[field]?.trim() !== '') {
+      this.errors[field] = null;
+    }
+  }
 
   onSubmit(form: any): void {
     let isValid = true;
-    this.errors = {}; // Reset previous errors
+    this.errors = {}; 
   
     if (!this.amountPaid) {
       this.errors.amountPaid = 'Amount Paid is required.';
@@ -90,9 +95,9 @@ export class ManualAllocationPopupComponent implements OnInit{
       isValid = false;
     }
   
-    if (!isValid) {
-      return; // Stop form submission if validation fails
-    }
+    // if (!isValid) {
+    //   return; 
+    // }
   
     console.log("Form submitted successfully", form.value);
   }
