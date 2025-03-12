@@ -331,6 +331,77 @@ this.http.post<any>(apiUrl,body, { headers}).subscribe(
   }
 }
 
+
+onPrevious() {
+  this.loading = true;
+  const errors: any = {};
+  this.errors = errors;
+  this.notificationService.setNotificationVisibility(false);
+
+  const formData = {
+    RowId: this.id,
+    FirstName: this.firstnamefor,
+    LastName: this.lastnamefor,
+    StartDate: this.startdate,
+    EndDate: this.enddate,
+    GroupNewId: this.groupNewId,
+    IsSkip: false,
+    IsPrevious: true, 
+  };
+
+  const headers = new HttpHeaders({
+    Authorization: `Bearer ${this.token}`,
+    'Content-Type': 'application/json',
+  });
+
+  const apiUrl = environment.API_BASE_URL + 'OCRAI/ValidateAndMapToContractorContract';
+  this.http.post<any>(apiUrl, formData, { headers }).subscribe({
+    next: (response) => {
+      this.loading = false;
+
+      if (response.data.resultTable.length > 0) {
+        const previousRecord = response.data.resultTable[0];
+
+        if (previousRecord.Message === 'No previous record') {
+          this.notificationService.showNotification(
+            'There are no previous record avaiable. Try Skip action.',
+            'INFO',
+            'info',
+            () => {
+              this.notificationService.setNotificationVisibility(false);
+            }
+          );
+        } else {
+          this.fetchNextRecord(previousRecord);
+          this.notificationService.setNotificationVisibility(false);
+        }
+      } else {
+        this.notificationService.showNotification(
+          'There are no previous record avaiable. Please Skip action.',
+          'INFO',
+          'info',
+          () => {
+            this.dialogRef.close();
+            this.notificationService.setNotificationVisibility(false);
+          }
+        );
+      }
+    },
+    error: (error) => {
+      this.loading = false;
+      this.notificationService.showNotification(
+        'Unable to retrieve the previous record. Please retry.',
+        'ERROR',
+        'error',
+        () => {
+          this.notificationService.setNotificationVisibility(false);
+        }
+      );
+    },
+  });
+}
+
+
 onSkip() {
   this.loading = true;
   const errors: any = {};
