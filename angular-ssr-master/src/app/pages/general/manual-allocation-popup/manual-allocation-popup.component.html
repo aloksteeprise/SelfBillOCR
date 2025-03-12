@@ -27,7 +27,7 @@
             <div class="col-sm-5">
 
               <div class="input-group">
-                <span class="input-group-text" style="font-size: 12px;">USD</span>
+                <span class="input-group-text" style="font-size: 12px;">{{ currency }}</span>
               <input type="text" id="amountPaid" name="amountPaid" [(ngModel)]="amountPaid" maxlength="50"
                 autocomplete="off" class="form-control" required (input)="clearValidation('amountPaid')"/>
 

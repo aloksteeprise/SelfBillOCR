@@ -13,8 +13,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
   styleUrls: ['./manual-allocation-popup.component.css']
 })
 export class ManualAllocationPopupComponent implements OnInit{
-  @ViewChild('myForm') myForm: any;
 
+  @ViewChild('myForm') myForm: any;
+  currency: string = '';
   bankPaymentDate : string = '';
   amountPaid : string = '';
   invoiceNo : string = '';
@@ -22,12 +23,16 @@ export class ManualAllocationPopupComponent implements OnInit{
   fundDescription : string = '';
   token: string = '';
   errors: any = {};
-  // loading: boolean = false;
+  loading: boolean = false;
   
-  constructor(private dialogRef: MatDialogRef<ManualAllocationPopupComponent>,
+  constructor(private dialogRef: MatDialogRef<ManualAllocationPopupComponent>,public notificationService: NotificationPopupService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private http: HttpClient,
-  ) {}
+  ) {
+
+    this.currency = this.extractCurrency(data.bankAccount);
+    this.fundSource = data.company;
+  }
 
   ngOnInit(): void {
 
@@ -40,7 +45,15 @@ export class ManualAllocationPopupComponent implements OnInit{
     }
   }
   
-
+  extractCurrency(bankAccountString: string): string {
+    if (bankAccountString) {
+      const parts = bankAccountString.split('|').map(part => part.trim());
+      if (parts.length > 1) {
+        return parts[1];
+      }
+    }
+    return ''; 
+  }
 
 
   closeDialog(): void {
@@ -94,12 +107,75 @@ export class ManualAllocationPopupComponent implements OnInit{
       this.errors.invoiceNo = 'Invoice No is required.';
       isValid = false;
     }
+
+    this.OnAdd();
+  }
   
-    // if (!isValid) {
-    //   return; 
-    // }
+  OnAdd() {
+    debugger;
+    this.loading = true;
+    const errors: any = {};
+    this.errors = errors;
   
-    console.log("Form submitted successfully", form.value);
+    const formData = {
+      bankPaymentDate: this.bankPaymentDate,
+      currency: this.currency,
+      amountPaid: this.amountPaid,
+      invoiceNo: this.invoiceNo,
+      fundSource: this.fundSource,
+      fundDescription: this.fundDescription
+    };
+    console.log('Submitted Data:', formData);
+  
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.token}`,
+      'Content-Type': 'application/json',
+    });
+  
+    const apiUrl = environment.API_BASE_URL + 'OCRAI/AddManualBankAllocation';
+  
+    this.http.post<any>(apiUrl, formData, { headers }).subscribe({
+      next: (response) => {
+        console.log('API Response:', response);
+        this.loading = false;
+        const resultObj = response?.data?.resultTable?.[0];
+        const isSuccess = resultObj?.Result === true;
+  
+        if (isSuccess) {
+          this.notificationService.showNotification(
+            'Record Saved Successfully.',
+            'INFO',
+            'info',
+            () => {
+              this.dialogRef.close();
+              this.notificationService.setNotificationVisibility(false);
+            }
+          );
+        } else {
+          this.notificationService.showNotification(
+            'No matching record found. Please skip this action.',
+            'INFO',
+            'info',
+            () => {
+              this.dialogRef.close();
+              this.notificationService.setNotificationVisibility(false);
+            }
+          );
+        }
+      },
+      error: (error) => {
+        console.error('API Error:', error);
+        this.notificationService.showNotification(
+          'An error occurred. Please try again.',
+          'ERROR',
+          'error',
+          () => {
+            this.dialogRef.close();
+            this.notificationService.setNotificationVisibility(false);
+          }
+        );
+      },
+    });
   }
   
 }

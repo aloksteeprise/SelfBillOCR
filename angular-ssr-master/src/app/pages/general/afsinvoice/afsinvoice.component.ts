@@ -446,7 +446,7 @@ onDelete() {
 
       // ✅ Show success notification after successful deletion
       this.notificationService.showNotification(
-        'Record deleted successfully!',
+        'Record has been successfully deleted. Retrieving the next record.',
         'SUCCESS',
         'success',
         () => {

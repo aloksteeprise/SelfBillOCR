@@ -54,8 +54,9 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   loading: boolean = false;
   isNotificationVisible: boolean = false;
   IsSelfBill:boolean=false;
-  CsmTeam:string='';
-  csmTeamarr: string[] = ['Row Team', 'Swiss Team'];
+  // CsmTeam:string='';
+  CsmTeam: any | null = null;
+  csmTeamarr: any[] = [];
   IsAllRecord: boolean = false; 
   selectedRecords: number[] = []; 
   allRecords: any[] = []; // Ensure this holds all records loaded in the table
@@ -115,6 +116,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     }
 
     this.loadInvoices(); 
+    this.getCsmTeam();
   }
 
   ngAfterViewInit() {
@@ -247,7 +249,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     this.startdate = ''; // Reset the start date
     this.enddate = ''; // Reset the end date
     this.IsValidatedRecord = false;
-    this.CsmTeam = '';
+    this.CsmTeam = null;
     this.IsSelfBill = false;
     this.IsAllRecord = false
     const startDateInput = document.getElementById('startdate') as HTMLInputElement;
@@ -497,6 +499,33 @@ BatchValidate() {
   });
 }
 
+getCsmTeam() {
+  debugger;
+  const apiUrl = environment.API_BASE_URL + 'OCRAI/GetCsmTeamData';
+  this.notificationService.setNotificationVisibility(true);
+
+  const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.token}`,
+      'Content-Type': 'application/json',
+  });
+
+  console.log("Headers:", headers);
+
+  this.http.post<any>(apiUrl, {}, { headers }).subscribe({
+      next: (data) => {
+        console.log('response', data)
+        this.csmTeamarr = data.data.csmTeamList;     
+            console.log('this.csmTeamarr', this.csmTeamarr)
+          // if (data && data.data && data.data.CsmTeamList && Array.isArray(data.data.CsmTeamList)) {
+          //   this.csmTeamarr = data.data.csmTeamList;     
+          //   console.log('this.csmTeamarr', this.csmTeamarr)         
+          // }
+      },
+      error: (error) => {
+          console.error("Error Response:", error);        
+      },
+  });
+}  
 }
 
 

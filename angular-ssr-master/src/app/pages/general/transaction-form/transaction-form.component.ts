@@ -36,14 +36,14 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
     // 'mvtReconciled',
     // 'mvtBkClearing',
     'mvtBkAccount',
-    'mvtType',
+    // 'mvtType',
     // 'mvtUserReconciled',
     // 'mvtDtLastUpdate',
     // 'mvtDtUser',
     // 'PIStatus',
     // 'mvtlRef',
     // 'mvtDtCreated',
-    'bkiAccountName',
+    // 'bkiAccountName',
     // 'cieDesc',
     // 'notes',
     // 'allocation',
@@ -63,10 +63,10 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
   mvtToDate: string = '';
   mvtValueFromDate: string = '';
   mvtValueToDate: string = '';
-  internalCompany: string = '';
+  //internalCompany: string = '';
   bankAccount: string = '';
-  mvtTypeList: string[] = ['PrevDay', 'IntraDay']; // Replace with actual values
-  mvtType: string = '';
+  // mvtTypeList: string[] = ['PrevDay', 'IntraDay']; // Replace with actual values
+  // mvtType: string = '';
   loading: boolean = false;
   IsRecordAllocated = false;
   IsRecordValidated =false
@@ -95,8 +95,8 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
     'mvtAmountRcvd',
     'mvtCurrency',
     'mvtBkAccount',
-    'mvtType',
-    'bkiAccountName',
+    // 'mvtType',
+    // 'bkiAccountName',
     // 'allocation',
     // 'validate',
   ];
@@ -113,8 +113,8 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
     'mvtAmountRcvd',
     'mvtCurrency',
     'mvtBkAccount',
-    'mvtType',
-    'bkiAccountName',
+    // 'mvtType',
+    // 'bkiAccountName',
     // 'allocation',
     // 'validate',
     'actions'
@@ -166,8 +166,6 @@ if (isPlatformBrowser(this.platformId)) {
         this.mvtToDate,
         this.mvtValueFromDate,
         this.mvtValueToDate,
-        this.mvtType,
-        this.selectedCompany?.cieDesc,
         this.selectedBankAccount,
         this.money,
         this.IsRecordAllocated,
@@ -227,7 +225,6 @@ if (isPlatformBrowser(this.platformId)) {
   ClearSearch() {
     this.pageIndex = 0;
     console.log("clearsearch clicked")
-    this.mvtType = ''
     this.mvtFromDate = '';
     this.mvtToDate = '';
     this.mvtValueFromDate = '';
@@ -315,19 +312,22 @@ if (isPlatformBrowser(this.platformId)) {
         this.bankAccountList = [];
       }
     );
-  }  
+  }
+
+  openManualAllocationModal(): void {
+    const selectedCompany = this.selectedCompany?.cieDesc;
+    const selectedBankAccount = this.selectedBankAccount;
   
-openManualAllocationModal(): void {
     const dialogRef = this.dialog.open(ManualAllocationPopupComponent, {
       width: '800px',
+      data: { company : selectedCompany ,bankAccount: selectedBankAccount }
     });
-
+  
     dialogRef.afterClosed().subscribe(result => {
-
       console.log('The dialog was closed');
     });
   }
-
+  
 
   // openManualAllocationModal(): void {
   //   if (this.selectedCompany && this.selectedBankAccount) {
