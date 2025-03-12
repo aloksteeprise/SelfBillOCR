@@ -402,15 +402,16 @@ onPrevious() {
       );
     },
   });
+
 }
 
 
 onDelete() {
-  const userConfirmed = window.confirm("Are you sure you want to delete this record?");
-  
-  if (!userConfirmed) {
-    return; // If user cancels, do nothing
-  }
+  this.popupComponent.openPopup(
+    'Confirmation',
+    'Are you sure that you want to proceed?',
+    'warning',
+    () => {
 
   this.loading = true;
   this.errors = {};
@@ -466,7 +467,9 @@ onDelete() {
       );
     },
   });
+  })
 }
+
 
 
 
