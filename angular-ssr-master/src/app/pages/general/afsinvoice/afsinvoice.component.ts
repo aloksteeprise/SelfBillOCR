@@ -6,6 +6,7 @@ import { NotificationPopupService } from '../notification-popup/notification-pop
 import { DownloadPdfService } from '../service/downlaodPdf.service';
 //import { SharedModule } from '../shared/shared.module';
 import { SharedUtils  } from '../shared/shared-utils';
+import { ConfirmationPopComponent } from '../confirmation-pop/confirmation-pop.component';
 
 
 
@@ -16,6 +17,7 @@ import { SharedUtils  } from '../shared/shared-utils';
 })
 export class AfsinvoiceComponent implements OnInit {
   @ViewChild('myForm') myForm: any;
+  @ViewChild(ConfirmationPopComponent) popupComponent!: ConfirmationPopComponent;
   id:number = 0;
   conCode:string="";
   contractorname: string = '';
@@ -347,6 +349,7 @@ onPrevious() {
     GroupNewId: this.groupNewId,
     IsSkip: false,
     IsPrevious: true, 
+    IsDelete: false,
   };
 
   const headers = new HttpHeaders({
@@ -364,7 +367,7 @@ onPrevious() {
 
         if (previousRecord.Message === 'No previous record') {
           this.notificationService.showNotification(
-            'There are no previous record avaiable. Try Skip action.',
+            'There are no previous record avaiable. Please Skip action.',
             'INFO',
             'info',
             () => {
@@ -377,7 +380,7 @@ onPrevious() {
         }
       } else {
         this.notificationService.showNotification(
-          'There are no previous record avaiable. Please Skip action.',
+          'No more records to process.',
           'INFO',
           'info',
           () => {
@@ -402,10 +405,75 @@ onPrevious() {
 }
 
 
+onDelete() {
+  const userConfirmed = window.confirm("Are you sure you want to delete this record?");
+  
+  if (!userConfirmed) {
+    return; // If user cancels, do nothing
+  }
+
+  this.loading = true;
+  this.errors = {};
+  this.notificationService.setNotificationVisibility(false);
+
+  const formData = {
+    RowId: this.id,
+    FirstName: this.firstnamefor,
+    LastName: this.lastnamefor,
+    StartDate: this.startdate,
+    EndDate: this.enddate,
+    GroupNewId: this.groupNewId,
+    IsSkip: false,
+    IsPrevious: false, 
+    IsDelete: true
+  };
+
+  const headers = new HttpHeaders({
+    Authorization: `Bearer ${this.token}`,
+    'Content-Type': 'application/json',
+  });
+
+  const apiUrl = environment.API_BASE_URL + 'OCRAI/ValidateAndMapToContractorContract';
+  this.http.post<any>(apiUrl, formData, { headers }).subscribe({
+    next: (response) => {
+      this.loading = false;
+
+      if (response?.data?.resultTable?.length > 0) {
+        const previousRecord = response.data.resultTable[0];
+        this.fetchNextRecord(previousRecord);
+      }
+
+      // ✅ Show success notification after successful deletion
+      this.notificationService.showNotification(
+        'Record deleted successfully!',
+        'SUCCESS',
+        'success',
+        () => {
+          this.notificationService.setNotificationVisibility(false);
+        }
+      );
+    },
+    error: (error) => {
+      this.loading = false;
+      console.error("Error in deletion:", error);
+      this.notificationService.showNotification(
+        'Unable to delete the record. Please retry.',
+        'ERROR',
+        'error',
+        () => {
+          this.notificationService.setNotificationVisibility(false);
+        }
+      );
+    },
+  });
+}
+
+
+
 onSkip() {
   this.loading = true;
   const errors: any = {};
-  this.errors = errors; // Assign errors to the class property
+  this.errors = errors; 
   this.notificationService.setNotificationVisibility(false);
   
 
