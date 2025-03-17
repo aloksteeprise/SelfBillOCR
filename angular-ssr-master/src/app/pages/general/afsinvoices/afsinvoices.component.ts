@@ -140,7 +140,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
         next: (response: any) => {
           this.allRecords = response.data.data;  // ✅ Store data in allRecords
           this.dataSource.data = response.data.data;
-          console.log("✅ Incoming Data from API:", this.allRecords);
+          //console.log("✅ Incoming Data from API:", this.allRecords);
           this.totalRecords = response.data.totalRecords; 
           this.loading = false; 
         },
@@ -306,7 +306,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
 
   toggleAllRecords(event: any) {
     this.IsAllRecord = event.target.checked;
-    console.log(this.IsAllRecord, "IsAllRecord status updated");
+    //console.log(this.IsAllRecord, "IsAllRecord status updated");
 
     setTimeout(() => {
         if (!this.allRecords || this.allRecords.length === 0) {
@@ -328,7 +328,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     // ✅ Ensure Angular detects changes
     this.selectedRecords = [...this.selectedRecords];
 
-    console.log("✅ Selected Records:", this.selectedRecords);
+    //console.log("✅ Selected Records:", this.selectedRecords);
   }, 500); // Wait for 0.5 sec to ensure data is loaded
 }
 
@@ -350,7 +350,7 @@ onCheckboxChange(event: any, id: number) {
   // ✅ Ensure Angular detects changes
   this.selectedRecords = [...this.selectedRecords];
 
-  console.log("Updated Selected Records:", this.selectedRecords);
+  //console.log("Updated Selected Records:", this.selectedRecords);
 }
 
 
@@ -474,7 +474,7 @@ BatchValidate() {
       next: (response) => {
           if (response?.data?.length > 0 && response.data[0].status === 4) {
               this.notificationService.showNotification(
-                  'Records have been validated and processed successfully.',
+                  'Records have been validated and processed successfully. The updates have been applied to those that meet the criteria.',
                   'INFORMATION',
                   'success',
                   () => {
@@ -509,13 +509,9 @@ getCsmTeam() {
       'Content-Type': 'application/json',
   });
 
-  console.log("Headers:", headers);
-
   this.http.post<any>(apiUrl, {}, { headers }).subscribe({
       next: (data) => {
-        console.log('response', data)
         this.csmTeamarr = data.data.csmTeamList;     
-            console.log('this.csmTeamarr', this.csmTeamarr)
           // if (data && data.data && data.data.CsmTeamList && Array.isArray(data.data.CsmTeamList)) {
           //   this.csmTeamarr = data.data.csmTeamList;     
           //   console.log('this.csmTeamarr', this.csmTeamarr)         

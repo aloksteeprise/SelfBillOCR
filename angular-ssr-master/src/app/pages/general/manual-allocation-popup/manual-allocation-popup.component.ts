@@ -112,7 +112,6 @@ export class ManualAllocationPopupComponent implements OnInit{
   }
   
   OnAdd() {
-    debugger;
     this.loading = true;
     const errors: any = {};
     this.errors = errors;
