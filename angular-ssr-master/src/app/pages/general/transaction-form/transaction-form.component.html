@@ -1,9 +1,7 @@
 <div style="margin-top: 63px;">
   <div class="d-flex align-items-center justify-content-between">
     <p class="custom-heading">Transactions Allocation</p>
-    <button type="submit" class="btn btn-outline-success" (click)="openConfirmationBox()"
-      style="margin-right: 19px;">Batch Allocate</button>
-    <app-confirmation-pop style="position: absolute; top: 0; left: 0;"></app-confirmation-pop>
+ 
 
   </div>
 
@@ -48,6 +46,11 @@
         <div class="col-4 col-sm-1" style="padding-top: 21px;">
           <button type="submit" class="btn btn-outline-info white-color custom-label">Other Bank Statements</button>
         </div>
+        <div class="col-4 col-sm-1" style="padding-top: 21px;">
+        <button type="submit" class="btn btn-success custom-label" (click)="openConfirmationBox()"
+        style="margin-right: 19px;">Batch Allocate</button>
+      <app-confirmation-pop style="position: absolute; top: 0; left: 0;"></app-confirmation-pop>
+    </div>
       </div>
 
       <div class="row g-2 searchTable">
@@ -146,7 +149,7 @@
       <th mat-header-cell *matHeaderCellDef> RefRem </th>
       <td mat-cell *matCellDef="let element">
         <span matTooltip="{{ element.refRem }}" matTooltipPosition="above">
-          {{ element.refRem | slice:0:20 }}{{ element.refRem.length > 20 ? '...' : '' }}
+          {{ element.refRem | slice:0:40 }}{{ element.refRem.length > 40 ? '...' : '' }}
         </span>
       </td>
     </ng-container>

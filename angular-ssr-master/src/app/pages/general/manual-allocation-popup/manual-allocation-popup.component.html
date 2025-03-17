@@ -80,7 +80,9 @@
           </div>
       
           <div class="form-actions text-center mt-3">
-            <button type="submit" class="btn btn-primary">Add</button>
+            <button type="button" class="btn btn-primary" (click)="onSubmit(myForm)">Add</button>
+             <app-notification-popup
+            *ngIf="(notificationService.notificationVisibility$ | async)"></app-notification-popup>
             <button type="button" class="btn btn-secondary ms-2" (click)="clearform()">Clear</button>
           </div>
       

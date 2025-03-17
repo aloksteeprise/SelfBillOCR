@@ -68,11 +68,11 @@ export class ManualAllocationPopupComponent implements OnInit{
     this.amountPaid=''
   }
 
-  submitForm(): void {
-    if (this.myForm) {
-      this.myForm.ngSubmit.emit();
-    }
-  }
+  // submitForm(): void {
+  //   if (this.myForm) {
+  //     this.myForm.ngSubmit.emit();
+  //   }
+  // }
   clearValidation(field: string) {
     if ((this as any)[field]?.trim() !== '') {
       this.errors[field] = null;
@@ -81,8 +81,8 @@ export class ManualAllocationPopupComponent implements OnInit{
 
   onSubmit(form: any): void {
     let isValid = true;
-    this.errors = {}; 
-  
+    this.errors = {};  // Reset errors at the start
+    
     if (!this.amountPaid) {
       this.errors.amountPaid = 'Amount Paid is required.';
       isValid = false;
@@ -107,9 +107,16 @@ export class ManualAllocationPopupComponent implements OnInit{
       this.errors.invoiceNo = 'Invoice No is required.';
       isValid = false;
     }
-
+  
+    // ✅ If form is not valid, STOP execution and show validation messages
+    if (!isValid) {
+      return;  // Stop execution, so API is NOT called
+    }
+  
+    // ✅ If validation passes, call API
     this.OnAdd();
   }
+  
   
   OnAdd() {
     this.loading = true;
@@ -132,6 +139,7 @@ export class ManualAllocationPopupComponent implements OnInit{
     });
   
     const apiUrl = environment.API_BASE_URL + 'OCRAI/AddManualBankAllocation';
+    // const apiUrl = ''
   
     this.http.post<any>(apiUrl, formData, { headers }).subscribe({
       next: (response) => {
@@ -139,6 +147,8 @@ export class ManualAllocationPopupComponent implements OnInit{
         this.loading = false;
         const resultObj = response?.data?.resultTable?.[0];
         const isSuccess = resultObj?.Result === true;
+
+        debugger
   
         if (isSuccess) {
           this.notificationService.showNotification(
