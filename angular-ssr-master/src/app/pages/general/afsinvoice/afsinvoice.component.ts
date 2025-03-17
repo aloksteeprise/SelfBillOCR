@@ -486,6 +486,9 @@ onSkip() {
     LastName: this.lastnamefor,
     StartDate: this.startdate,
     EndDate: this.enddate,
+    totalAmount : this.totalAmount,
+    invoiceNumber : this.invoiceNumber,
+    invoiceDate : this.invoiceDate,
     GroupNewId: this.groupNewId,
     IsSkip: true,
   };
