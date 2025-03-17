@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AfsselfbillnotificationComponent } from './afsselfbillnotification.component';
 import { afsselfbillnotificationRoute } from './afsselfbillnotification-routing.module';
@@ -17,13 +17,8 @@ import { SharedModule } from '../shared/shared.module';
     NgxImageZoomModule,
     SharedModule
   ],
-  exports: [
-    AfsselfbillnotificationComponent  
-  ],
-  declarations: [
-    AfsselfbillnotificationComponent,
-     
-  ],
-  providers: [],
+  declarations: [AfsselfbillnotificationComponent],
+  exports: [AfsselfbillnotificationComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]  // Add this to suppress unknown element errors
 })
-export class AfsSelfBillNotificationModule { }  
+export class AfsSelfBillNotificationModule { }

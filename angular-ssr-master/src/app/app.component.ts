@@ -101,9 +101,7 @@ export class AppComponent implements OnInit {
   }
 
   sendLinkViaEmail() {
-    const selfBillNotification = `Access the Self Bill Notification Component here: ${window.location.origin}${this.selfBillNotificationLink}`;
     const remittanceNotification = `Access the Remittance Notification Component here: ${window.location.origin}${this.remittanceNotificationLink}`;
-    console.log(selfBillNotification);
     console.log(remittanceNotification);
   }
 

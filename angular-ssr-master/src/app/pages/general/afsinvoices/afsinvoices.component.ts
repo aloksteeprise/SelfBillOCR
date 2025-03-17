@@ -12,6 +12,7 @@ import {environment} from '../constant/api-constants';
 import { NotificationPopupService } from '../notification-popup/notification-popup.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BreakpointObserver } from '@angular/cdk/layout';
+import {AfsselfbillnotificationComponent} from '../afsselfbillnotification/afsselfbillnotification.component';
 
 @Component({
   selector: 'app-afsinvoices',
@@ -500,7 +501,6 @@ BatchValidate() {
 }
 
 getCsmTeam() {
-  debugger;
   const apiUrl = environment.API_BASE_URL + 'OCRAI/GetCsmTeamData';
   this.notificationService.setNotificationVisibility(true);
 
@@ -525,7 +525,18 @@ getCsmTeam() {
           console.error("Error Response:", error);        
       },
   });
-}  
+}
+openSelfBillPopup(): void {
+  const dialogRef = this.dialog.open(AfsselfbillnotificationComponent, {
+    width: '800px',
+    height:'270px',
+    data: { token: this.token }  // Passing token here
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    console.log('The dialog was closed, result:', result); // Receiving data back if needed
+  });
+}
 }
 
 

@@ -84,22 +84,24 @@
 
 
     
-        <div class="col-6 col-sm-4 d-flex justify-content-end align-items-end marginleft8 margintop25 custom-center"
-          style="padding: 5px;" >
+        <div class="col-6 col-sm-3 d-flex justify-content-end align-items-end marginleft8 margintop25 custom-center"
+          style="padding-bottom: 5px;" >
           <button type="submit" class="btn btn-dark">Search</button>
           <button type="button" (click)="ClearSearch()" class="btn btn-outline-dark"
             style="margin-left: 12px; color: white;">Clear</button>
         </div>
 
-        <div class="col-6 col-sm-2 d-flex justify-content-end align-items-end margintop25 " style="padding: 5px;" >
-          <button type="button" class="btn btn-success" (click)="openBatchValidateConfirmationBox()"
+        <div class="col-6 col-sm-3 d-flex justify-content-end align-items-end margintop25 " style="padding-bottom: 5px; padding-right: 0px;" >
+          <button type="button" class="btn btn-success" (click)="openSelfBillPopup()"
+            style="color: white;">Upload SelfBill</button>
+
+            &nbsp; <button type="button" class="btn btn-success" (click)="openBatchValidateConfirmationBox()"
             style="color: white;">Batch
             Validate</button>
           <app-confirmation-pop style="position: absolute; top: 0; left: 0;"></app-confirmation-pop>
           <app-notification-popup style="position: absolute; top: 0; left: 0;"
             *ngIf="(notificationService.notificationVisibility$ | async)"></app-notification-popup>
         </div>
-
 
 
       </div>

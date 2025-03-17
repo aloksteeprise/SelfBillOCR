@@ -1,9 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from '../constant/api-constants';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NotificationPopupService } from '../notification-popup/notification-popup.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Inject } from '@angular/core';
 
 @Component({
   selector: 'app-afsselfbillnotification',
@@ -39,7 +41,7 @@ export class AfsselfbillnotificationComponent implements OnInit {
   // imageWidth: number = 792;
   // pdfFileName:string="";
 
-  selectedFile: File | null = null;
+  selectedFiles: File[] = [];
   isFileUploadVisible: boolean = true;
   isPdf: boolean = false;
   url: SafeResourceUrl = '';
@@ -53,9 +55,15 @@ export class AfsselfbillnotificationComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private router: Router,
     private route: ActivatedRoute,
-    private notificationService: NotificationPopupService) {
+    private notificationService: NotificationPopupService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<AfsselfbillnotificationComponent>
+  ) {
+    console.log('Received data in dialog:', data);
+    this.token = data.token;
+    console.log('Token:', this.token);
     // this.setImagePath();
-    //this.setImagePath(data.invoiceFilePath, data.invoiceFileName);
+   //this.setImagePath(data.invoiceFilePath, data.invoiceFileName);
   }
 
   // setImagePath(): void {
@@ -70,51 +78,63 @@ export class AfsselfbillnotificationComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading = true;
-    this.route.queryParams.subscribe(params => {
-      const urlToken = params['token'];
-      if (urlToken) {
-        this.token = urlToken;
-        this.validateToken();
-      } else {
-        this.notificationService.showNotification(             
-          'Token is missing. Please provide a valid token to proceed.',
-          'Token Error',
-          'error',
-          () => {
-            console.log('OK clicked 1');
-          }
-        );
-      }
-    });
+    // this.route.queryParams.subscribe(params => {
+    //   const urlToken = params['token'];
+    //   if (urlToken) {
+    //     this.token = urlToken;
+    //     this.validateToken();
+    //   } else {
+    //     this.notificationService.showNotification(             
+    //       'Token is missing. Please provide a valid token to proceed.',
+    //       'Token Error',
+    //       'error',
+    //       () => {
+    //         console.log('OK clicked 1');
+    //       }
+    //     );
+    //   }
+    // });
   }
 
 
   onFileSelect(event: any): void {
-    this.selectedFile = event.target.files[0];
-    const file = event.target.files[0];
-    const fileType = file.type;
-
-    if (fileType === 'application/pdf') {
-      this.isPdf = true;
-      const objectUrl = URL.createObjectURL(file);
-      this.url = this.sanitizer.bypassSecurityTrustResourceUrl(objectUrl);
-    } else {
-      this.notificationService.showNotification(             
-        'Please upload a valid PDF file to proceed.',
+    const files: FileList = event.target.files;
+    this.selectedFiles = []; // Reset previous selections
+  
+    if (!files || files.length === 0) {
+      return;
+    }
+  
+    const allowedExtensions = ['.pdf', '.xlsx', '.xls'];
+    const invalidFiles: string[] = [];
+  
+    Array.from(files).forEach((file: File) => {
+      const fileName = file.name.toLowerCase();
+      const isValidExtension = allowedExtensions.some(ext => fileName.endsWith(ext));
+  
+      if (isValidExtension) {
+        this.selectedFiles.push(file);
+        console.log('File selected:', file.name);
+      } else {
+        invalidFiles.push(file.name);
+      }
+    });
+  
+    // Show notification if any invalid files were found
+    if (invalidFiles.length > 0) {
+      this.notificationService.showNotification(
+        `These files are not supported and were ignored: ${invalidFiles.join(', ')}`,
         'Unsupported File Type',
-        'error',
+        'warning',
         () => {
-          const fileInput = document.getElementById('fileInput') as HTMLInputElement;
-          if (fileInput) {
-            fileInput.value = '';
-          }
-        this.selectedFile = null;
-        this.isFileUploadVisible = true;
-          console.log('OK clicked 2');
+          console.log('Invalid file types ignored');
         }
       );
     }
   }
+  
+  
+  
 
   validateToken(): void {
     if (!this.token) {
@@ -168,73 +188,67 @@ export class AfsselfbillnotificationComponent implements OnInit {
       );
   }
 
+  closeDialog(): void {
+    this.dialogRef.close();
+    this.notificationService.setNotificationVisibility(false);
+  }
 
   onUpload(): void {
-    if (this.selectedFile) {
+    if (this.selectedFiles.length > 0) {
       const fileData = new FormData();
-      fileData.append('file', this.selectedFile, this.selectedFile.name);
-      //fileData.append('token', this.token);
+  
+      this.selectedFiles.forEach((file, index) => {
+        fileData.append('files', file, file.name);
+      });
+  
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${this.token}`
+          });
 
-      const apiUrl = environment.API_BASE_URL+'SelfBillNotification/UploadSelfBillFile';
-
-      //const apiUrl = 'https://localhost:44337/api/SelfBillNotification/UploadSelfBillFile';
-
-      this.http.post<any>(apiUrl, fileData).subscribe(
+      const apiUrl = environment.API_BASE_URL + 'SelfBillNotification/UploadSelfBillFiles';
+  
+      this.http.post<any>(apiUrl, fileData,{headers}).subscribe(
         (response) => {
-          // this.id = response.id || '';
-          // this.contractorName = response.contractorName || '';
-          // this.afscontractor = response.afscontractor || '';
-          // this.firstName = response.firstName || '';
-          // this.lastName = response.lastName || '';
-          // this.startDate = response.startDate || '';
-          // this.endDate = response.endDate || '';
-          // this.totalAmount = response.totalAmount || '';
-          // this.invoiceNumber = response.invoiceNo || '';
-          // this.invoiceDate = response.invoiceDate || '';
-          // this.groupNewId = response.grouP_NEWID || '';
-          // this.gridCtcCode = response.contract_CtcCode || 0;
-
-          // this.fetchContractorOptions();
-          // this.isFileUploadVisible = false;
-          // this.isPopupVisible = true;
-
-          this.selectedFile = null;
+          this.selectedFiles = [];
           const fileInput = document.getElementById('fileInput') as HTMLInputElement;
           if (fileInput) {
             fileInput.value = '';
-            this.url = '';
           }
-          this.notificationService.showNotification(             
-            'Your file has been uploaded successfully!',
+          this.notificationService.showNotification(
+            'Your files have been uploaded successfully!',
             'INFORMATION',
             'success',
             () => {
-              console.log('OK clicked 5');
+              this.closeDialog();
+              this.notificationService.setNotificationVisibility(false);
+              console.log('Upload successful');
             }
           );
         },
         (error) => {
-          this.notificationService.showNotification(             
-            'Something went wrong while uploading your file. Please try again.',
+          this.notificationService.showNotification(
+            'Something went wrong while uploading your files. Please try again.',
             'Processing Error',
             'error',
             () => {
-              console.log('OK clicked 6');
+              console.log('Upload error');
             }
           );
         }
       );
     } else {
-      this.notificationService.showNotification(             
-        'Please select a file before proceeding.',
+      // No files selected error
+      this.notificationService.showNotification(
+        'Please select at least one file before proceeding.',
         'File Required',
         'error',
         () => {
-          console.log('OK clicked 7');
+          console.log('No files selected');
         }
       );
     }
   }
+  
   }
 
     // clearValidation(field: string) {
