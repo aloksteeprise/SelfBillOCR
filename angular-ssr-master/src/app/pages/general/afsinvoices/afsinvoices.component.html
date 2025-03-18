@@ -114,8 +114,9 @@
       <table mat-table [dataSource]="dataSource.data" matSort class="table">
         <ng-container matColumnDef="contractorName">
           <th mat-header-cell *matHeaderCellDef   class="coloredwhite"> 
-            <input type="checkbox" [(ngModel)]="IsAllRecord" name="IsAllRecord" (change)="toggleAllRecords($event)" 
-              style="margin-right: 8px;" /> 
+            <input *ngIf="!IsValidatedRecord" type="checkbox" [(ngModel)]="IsAllRecord" name="IsAllRecord"
+            (change)="toggleAllRecords($event)" style="margin-right: 8px;" />
+          
             Contractor Name 
           </th>
           
