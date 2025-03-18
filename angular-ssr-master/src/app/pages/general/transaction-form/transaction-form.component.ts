@@ -203,22 +203,30 @@ if (isPlatformBrowser(this.platformId)) {
   }
 
   applyFilter(form: any): void {
+    console.log()
     this.loadInvoices();
+      
   }
 
-  // validateRecord(id: number): void {
-  //   console.log('Validating record with ID:', id);
-
-  //   this.transactionFormService.ValidateManualBankAllocation(id).subscribe(
-  //     (response) => {
-  //       console.log('Validation successful:', response);
-  //       // this.fetchData(); 
-  //     },
-  //     (error) => {
-  //       console.error('Error during validation:', error);
-  //     }
-  //   );
-  // }
+  validateRecord(mvtKey: number): void {
+    console.log('Validating record with ID:', mvtKey);
+  
+    if (mvtKey === null || mvtKey === undefined || mvtKey === 0) {
+      console.error('Invalid ID:', mvtKey);
+      return;  // Stop execution if the ID is invalid
+    }
+  
+    this.transactionFormService.ValidateManualBankAllocation(mvtKey).subscribe(
+      (response) => {
+        this.loadInvoices();
+        console.log('Validation successful:', response);
+      },
+      (error) => {
+        console.error('Error during validation:', error);
+      }
+    );
+  }
+  
   
 
 
@@ -247,6 +255,7 @@ if (isPlatformBrowser(this.platformId)) {
     this.loadInvoices();
   }
   openConfirmationBox() {
+    debugger;
     this.popupComponent.openPopup(
       'Confirmation',
       'Are you sure that you want to proceed?',
@@ -317,30 +326,23 @@ if (isPlatformBrowser(this.platformId)) {
   openManualAllocationModal(): void {
     const selectedCompany = this.selectedCompany?.cieDesc;
     const selectedBankAccount = this.selectedBankAccount;
-  
+    if (this.selectedCompany && this.selectedBankAccount) {
     const dialogRef = this.dialog.open(ManualAllocationPopupComponent, {
       width: '800px',
       data: { company : selectedCompany ,bankAccount: selectedBankAccount }
     });
   
+  
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });
   }
+  else {
+        console.log('Please select a company and a bank account before proceeding.');
+      }
+    }
   
 
-  // openManualAllocationModal(): void {
-  //   if (this.selectedCompany && this.selectedBankAccount) {
-  //     const dialogRef = this.dialog.open(ManualAllocationPopupComponent, {
-  //       width: '800px',
-  //     });
-  
-  //     dialogRef.afterClosed().subscribe(result => {
-  //       console.log('The dialog was closed');
-  //     });
-  //   } else {
-  //     console.log('Please select a company and a bank account before proceeding.');
-  //   }
-  // }
+ 
 
 }
