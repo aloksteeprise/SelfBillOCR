@@ -31,7 +31,7 @@ export class ManualAllocationPopupComponent implements OnInit{
   ) {
 
     this.currency = this.extractCurrency(data.bankAccount);
-    this.fundSource = data.company;
+    this.fundSource = data.bankAccount + ' | ' + data.company;
   }
 
   ngOnInit(): void {
@@ -63,7 +63,7 @@ export class ManualAllocationPopupComponent implements OnInit{
   clearform():void{
     this.bankPaymentDate=''
     this.fundDescription=''
-    this.fundSource=''
+    //this.fundSource=''
     this.invoiceNo=''
     this.amountPaid=''
   }
@@ -145,8 +145,8 @@ export class ManualAllocationPopupComponent implements OnInit{
       next: (response) => {
         console.log('API Response:', response);
         this.loading = false;
-        const resultObj = response?.data?.resultTable?.[0];
-        const isSuccess = resultObj?.Result === true;
+        const resultObj = response?.data
+        const isSuccess = resultObj?.result === true;
 
         debugger
   

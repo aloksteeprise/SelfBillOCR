@@ -59,8 +59,11 @@
             <label for="fundSource" class="col-sm-4 col-form-label">Fund Source: <span style="color: red;">
               *</span></label>
             <div class="col-sm-8">
-              <input type="text" id="fundSource" name="fundSource" [(ngModel)]="fundSource" maxlength="200"
-                autocomplete="off" class="form-control" required (input)="clearValidation('fundSource')"/>
+              <span class="input-group-text text-break" style="font-size: 12px; word-break: break-word; white-space: normal;">
+                {{ fundSource }}
+              </span>
+               <!-- <input type="text" id="fundSource" name="fundSource" [(ngModel)]="fundSource" maxlength="200"
+                autocomplete="off" class="form-control" required (input)="clearValidation('fundSource')"/> -->
               <div class="error-message" *ngIf="errors.fundSource">
                 <small class="text-danger">{{ errors.fundSource }}</small>
               </div>
@@ -81,14 +84,12 @@
       
           <div class="form-actions text-center mt-3">
             <button type="button" class="btn btn-primary" (click)="onSubmit(myForm)">Add</button>
-             <app-notification-popup
-            *ngIf="(notificationService.notificationVisibility$ | async)"></app-notification-popup>
             <button type="button" class="btn btn-secondary ms-2" (click)="clearform()">Clear</button>
           </div>
       
         </form>
       </div>
-      
+      <app-notification-popup></app-notification-popup>
     </div>
   </div>
 </div>
