@@ -525,7 +525,7 @@ getCsmTeam() {
 openSelfBillPopup(): void {
   const dialogRef = this.dialog.open(AfsselfbillnotificationComponent, {
     width: '800px',
-    height:'270px',
+    height:'330px',
     data: { token: this.token }  // Passing token here
   });
 

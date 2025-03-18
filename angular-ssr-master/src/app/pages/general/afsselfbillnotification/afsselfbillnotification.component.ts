@@ -77,7 +77,7 @@ export class AfsselfbillnotificationComponent implements OnInit {
   // }
 
   ngOnInit(): void {
-    this.loading = true;
+    // this.loading = true;
     // this.route.queryParams.subscribe(params => {
     //   const urlToken = params['token'];
     //   if (urlToken) {
@@ -100,6 +100,7 @@ export class AfsselfbillnotificationComponent implements OnInit {
   onFileSelect(event: any): void {
     const files: FileList = event.target.files;
     this.selectedFiles = []; // Reset previous selections
+    this.loading = true
   
     if (!files || files.length === 0) {
       return;
@@ -115,8 +116,10 @@ export class AfsselfbillnotificationComponent implements OnInit {
       if (isValidExtension) {
         this.selectedFiles.push(file);
         console.log('File selected:', file.name);
+        this.loading = false
       } else {
         invalidFiles.push(file.name);
+        this.loading = false
       }
     });
   
@@ -194,9 +197,10 @@ export class AfsselfbillnotificationComponent implements OnInit {
   }
 
   onUpload(): void {
+    this.loading = true
     if (this.selectedFiles.length > 0) {
       const fileData = new FormData();
-  
+      
       this.selectedFiles.forEach((file, index) => {
         fileData.append('files', file, file.name);
       });
@@ -204,6 +208,8 @@ export class AfsselfbillnotificationComponent implements OnInit {
       const headers = new HttpHeaders({
         Authorization: `Bearer ${this.token}`
           });
+
+        
 
       const apiUrl = environment.API_BASE_URL + 'SelfBillNotification/UploadSelfBillFiles';
   
@@ -214,23 +220,28 @@ export class AfsselfbillnotificationComponent implements OnInit {
           if (fileInput) {
             fileInput.value = '';
           }
+          this.loading = false
           this.notificationService.showNotification(
-            'Your files have been uploaded successfully!',
+            'Please note that uploaded files will undergo processing at the background, and a short delay is expected. The files will be available for validation once processing is complete.',
             'INFORMATION',
             'success',
             () => {
               this.closeDialog();
+             
               this.notificationService.setNotificationVisibility(false);
               console.log('Upload successful');
             }
           );
         },
         (error) => {
+          this.loading = false
           this.notificationService.showNotification(
+        
             'Something went wrong while uploading your files. Please try again.',
             'Processing Error',
             'error',
             () => {
+             
               console.log('Upload error');
             }
           );
@@ -238,6 +249,7 @@ export class AfsselfbillnotificationComponent implements OnInit {
       );
     } else {
       // No files selected error
+      this.loading = false
       this.notificationService.showNotification(
         'Please select at least one file before proceeding.',
         'File Required',
@@ -251,301 +263,4 @@ export class AfsselfbillnotificationComponent implements OnInit {
   
   }
 
-    // clearValidation(field: string) {
-  //   if ((this as any)[field]?.trim() !== '') {
-  //     this.errors[field] = null;
-  //   }
-  // }
-
-  // onSkip(){
-  //   this.isFileUploadVisible = true;
-  //   this.isPopupVisible = false;
-  // }
-
-  // onImageLoad(event: Event): void {
-  //   const imgElement = event.target as HTMLImageElement;
-
-  //   if (imgElement && imgElement.naturalWidth) {
-  //     this.imageWidth = imgElement.naturalWidth;
-  //   }
-  // }
-  
-  // fetchContractorOptions(): void {
-
-  //   const apiUrl = environment.API_BASE_URL+'OCRAI/GetContractorContractListByConName';
-
-  //   this.http.post<any>(apiUrl, { firstNameForAFS: this.firstName,lastNameForAFS:this.lastName,fullName: this.contractorName }).subscribe(
-  //     (response) => {
-  //       if (response?.data?.contractsList) {
-
-  //         localStorage.setItem('contractsList', JSON.stringify(response.data.contractsList));
-  //         this.contractorOptions = response.data.contractsList.map((item: any) => ({
-  //           id: item.ctcCode, // Use ctcCode as ID
-  //           firstName: item.conFirstName, // Use conFirstName for dropdown display
-  //           lastName:item.conLastName,
-  //           fullName:item.fullName
-  //         }));
-
-  //         this.selectedContract = this.contractorOptions.find(
-  //           (option) => option.id === Number(this.gridCtcCode)
-  //         );
-
-  //         if (this.selectedContract) {
-  //           this.filterContractData();
-  //         }
-  //       }
-  //     },
-  //     (error) => {
-  //       console.error('Error fetching contractor options:', error);
-  //     }
-  //   );
-  // }
-
-  // filterContractData(): void {
-  //   console.log('Selected Contractor:', this.selectedContract);
-  //   this.filteredContractOptions = [];
-  //   this.selectedFilteredContract = '';
-  //   const storedContractsList = JSON.parse(localStorage.getItem('contractsList')!);
-  //   if (storedContractsList && this.selectedContract) {
-  //     this.filteredContractOptions = storedContractsList
-  //       .filter((contract: any) => contract.fullName === this.selectedContract.fullName)
-  //       .map((item: any) => ({
-  //         id: item.ctcCode,
-  //         name: item.contracts
-  //       }));
-
-  //       if (this.filteredContractOptions.length > 0) {
-  //         this.selectedFilteredContract = this.filteredContractOptions[0].name;
-  //     }
-  //   }
-  // }
-
-  // onSubmit(form: any): void {
-  //   this.submitted = true; // Mark the form as submitted
-  //   let isValid = true;
-  //   const errors: any = {};
-
-  //   if (!this.firstName || this.firstName.trim() === '') {
-  //     errors.firstName = 'First Name is required.';
-  //     isValid = false;
-  //   }
-
-  //   if (!this.lastName || this.lastName.trim() === '') {
-  //     errors.lastName = 'Last Name is required.';
-  //     isValid = false;
-  //   }
-
-  //   if (!this.startDate || this.startDate.trim() === '') {
-  //     errors.startDate = 'Start Date is required.';
-  //     isValid = false;
-  //   }
-
-  //   if (!this.endDate || this.endDate.trim() === '') {
-  //     errors.endDate = 'End Date is required.';
-  //     isValid = false;
-  //   }
-
-  //   if (this.startDate && this.endDate) {
-  //     const startDateObj = new Date(this.startDate);
-  //     const endDateObj = new Date(this.endDate);
-
-  //     if (startDateObj > endDateObj) {
-  //       errors.dateComparison = 'Start Date cannot be greater than End Date.';
-  //       isValid = false;
-  //     }
-  //   }
-
-  //   if (!this.contractorName || this.contractorName.trim() === '') {
-  //     errors.contractorName = 'Contractor Name is required.';
-  //     isValid = false;
-  //   }
-
-  //   if (!this.totalAmount || this.totalAmount === 0) {
-  //     errors.totalAmount = 'Total Amount is required.';
-  //     isValid = false;
-  //   }
-
-  //   if (!this.invoiceNumber || this.invoiceNumber.trim() === '') {
-  //     errors.invoiceNumber = 'Invoice Number is required.';
-  //     isValid = false;
-  //   }
-
-  //   if (!this.invoiceDate || this.invoiceDate.trim() === '') {
-  //     errors.invoiceDate = 'Invoice Date is required.';
-  //     isValid = false;
-  //   }
-
-  //   if (!this.selectedContract) {
-  //     errors.selectedContract = 'AFS Contractor is required.';
-  //     isValid = false;
-  //   }
-
-  //   if (!this.selectedFilteredContract) {
-  //     errors.selectedFilteredContract = 'AFS Contract is required.';
-  //     isValid = false;
-  //   }
-
-  //   this.errors = errors; // Assign errors to the class property
-
-  //   if (isValid) {
-  //     const formData = {
-  //       RowId: this.id,
-  //       FirstName: this.firstName,
-  //       LastName: this.lastName,
-  //       StartDate: this.startDate,
-  //       EndDate: this.endDate,
-  //       //GroupNewId: this.groupNewId,
-  //     };
-
-  //     console.log('formData:', formData);
-
-  //     //const apiUrl = 'https://localhost:44337/api/OCRAI/ValidateAndMapToContractorContract';
-  //   const apiUrl = environment.API_BASE_URL+'OCRAI/ValidateAndMapToContractorContract';
-
-  //     this.http.post<any>(apiUrl, formData).subscribe({
-  //       next: (response) => {
-  //         switch (response.data.validationResult) {
-  //           case -1:
-  //             this.notificationService.showNotification(
-  //               'Error occurred in validation process.',
-  //               'ERROR',
-  //               'error',
-  //               () => {
-  //                 console.log('OK clicked!');
-  //                 this.isPopupVisible = true;
-  //                 this.isFileUploadVisible = false;
-  //               }
-  //             );
-  //             break;
-
-  //         case 1:
-  //           this.notificationService.showNotification(
-  //             'No row validated.',
-  //             'INFORMATION',
-  //             'success',
-  //             () => {
-  //               console.log('OK clicked 1');
-  //               console.log('response');
-  //               console.log(response);
-  //               this.isPopupVisible = true;
-  //               this.isFileUploadVisible = false;
-  //             }
-  //           );
-  //           break;
-
-  //         case 2:
-  //           this.notificationService.showNotification(
-  //             'The records have been successfully validated and moved.',
-  //             'INFORMATION',
-  //             'success',
-  //             () => {
-  //               console.log('OK clicked 2');
-  //               console.log('response');
-  //               console.log(response);
-  //               this.isPopupVisible = false;
-  //               this.isFileUploadVisible = true;
-  //             }
-  //           );
-  //           break;
-
-  //         case 3:
-  //           this.notificationService.showNotification(
-  //             'Error in validation process.',
-  //             'ERROR',
-  //             'error',
-  //             () => {
-  //               console.log('OK clicked 3');
-  //               console.log('response');
-  //               console.log(response);
-  //               this.isPopupVisible = true;
-  //               this.isFileUploadVisible = false;
-  //             }
-  //           );
-  //           break;
-
-  //         case 4:
-
-  //           this.notificationService.showNotification(
-  //             'The records have been successfully validated and moved.',
-  //             'INFORMATION',
-  //             'success',
-  //             () => {
-  //               console.log('OK clicked 4');
-  //               console.log('response' + response.data.resultTable.length);
-  //               console.log(response);
-  //               this.isPopupVisible = false;
-  //               this.isFileUploadVisible = true;
-  //             }
-  //           );
-  //           break;
-
-  //         default:
-  //           this.notificationService.showNotification(
-  //             'Unhandled validation result:',
-  //             'WARNING',
-  //             'Warning',
-  //             () => {
-  //               console.log('OK clicked default'); 
-  //               this.isPopupVisible = true;
-  //               this.isFileUploadVisible = false;
-  //             }
-  //           );
-  //           break;
-  //         }
-  //       },
-  //       error: (error) => {
-  //         this.notificationService.showNotification(
-  //           'There was an error submitting the form. Please try again.',
-  //           'ERROR',
-  //           'error',
-  //           () => {
-  //             console.log('OK clicked error');
-  //             this.isPopupVisible = true;
-  //             this.isFileUploadVisible = false;
-  //           }
-  //         );
-  //       },
-  //     });
-  //   } 
-  // }
-
-  // submitForm(): void {
-  //   if (this.myForm) {
-  //     this.myForm.ngSubmit.emit();
-  //   }
-  // }
-
-  // closePopup(): void {
-  //   this.isPopupVisible = false; 
-  // }
-
-
-  //   getToday(): string {
-  //     return new Date().toISOString().split('T')[0]
-  //  }
-  //  validateDate(): void {
-  //   const today = new Date(this.getToday()).getTime();
-
-  //   if (this.startDate) {
-  //     const startDate = new Date(this.startDate).getTime();
-  //     if (startDate > today) {
-  //       this.errors.startDate = 'Start Date cannot be in the future.';
-  //       this.startDate = '';
-  //     } 
-  //   }
-  //   else {
-  //     delete this.errors.startDate;
-  //   }
-
-  //   if (this.endDate) {
-  //     const endDate = new Date(this.endDate).getTime();
-  //     if (endDate > today) {
-  //       this.errors.endDate = 'End Date cannot be in the future.';
-  //       this.endDate = '';
-  //     }
-  //   }
-  //   else {
-  //     delete this.errors.endDate;
-  //   }
-  // }
-
+   
