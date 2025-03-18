@@ -253,6 +253,8 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     this.CsmTeam = null;
     this.IsSelfBill = false;
     this.IsAllRecord = false
+    this.selectedRecords = []
+    
     const startDateInput = document.getElementById('startdate') as HTMLInputElement;
     const endDateInput = document.getElementById('enddate') as HTMLInputElement;
 
@@ -305,6 +307,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   }
 
   toggleAllRecords(event: any) {
+    debugger
     this.IsAllRecord = event.target.checked;
     //console.log(this.IsAllRecord, "IsAllRecord status updated");
 
