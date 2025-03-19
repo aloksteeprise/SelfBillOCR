@@ -137,7 +137,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     const SortDirection = this.sort?.direction || ''; 
 
     this.apiService
-    .getInvoices(this.pageIndex, this.pageSize, SortColumn, SortDirection, this.name, this.invoiceno, this.startdate, this.enddate, this.IsValidatedRecord, this.IsSelfBill, this.CsmTeam,this.IsCompleteRecord, this.token,)
+    .getInvoices(this.pageIndex, this.pageSize, SortColumn, SortDirection, this.name, this.invoiceno, this.startdate, this.enddate, this.IsValidatedRecord, this.IsSelfBill, this.CsmTeam,this.IsCompleteRecord, this.token)
       .subscribe({
         next: (response: any) => {
           this.allRecords = response.data.data;  
