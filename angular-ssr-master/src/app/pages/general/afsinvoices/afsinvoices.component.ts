@@ -64,6 +64,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   isChecked = false;
   hideCheckBoxes: boolean = true; // Default: Show checkboxes
   isMovedInOriginaldb : boolean = true;
+  IsCompleteRecord:boolean =false;
 
   constructor(private apiService: ApiService, private dialog: MatDialog,  public notificationService: NotificationPopupService,private http: HttpClient,private breakpointObserver: BreakpointObserver ) { }
 
@@ -136,7 +137,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     const SortDirection = this.sort?.direction || ''; 
 
     this.apiService
-    .getInvoices(this.pageIndex, this.pageSize, SortColumn, SortDirection, this.name, this.invoiceno, this.startdate, this.enddate, this.IsValidatedRecord, this.IsSelfBill, this.CsmTeam, this.token)
+    .getInvoices(this.pageIndex, this.pageSize, SortColumn, SortDirection, this.name, this.invoiceno, this.startdate, this.enddate, this.IsValidatedRecord, this.IsSelfBill, this.CsmTeam,this.IsCompleteRecord, this.token,)
       .subscribe({
         next: (response: any) => {
           this.allRecords = response.data.data;  
@@ -264,6 +265,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     this.IsAllRecord = false
     this.selectedRecords = []
     this.hideCheckBoxes = true;
+    this.IsCompleteRecord= false;
     const startDateInput = document.getElementById('startdate') as HTMLInputElement;
     const endDateInput = document.getElementById('enddate') as HTMLInputElement;
 
