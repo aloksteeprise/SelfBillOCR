@@ -62,7 +62,8 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   selectedRecords: number[] = []; 
   allRecords: any[] = []; // Ensure this holds all records loaded in the table
   isChecked = false;
-  
+  hideCheckBoxes: boolean = true; // Default: Show checkboxes
+  isMovedInOriginaldb : boolean = true;
 
   constructor(private apiService: ApiService, private dialog: MatDialog,  public notificationService: NotificationPopupService,private http: HttpClient,private breakpointObserver: BreakpointObserver ) { }
 
@@ -138,14 +139,19 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     .getInvoices(this.pageIndex, this.pageSize, SortColumn, SortDirection, this.name, this.invoiceno, this.startdate, this.enddate, this.IsValidatedRecord, this.IsSelfBill, this.CsmTeam, this.token)
       .subscribe({
         next: (response: any) => {
-          this.allRecords = response.data.data;  // ✅ Store data in allRecords
+          this.allRecords = response.data.data;  
           this.dataSource.data = response.data.data;
           //console.log("✅ Incoming Data from API:", this.allRecords);
           this.totalRecords = response.data.totalRecords; 
+          if (this.allRecords.length > 0) {
+            this.isMovedInOriginaldb = this.allRecords[0].isMovedInOriginaldb;
+        } else {
+            this.isMovedInOriginaldb = false;  
+        }
           this.loading = false; 
         },
         error: (err) => {
-          console.error('❌ API Error:', err);
+          console.error('API Error:', err);
           this.loading = false; 
         },
       });
@@ -238,9 +244,12 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     this.enddate = this.enddate;
     this.IsValidatedRecord = this.IsValidatedRecord;
     this.isChecked = this.isChecked;
+    this.hideCheckBoxes = true;
 
     this.loadInvoices();
   }
+
+ 
 
   ClearSearch(): void {
 
@@ -254,12 +263,13 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     this.IsSelfBill = false;
     this.IsAllRecord = false
     this.selectedRecords = []
-    
+    this.hideCheckBoxes = true;
     const startDateInput = document.getElementById('startdate') as HTMLInputElement;
     const endDateInput = document.getElementById('enddate') as HTMLInputElement;
 
     if (startDateInput) startDateInput.value = '';
     if (endDateInput) endDateInput.value = '';
+   
 
     this.loadInvoices();
   }
@@ -306,8 +316,17 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     );
   }
 
+  // For checkbox logic when record is validated hide/unhide
+  changeblur (event:any){
+    this.IsAllRecord = false 
+    this.selectedRecords= [] 
+    if(!this.IsValidatedRecord && this.isMovedInOriginaldb){
+      this.hideCheckBoxes = false;
+
+    }
+  }
+
   toggleAllRecords(event: any) {
-    debugger
     this.IsAllRecord = event.target.checked;
     //console.log(this.IsAllRecord, "IsAllRecord status updated");
 
@@ -364,7 +383,7 @@ onCheckboxChange(event: any, id: number) {
           'Please select at least one record to batch validate.',
           'WARNING',
           'warning',
-          () => console.log('User acknowledged warning') 
+          () => {console.log('User acknowledged warning') }
       );
       return;
   }

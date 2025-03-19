@@ -73,9 +73,9 @@
         </div>
 
         <div class="form-check col-6 col-sm-3 d-flex justify-content-start align-items-center  margintop25" >
-          <input type="checkbox" name="IsValidatedRecord" [(ngModel)]="IsValidatedRecord" class="custom-marginmobile" style="margin-left: 30px;"/>
+          <input type="checkbox" name="IsValidatedRecord" [(ngModel)]="IsValidatedRecord"  class="custom-marginmobile" (change)="changeblur($event)" style="margin-left: 30px;"/>
           <label class="form-check-label fontweight500 " for="flexCheckDefault"
-            style="margin-left: 10px; ">
+            style="margin-left: 10px; " >
             Validated and Invoice created?
           </label>
         </div>
@@ -98,15 +98,15 @@
             &nbsp; <button type="button" class="btn btn-success" (click)="openBatchValidateConfirmationBox()"
             style="color: white;">Batch
             Validate</button>
-          <app-confirmation-pop style="position: absolute; top: 0; left: 0;"></app-confirmation-pop>
-          <app-notification-popup style="position: absolute; top: 0; left: 0;"
-            *ngIf="(notificationService.notificationVisibility$ | async)"></app-notification-popup>
+          
         </div>
 
 
       </div>
     </form>
-
+    <app-confirmation-pop style="position: absolute; top: 0; left: 0;"></app-confirmation-pop>
+    <app-notification-popup style="position: absolute; top: 0; left: 0;"
+      *ngIf="(notificationService.notificationVisibility$ | async)"></app-notification-popup>
     <!-- 
   <hr /> -->
 
@@ -114,7 +114,7 @@
       <table mat-table [dataSource]="dataSource.data" matSort class="table">
         <ng-container matColumnDef="contractorName">
           <th mat-header-cell *matHeaderCellDef   class="coloredwhite"> 
-            <input *ngIf="!IsValidatedRecord" type="checkbox" [(ngModel)]="IsAllRecord" name="IsAllRecord"
+            <input *ngIf="!IsValidatedRecord && hideCheckBoxes" type="checkbox" [(ngModel)]="IsAllRecord" name="IsAllRecord"
             (change)="toggleAllRecords($event)" style="margin-right: 8px;" />
           
             Contractor Name 
@@ -123,7 +123,7 @@
           <td mat-cell *matCellDef="let row">
             <!-- ✅ Row Checkboxes -->
             <!-- Only show checkbox if IsValidatedRecord is false -->
-            <input *ngIf="!row.isMovedInOriginaldb" type="checkbox" [checked]="selectedRecords.includes(row.id)"
+            <input *ngIf="!IsValidatedRecord && !row.isMovedInOriginaldb" type="checkbox" [checked]="selectedRecords.includes(row.id)"
               (change)="onCheckboxChange($event, row.id)" class="custom-checkbox" [disabled]="row.isErrorOnRow === 1" />
 
             {{ row.contractorName }}
