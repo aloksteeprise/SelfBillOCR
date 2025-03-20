@@ -15,7 +15,7 @@ import { RemittanceComponent } from './pages/general/remittance/remittance.compo
 // import {InvoiceComponent} from './pages/general/invoice/invoice.component'
 import {TransactionFormComponent} from './pages/general/transaction-form/transaction-form.component'
 import {ManualAllocationPopupComponent} from './pages/general/manual-allocation-popup/manual-allocation-popup.component'
- 
+import {RemittanceAllocationComponent} from  './pages/general/remittance-allocation/remittance-allocation.component'
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -85,6 +85,10 @@ export const routes: Routes = [
     loadChildren: () => import('./pages/general/remittance-popup/remittance-pop.module')
       .then(mod => mod.RemittancePopModule)
   },
+  {
+    path: 'remittanceallocation',
+    loadChildren: () => import('./pages/general/remittance-allocation/remittance-allocation.module').then(mod => mod.RemittanceAllocationModule)
+    },
   {
   path: 'afsselfbillnotification',
   loadChildren: () => import('./pages/general/afsselfbillnotification/afsselfbillnotification.module').then(mod => mod.AfsSelfBillNotificationModule)
