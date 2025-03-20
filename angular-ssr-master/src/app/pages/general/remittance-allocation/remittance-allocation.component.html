@@ -16,32 +16,47 @@
       <div class="modal-body">
         <!-- Agency and Invoice Selection -->
         <div class="container-fluid">
-          <div class="row align-items-center color  text-black">
-            <div class="col-12 col-sm-auto d-flex align-items-center">
-              <label class="custom-bottom">Agency: &nbsp;</label>
-              <select class=" form-select w-auto w-mobile">
-                <option>Linksap Europe Ltd (UK) LINKSAP</option>
-              </select>
+          <div class="row align-items-center text-black g-3 d-flex">
+            
+            <!-- Agency Selection -->
+            <div class="col-sm-3 d-flex flex-column">
+              <label class="custom-bottom">Agency:</label>
+              <input
+                type="text"
+                placeholder="Start typing agency name..."
+                matInput
+                [formControl]="agencyControl"
+                [matAutocomplete]="auto"
+              />
+          
+              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectAgency($event.option.value)" [displayWith]="displayAgency">
+                <mat-option *ngFor="let agency of filteredAgencies | async" [value]="agency">
+                  {{ agency.agedesc }}
+                </mat-option>
+              </mat-autocomplete>
+              
             </div>
-
-            <div class="col-12 col-sm-auto d-flex align-items-center custom-top">
-              <label class="custom-bottom">Invoice: &nbsp;</label>
-              <select class=" form-select w-auto w-mobile">
+        
+            <!-- Invoice Selection -->
+            <div class="col-sm-4 d-flex flex-column">
+              <label class="custom-bottom">Invoice:</label>
+              <select class="form-select w-100">
                 <option>701 - 10651 | 01/05/2023 | 5600.00 | 5600</option>
               </select>
             </div>
-
-            <div class="col-12 col-sm-auto d-flex ">
+        
+            <!-- Buttons Section -->
+            <div class="col-sm-5 d-flex justify-content-end gap-3">
               <button class="btn btn-primary">Allocation</button>
-              <button class="btn btn-primary custom-marginleft" >Multi-select of Invoices</button>
-              <!-- </div>
-              <div class="col-12 col-sm-auto d-flex gap-2"> -->
-              <div>
-                <button type="button" class="btn-close" (click)="closeDialog()" aria-label="Close"></button>
-              </div>
-              <!-- </div> -->
+              <button class="btn btn-primary">Multi-select of Invoices</button>
+              <button type="button" class="btn-close" (click)="closeDialog()" aria-label="Close"></button>
             </div>
+            
           </div>
+        </div>
+        
+        
+          
 
 
           <!-- Allocation Section -->
