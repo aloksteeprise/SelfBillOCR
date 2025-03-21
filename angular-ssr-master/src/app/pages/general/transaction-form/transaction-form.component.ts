@@ -14,6 +14,7 @@ import {ManualAllocationPopupComponent} from '../manual-allocation-popup/manual-
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { NotificationPopupService } from '../notification-popup/notification-popup.service';
 
 @Component({
   selector: 'app-transaction-form',
@@ -79,7 +80,7 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   dataSource = new MatTableDataSource<TransactionForm>([]);
-  constructor(private dialog: MatDialog, private transactionFormService: TransactionFormService,private breakpointObserver: BreakpointObserver,  @Inject(PLATFORM_ID) private platformId: object,) { }
+  constructor(private dialog: MatDialog, private transactionFormService: TransactionFormService,private breakpointObserver: BreakpointObserver,  @Inject(PLATFORM_ID) private platformId: object,  public notificationService: NotificationPopupService) { }
 
   ngOnInit() {
 
@@ -204,23 +205,43 @@ if (isPlatformBrowser(this.platformId)) {
     this.loadInvoices();
   }
 
-  // openAllocationModal(invoiceData: any): void {
-  //   this.dialog.open(RemittanceAllocationComponent, { data: invoiceData, cieCode : this?.cieCode });
-  // }
-
-  openAllocationModal(invoiceData: any, autoFocus: boolean = false ): void {
+  openAllocationModal(invoiceData: any, autoFocus: boolean = false): void {
     console.log("Opening modal with cieCode:", this.ciecode);
-    this.dialog.open(RemittanceAllocationComponent, { 
-      data: { invoiceData, cieCode: this.ciecode },
-      autoFocus: autoFocus 
-    });
+    this.loading = true
+    debugger
+    if (invoiceData.isRecordValidated == false) {
+      this.loading = false
+      this.notificationService.showNotification(
+        'You can not allocate this line as its not yet validated.',
+        'WARNING',
+        'warning',
+        () => { console.log('Please validate first') }
+      );
+      //  return;
+    }
+    else {
+      this.dialog.open(RemittanceAllocationComponent, {
+        data: { invoiceData, cieCode: this.ciecode },
+        autoFocus: autoFocus
+      });
+    }
   }
 
-  
   applyFilter(form: any): void {
-    console.log()
+    this.loading = true
+    if (!this.selectedCompany || !this.selectedCompany.cieCode) {
+      this.loading = false
+      this.notificationService.showNotification(
+        'Please select a company and a bank account before proceeding.',
+        'WARNING',
+        'warning',
+        () => { console.log('Please validate first') 
+        
+        }
+      );
+    }
+    console.log("Filtering with form:", form);
     this.loadInvoices();
-      
   }
 
   validateRecord(mvtKey: number): void {

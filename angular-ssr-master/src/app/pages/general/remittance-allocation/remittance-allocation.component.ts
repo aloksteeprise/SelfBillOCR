@@ -8,6 +8,7 @@ import { debounceTime, distinctUntilChanged, switchMap, map } from 'rxjs/operato
 import { FormControl } from '@angular/forms';
 import { startWith} from 'rxjs/operators';
 import { MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { debug } from 'console';
 
 @Component({
   selector: 'app-remittance-allocation',
@@ -42,31 +43,16 @@ export class RemittanceAllocationComponent implements OnInit {
   allocationarr: any[] = [];
   invoice: any | null = null;
   invoicearr: any[] = [];
+  description: any | null = null;
+  descriptionarr: any[] = [];
   bkAccount: string = '';
   currency : string = '';
   cieCode: any;
   selectedAgency : any;
   selectedAgencyCode: string | number | null = null;
+  allocationData: any = {};
 
   selectedAgencyDesc: string = '';
-
-  allocationData = {
-    type: '',
-    item: '',
-    amount: '',
-    agencyCommission: '0',
-    ourFee: '0',
-    contractorDue: '0',
-    vat: '0',
-    description: '',
-    dueByAgency: '0',
-    bankChargesCon: '0',
-    bankChargesAf : '0',
-    taxWithheld: '0',
-    factoring: '0',
-    pendingDue: '0',
-    extraDescription: ''
-  };
 
   constructor(
     private dialogRef: MatDialogRef<RemittanceAllocationComponent>,
@@ -77,7 +63,6 @@ export class RemittanceAllocationComponent implements OnInit {
     this.bkAccount = invoiceData.invoiceData.mvtBkAccount;
     this.currency = invoiceData.invoiceData.mvtCurrency;
     this.cieCode = invoiceData.cieCode;
-    console.log('Anmol',this.bkAccount,this.currency,this.cieCode)
   }
 
   ngOnInit(): void {
@@ -115,8 +100,42 @@ export class RemittanceAllocationComponent implements OnInit {
   }
   
   toggleAllocation() {
+    if (!this.invoice) {
+      console.warn("No invoice selected!");
+      return;
+    }
+  
     this.showAllocation = !this.showAllocation;
-
+  
+    const data = {
+      invhCode: this.invoice // Use selected invoice's invhCode
+    };
+  
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.token}`,
+      'Content-Type': 'application/json',
+    });
+  
+    const apiUrl = environment.API_BASE_URL + 'OCRAI/GetInvoiceListData';
+  
+    this.http.post<any>(apiUrl, data, { headers }).subscribe({
+      next: (response) => {
+        console.log(response?.data?.invoiceList, "invoice ");
+        
+        // Check if allocationPopupList exists and store it
+        if (response?.data?.allocationPopupList?.length) {
+          this.allocationData = response.data.allocationPopupList[0]; // Store first allocation entry
+        } else {
+          console.warn("No allocation data found");
+        }
+      },
+      error: (error) => {
+        console.error("Error fetching invoice list:", error);
+      },
+      complete: () => {
+        console.log("API call completed.");
+      }
+    });
   }
 
   addAllocation() {
@@ -125,24 +144,9 @@ export class RemittanceAllocationComponent implements OnInit {
   }
 
   resetAllocation() {
-    this.allocationData = {
-      type: '',
-      item: '',
-      amount: '',
-      agencyCommission: '0',
-      ourFee: '0',
-      contractorDue: '0',
-      vat: '0',
-      description: '',
-      dueByAgency: '0',
-      bankChargesCon: '0',
-      bankChargesAf : '0',
-      taxWithheld: '0',
-      factoring: '0',
-      pendingDue: '0',
-      extraDescription: ''
-    };
+    this.allocationData = {};
   }
+  
   autoSplit() {
     alert('Auto Split functionality not implemented yet!');
   }
@@ -176,6 +180,41 @@ export class RemittanceAllocationComponent implements OnInit {
       },
   });
   }
+
+  onOtherCurrencyDataBind() {
+
+    debugger
+    const formData = {
+      AgeCode: this.selectedAgency,
+      CieCode: this.cieCode,
+      BkiAccountNb: this.bkAccount,
+      MvtCurrency: this.currency
+    };
+    
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.token}`,
+      'Content-Type': 'application/json',
+    });
+  
+    const apiUrl = environment.API_BASE_URL + 'OCRAI/GetInvoiceOfAgencyOtherCurrencyDate';
+    this.http.post<any>(apiUrl, formData, { headers }).subscribe({
+      next: (data) => {
+        console.log('response', data);
+      
+        if (data?.data?.invoiceCurrList) {
+          this.descriptionarr = data.data.invoiceCurrList;
+        } else {
+          this.descriptionarr = []; // Fallback to an empty array
+        }
+      
+        console.log('InvoiceCurrList', this.descriptionarr);
+      },
+      error: (error) => {
+          console.error("Error Response:", error);        
+      },
+  });
+  }
+
 
   private _filterAgencies(value: string): Observable<{ agecode: string; agedesc: string }[]> {
     const filterValue = value.toLowerCase().trim();
@@ -233,6 +272,7 @@ export class RemittanceAllocationComponent implements OnInit {
     }
   
     this.onInvoiceDataBind();
+    this.onOtherCurrencyDataBind();
   }
   
 }

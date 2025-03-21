@@ -313,6 +313,8 @@
 
   </table>
 </div>
+<app-notification-popup style="position: absolute; top: 0; left: 0;"
+*ngIf="(notificationService.notificationVisibility$ | async)"></app-notification-popup>
 <mat-paginator [length]="totalRecords" [pageSize]="pageSize" [pageIndex]="pageIndex" (page)="onPageChanged($event)"
   [pageSizeOptions]="[5, 10, 15, 20]">
 </mat-paginator>

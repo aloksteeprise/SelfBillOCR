@@ -43,7 +43,7 @@
               <label class="custom-bottom">Invoice:</label>
               <select id="invoice" class="form-select flex-grow-1" [(ngModel)]="invoice"
               name="invoice">
-              <option value="null" disabled selected>Select Invoice</option>
+              <option value="null" disabled selected>InvoiceRef   | InvhDate   | Due   | LeftPending  |  ConFullName</option>
               <option *ngFor="let invoice of invoicearr" [ngValue]="invoice.invhCode">
                 {{ invoice.invoiceRef}}
               </option>
@@ -52,8 +52,8 @@
         
             <!-- Buttons Section -->
             <div class="col-sm-5 d-flex justify-content-end gap-3">
-              <button class="btn btn-primary" (click)="toggleAllocation()">Allocation</button>
-              <button class="btn btn-primary">Multi-select of Invoices</button>
+              <button class="btn btn-primary" (click)="toggleAllocation()" [disabled]="!selectedAgencyDesc">Allocation</button>
+              <button class="btn btn-primary" [disabled]="!selectedAgencyDesc"  >Multi-select of Invoices</button>
               <button type="button" class="btn-close" (click)="closeDialog()" aria-label="Close"></button>
             </div>
             
@@ -83,7 +83,7 @@
               <tbody>
                 <tr>
                   <td>
-                    <select id="allocation" class="form-select flex-grow-1" [(ngModel)]="allocationData.type"
+                    <select id="allocation" class="form-select flex-grow-1" [(ngModel)]="allocationData"
                     name="allocation">
                     <option value="null" disabled selected>Select Allocation Type</option>
                     <option *ngFor="let allocation of allocationarr" [ngValue]="allocation.altCode">
@@ -92,8 +92,12 @@
                   </select>
                   </td>
                   <td>
-                    <select class="form-select d-inline w-auto" [(ngModel)]="allocationData.item">
-                      <option>Linksap</option>
+                    <select id="invoice" class="form-select flex-grow-1" [(ngModel)]="invoice"
+                      name="invoice">
+                      <option value="null" disabled selected>InvoiceRef   | InvhDate   | Due   | LeftPending  |  ConFullName</option>
+                      <option *ngFor="let invoice of invoicearr" [ngValue]="invoice.invhCode">
+                        {{ invoice.invoiceRef}}
+                      </option>
                     </select>
                   </td>
                   <td><input type="text" class="form-control" [(ngModel)]="allocationData.amount"></td>
@@ -101,17 +105,17 @@
                   <td><input type="text" class="form-control" [(ngModel)]="allocationData.ourFee"></td>
                   <td><input type="text" class="form-control" [(ngModel)]="allocationData.contractorDue"></td>
                   <td><input type="text" class="form-control" [(ngModel)]="allocationData.vat"></td>
-                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.description"></td>
-                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.dueByAgency"></td>
-                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.bankChargesCon"></td>
-                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.bankChargesAf"></td>
-                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.taxWithheld"></td>
-                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.factoring"></td>
-                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.pendingDue"></td>
+                  <td><input type="text" class="form-control"></td>
+                  <td><input type="text" class="form-control"></td>
+                  <td><input type="text" class="form-control"></td>
+                  <td><input type="text" class="form-control"></td>
+                  <td><input type="text" class="form-control"></td>
+                  <td><input type="text" class="form-control"></td>
+                  <td><input type="text" class="form-control"></td>
                 </tr>
                 <tr>
                   <td>Description</td>
-                  <td colspan="6"><input type="text" class="form-control" [(ngModel)]="allocationData.extraDescription"></td>
+                  <td colspan="6"><input type="text" class="form-control" [(ngModel)]="allocationData"></td>
                   <td colspan="6" class="text-end">
                     <button class="btn btn-primary" (click)="addAllocation()">Add</button>
                     <button class="btn btn-warning mx-3" (click)="resetAllocation()">Reset</button>
@@ -122,7 +126,15 @@
                   <td class="border  bg-danger text-black" colspan="2">
                     <strong style="font-size: 10px; color: white;">Other Currency Invoice</strong>
                   </td>
-                  <td colspan="5"> <input type="text" class="form-control" value="0"></td>
+                  <td colspan="5"> 
+                    <select id="description" class="form-select flex-grow-1" [(ngModel)]="description"
+                      name="description">
+                      <option value="null" disabled selected>Select Description</option>
+                      <option *ngFor="let desc of descriptionarr" [ngValue]="desc.invhCode">
+                        {{ desc?.invoiceRef }}
+                      </option>
+                    </select>
+                  </td>                  
                   <td colspan="6"></td>
                 </tr>
               </tbody>
