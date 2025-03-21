@@ -5,16 +5,19 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 
 @NgModule({
     declarations: [RemittanceAllocationComponent], // Declare the component
     imports: [
       CommonModule, 
-      FormsModule, 
-    
+      FormsModule,
       MatAutocompleteModule,
-      ReactiveFormsModule
+      ReactiveFormsModule,
+      MatFormFieldModule,
+      MatInputModule,
 
     ],
     exports: [RemittanceAllocationComponent] // Export if needed elsewhere
