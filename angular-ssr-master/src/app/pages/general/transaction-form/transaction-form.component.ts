@@ -72,6 +72,7 @@ export class TransactionFormComponent implements OnInit, AfterViewInit {
   IsRecordValidated =false
   money = true;
   totalRecords: number = 0;
+  ciecode : any = null;
   
   token: string = '';
   @ViewChild(MatSort) sort!: MatSort;
@@ -156,6 +157,11 @@ if (isPlatformBrowser(this.platformId)) {
     const SortColumn = this.sort?.active || '';
     const SortDirection = this.sort?.direction || '';
 
+    if (this.selectedCompany) {
+      this.ciecode = this.selectedCompany?.cieCode;
+    }
+  
+
     this.transactionFormService
       .getTransaction(
         this.pageIndex,
@@ -198,10 +204,19 @@ if (isPlatformBrowser(this.platformId)) {
     this.loadInvoices();
   }
 
-  openAllocationModal(invoiceData: any): void {
-    this.dialog.open(RemittanceAllocationComponent, { data: invoiceData });
+  // openAllocationModal(invoiceData: any): void {
+  //   this.dialog.open(RemittanceAllocationComponent, { data: invoiceData, cieCode : this?.cieCode });
+  // }
+
+  openAllocationModal(invoiceData: any, autoFocus: boolean = false ): void {
+    console.log("Opening modal with cieCode:", this.ciecode);
+    this.dialog.open(RemittanceAllocationComponent, { 
+      data: { invoiceData, cieCode: this.ciecode },
+      autoFocus: autoFocus 
+    });
   }
 
+  
   applyFilter(form: any): void {
     console.log()
     this.loadInvoices();

@@ -20,121 +20,114 @@
             
             <!-- Agency Selection -->
             <div class="col-sm-3 d-flex flex-column">
-              <label class="custom-bottom">Agency:</label>
-              <input
-                type="text"
-                placeholder="Start typing agency name..."
-                matInput
-                [formControl]="agencyControl"
-                [matAutocomplete]="auto"
-              />
-          
-              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectAgency($event.option.value)" [displayWith]="displayAgency">
-                <mat-option *ngFor="let agency of filteredAgencies | async" [value]="agency">
+              <mat-label>Agency</mat-label>
+              <input type="text"
+              placeholder="Select Agency"
+              [formControl]="agencyControl"
+              (click)="onInputClick()"
+              [matAutocomplete]="auto"
+              class="example-input"
+              [value]="selectedAgencyDesc">
+       
+              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
+                <mat-option *ngFor="let agency of filteredAgencies | async" [value]="agency.agedesc">
                   {{ agency.agedesc }}
                 </mat-option>
               </mat-autocomplete>
+       
               
             </div>
         
             <!-- Invoice Selection -->
             <div class="col-sm-4 d-flex flex-column">
               <label class="custom-bottom">Invoice:</label>
-              <select class="form-select w-100">
-                <option>701 - 10651 | 01/05/2023 | 5600.00 | 5600</option>
-              </select>
+              <select id="invoice" class="form-select flex-grow-1" [(ngModel)]="invoice"
+              name="invoice">
+              <option value="null" disabled selected>Select Invoice</option>
+              <option *ngFor="let invoice of invoicearr" [ngValue]="invoice.invhCode">
+                {{ invoice.invoiceRef}}
+              </option>
+            </select>
             </div>
         
             <!-- Buttons Section -->
             <div class="col-sm-5 d-flex justify-content-end gap-3">
-              <button class="btn btn-primary">Allocation</button>
+              <button class="btn btn-primary" (click)="toggleAllocation()">Allocation</button>
               <button class="btn btn-primary">Multi-select of Invoices</button>
               <button type="button" class="btn-close" (click)="closeDialog()" aria-label="Close"></button>
             </div>
             
           </div>
         </div>
-        
-        
-          
-
-
-          <!-- Allocation Section -->
-          <div class="border p-1 mt-1 bg-light">
-            <h6 class="color text-black" style="padding-left: 10px;">Allocate</h6>
-            <div class="table-responsive">
-              <table class="table table-bordered text-center custom-bottom">
-                <thead class="color text-black">
-                  <tr>
-                    <th class="width1">Allocation Type</th>
-                    <th>Item</th>
-                    <th>Amount To Allocate</th>
-                    <th>Agency Commission</th>
-                    <th>Our Fee</th>
-                    <th>Contractor Due</th>
-                    <th>VAT/GST</th>
-                    <th class="width1">Due by ag. (Vat Incl.)</th>
-                    <th colspan="2">Bank Charges Contractor | AF</th>
-                    <th>Tax Withheld</th>
-                    <th>Factoring</th>
-                    <th>Pending Left Due</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      <select class="form-select" style="font-size: 12px;">
-                        <option>Select</option>
-                      </select>
-                    </td>
-                    <td><select class="form-select d-inline w-auto ">
-                        <option>Linksap >
-                      </select></td>
-                    <td><input type="text" class="form-control"></td>
-                    <td><input type="text" class="form-control" value="0"></td>
-                    <td><input type="text" class="form-control" value="0"></td>
-                    <td><input type="text" class="form-control" value="0"></td>
-                    <td><input type="text" class="form-control" value="0"></td>
-                    <td><input type="text" class="form-control" value="0"></td>
-                    <td><input type="text" class="form-control" value="0"></td>
-                    <td><input type="text" class="form-control" value="0"></td>
-                    <td><input type="text" class="form-control" value="0"></td>
-                    <td><input type="text" class="form-control" value="0"></td>
-                    <td><input type="text" class="form-control" value="0"></td>
-                  </tr>
-                  <tr>
-                    <td>Description</td>
-                    <td colspan="6"><input type="text" class="form-control"></td>
-                    <td colspan="6" class="text-end">
-                      <button class="btn btn-primary">Add</button>
-                      <button class="btn btn-warning mx-3">Reset</button>
-                      <button class="btn btn-secondary">Auto split</button>
-                    </td>
-                  </tr>
-
-
-                  <tr>
-                    <td class="border  bg-danger text-black" colspan="2">
-                      <strong style="font-size: 10px; color: white;">Other Currency Invoice</strong>
-                    </td>
-                    <td colspan="5"> <input type="text" class="form-control" value="0"></td>
-                    <td colspan="6"></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <!-- <div class="d-flex justify-content-end gap-2">
-              
-            </div> -->
+        <div *ngIf="showAllocation" class="border p-1 mt-1 bg-light">
+          <h6 class="color text-black" style="padding-left: 10px;">Allocate</h6>
+          <div class="table-responsive">
+            <table class="table table-bordered text-center custom-bottom">
+              <thead class="color text-black">
+                <tr>
+                  <th class="width1">Allocation Type</th>
+                  <th>Item</th>
+                  <th>Amount To Allocate</th>
+                  <th>Agency Commission</th>
+                  <th>Our Fee</th>
+                  <th>Contractor Due</th>
+                  <th>VAT/GST</th>
+                  <th class="width1">Description</th>
+                  <th class="width1">Due by ag. (Vat Incl.)</th>
+                  <th colspan="2">Bank Charges Contractor | AF</th>
+                  <th>Tax Withheld</th>
+                  <th>Factoring</th>
+                  <th>Pending Left Due</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <select id="allocation" class="form-select flex-grow-1" [(ngModel)]="allocationData.type"
+                    name="allocation">
+                    <option value="null" disabled selected>Select Allocation Type</option>
+                    <option *ngFor="let allocation of allocationarr" [ngValue]="allocation.altCode">
+                      {{ allocation.altDesc }}
+                    </option>
+                  </select>
+                  </td>
+                  <td>
+                    <select class="form-select d-inline w-auto" [(ngModel)]="allocationData.item">
+                      <option>Linksap</option>
+                    </select>
+                  </td>
+                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.amount"></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.agencyCommission"></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.ourFee"></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.contractorDue"></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.vat"></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.description"></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.dueByAgency"></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.bankChargesCon"></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.bankChargesAf"></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.taxWithheld"></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.factoring"></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.pendingDue"></td>
+                </tr>
+                <tr>
+                  <td>Description</td>
+                  <td colspan="6"><input type="text" class="form-control" [(ngModel)]="allocationData.extraDescription"></td>
+                  <td colspan="6" class="text-end">
+                    <button class="btn btn-primary" (click)="addAllocation()">Add</button>
+                    <button class="btn btn-warning mx-3" (click)="resetAllocation()">Reset</button>
+                    <button class="btn btn-secondary" (click)="autoSplit()">Auto split</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border  bg-danger text-black" colspan="2">
+                    <strong style="font-size: 10px; color: white;">Other Currency Invoice</strong>
+                  </td>
+                  <td colspan="5"> <input type="text" class="form-control" value="0"></td>
+                  <td colspan="6"></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-
-          <!-- Other Currency Invoice -->
-          <!-- <div class="border p-2 mt-2 bg-danger text-white">
-            <strong>Other Currency Invoice</strong>
-          </div> -->
-
-          <!-- Allocation Summary -->
           <div class="border p-1 mt-1 bg-light">
             <h6 class="color text-black" style="padding-left: 10px;">Allocation Summary</h6>
             <div class="table-responsive">
@@ -180,40 +173,7 @@
                 </tbody>
               </table>
             </div>
-            <!-- <div class="table-responsive text-center" style="font-size: 14px;">
-              <div class="container">
-            
-                <div class="row align-items-center mt-1 justify-content-center">
-                  <div class="col-auto">
-                    <label>Total available for allocation:</label>
-                  </div>
-                  <div class="col-auto">
-                    <input type="text" class="form-control w-auto">
-                  </div>
-                </div>
-            
-                <div class="row align-items-center mt-1 justify-content-center">
-                  <div class="col-auto">
-                    <label>Total allocated (Confirmed):</label>
-                  </div>
-                  <div class="col-auto">
-                    <input type="text" class="form-control w-auto">
-                  </div>
-                </div>
-            
-                <div class="row align-items-center mt-1 justify-content-center">
-                  <div class="col-auto">
-                    <label class="responsivelabel">Total available for allocation:</label>
-                  </div>
-                  <div class="col-auto">
-                    <input type="text" class="form-control w-auto">
-                  </div>
-                  <div class="col-auto">
-                    <button class="btn btn-primary">Submit Allocation</button>
-                  </div>
-                </div>
-            
-              </div> -->
+
             <div class="container-fluid">
               <div class="row align-items-center text-black">
                 <div class="col d-flex align-items-center mb-0">
@@ -237,6 +197,7 @@
             </div>
 
           </div>
+        </div>
 
         </div>
       </div>
