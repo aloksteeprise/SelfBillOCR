@@ -475,7 +475,7 @@ onCheckboxChange(event: any, id: number) {
 
 BatchValidate() {
   // ✅ Show warning popup if no records are selected
- 
+ this.loading = true;
 
   const apiUrl = environment.API_BASE_URL + 'OCRAI/SelfBillBatchValidate';
   this.notificationService.setNotificationVisibility(true);
@@ -497,6 +497,7 @@ BatchValidate() {
   this.http.post<any>(apiUrl, body, { headers }).subscribe({
       next: (response) => {
           if (response?.data?.length > 0 && response.data[0].status === 4) {
+            this.loading= false;
               this.notificationService.showNotification(
                   'Records have been validated and processed successfully. The updates have been applied to those that meet the criteria.',
                   'INFORMATION',
@@ -511,6 +512,7 @@ BatchValidate() {
       },
       error: (error) => {
           console.error("Error Response:", error);
+          this.loading= false;
           this.notificationService.showNotification(
               'Unable to complete the action. Please retry.',
               'ERROR',
