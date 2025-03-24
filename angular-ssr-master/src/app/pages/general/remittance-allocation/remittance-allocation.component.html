@@ -21,31 +21,34 @@
             <!-- Agency Selection -->
             <div class="col-sm-3 d-flex flex-column">
               <mat-label>Agency</mat-label>
-              <input type="text"
-              placeholder="Select Agency"
-              [formControl]="agencyControl"
-              (click)="onInputClick()"
-              [matAutocomplete]="auto"
-              class="example-input"
-              [value]="selectedAgencyDesc">
-       
-              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
-                <mat-option *ngFor="let agency of filteredAgencies | async" [value]="agency.agedesc">
-                  {{ agency.agedesc }}
-                </mat-option>
-              </mat-autocomplete>
-       
-              
-            </div>
-        
+             <div class="position-relative">
+              <input 
+                  type="text" 
+                  placeholder="Select Agency" 
+                  [formControl]="agencyControl" 
+                  (click)="onInputClick()" 
+                  [matAutocomplete]="auto" 
+                  class="form-control example-input" 
+                  [value]="selectedAgencyDesc"
+                  #autoTrigger="matAutocompleteTrigger"
+              >
+              <i class="bi bi-caret-down-fill position-absolute" 
+                style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"
+                (click)="autoTrigger.openPanel()"></i>
+          </div>
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
+            <mat-option *ngFor="let agency of filteredAgencies | async" [value]="agency.agedesc">
+              {{ agency.agedesc }}
+            </mat-option>
+          </mat-autocomplete>
+        </div>
             <!-- Invoice Selection -->
             <div class="col-sm-4 d-flex flex-column">
               <label class="custom-bottom">Invoice:</label>
-              <select id="invoice" class="form-select flex-grow-1" [(ngModel)]="invoice"
-              name="invoice">
-              <option value="null" disabled selected>InvoiceRef   | InvhDate   | Due   | LeftPending  |  ConFullName</option>
+            <select id="invoice" class="form-select flex-grow-1" [(ngModel)]="invoice" (change)="onInvoiceChange($event)" name="invoice">
+              <option value="null" disabled selected>InvoiceRef | InvhDate | Due | LeftPending | ConFullName</option>
               <option *ngFor="let invoice of invoicearr" [ngValue]="invoice.invhCode">
-                {{ invoice.invoiceRef}}
+                {{ invoice.invoiceRef }}
               </option>
             </select>
             </div>
@@ -72,7 +75,6 @@
                   <th>Our Fee</th>
                   <th>Contractor Due</th>
                   <th>VAT/GST</th>
-                  <th class="width1">Description</th>
                   <th class="width1">Due by ag. (Vat Incl.)</th>
                   <th colspan="2">Bank Charges Contractor | AF</th>
                   <th>Tax Withheld</th>
@@ -83,30 +85,26 @@
               <tbody>
                 <tr>
                   <td>
-                    <select id="allocation" class="form-select flex-grow-1" [(ngModel)]="allocationData"
-                    name="allocation">
-                    <option value="null" disabled selected>Select Allocation Type</option>
-                    <option *ngFor="let allocation of allocationarr" [ngValue]="allocation.altCode">
-                      {{ allocation.altDesc }}
-                    </option>
-                  </select>
-                  </td>
-                  <td>
-                    <select id="invoice" class="form-select flex-grow-1" [(ngModel)]="invoice"
-                      name="invoice">
-                      <option value="null" disabled selected>InvoiceRef   | InvhDate   | Due   | LeftPending  |  ConFullName</option>
-                      <option *ngFor="let invoice of invoicearr" [ngValue]="invoice.invhCode">
-                        {{ invoice.invoiceRef}}
+                    <select id="allocationType" class="form-select flex-grow-1" [(ngModel)]="allocationType"
+                            name="allocationType">
+                      <option value="null" disabled>Select Allocation Type</option>
+                      <option *ngFor="let allocation of allocationarr" [ngValue]="allocation.altCode">
+                        {{ allocation.altDesc }}
                       </option>
                     </select>
                   </td>
-                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.amount"></td>
-                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.agencyCommission"></td>
-                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.ourFee"></td>
-                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.contractorDue"></td>
-                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.vat"></td>
-                  <td><input type="text" class="form-control"></td>
-                  <td><input type="text" class="form-control"></td>
+                  <select id="invoice" class="form-select flex-grow-1" [(ngModel)]="invoice" (change)="onInvoiceChange($event)" name="invoice">
+                    <option value="null" disabled selected>InvoiceRef | InvhDate | Due | LeftPending | ConFullName</option>
+                    <option *ngFor="let invoice of invoicearr" [ngValue]="invoice.invhCode">
+                      {{ invoice.invoiceRef }}
+                    </option>
+                  </select>
+                  <td><input type="text" class="form-control" [(ngModel)]="amountAllocate" readonly></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.invhTotAgencyFee"></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.invhTotOurfee"></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.invhTotSal"></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.invhVATI"></td>
+                  <td><input type="text" class="form-control"  [(ngModel)]="dueByAgency" readonly></td>
                   <td><input type="text" class="form-control"></td>
                   <td><input type="text" class="form-control"></td>
                   <td><input type="text" class="form-control"></td>
@@ -115,7 +113,7 @@
                 </tr>
                 <tr>
                   <td>Description</td>
-                  <td colspan="6"><input type="text" class="form-control"></td>
+                  <td colspan="6"><input type="text" class="form-control" [(ngModel)]="description"></td>
                   <td colspan="6" class="text-end">
                     <button class="btn btn-primary" (click)="addAllocation()">Add</button>
                     <button class="btn btn-warning mx-3" (click)="resetAllocation()">Reset</button>
@@ -127,10 +125,10 @@
                     <strong style="font-size: 10px; color: white;">Other Currency Invoice</strong>
                   </td>
                   <td colspan="5"> 
-                    <select id="description" class="form-select flex-grow-1" [(ngModel)]="description"
-                      name="description">
+                    <select id="currencyDescription" class="form-select flex-grow-1" [(ngModel)]="currencyDescription"
+                      name="currencyDescription">
                       <option value="null" disabled selected>Select Description</option>
-                      <option *ngFor="let desc of descriptionarr" [ngValue]="desc.invhCode">
+                      <option *ngFor="let desc of currencyDescriptionarr" [ngValue]="desc.invhCode">
                         {{ desc?.invoiceRef }}
                       </option>
                     </select>
