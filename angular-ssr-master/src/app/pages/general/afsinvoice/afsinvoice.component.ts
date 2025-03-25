@@ -119,7 +119,9 @@ export class AfsinvoiceComponent implements OnInit {
       this.lastnamefor = this.data.cLastName || '';
       this.startdate = this.data.startDate || '';
       this.enddate = this.data.endDate || '';
+      
       this.IsContractIsActiveOrNot = this.data.errorMessage;
+      console.log(this.IsContractIsActiveOrNot,"SAaaskansa")
       this.currencytype = this.data.currencyType || '';
       
       // Remove currency 
@@ -221,6 +223,7 @@ export class AfsinvoiceComponent implements OnInit {
    //alert( this.IsContractIsActiveOrNot);
     if (this.selectedContract) {
       this.errors.selectedContract = undefined;
+      debugger
     }
 
 
@@ -487,7 +490,7 @@ onSkip() {
     StartDate: this.startdate,
     EndDate: this.enddate,
     totalAmount : this.totalAmount,
-    invoiceNumber : this.invoiceNumber,
+    invoiceNo : this.invoiceNumber,
     invoiceDate : this.invoiceDate,
     GroupNewId: this.groupNewId,
     IsSkip: true,
@@ -740,9 +743,9 @@ onSubmit(form: any): void {
                 console.log('response');
                 console.log(response);
                 //this.fetchNextRecord(response.data.resultTable[0]);
-                if(response.data.resultTable.length >0){
-                  this.fetchNextRecord(response.data.resultTable[0]);
-                }
+                // if(response.data.resultTable.length >0){
+                //   this.fetchNextRecord(response.data.resultTable[0]);
+                // }
                 this.notificationService.setNotificationVisibility(false);
               }
             );
@@ -787,9 +790,9 @@ onSubmit(form: any): void {
                   console.log('OK clicked 5'); // Callback logic
                   console.log('response' + response.data.resultTable.length);
                   console.log(response);
-                  if(response.data.resultTable.length >0){
-                    this.fetchNextRecord(response.data.resultTable[0]);
-                  }
+                  // if(response.data.resultTable.length >0){
+                  //   this.fetchNextRecord(response.data.resultTable[0]);
+                  // }
                   this.notificationService.setNotificationVisibility(false);
                 }
               );
@@ -810,9 +813,9 @@ onSubmit(form: any): void {
                   console.log('OK clicked 5'); // Callback logic
                   console.log('response' + response.data.resultTable.length);
                   console.log(response);
-                  if(response.data.resultTable.length >0){
-                    this.fetchNextRecord(response.data.resultTable[0]);
-                  }
+                  // if(response.data.resultTable.length >0){
+                  //   this.fetchNextRecord(response.data.resultTable[0]);
+                  // }
                   this.notificationService.setNotificationVisibility(false);
                 }
               );
@@ -859,8 +862,9 @@ console.log("this.id" + this.id);
 
   this.id = data.ID;
   this.conCode = data.Contract_CtcContractor || '';
-  this.contractorname ='';
+  // this.contractorname ='';
   this.contractorname = data.ContractorName || '';
+  debugger;
   this.afscontractor = data.afscontractor || '';
   this.firstnamefor = data.CFirstName || '';
   this.lastnamefor = data.CLastName || '';
