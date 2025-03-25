@@ -223,7 +223,7 @@ export class AfsinvoiceComponent implements OnInit {
    //alert( this.IsContractIsActiveOrNot);
     if (this.selectedContract) {
       this.errors.selectedContract = undefined;
-      debugger
+  
     }
 
 
@@ -611,10 +611,24 @@ onSubmit(form: any): void {
       isValid = false;
       errors.startDate = startDate; }
 
+    
+
+      console.log('end date', this.enddate)
   const endDate = SharedUtils.validateDate(this.enddate, 'End Date', true);
   if (endDate) {
     isValid = false;
     errors.endDate = endDate; }
+
+  if (!errors.startDate && !errors.endDate) {
+      const start = new Date(this.startdate).getTime();
+      const end = new Date(this.enddate).getTime();
+      const diffInDays = (end - start) / (1000 * 60 * 60 * 24);
+    
+      if (diffInDays > 30) {
+        isValid = false;
+        errors.endDate = 'The Start Date and End Date must be within a 30-day range.';
+      }
+    }
 
   const invoiceDate = SharedUtils.validateDate(this.invoiceDate, 'Invoice Date', false);
   if (invoiceDate) {
@@ -864,7 +878,6 @@ console.log("this.id" + this.id);
   this.conCode = data.Contract_CtcContractor || '';
   // this.contractorname ='';
   this.contractorname = data.ContractorName || '';
-  debugger;
   this.afscontractor = data.afscontractor || '';
   this.firstnamefor = data.CFirstName || '';
   this.lastnamefor = data.CLastName || '';
