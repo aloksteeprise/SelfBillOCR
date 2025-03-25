@@ -40,7 +40,14 @@ export class InputSanitizerDirective {
     }
 
     event.target.value = sanitizedValue;
-    event.target.dispatchEvent(new Event('input'));
+    
+    //Remove as per error - Uncaught InternalError: too much recursion
+    //event.target.dispatchEvent(new Event('input'));
+
+    setTimeout(() => {
+      event.target.dispatchEvent(new Event('input', { bubbles: true }));
+    }, 0);
+
   }
 
   validateDateField(dateValue: string, fieldName: string, isRequired: boolean): string | null {
