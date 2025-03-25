@@ -502,7 +502,7 @@ BatchValidate() {
           this.loading = false;
       
           // Check if status is 4 and no status message exists
-          if (response.data[0].status === 4 && !response.data[0].statusMsg) {
+          if (response.data[0].status === 4 && response.data[0].statusMsg =="") {
               this.notificationService.showNotification(
                   'Records have been validated and processed successfully. The updates have been applied to those that meet the criteria.',
                   'INFORMATION',
@@ -518,7 +518,7 @@ BatchValidate() {
           // Check if there are issues with validation (non-empty statusMsg)
           if (response.data[0].statusMsg && response.data[0].statusMsg.length > 0) {
               this.notificationService.showNotification(
-                  `Some records have been validated successfully. However, records with Contractor Codes ${response.data[0].statusMsg} have issues and could not be validated. Please review and correct them individually for validation.`,
+                  `Some records have been validated successfully. However, records with Contractor Code: ${response.data[0].statusMsg} have issues and could not be validated. Please review and correct them individually for validation.`,
                   'INFORMATION',
                   'warning',
                   () => {
