@@ -298,7 +298,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
           this.loading=false;
           if(pdfPath){
             console.log("pdfPath : "+ pdfPath)
-            const fullPdfUrl = `https://wfmapi.accessfinancial.com/${pdfPath.replace(/\\/g, '/')}`;
+            const fullPdfUrl = `https://wfmapi2.accessfinancial.com/${pdfPath.replace(/\\/g, '/')}`;
             window.open(fullPdfUrl, '_blank');
           }
           else{
@@ -518,7 +518,7 @@ BatchValidate() {
           // Check if there are issues with validation (non-empty statusMsg)
           if (response.data[0].statusMsg && response.data[0].statusMsg.length > 0) {
               this.notificationService.showNotification(
-                  `Some records have been validated successfully. However, records with Contractor Code: ${response.data[0].statusMsg} have issues and could not be validated. Please review and correct them individually for validation.`,
+                  `Validation was successful for some records, but failed for records associated with ${response.data[0].statusMsg}. Please review and correct these records individually, then revalidate.`,
                   'INFORMATION',
                   'warning',
                   () => {
