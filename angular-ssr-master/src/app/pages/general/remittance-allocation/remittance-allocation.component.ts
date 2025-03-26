@@ -32,6 +32,7 @@ export class RemittanceAllocationComponent implements OnInit {
   defaultAgencies: { agecode: string; agedesc: string }[] = [];
   isDropdownOpen = false;
   showAllocation = false;
+  showAllocationSummery = false;
   Agency: string | null = null;
   Agencyarr: any[] = [];
   dataSource: any[] = [];
@@ -58,6 +59,26 @@ export class RemittanceAllocationComponent implements OnInit {
   dueByAgency: string = '';
 
 
+  txtAmountAvailable : number = 0;
+  txtTotalAmount : string = '';
+  txtAllocatedConfirmedAmount : number = 0;
+  allocationList: any[] = [];
+  
+  allocateType: string = '';
+  invoiceItem: string = '';
+  amountToAllocate: number = 0;
+  agencyCommission: number = 0;
+  ourFee: number = 0;
+  contractorDue: number = 0;
+  vat: number = 0;
+  descrp: string = '';
+  dueByAgen: number = 0;
+  bankChargesContractor: number = 0;
+  bankChargesAf : number = 0;
+  taxWithHeld: number = 0;
+  factoring: number = 0;
+  pendingLeftDue: number = 0;
+
   selectedAgencyDesc: string = '';
 
   constructor(
@@ -66,9 +87,13 @@ export class RemittanceAllocationComponent implements OnInit {
     private http: HttpClient,
     @Inject(MAT_DIALOG_DATA) public invoiceData: any
   ) {
+    debugger
+    console.log('ak',invoiceData.invoiceData)
     this.bkAccount = invoiceData.invoiceData.mvtBkAccount;
     this.currency = invoiceData.invoiceData.mvtCurrency;
     this.cieCode = invoiceData.cieCode;
+    this.txtAmountAvailable = invoiceData.invoiceData.mvtAmountRcvd;
+    this.txtTotalAmount =  invoiceData.invoiceData.mvtAmountRcvd;
   }
 
   ngOnInit(): void {
@@ -180,15 +205,6 @@ export class RemittanceAllocationComponent implements OnInit {
     }
   }
 
-  addAllocation() {
-    console.log('Allocation Added:', this.allocationData);
-    alert('Allocation data saved successfully!');
-  }
-
-  resetAllocation() {
-    this.allocationData = {};
-  }
-
   autoSplit() {
     alert('Auto Split functionality not implemented yet!');
   }
@@ -244,6 +260,38 @@ export class RemittanceAllocationComponent implements OnInit {
 
         if (data?.data?.invoiceCurrList) {
           this.currencyDescriptionarr = data.data.invoiceCurrList;
+        } else {
+          this.currencyDescriptionarr = []; // Fallback to an empty array
+        }
+
+        console.log('InvoiceCurrList', this.currencyDescriptionarr);
+      },
+      error: (error) => {
+        console.error("Error Response:", error);
+      },
+    });
+  }
+
+
+  bindInterCoCompany() {
+
+    const formData = {
+      CieCode: this.cieCode,
+      BkiCurrency: this.currency
+    };
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.token}`,
+      'Content-Type': 'application/json',
+    });
+
+    const apiUrl = environment.API_BASE_URL + 'OCRAI/GetInterCoCompanyListData';
+    this.http.post<any>(apiUrl, formData, { headers }).subscribe({
+      next: (data) => {
+        console.log('response', data);
+
+        if (data?.data?.accountList) {
+          this.currencyDescriptionarr = data.data.accountList;
         } else {
           this.currencyDescriptionarr = []; // Fallback to an empty array
         }
@@ -338,6 +386,106 @@ export class RemittanceAllocationComponent implements OnInit {
 
     this.onInvoiceDataBind();
     this.onOtherCurrencyDataBind();
+  }
+
+  addAllocation() {
+    // Input Validation (No Negative Values)
+    // const invalidFields = [
+    //   { name: 'Amount to Allocate', value: this.amountToAllocate },
+    //   { name: 'Agency Commission', value: this.allocationData?.invhTotAgencyFee },
+    //   { name: 'Our Fee', value: this.allocationData?.invhTotOurfee },
+    //   { name: 'Contractor Due', value: this.allocationData?.invhTotSal },
+    //   { name: 'VAT', value: this.allocationData?.invhVATI },
+    //   { name: 'Bank Charges Contractor', value: this.bankChargesContractor },
+    //   { name: 'Tax Withheld', value: this.taxWithHeld },
+    //   { name: 'Pending Left Due', value: this.pendingLeftDue }
+    // ];
+    
+    // // Validate all fields
+    // for (const field of invalidFields) {
+    //   if (field.value === null || field.value === undefined || isNaN(field.value)) {
+    //     alert(`${field.name} is required and must be a valid number.`);
+    //     return;
+    //   }
+    
+    //   if (field.value < 0) {
+    //     alert(`${field.name} should not be negative.`);
+    //     return;
+    //   }
+    // }
+   this.showAllocationSummery = true;
+
+const selectedAllocationType = this.allocationarr.find(
+  allocation => allocation.altCode === this.allocationType
+);
+
+
+const selectedInvoice = this.invoicearr.find(inv => inv.invhCode === this.invoice);
+
+if(selectedInvoice){
+  const parts: string[] = selectedInvoice.invoiceRef.split('|').map((p: string) => p.trim());
+
+  if (parts.length > 0) {
+    this.invoiceItem = parts[0];
+  } else {
+    this.invoiceItem = "";
+  }
+}
+
+console.log(this.allocationType , this.invoiceItem)
+    // Add new allocation row
+    this.allocationList.push({
+      allocateType: selectedAllocationType ? selectedAllocationType.altDesc : '',
+      invoiceItem: selectedInvoice ? this.invoiceItem : '' ,
+      amountToAllocate: this.amountAllocate || 0,
+      agencyCommission: this.allocationData.invhTotAgencyFee || 0,
+      ourFee: this.allocationData.invhTotOurfee || 0,
+      contractorDue: this.allocationData.invhTotSal || 0,
+      vat: this.allocationData.invhVATI || 0,
+      descrp: this.description,
+      dueByAgen: this.dueByAgency || 0,
+      bkCharges: this.bankChargesContractor || 0,
+      taxWithHeld: this.taxWithHeld || 0,
+      factoring: this.factoring || 0,
+      pendingLeft: this.pendingLeftDue || 0
+    });
+
+    this.calculateTotals();
+    this.resetAllocation();
+  }
+
+  deleteRow(index: number) {
+    this.allocationList.splice(index, 1);
+    this.calculateTotals();
+  }
+
+  updateRow(index: number) {
+    alert('Not Implemented yet')
+  }
+
+  calculateTotals() {
+    const totalAllocated = this.allocationList.reduce((sum, row) => sum + parseFloat(row.amountToAllocate || 0), 0);
+  
+    this.txtAllocatedConfirmedAmount = totalAllocated.toFixed(2);
+    this.txtTotalAmount = (this.txtAmountAvailable - totalAllocated).toFixed(2);
+
+  }
+  
+
+  resetAllocation() {
+    this.allocationType = null;
+    this.invoice = null;
+    this.amountAllocate = '';
+      this.allocationData = {
+      invhTotAgencyFee: 0,
+      invhTotOurfee: 0,
+      invhTotSal: 0,
+      invhVATI: 0,
+    };
+  
+    this.dueByAgency = '';
+    this.description = '';
+    this.currencyDescription = null;
   }
 
 }

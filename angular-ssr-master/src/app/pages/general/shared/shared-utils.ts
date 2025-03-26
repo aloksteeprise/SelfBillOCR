@@ -32,7 +32,9 @@ export class SharedUtils {
         return `Invalid ${fieldName}.`;
       }
   
-      if (inputDate > today) {
+      const nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+
+      if (inputDate >= nextMonth) {
         return `${fieldName} cannot be in the future.`;
       }
   

@@ -97,18 +97,27 @@
                         {{ invoice.invoiceRef }}
                       </option>
                     </select>
+
+                    <!-- <select id="interCoCompany" class="form-select flex-grow-1" style="visibility: none;" [(ngModel)]="interCoCompany"
+                      (change)="onInvoiceChange($event)" name="interCoCompany">
+                      <option value="null" disabled selected>Select Company
+                      </option>
+                      <option *ngFor="let invoice of interCoCompanyarr" [ngValue]="invoice.invhCode">
+                        {{ invoice.invoiceRef }}
+                      </option>
+                    </select> -->
                   </td>
-                  <td><input type="text" class="form-control" [(ngModel)]="amountAllocate" readonly></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="amountAllocate"></td>
                   <td><input type="text" class="form-control" [(ngModel)]="allocationData.invhTotAgencyFee"></td>
                   <td><input type="text" class="form-control" [(ngModel)]="allocationData.invhTotOurfee"></td>
                   <td><input type="text" class="form-control" [(ngModel)]="allocationData.invhTotSal"></td>
                   <td><input type="text" class="form-control" [(ngModel)]="allocationData.invhVATI"></td>
-                  <td><input type="text" class="form-control" [(ngModel)]="dueByAgency" readonly></td>
-                  <td><input type="text" class="form-control"></td>
-                  <td><input type="text" class="form-control"></td>
-                  <td><input type="text" class="form-control"></td>
-                  <td><input type="text" class="form-control"></td>
-                  <td><input type="text" class="form-control"></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="dueByAgency"></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="bankChargesAf"></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="bankChargesContractor"></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="taxWithHeld"></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="factoring"></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="pendingLeftDue"></td>
                 </tr>
                 <tr>
                   <td>Description</td>
@@ -139,7 +148,7 @@
           </div>
           <div class="border p-1 mt-1 bg-light">
             <h6 class="color text-black" style="padding-left: 10px;">Allocation Summary</h6>
-            <div class="table-responsive">
+            <div class="table-responsive" *ngIf="showAllocationSummery">
               <table class="table table-bordered text-center">
                 <thead class="color text-black">
                   <tr>
@@ -160,23 +169,23 @@
                   </tr>
                 </thead>
                 <tbody class="bg-light">
-                  <tr>
-                    <td>Invoice</td>
-                    <td>701 - 10651</td>
-                    <td>2100</td>
-                    <td>0.00</td>
-                    <td>0.00</td>
-                    <td>0.00</td>
-                    <td>0.00</td>
-                    <td>Payment of Invoice 701 - 10651</td>
-                    <td>5600.00</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>3500</td>
+                  <tr  *ngFor="let row of allocationList; let i = index">
+                    <td>{{ row.allocateType }}</td>
+                    <td>{{ row.invoiceItem }}</td>
+                    <td>{{ row.amountToAllocate }}</td>
+                    <td>{{ row.agencyCommission }}</td>
+                    <td>{{ row.ourFee }}</td>
+                    <td>{{ row.contractorDue }}</td>
+                    <td>{{ row.vat }}</td>
+                    <td>{{ row.descrp }}</td>
+                    <td>{{ row.dueByAgen }}</td>
+                    <td>{{ row.bkCharges }}</td>
+                    <td>{{ row.taxWithheld }}</td>
+                    <td>{{ row.factoring }}</td>
+                    <td>{{ row.pendingLeft }}</td>
                     <td>
-                      <a href="javascript:void(0)" class="text-primary">Update</a> |
-                      <a href="javascript:void(0)" class="text-danger">Delete</a>
+                      <a href="javascript:void(0)" class="text-primary" (click)="deleteRow(i)">Update</a> |
+                      <a href="javascript:void(0)" class="text-danger" (click)="updateRow(i)">Delete</a>
                     </td>
                   </tr>
                 </tbody>
@@ -187,15 +196,15 @@
               <div class="row align-items-center text-black">
                 <div class="col d-flex align-items-center mb-0">
                   <label class=" me-2">Total available for allocation:</label>
-                  <input type="text" class="form-control width120 form-controldarker">
+                  <input type="text" class="form-control width120 form-controldarker"  [disabled]="true" [(ngModel)]="txtAmountAvailable">
                 </div>
                 <div class="col d-flex align-items-center mb-0">
                   <label class="me-2">Total allocated (Confirmed):</label>
-                  <input type="text" class="form-control width120 width123 form-controldarker">
+                  <input type="text" class="form-control width120 width123 form-controldarker"  [disabled]="true" [(ngModel)]="txtAllocatedConfirmedAmount">
                 </div>
                 <div class="col d-flex align-items-center mb-0">
                   <label class="me-2">Total available for allocation:</label>
-                  <input type="text" class="form-control width120 form-controldarker">
+                  <input type="text" class="form-control width120 form-controldarker"  [disabled]="true" [(ngModel)]="txtTotalAmount">
                 </div>
               </div>
               <div class="row">
