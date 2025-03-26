@@ -120,7 +120,7 @@
     <div style="overflow-x:auto;">
       <table mat-table [dataSource]="dataSource.data" matSort class="table">
         <ng-container matColumnDef="contractorName">
-          <th mat-header-cell *matHeaderCellDef   class="coloredwhite"> 
+          <th mat-header-cell *matHeaderCellDef   class="coloredwhite" style="width: 180px;"> 
             <input *ngIf="!IsValidatedRecord && hideCheckBoxes" type="checkbox" [(ngModel)]="IsAllRecord" name="IsAllRecord"
             (change)="toggleAllRecords($event)" style="margin-right: 8px;" />
           
@@ -131,9 +131,9 @@
             <!-- ✅ Row Checkboxes -->
             <!-- Only show checkbox if IsValidatedRecord is false -->
             <input *ngIf="!IsValidatedRecord && !row.isMovedInOriginaldb" type="checkbox" [checked]="selectedRecords.includes(row.id)"
-              (change)="onCheckboxChange($event, row.id)" class="custom-checkbox" [disabled]="row.isErrorOnRow === 1" />
+              (change)="onCheckboxChange($event, row.id)" class="custom-checkbox" [disabled]="row.isErrorOnRow === 1"  style="margin-right: 5px;"/>
 
-            {{ row.contractorName }}
+              <span>{{ row.contractorName }}</span>
           </td>
         </ng-container>
 
