@@ -57,7 +57,8 @@ export class RemittanceAllocationComponent implements OnInit {
   allocationType: any = {};
   amountAllocate: string = '';
   dueByAgency: string = '';
-
+  isFieldReadOnly: boolean = true;
+  invoiceDropdown : any |null = null;
 
   txtAmountAvailable : number = 0;
   txtTotalAmount : string = '';
@@ -94,6 +95,8 @@ export class RemittanceAllocationComponent implements OnInit {
     this.cieCode = invoiceData.cieCode;
     this.txtAmountAvailable = invoiceData.invoiceData.mvtAmountRcvd;
     this.txtTotalAmount =  invoiceData.invoiceData.mvtAmountRcvd;
+
+    
   }
 
   ngOnInit(): void {
@@ -121,6 +124,28 @@ export class RemittanceAllocationComponent implements OnInit {
       }
     });
   }
+  
+  onItemChange(event: any) {
+    if (this.invoiceDropdown) {
+      //this.invoice = this.invoicearr[0].invoiceRef
+        const selectedInvoice = this.invoicearr.find(inv => inv.invhCode === this.invoiceDropdown);
+
+        if (selectedInvoice && selectedInvoice.invoiceRef) {
+            const parts: string[] = selectedInvoice.invoiceRef.split('|').map((p: string) => p.trim());
+
+            if (parts.length > 2) {
+                this.amountAllocate = parts[2];
+                this.dueByAgency = parts[2];
+            } else {
+                this.amountAllocate = "";
+                this.dueByAgency = "";
+            }
+        }
+    } else {
+        this.amountAllocate = "";
+        this.dueByAgency = "";
+    }
+}
 
   getAllocationType() {
     const apiUrl = environment.API_BASE_URL + 'OCRAI/GetAllocationTypeListData';
@@ -136,7 +161,7 @@ export class RemittanceAllocationComponent implements OnInit {
         debugger
         console.log('allocationdata', data.data.allocationList)
         this.allocationarr = data.data.allocationList;
-        if (this.invoice && this.allocationarr.length > 1) {
+        if (this.invoiceDropdown && this.allocationarr.length > 1) {
           this.allocationType = this.allocationarr[0].altCode;
         } else {
           this.allocationType = null; // Or set to a default value
@@ -156,7 +181,7 @@ export class RemittanceAllocationComponent implements OnInit {
     this.showAllocation = true;
 
     const data = {
-      invhCode: this.invoice // Use selected invoice's invhCode
+      invhCode: this.invoiceDropdown // Use selected invoice's invhCode
     };
 
     const headers = new HttpHeaders({
@@ -185,8 +210,9 @@ export class RemittanceAllocationComponent implements OnInit {
   }
 
   onInvoiceChange(event: any) {
-    if (this.invoice) {
-      const selectedInvoice = this.invoicearr.find(inv => inv.invhCode === this.invoice);
+    if (this.invoiceDropdown) {
+      this.invoice = this.invoiceDropdown;
+      const selectedInvoice = this.invoicearr.find(inv => inv.invhCode === this.invoiceDropdown);
 
       if (selectedInvoice && selectedInvoice.invoiceRef) {
         const parts: string[] = selectedInvoice.invoiceRef.split('|').map((p: string) => p.trim());
@@ -270,6 +296,25 @@ export class RemittanceAllocationComponent implements OnInit {
         console.error("Error Response:", error);
       },
     });
+  }
+
+
+  onAllocationChange() {
+    if (this.allocationType === 'ACC') {
+      debugger
+              this.amountAllocate = "";
+              this.invoice = null;
+              this.dueByAgency = "";
+              this.description = 'Payment on Account from ' + this.selectedAgencyDesc;
+              return; 
+          }
+
+          if (this.allocationType === 'INV') {
+            this.description = 'Payment from Agency ' + this.selectedAgencyDesc;
+            return; 
+        }
+
+    this.isFieldReadOnly = this.allocationType === "123";  
   }
 
 
