@@ -484,7 +484,7 @@ onSkip() {
   this.notificationService.setNotificationVisibility(false);
   
 
-debugger
+
   const formData = {
     RowId: this.id,
     FirstName: this.firstnamefor,
@@ -701,7 +701,7 @@ onSubmit(form: any): void {
     this.http.post<any>(apiUrl, formData,{headers}).subscribe({
       next: (response) => {
        //response.data.validationResult = -1
-       debugger;
+     
         switch (response.data.validationResult) {
           case -1:
             
@@ -783,30 +783,45 @@ onSubmit(form: any): void {
             );
             break;
   
-          case 4:
-            console.log("case 4 is clicked ")
-            this.loading =false
-            //alert('The records have been successfully validated and moved.');
-            //this.fetchNextRecord(response.data.resultTable[0]);
-        
-            this.notificationService.showNotification(
-              'The records have been successfully validated and moved.',
-              'INFORMATION',
-              'success',
-              () => {
-         
+            case 4:
+              console.log("case 4 is clicked ");
+              this.loading = false;
 
-                console.log('OK clicked 4'); // Callback logic
-                console.log('response' + response.data.resultTable.length);
-                console.log(response);
-                if(response.data.resultTable.length >0){
-                  this.fetchNextRecord(response.data.resultTable[0]);
+              if (response.data.resultTable.length > 0) {
+                const nextRecord = response.data.resultTable[0];
+            
+                if (nextRecord.Message === 'All rows complete') {
+                  this.notificationService.showNotification(
+                    'The records have been successfully validated and moved. And all records have been processed.',
+                    'INFORMATION',
+                    'success',
+                    () => {
+                      this.dialogRef.close();
+                      this.notificationService.setNotificationVisibility(false);
+                    }
+                  );
+                } else {
+                 
+                  this.notificationService.showNotification(
+                    'The records have been successfully validated and moved.',
+                    'INFORMATION',
+                    'success',
+                    () => {
+                      console.log('OK clicked 4'); // Callback logic
+                      console.log('response' + response.data.resultTable.length);
+                     
+                      console.log(response);
+                     
+                      this.fetchNextRecord(nextRecord);
+              
+                      this.notificationService.setNotificationVisibility(false);
+                    }
+                  );
                 }
-                this.notificationService.setNotificationVisibility(false);
               }
-            );
-            break;
-
+              
+              break;
+          
 
             case 5:
               console.log("case 5 is clicked ")
@@ -824,6 +839,8 @@ onSubmit(form: any): void {
                   console.log('OK clicked 5'); // Callback logic
                   console.log('response' + response.data.resultTable.length);
                   console.log(response);
+
+                  
                   // if(response.data.resultTable.length >0){
                   //   this.fetchNextRecord(response.data.resultTable[0]);
                   // }
@@ -833,7 +850,7 @@ onSubmit(form: any): void {
               break;
 
               case 6:
-              console.log("case 5 is clicked ")
+              console.log("case 6 is clicked ")
               this.loading =false
               //alert('The records have been successfully validated and moved.');
               //this.fetchNextRecord(response.data.resultTable[0]);
@@ -855,7 +872,53 @@ onSubmit(form: any): void {
                 }
               );
               break;
+              case 7:
+                console.log("case 7 is clicked ")
+                this.loading =false
+                //alert('The records have been successfully validated and moved.');
+                //this.fetchNextRecord(response.data.resultTable[0]);
+            
+                this.notificationService.showNotification(
+                  'Contract is not mapped',
+                  'INFORMATION',
+                  'success',
+                  () => {
+                   
+    
+                    console.log('OK clicked 5'); // Callback logic
+                    console.log('response' + response.data.resultTable.length);
+                    console.log(response);
+                    // if(response.data.resultTable.length >0){
+                    //   this.fetchNextRecord(response.data.resultTable[0]);
+                    // }
+                    this.notificationService.setNotificationVisibility(false);
+                  }
+                );
+                break;
 
+                case 8:
+              console.log("case 8 is clicked ")
+              this.loading =false
+              //alert('The records have been successfully validated and moved.');
+              //this.fetchNextRecord(response.data.resultTable[0]);
+          
+              this.notificationService.showNotification(
+                'The contract is not Active',
+                'INFORMATION',
+                'success',
+                () => {
+                 
+  
+                  console.log('OK clicked 5'); // Callback logic
+                  console.log('response' + response.data.resultTable.length);
+                  console.log(response);
+                  // if(response.data.resultTable.length >0){
+                  //   this.fetchNextRecord(response.data.resultTable[0]);
+                  // }
+                  this.notificationService.setNotificationVisibility(false);
+                }
+              );
+              break;
              
 
   
@@ -911,7 +974,7 @@ console.log("this.id" + this.id);
   this.totalAmount = data.TotalAmount?.includes(' ') ? data.TotalAmount.split(' ')[0] : data.TotalAmount?.trim() || '';  
   this.invoiceNumber = data.SelfBillInvoiceNo || '';
   console.log(  this.invoiceNumber,"jjscnjhsbc")
-  debugger;
+
   this.invoiceDate = data.SelfBillInvoiceDate || '';
   this.contract_CtcCode = data.Contract_CtcCode || '';
 
@@ -921,7 +984,7 @@ console.log("this.id" + this.id);
   this.imageName = data.InvoiceFilePath;
   this.uplodedPDFFile = data.InvoiceFileName;
 
-  debugger;
+
   this.resetAFSContractorDropdown();
   this.fetchContractorOptions();
   this.resetAFSContractDropdown();

@@ -142,7 +142,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
         next: (response: any) => {
           this.allRecords = response.data.data;  
           this.dataSource.data = response.data.data;
-          //console.log("✅ Incoming Data from API:", this.allRecords);
+          console.log(" Incoming Data from API:", this.allRecords);
           this.totalRecords = response.data.totalRecords; 
           if (this.allRecords.length > 0) {
             this.isMovedInOriginaldb = this.allRecords[0].isMovedInOriginaldb;
@@ -334,7 +334,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
 
     setTimeout(() => {
         if (!this.allRecords || this.allRecords.length === 0) {
-            console.warn("⚠️ No records found in allRecords!");  
+            console.warn(" No records found in allRecords!");  
             this.selectedRecords = []; // Ensure it's an empty array instead of null
             return;  
         }
@@ -345,14 +345,14 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
             .filter(row => row.isErrorOnRow !== 1) // Exclude error rows
             .map(row => row.id);
     } else {
-        // ❌ Unselect all
+        //  Unselect all
         this.selectedRecords = [];
     }
 
-    // ✅ Ensure Angular detects changes
+    //  Ensure Angular detects changes
     this.selectedRecords = [...this.selectedRecords];
 
-    //console.log("✅ Selected Records:", this.selectedRecords);
+    //console.log(" Selected Records:", this.selectedRecords);
   }, 500); // Wait for 0.5 sec to ensure data is loaded
 }
 
@@ -361,17 +361,17 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   
 onCheckboxChange(event: any, id: number) {
   if (event.target.checked) {
-      // ✅ Add to selected records
+      // Add to selected records
       this.selectedRecords.push(id);
   } else {
-      // ❌ Remove from selected records
+      //  Remove from selected records
       this.selectedRecords = this.selectedRecords.filter(recordId => recordId !== id);
       
-      // 🚨 If any row is unchecked, uncheck "Is All Batch Records?"
+      //  If any row is unchecked, uncheck "Is All Batch Records?"
       this.IsAllRecord = false;
   }
 
-  // ✅ Ensure Angular detects changes
+  //  Ensure Angular detects changes
   this.selectedRecords = [...this.selectedRecords];
 
   //console.log("Updated Selected Records:", this.selectedRecords);
