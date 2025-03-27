@@ -9,7 +9,9 @@ export class InputSanitizerDirective {
   @Input('appInputSanitizer') sanitizerType: 'alphabet' |'alphabetwithcomma'| 'number' | 'alphanumeric' = 'alphabet';
 
   @HostListener('input', ['$event']) onInputChange(event: any): void {
-    const input: string = event.target.value;
+    //const input: string = event.target.value;
+    const inputElement = event.target as HTMLInputElement;
+    const input: string = inputElement.value;
     let sanitizedValue: string = input;
 
     switch (this.sanitizerType) {
@@ -44,9 +46,13 @@ export class InputSanitizerDirective {
     //Remove as per error - Uncaught InternalError: too much recursion
     //event.target.dispatchEvent(new Event('input'));
 
-    setTimeout(() => {
-      event.target.dispatchEvent(new Event('input', { bubbles: true }));
-    }, 0);
+    // setTimeout(() => {
+    //   event.target.dispatchEvent(new Event('input', { bubbles: true }));
+    // }, 0);
+
+    if (inputElement.value !== sanitizedValue) {
+      inputElement.value = sanitizedValue;
+    }
 
   }
 
