@@ -18,6 +18,7 @@ export class SharedUtils {
     static validateDate(dateValue: string, fieldName: string, isRequired: boolean): string | null {
       const today = new Date();
       if (!dateValue || dateValue.trim() === '') {
+        
         return isRequired ? `${fieldName} is required.` : null;
       }
   
@@ -34,9 +35,9 @@ export class SharedUtils {
   
       const nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
 
-      if (inputDate >= nextMonth) {
-        return `${fieldName} cannot be in the future.`;
-      }
+      // if (inputDate >= nextMonth) {
+      //   return `${fieldName} cannot be in the future.`;
+      // }
   
       return null; // Date is valid
     }
