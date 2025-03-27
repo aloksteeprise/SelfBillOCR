@@ -3,7 +3,13 @@
     word-break: break-word;
     white-space: normal;
 }
-
+.break-text {
+    width: 175px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    display: inline-block;
+}
+  
 
 hr {
     margin: 0.5rem !important;

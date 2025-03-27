@@ -30,11 +30,11 @@
         <div class="col-6 col-sm-2 marginleft8">
           <label class="fontweight500">Start Date</label>
           <input type="date" id="startdate" class="form-control" [(ngModel)]="startdate" name="startdate"
-            [max]="getToday()" />
+            min="1900-01-01" max="9999-12-31" />
         </div>
         <div class="col-6 col-sm-2 marginleft8">
           <label class="fontweight500">End Date</label>
-          <input type="date" id="enddate" class="form-control" [(ngModel)]="enddate" name="date" [max]="getToday()" />
+          <input type="date" id="enddate" class="form-control" [(ngModel)]="enddate" name="date" min="1900-01-01" max="9999-12-31" />
         </div>
         <!-- <div class="col-12 col-sm-2">
         <label class="fontweight500">Validated</label>

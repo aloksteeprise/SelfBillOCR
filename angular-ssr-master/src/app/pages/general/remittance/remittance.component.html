@@ -27,7 +27,7 @@
       <div class="col-6 col-sm-2 marginleft8">
         <label class="fontweight500">Invoice Date</label>
         <input type="date" id="invoiceDate" class="form-control" [(ngModel)]="invoiceDate" name="invoiceDate"
-          [max]="getToday()" />
+          min="1900-01-01" max="9999-12-31" />
       </div>
 
       <!-- <div class="col-12 col-sm-2">

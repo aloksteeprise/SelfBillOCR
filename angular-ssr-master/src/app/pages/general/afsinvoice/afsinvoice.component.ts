@@ -378,6 +378,7 @@ onPrevious() {
             }
           );
         } else {
+        
           this.fetchNextRecord(previousRecord);
           this.notificationService.setNotificationVisibility(false);
         }
@@ -483,6 +484,7 @@ onSkip() {
   this.notificationService.setNotificationVisibility(false);
   
 
+debugger
   const formData = {
     RowId: this.id,
     FirstName: this.firstnamefor,
@@ -495,6 +497,8 @@ onSkip() {
     GroupNewId: this.groupNewId,
     IsSkip: true,
   };
+
+  console.log(formData,"Akssdj")
   
   const headers = new HttpHeaders({
     Authorization: `Bearer ${this.token}`,
@@ -619,16 +623,24 @@ onSubmit(form: any): void {
     isValid = false;
     errors.endDate = endDate; }
 
-  if (!errors.startDate && !errors.endDate) {
-      const start = new Date(this.startdate).getTime();
-      const end = new Date(this.enddate).getTime();
-      const diffInDays = (end - start) / (1000 * 60 * 60 * 24);
+
+    if (!errors.startDate && !errors.endDate) {
+      const start = new Date(this.startdate);
+      const end = new Date(this.enddate);
     
-      if (diffInDays > 30) {
+     
+      const startYear = start.getFullYear();
+      const startMonth = start.getMonth();
+      const endYear = end.getFullYear();
+      const endMonth = end.getMonth();
+    
+      
+      if (startYear !== endYear || startMonth !== endMonth) {
         isValid = false;
-        errors.endDate = 'The Start Date and End Date must be within a 30-day range.';
+        errors.endDate = 'End Date must be within the same month.';
       }
     }
+    
 
   const invoiceDate = SharedUtils.validateDate(this.invoiceDate, 'Invoice Date', false);
   if (invoiceDate) {
@@ -675,6 +687,8 @@ onSubmit(form: any): void {
       IsSkip:false
     };
 
+    this.loading =true
+
     console.log('formData:', formData);
 
     const headers = new HttpHeaders({
@@ -687,11 +701,12 @@ onSubmit(form: any): void {
     this.http.post<any>(apiUrl, formData,{headers}).subscribe({
       next: (response) => {
        //response.data.validationResult = -1
-       
+       debugger;
         switch (response.data.validationResult) {
           case -1:
             
             //alert('Erro r occurred in validation process.');
+            this.loading =false
 
             this.notificationService.showNotification(
               'Error occurred in validation process.',
@@ -709,6 +724,7 @@ onSubmit(form: any): void {
           case 1:
             //alert('No row validated.');
             //this.fetchNextRecord(response.data.resultTable[0]);
+            this.loading =false
             this.notificationService.showNotification(
               'No row validated.',
               'INFORMATION',
@@ -728,6 +744,7 @@ onSubmit(form: any): void {
           case 2:
             //alert('The records have been successfully validated and moved.');
             //this.fetchNextRecord(response.data.resultTable[0]);
+            this.loading =false
             this.notificationService.showNotification(
               'The records have been successfully validated and moved.',
               'INFORMATION',
@@ -747,6 +764,7 @@ onSubmit(form: any): void {
           case 3:
             //alert('Error in validation process.');
             //this.fetchNextRecord(response.data.resultTable[0]);
+            this.loading =false
            
             this.notificationService.showNotification(
               'Error in validation process.',
@@ -767,6 +785,7 @@ onSubmit(form: any): void {
   
           case 4:
             console.log("case 4 is clicked ")
+            this.loading =false
             //alert('The records have been successfully validated and moved.');
             //this.fetchNextRecord(response.data.resultTable[0]);
         
@@ -791,6 +810,7 @@ onSubmit(form: any): void {
 
             case 5:
               console.log("case 5 is clicked ")
+              this.loading =false
               //alert('The records have been successfully validated and moved.');
               //this.fetchNextRecord(response.data.resultTable[0]);
           
@@ -814,6 +834,7 @@ onSubmit(form: any): void {
 
               case 6:
               console.log("case 5 is clicked ")
+              this.loading =false
               //alert('The records have been successfully validated and moved.');
               //this.fetchNextRecord(response.data.resultTable[0]);
           
@@ -839,6 +860,7 @@ onSubmit(form: any): void {
 
   
           default:
+            this.loading =false
             this.notificationService.showNotification(
               'Unhandled validation result:',
               'WARNING',
@@ -855,6 +877,8 @@ onSubmit(form: any): void {
       error: (error) => {
         //console.error('API Error:', error);
         //alert('There was an error submitting the form. Please try again.');
+        
+        this.loading =false
         this.notificationService.showNotification(
           'There was an error submitting the form. Please try again.',
           'ERROR',
@@ -884,7 +908,10 @@ console.log("this.id" + this.id);
   this.startdate = data.StartDate || '';
   this.enddate = data.EndDate || '';
   // this.totalAmount = this.data.totalAmount ? (this.data.totalAmount.includes(' ') ? this.data.totalAmount.split(' ')[0] : this.data.totalAmount.trim()) : ''; // Ensure a default empty string if totalAmount is undefined
-  this.totalAmount = data.TotalAmount?.includes(' ') ? data.TotalAmount.split(' ')[0] : data.TotalAmount?.trim() || '';  this.invoiceNumber = data.SelfBillInvoiceNo || '';
+  this.totalAmount = data.TotalAmount?.includes(' ') ? data.TotalAmount.split(' ')[0] : data.TotalAmount?.trim() || '';  
+  this.invoiceNumber = data.SelfBillInvoiceNo || '';
+  console.log(  this.invoiceNumber,"jjscnjhsbc")
+  debugger;
   this.invoiceDate = data.SelfBillInvoiceDate || '';
   this.contract_CtcCode = data.Contract_CtcCode || '';
 
@@ -893,6 +920,8 @@ console.log("this.id" + this.id);
   this.currencytype = data.CurrencyType || '';
   this.imageName = data.InvoiceFilePath;
   this.uplodedPDFFile = data.InvoiceFileName;
+
+  debugger;
   this.resetAFSContractorDropdown();
   this.fetchContractorOptions();
   this.resetAFSContractDropdown();
@@ -958,9 +987,36 @@ resetAFSContractDropdown(): void {
     });
   }
 
+  getDateRange(): { min: string; max: string } {
+    if (!this.startdate) {
+      return { min: '', max: '' }; // Allow any date initially
+    }
+  
+    const start = new Date(this.startdate);
+    
+    // Ensure startdate is valid before applying restrictions
+    if (isNaN(start.getTime())) {
+      return { min: '', max: '' };
+    }
+  
+    const year = start.getFullYear();
+    const month = start.getMonth();
+  
+    // First day of the month
+    const minDate = new Date(year, month, 1).toISOString().split('T')[0];
+  
+    // Last day of the month
+     const maxDate = new Date(year, month + 1, 0).toISOString().split('T')[0];
+  
+    return { min: minDate, max: maxDate };
+  }
+
   getToday(): string {
     return new Date().toISOString().split('T')[0]
  }
+  
+  
+  
 
   onContractorNameBlur(): void {
       console.log('Contractor Name field lost focus:', this.contractorname);
