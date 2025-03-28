@@ -97,8 +97,8 @@
 
                   <td>
                     <select id="invoice" class="form-select flex-grow-1" [(ngModel)]="invoice"
-                      (change)="onItemChange($event)" name="invoice">
-                      <option value="null" disabled selected>InvoiceRef | InvhDate | Due | LeftPending | ConFullName
+                      (change)="onItemChange($event)" name="invoice" [disabled]="isDisabled('invoice')">
+                      <option value="null"  selected>InvoiceRef | InvhDate | Due | LeftPending | ConFullName
                       </option>
                       <option *ngFor="let invoice of invoicearr" [ngValue]="invoice.invhCode">
                         {{ invoice.invoiceRef }}
@@ -115,17 +115,20 @@
                     </select> -->
                   </td>
                   <td><input type="text" class="form-control" [(ngModel)]="amountAllocate"></td>
-                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.invhTotAgencyFee"></td>
-                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.invhTotOurfee"></td>
-                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.invhTotSal"></td>
-                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.invhVATI"></td>
-                  <td><input type="text" class="form-control" [(ngModel)]="dueByAgency"></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.invhTotAgencyFee" [disabled]="isDisabled('invhTotAgencyFee')"></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.invhTotOurfee" [disabled]="isDisabled('invhTotOurfee')"></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.invhTotSal" [disabled]="isDisabled('invhTotSal')"></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.invhVATI" disabled></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="dueByAgency" disabled></td>
                   <td><input type="text" class="form-control" [(ngModel)]="bankChargesAf"></td>
                   <td><input type="text" class="form-control" [(ngModel)]="bankChargesContractor"></td>
                   <td><input type="text" class="form-control" [(ngModel)]="taxWithHeld"></td>
                   <td><input type="text" class="form-control" [(ngModel)]="factoring"></td>
-                  <td><input type="text" class="form-control" [(ngModel)]="pendingLeftDue"></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="pendingLeftDue" disabled></td>
                 </tr>
+
+                
+
                 <tr>
                   <td>Description</td>
                   <td colspan="6"><input type="text" class="form-control" [(ngModel)]="description"></td>
@@ -141,7 +144,7 @@
                   </td>
                   <td colspan="5"> 
                     <select id="currencyDescription" class="form-select flex-grow-1" [(ngModel)]="currencyDescription"
-                      name="currencyDescription"  >
+                      name="currencyDescription"  [disabled]="isDisabled('currencyDescription')">
                       <option value="null" disabled selected>InvoiceRef   | InvhDate   | Due   | LeftPending  |  Currency|  ConFullName</option>
                       <option *ngFor="let desc of currencyDescriptionarr" [ngValue]="desc.invhCode">
                         {{ desc?.invoiceRef }}
