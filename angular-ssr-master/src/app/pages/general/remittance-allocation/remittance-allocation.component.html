@@ -22,7 +22,7 @@
                 </mat-option>
               </mat-autocomplete>
             </div>
-            <div class="col-sm-4 d-flex flex-column">
+            <div class="col-sm-2 d-flex flex-column">
               <label class="custom-bottom">Invoice:</label>
               <select id="invoiceDropdown" class="form-select flex-grow-1" [(ngModel)]="invoiceDropdown"
                 (change)="onInvoiceChange($event)" name="invoiceDropdown">
@@ -33,13 +33,33 @@
               </select>
             </div>
 
-            <div class="col-sm-5 d-flex justify-content-end gap-3">
+            <div class="col-sm-2 d-flex">
               <button class="btn btn-primary" (click)="toggleAllocation()"
                 [disabled]="!selectedAgencyDesc">Allocation</button>
-              <button class="btn btn-primary" [disabled]="!selectedAgencyDesc">Multi-select of Invoices</button>
-              <button type="button" class="btn-close" (click)="closeDialog()" aria-label="Close"></button>
             </div>
 
+            <div class="col-sm-2 d-flex flex-column">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Multi Select Invoices</mat-label>
+                <mat-select multiple [(ngModel)]="selectedInvoices" disableRipple>
+                  <!-- Disabled Header -->
+                  <mat-option disabled class="header-option">
+                    <strong>InvoiceCode | InvoiceRef | Currency</strong>
+                  </mat-option>
+              
+                  <!-- Corrected Invoice List Without Extra Checkbox -->
+                  <mat-option *ngFor="let invoice of invoicearr" [value]="invoice">
+                    {{ invoice.invhCode }} | {{ invoice.invoiceRef }} | {{ invoice.ctcCurrenCy }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              
+              
+            </div>
+            <div class="col-sm-2 d-flex flex-column">
+              <button class="btn btn-primary" [disabled]="!selectedAgencyDesc" (click)="updateAllocationSummary()">Multi-select of Invoices</button>
+              <button type="button" class="btn-close" (click)="closeDialog()" aria-label="Close"></button>
+            </div>
           </div>
         </div>
         <div *ngIf="showAllocation" class="border p-1 mt-1 bg-light">

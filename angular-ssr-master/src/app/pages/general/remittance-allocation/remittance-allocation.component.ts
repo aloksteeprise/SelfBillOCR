@@ -7,6 +7,9 @@ import { Observable, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { startWith } from 'rxjs/operators';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
 @Component({
@@ -27,6 +30,7 @@ export class RemittanceAllocationComponent implements OnInit {
     'taxWithheld', 'factoring', 'pendingLeftDue'
   ];
 
+  selectedInvoices: any[] = [];
   defaultAgencies: { agecode: string; agedesc: string }[] = [];
   isDropdownOpen = false;
   showAllocation = false;
@@ -291,12 +295,76 @@ export class RemittanceAllocationComponent implements OnInit {
     this.http.post<any>(apiUrl, formData, { headers }).subscribe({
       next: (data) => {
         this.invoicearr = data.data.invoiceList;
+        console.log('invoicearr',this.invoicearr)
       },
       error: (error) => {
         console.error("Error Response:", error);
       },
     });
   }
+
+  toggleSelection(invoice: any, event: Event) {
+    event.stopPropagation(); // Prevents dropdown from closing when clicking the checkbox
+    const index = this.selectedInvoices.findIndex(i => i.invhCode === invoice.invhCode);
+    if (index === -1) {
+      this.selectedInvoices.push(invoice);
+    } else {
+      this.selectedInvoices.splice(index, 1);
+    }
+  }
+  
+  isSelected(invoice: any): boolean {
+    return this.selectedInvoices.some(i => i.invhCode === invoice.invhCode);
+  }
+
+  clearSelection() {
+    this.selectedInvoices = [];
+  }
+
+  updateAllocationSummary() {
+  debugger
+    if (this.selectedInvoices && this.selectedInvoices.length > 0) {
+      this.showAllocationSummery = true;
+      this.showAllocation = true;
+      const selectedAllocationType = "Invoice";
+
+      if(this.txtAmountAvailable){
+        this.description = 'Payment from Agency ' + this.selectedAgencyDesc;
+      }
+      else{
+        this.description = 'Payment to Agency ' + this.selectedAgencyDesc;
+      }
+
+      this.selectedInvoices.forEach(selectedInvoice => {
+        if (selectedInvoice) {
+          const parts: string[] = selectedInvoice.invoiceRef.split('|').map((p: string) => p.trim());
+          const invoiceItem = parts.length > 0 ? parts[0] : "";
+          // Push each selected invoice into allocation summary
+          this.allocationList.push({
+            allocateType: selectedAllocationType,
+            invoiceItem: invoiceItem,
+            amountToAllocate: parts[2] || 0,
+            agencyCommission: selectedInvoice.invhTotAgencyFee || 0,
+            ourFee: selectedInvoice.invhTotOurfee || 0,
+            contractorDue: selectedInvoice.invhTotSal || 0,
+            vat: selectedInvoice.invhVATI || 0,
+            descrp: this.description,
+            dueByAgen:  parts[2] || 0,
+            bkCharges: this.bankChargesContractor || 0,
+            taxWithHeld: this.taxWithHeld || 0,
+            factoring: this.factoring || 0,
+            pendingLeft: this.pendingLeftDue || 0
+          });
+        }
+      });
+  
+      this.calculateTotals();
+      this.resetAllocation();
+    } else {
+      console.warn("No invoices selected!");
+    }
+  }
+  
 
   onOtherCurrencyDataBind() {
 

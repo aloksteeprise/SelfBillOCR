@@ -7,7 +7,8 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
     declarations: [RemittanceAllocationComponent], // Declare the component
@@ -18,7 +19,8 @@ import { MatInputModule } from '@angular/material/input';
       ReactiveFormsModule,
       MatFormFieldModule,
       MatInputModule,
-
+      MatCheckboxModule,
+      MatSelectModule
     ],
     exports: [RemittanceAllocationComponent] // Export if needed elsewhere
   })
