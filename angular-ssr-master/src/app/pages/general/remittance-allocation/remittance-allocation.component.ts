@@ -64,14 +64,15 @@ export class RemittanceAllocationComponent implements OnInit {
   amountAllocate: string = '';
   dueByAgency: string = '';
   isFieldReadOnly: boolean = true;
-  invoiceDropdown : any |null = null;
+  invoiceDropdown: any | null = null;
   interCoCompany: any | null = null;
   interCoCompanyarr: any[] = [];
   interCoBank: any | null = null;
   interCoBankarr: any[] = [];
-  txtAmountAvailable : number = 0;
-  txtTotalAmount : string = '';
-  txtAllocatedConfirmedAmount : number = 0;
+  txtAmountAvailable: number = 0;
+  txtTotalAmount: string = '';
+  txtAllocatedConfirmedAmount: number = 0;
+  btnSubmitAllocVisible: boolean = true;
   allocationList: any[] = [];
 
   allocateType: string = '';
@@ -98,6 +99,7 @@ export class RemittanceAllocationComponent implements OnInit {
     private http: HttpClient,
     @Inject(MAT_DIALOG_DATA) public invoiceData: any
   ) {
+
     this.bkAccount = invoiceData.invoiceData.mvtBkAccount;
     this.currency = invoiceData.invoiceData.mvtCurrency;
     this.cieCode = invoiceData.cieCode;
@@ -111,9 +113,9 @@ export class RemittanceAllocationComponent implements OnInit {
       invhTotSal: true,
       invhVATI: true,
       dueByAgency: true,
-      pendingLeftDue:true,
-      currencyDescription:false,
-      btnAddRow : false
+      pendingLeftDue: true,
+      currencyDescription: false,
+      btnAddRow: false
     };
   }
 
@@ -140,7 +142,6 @@ export class RemittanceAllocationComponent implements OnInit {
       }
     });
   }
-
 
   getAllocationType() {
     const apiUrl = environment.API_BASE_URL + 'OCRAI/GetAllocationTypeListData';
@@ -179,7 +180,7 @@ export class RemittanceAllocationComponent implements OnInit {
     });
 
     const apiUrl = environment.API_BASE_URL + 'OCRAI/GetAllocationPopupList';
-    if(this.invoiceDropdown){
+    if (this.invoiceDropdown) {
       this.http.post<any>(apiUrl, data, { headers }).subscribe({
         next: (response) => {
           if (response?.data?.allocationPopupList?.length) {
@@ -200,7 +201,6 @@ export class RemittanceAllocationComponent implements OnInit {
   }
 
   onInvoiceChange(event: any) {
-    
     if (this.invoiceDropdown) {
       this.invoice = this.invoiceDropdown;
       const selectedInvoice = this.invoicearr.find(inv => inv.invhCode === this.invoiceDropdown);
@@ -224,50 +224,50 @@ export class RemittanceAllocationComponent implements OnInit {
 
   onItemChange(event: any) {
     if (this.invoice) {
-        const selectedInvoice = this.invoicearr.find(inv => inv.invhCode === this.invoice);
+      const selectedInvoice = this.invoicearr.find(inv => inv.invhCode === this.invoice);
 
-        const data = {
-          invhCode: this.invoice
-        };
+      const data = {
+        invhCode: this.invoice
+      };
 
-        const headers = new HttpHeaders({
-          Authorization: `Bearer ${this.token}`,
-          'Content-Type': 'application/json',
-        });
-        const apiUrl = environment.API_BASE_URL + 'OCRAI/GETInoicePaidStatusData';
-        this.http.post<any>(apiUrl, data, { headers }).subscribe({
-          next: (data) => {
-            console.log(data);
-            if(data.data != ""){
-              if(data.data.paidStatus == '0'){
-                this.disabledFields['btnAddRow'] = true;
-              }
-              else{
-                this.disabledFields['btnAddRow'] = false;
-              }
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${this.token}`,
+        'Content-Type': 'application/json',
+      });
+      const apiUrl = environment.API_BASE_URL + 'OCRAI/GETInoicePaidStatusData';
+      this.http.post<any>(apiUrl, data, { headers }).subscribe({
+        next: (data) => {
+          console.log(data);
+          if (data.data != "") {
+            if (data.data.paidStatus == '0') {
+              this.disabledFields['btnAddRow'] = true;
             }
-          },
-          error: (error) => {
-            console.error("Error Response:", error);
-          },
-        });
-
-        if (selectedInvoice && selectedInvoice.invoiceRef) {
-            const parts: string[] = selectedInvoice.invoiceRef.split('|').map((p: string) => p.trim());
-
-            if (parts.length > 2) {
-                this.amountAllocate = parts[2];
-                this.dueByAgency = parts[2];
-            } else {
-                this.amountAllocate = "";
-                this.dueByAgency = "";
+            else {
+              this.disabledFields['btnAddRow'] = false;
             }
+          }
+        },
+        error: (error) => {
+          console.error("Error Response:", error);
+        },
+      });
+
+      if (selectedInvoice && selectedInvoice.invoiceRef) {
+        const parts: string[] = selectedInvoice.invoiceRef.split('|').map((p: string) => p.trim());
+
+        if (parts.length > 2) {
+          this.amountAllocate = parts[2];
+          this.dueByAgency = parts[2];
+        } else {
+          this.amountAllocate = "";
+          this.dueByAgency = "";
         }
+      }
     } else {
-        this.amountAllocate = "";
-        this.dueByAgency = "";
+      this.amountAllocate = "";
+      this.dueByAgency = "";
     }
-}
+  }
 
   autoSplit() {
     alert('Auto Split functionality not implemented yet!');
@@ -278,7 +278,6 @@ export class RemittanceAllocationComponent implements OnInit {
   }
 
   onInvoiceDataBind() {
-
     const formData = {
       AgeCode: this.selectedAgency,
       CieCode: this.cieCode,
@@ -295,7 +294,7 @@ export class RemittanceAllocationComponent implements OnInit {
     this.http.post<any>(apiUrl, formData, { headers }).subscribe({
       next: (data) => {
         this.invoicearr = data.data.invoiceList;
-        console.log('invoicearr',this.invoicearr)
+        console.log('invoicearr', this.invoicearr)
       },
       error: (error) => {
         console.error("Error Response:", error);
@@ -304,7 +303,7 @@ export class RemittanceAllocationComponent implements OnInit {
   }
 
   toggleSelection(invoice: any, event: Event) {
-    event.stopPropagation(); // Prevents dropdown from closing when clicking the checkbox
+    event.stopPropagation();
     const index = this.selectedInvoices.findIndex(i => i.invhCode === invoice.invhCode);
     if (index === -1) {
       this.selectedInvoices.push(invoice);
@@ -312,7 +311,7 @@ export class RemittanceAllocationComponent implements OnInit {
       this.selectedInvoices.splice(index, 1);
     }
   }
-  
+
   isSelected(invoice: any): boolean {
     return this.selectedInvoices.some(i => i.invhCode === invoice.invhCode);
   }
@@ -322,16 +321,15 @@ export class RemittanceAllocationComponent implements OnInit {
   }
 
   updateAllocationSummary() {
-  debugger
     if (this.selectedInvoices && this.selectedInvoices.length > 0) {
       this.showAllocationSummery = true;
       this.showAllocation = true;
       const selectedAllocationType = "Invoice";
 
-      if(this.txtAmountAvailable){
+      if (this.txtAmountAvailable) {
         this.description = 'Payment from Agency ' + this.selectedAgencyDesc;
       }
-      else{
+      else {
         this.description = 'Payment to Agency ' + this.selectedAgencyDesc;
       }
 
@@ -339,7 +337,7 @@ export class RemittanceAllocationComponent implements OnInit {
         if (selectedInvoice) {
           const parts: string[] = selectedInvoice.invoiceRef.split('|').map((p: string) => p.trim());
           const invoiceItem = parts.length > 0 ? parts[0] : "";
-          // Push each selected invoice into allocation summary
+
           this.allocationList.push({
             allocateType: selectedAllocationType,
             invoiceItem: invoiceItem,
@@ -349,7 +347,7 @@ export class RemittanceAllocationComponent implements OnInit {
             contractorDue: selectedInvoice.invhTotSal || 0,
             vat: selectedInvoice.invhVATI || 0,
             descrp: this.description,
-            dueByAgen:  parts[2] || 0,
+            dueByAgen: parts[2] || 0,
             bkCharges: this.bankChargesContractor || 0,
             taxWithHeld: this.taxWithHeld || 0,
             factoring: this.factoring || 0,
@@ -357,17 +355,15 @@ export class RemittanceAllocationComponent implements OnInit {
           });
         }
       });
-  
+
       this.calculateTotals();
       this.resetAllocation();
     } else {
       console.warn("No invoices selected!");
     }
   }
-  
 
   onOtherCurrencyDataBind() {
-
     const formData = {
       AgeCode: this.selectedAgency,
       CieCode: this.cieCode,
@@ -400,15 +396,15 @@ export class RemittanceAllocationComponent implements OnInit {
   }
 
   addAllocation() {
-    if (this.amountAllocate === ""){
+    if (this.amountAllocate === "") {
       alert("Please enter the amount to allocate value")
       return;
     }
-    if (this.invoice === ""){
+    if (this.invoice === "") {
       alert("Please enter the inter co value")
       return;
     }
-    
+
     this.showAllocationSummery = true;
 
     const selectedAllocationType = this.allocationarr.find(
@@ -427,9 +423,7 @@ export class RemittanceAllocationComponent implements OnInit {
         this.invoiceItem = "";
       }
     }
-
-    console.log(this.allocationType, this.invoiceItem)
-    // Add new allocation row
+debugger
     this.allocationList.push({
       allocateType: selectedAllocationType ? selectedAllocationType.altDesc : '',
       invoiceItem: selectedInvoice ? this.invoiceItem : '',
@@ -441,7 +435,7 @@ export class RemittanceAllocationComponent implements OnInit {
       descrp: this.description,
       dueByAgen: this.dueByAgency || 0,
       bkCharges: this.bankChargesContractor || 0,
-      taxWithHeld: this.taxWithHeld || 0,
+      taxWithheld: this.taxWithHeld || 0,
       factoring: this.factoring || 0,
       pendingLeft: this.pendingLeftDue || 0
     });
@@ -449,7 +443,7 @@ export class RemittanceAllocationComponent implements OnInit {
     this.calculateTotals();
     this.resetAllocation();
   }
-  
+
 
   onAllocationChange() {
     if (this.allocationType === 'ACC') {
@@ -494,6 +488,348 @@ export class RemittanceAllocationComponent implements OnInit {
     this.isFieldReadOnly = this.allocationType === "123";
   }
 
+
+  // validateBankCharges(): boolean {
+  //   console.log("Function called!");
+  //   debugger;
+
+  //   if (this.allocationType === 'INV') {
+  //     console.log("Inside validation");
+
+  //     if (!this.amountAllocate || this.amountAllocate < '0') {
+  //       alert('Amount to allocate should not be negative.');
+  //       this.amountAllocate = "0";
+  //       return false;
+  //     }
+
+  //     if (this.taxWithHeld === null || this.taxWithHeld === undefined) {
+  //       this.taxWithHeld = 0;
+  //     } else if (this.taxWithHeld < 0.0) {
+  //       alert('Tax withheld should not be negative.');
+  //       this.taxWithHeld = 0;
+  //       return false;
+  //     }
+
+
+  //     if (!this.pendingLeftDue || this.pendingLeftDue < 0) {
+  //       alert('Pending left due should not be negative.');
+  //       this.pendingLeftDue = 0;
+  //       return false;
+  //     }
+
+  //     if (!this.bankChargesAf || this.bankChargesAf < 0) {
+  //       alert('Bank Charges SMTG should not be negative.');
+  //       this.bankChargesAf = 0;
+  //       return false;
+  //     }
+
+  //     if (!this.bankChargesContractor || this.bankChargesContractor < 0) {
+  //       alert('Bank Charges Contractor should not be negative.');
+  //       this.bankChargesContractor = 0;
+  //       return false;
+  //     }
+
+  //     if (this.invoiceItem !== '0') {
+  //       console.log("Checking allocation");
+
+  //       if (this.roundVal(this.amountToAllocate) > this.roundVal(this.dueByAgen)) {
+  //         alert(`You are trying to allocate more than the maximum left on this invoice (${this.dueByAgen}). Allocate less or remove bank charges.`);
+  //         return false;
+  //       }
+
+  //       const totalAllocation = this.roundVal(
+  //         this.amountToAllocate + this.bankChargesContractor + this.bankChargesAf + this.taxWithHeld + this.factoring
+  //       );
+
+  //       if (totalAllocation > this.roundVal(this.dueByAgen)) {
+  //         alert(`You are trying to allocate more than the maximum left on this invoice (${this.dueByAgen}). Allocate less or remove bank charges.`);
+  //         this.amountToAllocate = 0;
+  //         return false;
+  //       } else {
+  //         this.pendingLeftDue = this.roundVal(
+  //           this.dueByAgen - this.bankChargesContractor - this.bankChargesAf - this.amountToAllocate - this.taxWithHeld - this.factoring
+  //         );
+  //       }
+
+  //       this.getSplitAmount();
+  //     }
+  //   }
+  //   return true;
+  // }
+
+  validateAFVChange(obj: any, id: string) {
+
+    const allocatedAmt = parseFloat(this.amountAllocate) || 0;
+    const dueByAmt = parseFloat(this.dueByAgency) || 0;
+
+    const contractorCharges = parseFloat(this.bankChargesContractor as any) || 0;
+    const afCharges = parseFloat(this.bankChargesAf as any) || 0;
+    const withheldTax = parseFloat(this.taxWithHeld as any) || 0;
+    const factoringAmt = parseFloat(this.factoring as any) || 0;
+
+    if (this.invoice !== "0") {
+      if (this.roundVal(allocatedAmt) > this.roundVal(dueByAmt)) {
+        alert(`You are trying to allocate more than the maximum left on this invoice (${dueByAmt}). Allocate less or remove bank charges.`);
+        return false;
+      }
+
+      const maxAllowedAmt = this.roundVal(parseFloat((document.getElementById(id) as HTMLInputElement)?.value || "0"));
+
+      const enteredAmt = this.roundVal(parseFloat(obj?.value || "0"));
+
+      if (enteredAmt > maxAllowedAmt) {
+        alert(`Entered amount ${enteredAmt} is not allowed. You can allocate a maximum amount of ${maxAllowedAmt}.`);
+        obj.value = maxAllowedAmt;
+        obj.focus();
+        obj.select();
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+
+  ValidateBankChargesAF(field : string) {
+    debugger
+    console.log("Function called for:", field);
+
+
+    // Parse and validate numeric values
+    const allocatedAmt = isNaN(parseFloat(this.amountAllocate)) ? 0 : parseFloat(this.amountAllocate);
+    const dueByAmt = isNaN(parseFloat(this.dueByAgency)) ? 0 : parseFloat(this.dueByAgency);
+
+    const contractorCharges = isNaN(parseFloat(this.bankChargesContractor as any)) ? 0 : parseFloat(this.bankChargesContractor as any);
+    const afCharges = isNaN(parseFloat(this.bankChargesAf as any)) ? 0 : parseFloat(this.bankChargesAf as any);
+    const withheldTax = isNaN(parseFloat(this.taxWithHeld as any)) ? 0 : parseFloat(this.taxWithHeld as any);
+    const factoringAmt = isNaN(parseFloat(this.factoring as any)) ? 0 : parseFloat(this.factoring as any);
+
+    // Validate only if invoice is selected
+
+    if (this.invoice !== "0") {
+      console.log("Checking allocation");
+
+      if (this.roundVal(allocatedAmt) > this.roundVal(dueByAmt)) {
+        alert(`You are trying to allocate more than the maximum left on this invoice (${dueByAmt}). Allocate less or remove bank charges.`);
+        return false;
+      }
+
+      const totalAllocation = this.roundVal(allocatedAmt + contractorCharges + afCharges + withheldTax + factoringAmt);
+
+      if (totalAllocation > this.roundVal(dueByAmt)) {
+        alert(`You are trying to allocate more than the maximum left on this invoice (${dueByAmt}). Allocate less or remove bank charges.`);
+        //this.amountAllocate = "0"; // Reset to 0 as a number
+        if(field == "bankChargesAf"){
+          this.bankChargesAf = 0;
+        }
+        if(field == "taxWithHeld"){
+          this.taxWithHeld = 0;
+        }
+
+        if(field == "bankChargesContractor"){
+          this.bankChargesContractor = 0;
+        }
+        if(field == "factoring"){
+          this.factoring = 0;
+        }
+
+        return false;
+      } else {
+        this.pendingLeftDue = this.roundVal(dueByAmt - contractorCharges - afCharges - allocatedAmt - withheldTax - factoringAmt);
+      }
+
+      if (typeof this.getSplitAmount === "function") {
+        this.getSplitAmount(); // Call only if function exists
+      }
+    }
+    return true;
+  }
+
+  validateBankCharges(field: string): boolean {
+    console.log("Function called for:", field);
+
+
+    switch (field) {
+      case 'amountAllocate':
+        if (!this.amountAllocate || this.amountAllocate < '0') {
+          alert('Amount to allocate should not be negative.');
+          this.amountAllocate = "0";
+          return false;
+        }
+
+        const allocatedAmt = parseFloat(this.amountAllocate) || 0;
+        const dueByAmt = parseFloat(this.dueByAgency) || 0;
+
+        const contractorCharges = parseFloat(this.bankChargesContractor as any) || 0;
+        const afCharges = parseFloat(this.bankChargesAf as any) || 0;
+        const withheldTax = parseFloat(this.taxWithHeld as any) || 0;
+        const factoringAmt = parseFloat(this.factoring as any) || 0;
+        const aldConBanks = 1
+
+        if (this.invoiceItem !== "0") {
+          if (this.roundVal(allocatedAmt) > this.roundVal(dueByAmt)) {
+            alert(`You are trying to allocate more than the maximum left on this invoice (${dueByAmt}). Allocate less or remove bank charges.`);
+            return false;
+          }
+
+          const totalAllocated = this.roundVal(
+            allocatedAmt +
+            contractorCharges +
+            afCharges +
+            withheldTax +
+            factoringAmt
+          );
+
+          if (totalAllocated !== this.roundVal(dueByAmt)) {
+            const difference = this.roundVal(dueByAmt - allocatedAmt - withheldTax - factoringAmt);
+
+            if (confirm(`The amount entered: ${totalAllocated} is not equal to the pending amount: ${dueByAmt}.
+    Will the difference: ${difference} be considered as bank charges?
+    Reply 'OK' if invoice 100% paid, 'Cancel' if future payments are expected.`)) {
+              if (aldConBanks !== 1) {
+
+                this.pendingLeftDue = 0;
+                this.bankChargesAf = this.roundVal(dueByAmt - contractorCharges - allocatedAmt - withheldTax - factoringAmt);
+              } else {
+
+                this.bankChargesContractor = this.roundVal(dueByAmt - afCharges - allocatedAmt - withheldTax - factoringAmt);
+                this.pendingLeftDue = 0;
+              }
+            } else if (totalAllocated > this.roundVal(dueByAmt)) {
+              alert(`You are trying to allocate more than the maximum left on this invoice (${dueByAmt}). Allocate less or remove bank charges.`);
+              return false;
+            } else {
+              this.pendingLeftDue = this.roundVal(dueByAmt - contractorCharges - afCharges - allocatedAmt - withheldTax - factoringAmt);
+            }
+
+            this.getSplitAmount(); // Assuming this triggers the calculation of split amounts
+            return false;
+          }
+        }
+
+        break;
+
+      case 'taxWithHeld':
+        if (!this.taxWithHeld) {
+          this.taxWithHeld = 0;
+        } else if (this.taxWithHeld < 0.0) {
+          alert('Tax withheld should not be negative.');
+          this.taxWithHeld = 0;
+          return false;
+        }
+        this.ValidateBankChargesAF(field)
+        break;
+
+      case 'bankChargesAf':
+        if (!this.bankChargesAf) {
+          this.bankChargesAf = 0;
+        } else if (this.bankChargesAf < 0) {
+          alert('Bank Charges SMTG should not be negative.');
+          this.bankChargesAf = 0;
+          return false;
+        }
+        this.ValidateBankChargesAF(field)
+        break;
+
+
+      case 'bankChargesContractor':
+        if (!this.bankChargesContractor) {
+          this.bankChargesContractor = 0;
+        } else if (this.bankChargesContractor < 0) {
+          alert('Bank Charges Contractor should not be negative.');
+          this.bankChargesContractor = 0;
+          return false;
+        }
+        this.ValidateBankChargesAF(field)
+        break;
+
+      case 'factoring':
+        if (!this.factoring) {
+          this.factoring = 0;
+        } else if (this.factoring < 0) {
+          alert('factoring should not be negative.');
+          this.factoring = 0;
+          return false;
+        }
+        this.ValidateBankChargesAF(field)
+        break;
+
+      case 'allocationData.invhTotAgencyFee':
+        let invhTotAgencyFee = parseFloat(this.allocationData.invhVATI) || 0;
+
+        if (invhTotAgencyFee < 0) {
+          alert(' invhTotAgencyFee should not be negative.');
+          this.allocationData.invhTotAgencyFee = 0;
+          return false;
+        }
+
+
+        this.validateAFVChange(this.allocationData, 'invhTotAgencyFee');
+        break;
+
+      case 'allocationData.invhVATI':
+        let invhVATI = parseFloat(this.allocationData.invhVATI) || 0;
+
+        if (invhVATI < 0) {
+          alert('allocationData.invhVATI should not be negative.');
+          this.allocationData.invhVATI = 0;
+          return false;
+        }
+
+        // Ensure you pass the correct object and ID to validateAFVChange
+        this.validateAFVChange(this.allocationData, 'invhVATI');
+        break;
+
+
+      case 'allocationData.invhTotOurfee':
+        if (!this.allocationData.invhTotOurfee) {
+          this.allocationData.invhTotOurfee = 0;
+        } else if (this.allocationData.invhTotOurfee < 0) {
+          alert('allocationData invhTotOurfee should not be negative.');
+          this.allocationData.invhTotOurfee = 0;
+          return false;
+        }
+        this.validateAFVChange(this.allocationData, 'invhTotOurfee');
+        break;
+
+      case 'allocationData.invhTotSal':
+        if (!this.allocationData.invhTotSal) {
+          this.allocationData.invhTotSal = 0;
+        } else if (this.allocationData.invhTotSal < 0) {
+          alert('allocationData invhTotSal should not be negative.');
+          this.allocationData.invhTotSal = 0;
+          return false;
+        }
+        this.validateAFVChange(this.allocationData, 'invhTotSal');
+        break;
+
+      case 'pendingLeftDue':
+        if (!this.pendingLeftDue) {
+          this.pendingLeftDue = 0;
+        } else if (this.pendingLeftDue < 0) {
+          alert('pending Left Due should not be negative.');
+          this.pendingLeftDue = 0;
+          return false;
+        }
+        break;
+
+
+
+      default:
+        console.log("Invalid field");
+        return false;
+    }
+
+    return true;
+  }
+
+  roundVal(value: number): number {
+    return Math.round(value * 100) / 100;
+  }
+
+  getSplitAmount(): void {
+    console.log('Split amount calculation triggered');
+  }
 
   onInterCoCompanyInter() {
     const formData = {
@@ -556,7 +892,7 @@ export class RemittanceAllocationComponent implements OnInit {
         console.error("Error Response:", error);
       },
     });
-    
+
   }
 
   private _filterAgencies(value: string): Observable<{ agecode: string; agedesc: string }[]> {
@@ -578,8 +914,6 @@ export class RemittanceAllocationComponent implements OnInit {
       PageNumber: 1,
       PageSize: 200
     };
-
-
     return this.http.post<any>(apiUrl, body, { headers }).pipe(
       map(data => {
         let agencyList = Array.isArray(data?.data?.agencyList) ? data.data.agencyList : [];
@@ -631,14 +965,12 @@ export class RemittanceAllocationComponent implements OnInit {
     this.onInterCoCompanyInter();
   }
 
- 
-
   deleteRow(index: number) {
     this.allocationList.splice(index, 1);
     this.calculateTotals();
   }
 
-  updateRow(row : string) {
+  updateRow(row: string) {
     debugger
     console.log('update row', row);
     alert('Not Implemented yet')
@@ -649,7 +981,6 @@ export class RemittanceAllocationComponent implements OnInit {
 
     this.txtAllocatedConfirmedAmount = totalAllocated.toFixed(2);
     this.txtTotalAmount = (this.txtAmountAvailable - totalAllocated).toFixed(2);
-
   }
 
   resetAllocation() {
@@ -665,7 +996,33 @@ export class RemittanceAllocationComponent implements OnInit {
 
     this.dueByAgency = '';
     this.description = '';
+    this.bankChargesContractor =0;
+    this.factoring=0;
+    this.bankChargesAf=0;
+    this.taxWithHeld=0;
+    this.pendingLeftDue=0;
+
     this.currencyDescription = null;
+  }
+
+  confirmAllocation(): boolean {
+    const totalAmount = parseFloat(this.txtTotalAmount) || 0;
+    const allocatedConfirmedAmount = this.txtAllocatedConfirmedAmount || 0;
+    const amountAvailable = this.txtAmountAvailable || 0;
+
+    if (confirm("The accounting scheme will be created. Select OK to update, Cancel to edit your allocation lines")) {
+      if (totalAmount !== 0.00 && allocatedConfirmedAmount === amountAvailable) {
+        alert("The total allocated is different from the amount received. This update cannot be accepted.");
+        this.btnSubmitAllocVisible = true;
+        return false;
+      } else {
+        this.btnSubmitAllocVisible = false;
+        return true;
+      }
+    } else {
+      this.btnSubmitAllocVisible = true;
+      return false;
+    }
   }
 
 }

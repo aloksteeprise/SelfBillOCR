@@ -6,7 +6,7 @@
       <div class="modal-body">
         <div class="container-fluid">
           <div class="row align-items-center text-black g-3 d-flex">
-            <div class="col-sm-3 d-flex flex-column">
+            <div class="col-sm-2 d-flex flex-column">
               <mat-label>Agency</mat-label>
               <div class="position-relative">
                 <input type="text" placeholder="Select Agency" [formControl]="agencyControl" (click)="onInputClick()"
@@ -33,21 +33,18 @@
               </select>
             </div>
 
-            <div class="col-sm-2 d-flex">
+            <div class="col-sm-2 d-flex justify-content-center align-items-center">
               <button class="btn btn-primary" (click)="toggleAllocation()"
                 [disabled]="!selectedAgencyDesc">Allocation</button>
             </div>
 
-            <div class="col-sm-2 d-flex flex-column">
+            <div class="col-sm-2 d-flex ">
               <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Multi Select Invoices</mat-label>
                 <mat-select multiple [(ngModel)]="selectedInvoices" disableRipple>
-                  <!-- Disabled Header -->
                   <mat-option disabled class="header-option">
                     <strong>InvoiceCode | InvoiceRef | Currency</strong>
                   </mat-option>
-              
-                  <!-- Corrected Invoice List Without Extra Checkbox -->
                   <mat-option *ngFor="let invoice of invoicearr" [value]="invoice">
                     {{ invoice.invhCode }} | {{ invoice.invoiceRef }} | {{ invoice.ctcCurrenCy }}
                   </mat-option>
@@ -56,7 +53,7 @@
               
               
             </div>
-            <div class="col-sm-2 d-flex flex-column">
+            <div class="col-sm-4 d-flex">
               <button class="btn btn-primary" [disabled]="!selectedAgencyDesc" (click)="updateAllocationSummary()">Multi-select of Invoices</button>
               <button type="button" class="btn-close" (click)="closeDialog()" aria-label="Close"></button>
             </div>
@@ -122,20 +119,18 @@
                       </option>
                     </select>
                   </td>
-                  <td><input type="text" class="form-control" [(ngModel)]="amountAllocate"></td>
-                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.invhTotAgencyFee"
-                      [disabled]="isDisabled('invhTotAgencyFee')"></td>
-                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.invhTotOurfee"
-                      [disabled]="isDisabled('invhTotOurfee')"></td>
-                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.invhTotSal"
-                      [disabled]="isDisabled('invhTotSal')"></td>
-                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.invhVATI" disabled></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="amountAllocate" (blur)="validateBankCharges('amountAllocate')"></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.invhTotAgencyFee" [disabled]="isDisabled('invhTotAgencyFee')"></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.invhTotOurfee" [disabled]="isDisabled('invhTotOurfee')"(blur)="validateBankCharges('allocationData.invhTotOurfee')"></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.invhTotSal" [disabled]="isDisabled('invhTotSal')" (blur)="validateBankCharges('allocationData.invhTotSal')"></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="allocationData.invhVATI" disabled (blur)="validateBankCharges('allocationData.invhVATI')"></td>
                   <td><input type="text" class="form-control" [(ngModel)]="dueByAgency" disabled></td>
-                  <td><input type="text" class="form-control" [(ngModel)]="bankChargesAf"></td>
-                  <td><input type="text" class="form-control" [(ngModel)]="bankChargesContractor"></td>
-                  <td><input type="text" class="form-control" [(ngModel)]="taxWithHeld"></td>
-                  <td><input type="text" class="form-control" [(ngModel)]="factoring"></td>
-                  <td><input type="text" class="form-control" [(ngModel)]="pendingLeftDue" disabled></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="bankChargesContractor" (blur)="validateBankCharges('bankChargesContractor')"></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="bankChargesAf"  (blur)="validateBankCharges('bankChargesAf')"></td>
+
+                  <td><input type="text" class="form-control" [(ngModel)]="taxWithHeld"  (blur)="validateBankCharges('taxWithHeld')"></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="factoring"  (blur)="validateBankCharges('factoring')"></td>
+                  <td><input type="text" class="form-control" [(ngModel)]="pendingLeftDue" disabled (blur)="validateBankCharges('pendingLeftDue')"></td>
                 </tr>
 
                 <tr>
@@ -233,7 +228,7 @@
               </div>
               <div class="row">
                 <div style="justify-content: end;align-items: end;display: flex;">
-                  <button class="btn btn-primary" style="margin-top: 10px;">Submit Allocation</button>
+                  <button class="btn btn-primary" style="margin-top: 10px;" *ngIf="btnSubmitAllocVisible" (click)="confirmAllocation()">Submit Allocation</button>
                 </div>
               </div>
             </div>
