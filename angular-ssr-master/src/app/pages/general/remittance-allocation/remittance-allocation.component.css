@@ -14,6 +14,13 @@
   margin-bottom: 0px !important;
 }
 
+/* .mat-mdc-form-field {
+
+  max-height: 41px!important;
+  flex-direction: row;
+} */
+
+
 
 .width120 {
   width: 122px !important;
@@ -26,13 +33,50 @@
 
 }
 
+
+::ng-deep .cdk-overlay-pane {
+  width: 400px !important; 
+}
+
+
+
+::ng-deep .mat-mdc-form-field {
+  --mat-mdc-form-field-floating-label-scale: 0.75;
+  display: inline-flex;
+  flex-direction: row;
+  min-width: 0;
+  text-align: left;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-family: var(--mat-form-field-container-text-font, var(--mat-app-body-large-font));
+  line-height: var(--mat-form-field-container-text-line-height, var(--mat-app-body-large-line-height));
+  font-size: var(--mat-form-field-container-text-size, var(--mat-app-body-large-size));
+  letter-spacing: var(--mat-form-field-container-text-tracking, var(--mat-app-body-large-tracking));
+  font-weight: var(--mat-form-field-container-text-weight, var(--mat-app-body-large-weight));
+}
+
+::ng-deep .mdc-notched-outline {
+  display: flex
+;
+  position: absolute;
+  /* top: 0; */
+  /* right: 0; */
+  left: 0;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  height: 81%;
+  text-align: left;
+  pointer-events: none;
+}
+
 .btn-close {
   --bs-btn-close-color: white !important;
 }
 
 @media (min-width: 1200px) {
   ::ng-deep .modal-xl {
-    --bs-modal-width: 1210px;
+    --bs-modal-width: 1250px;
   }
 }
 
@@ -82,6 +126,11 @@
 .custom-marginleft{
   margin-left: 30px;
 }
+
+.example-input {
+  padding-right: 30px !important;
+}
+
 
 
 @media screen and (min-width: 300px) and (max-width: 700px) {
