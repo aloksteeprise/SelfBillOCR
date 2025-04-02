@@ -155,6 +155,7 @@ if (isPlatformBrowser(this.platformId)) {
 
   loadInvoices() {
     this.loading = true;
+    
     const SortColumn = this.sort?.active || '';
     const SortDirection = this.sort?.direction || '';
 
@@ -246,7 +247,8 @@ if (isPlatformBrowser(this.platformId)) {
 
   validateRecord(mvtKey: number): void {
     console.log('Validating record with ID:', mvtKey);
-  
+  this.loading = true
+  debugger
     if (mvtKey === null || mvtKey === undefined || mvtKey === 0) {
       console.error('Invalid ID:', mvtKey);
       return;  // Stop execution if the ID is invalid
@@ -254,10 +256,12 @@ if (isPlatformBrowser(this.platformId)) {
   
     this.transactionFormService.ValidateManualBankAllocation(mvtKey).subscribe(
       (response) => {
+        this.loading = false
         this.loadInvoices();
         console.log('Validation successful:', response);
       },
       (error) => {
+        this.loading = false
         console.error('Error during validation:', error);
       }
     );
