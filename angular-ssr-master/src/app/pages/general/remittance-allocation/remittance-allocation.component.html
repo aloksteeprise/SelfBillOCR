@@ -4,7 +4,7 @@
     <div class="modal-content custom-height">
 
       <div class="modal-body">
-        <div class="container-fluid">
+        <div class="container-fluid" style="background-color: #e1e8ee;">
           <div class="row align-items-center text-black g-3 d-flex">
             <!-- Agency Field -->
             <div class="col-sm-3 col-md-2 d-flex flex-column">
@@ -37,13 +37,13 @@
         
             <!-- Allocation Button -->
             <div class="col-sm-3 col-md-2 d-flex justify-content-center align-items-center">
-              <button class="btn btn-primary btn-lg w-100" (click)="toggleAllocation()" [disabled]="!selectedAgencyDesc" style="font-size: 14px;margin-top: 10px;">Allocation</button>
+              <button class="btn btn-primary btn-lg w-100" (click)="toggleAllocation()" [disabled]="!selectedAgencyDesc" style="font-size: 14px;margin-top: 10px;padding: 14px;">Allocation</button>
             </div>
         
             <!-- Multi Select Invoices -->
             <div class="col-sm-3 col-md-2 d-flex flex-column" style="margin-top: 28px;">
               <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Multi Select Invoices</mat-label>
+                <mat-label style="padding: 14px;">Multi Select Invoices</mat-label>
                 <mat-select multiple [(ngModel)]="selectedInvoices" disableRipple>
                   <mat-option disabled class="header-option">
                     <strong>InvoiceCode | InvoiceRef | Currency</strong>
