@@ -9,6 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
+import { SharedModule } from '../shared/shared.module';  
 
 @NgModule({
     declarations: [RemittanceAllocationComponent], // Declare the component
@@ -20,7 +21,8 @@ import { MatSelectModule } from '@angular/material/select';
       MatFormFieldModule,
       MatInputModule,
       MatCheckboxModule,
-      MatSelectModule
+      MatSelectModule,
+      SharedModule
     ],
     exports: [RemittanceAllocationComponent] // Export if needed elsewhere
   })

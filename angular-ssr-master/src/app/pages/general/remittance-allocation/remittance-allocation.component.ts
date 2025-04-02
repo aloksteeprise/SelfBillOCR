@@ -37,7 +37,6 @@ export class RemittanceAllocationComponent implements OnInit {
   isInterCoVisible = false;
   isinterCoBankVisible = false;
   isItemVisible = true;
-  // btnAddRow = true;
   showAllocationSummery = false;
   Agency: string | null = null;
   Agencyarr: any[] = [];
@@ -74,7 +73,8 @@ export class RemittanceAllocationComponent implements OnInit {
   txtAllocatedConfirmedAmount: number = 0;
   btnSubmitAllocVisible: boolean = true;
   allocationList: any[] = [];
-
+  hdctcIs3Tier: string = '0';
+  hdctcIsFactoring: string = '0';
   allocateType: string = '';
   invoiceItem: string = '';
   amountToAllocate: number = 0;
@@ -89,7 +89,7 @@ export class RemittanceAllocationComponent implements OnInit {
   taxWithHeld: number = 0;
   factoring: number = 0;
   pendingLeftDue: number = 0;
-  btnText : string ='Add';
+  btnText: string = 'Add';
   editIndex: number = -1;
 
   selectedAgencyDesc: string = '';
@@ -143,6 +143,7 @@ export class RemittanceAllocationComponent implements OnInit {
         this.filteredAgencies = this._filterAgencies(value);
       }
     });
+    this.getAllocationType();
   }
 
   getAllocationType() {
@@ -221,6 +222,7 @@ export class RemittanceAllocationComponent implements OnInit {
       this.amountAllocate = "";
       this.dueByAgency = "";
     }
+    this.getAllocationType();
   }
 
   onItemChange(event: any) {
@@ -328,11 +330,11 @@ export class RemittanceAllocationComponent implements OnInit {
         if (selectedInvoice) {
           const parts: string[] = selectedInvoice.invoiceRef.split('|').map((p: string) => p.trim());
           const invoiceItem = parts.length > 0 ? parts[0] : "";
-          
+
           const isDuplicate = this.allocationList.some(row => row.invoiceItem === invoiceItem);
-          
+
           if (this.txtAmountAvailable) {
-            this.description = `Payment of Invoice ${invoiceItem}`;
+            this.description = 'Payment from Agency ' + this.selectedAgencyDesc;
           }
 
           if (isDuplicate) {
@@ -349,10 +351,10 @@ export class RemittanceAllocationComponent implements OnInit {
             ourFee: selectedInvoice.invhTotOurfee || 0,
             contractorDue: selectedInvoice.invhTotSal || 0,
             vat: selectedInvoice.invhVATI || 0,
-            descrp: this.description,
+            descrp: `Payment of Invoice ${invoiceItem}`,
             dueByAgen: parts[2] || 0,
             bkCharges: this.bankChargesContractor || 0,
-            bkChargesSMTG:this.bankChargesAf || 0,
+            bkChargesSMTG: this.bankChargesAf || 0,
             taxWithheld: this.taxWithHeld || 0,
             factoring: this.factoring || 0,
             pendingLeft: this.pendingLeftDue || 0
@@ -403,8 +405,14 @@ export class RemittanceAllocationComponent implements OnInit {
   private isNegative(value: any) {
     return value !== "" && parseFloat(value) < 0;
   }
-  
+
   addAllocation() {
+
+    if (!this.allocationType) return alert("Please select Allocation Type.");
+    if (this.allocationType === "INV" && !this.invoice) return alert("Please select an Item.");
+    if (this.allocationType === "ICT" && !this.interCoCompany) return alert("Please select InterCo Account.");
+    if (this.allocationType === "ICT" && !this.interCoBank) return alert("Please select Bank.");
+    if (!this.amountAllocate) return alert("Please enter Amount To Allocate.");
 
     if (this.isNegative(this.amountAllocate)) return alert("Amount to Allocate should not be negative.");
     if (this.isNegative(this.allocationData.invhTotAgencyFee)) return alert("Agency Commission should not be negative.");
@@ -416,8 +424,25 @@ export class RemittanceAllocationComponent implements OnInit {
     if (this.isNegative(this.taxWithHeld)) return alert("Tax Withheld should not be negative.");
     if (this.isNegative(this.pendingLeftDue)) return alert("Pending Left Due should not be negative.");
 
-    if (!this.amountAllocate) return alert("Please enter the amount to allocate value.");
-    if (!this.invoice) return alert("Please select an invoice.");
+    if (this.factoring && this.allocationType === "INV" && this.invoice) {
+      if (!this.factoring) return alert("Please select Factoring option.");
+      const totalFactoringAmount =
+        parseFloat(this.amountAllocate) || 0 +
+        parseFloat(this.bankChargesContractor as any) || 0 +
+        parseFloat(this.bankChargesAf as any) || 0 +
+        parseFloat(this.taxWithHeld as any) || 0 +
+        parseFloat(this.factoring as any) || 0;
+
+      if (this.hdctcIsFactoring === "1" && totalFactoringAmount === parseFloat(this.dueByAgency)) {
+        return alert("You have selected 'Factoring' option but the invoice payment is a full payment of invoice. So please select 'Factoring Last' option.");
+      }
+    }
+
+    if (this.pendingLeftDue < 0) {
+      return alert(`You are trying to allocate more than the maximum left on this invoice (${this.dueByAgency}). Allocate less or remove bank charges.`);
+    }
+
+    if (!this.validateCharges()) return;
 
     this.showAllocationSummery = true;
 
@@ -429,9 +454,9 @@ export class RemittanceAllocationComponent implements OnInit {
 
     if (selectedInvoice) {
       const parts: string[] = selectedInvoice.invoiceRef.split('|').map((p: string) => p.trim());
-      
+
       const isDuplicate = this.allocationList.some(row => row.invoiceItem === parts[0]);
-          
+
       if (parts.length > 0) {
         this.invoiceItem = parts[0];
       } else {
@@ -448,64 +473,65 @@ export class RemittanceAllocationComponent implements OnInit {
     let invhCode = "0";
     let invhCodeOtherCurrency = "0";
     let invoiceItem = "";
-    let description = this.description || '';
+    let description = '';
 
     switch (this.allocationType.toUpperCase()) {
       case "INV":
-          invhCode = this.invoice;
-          invhCodeOtherCurrency = this.currencyDescription || "0";
-          invoiceItem = this.invoiceItem;
-          description = `Payment of Invoice ${this.invoiceItem}`;
-          break;
+        invhCode = this.invoice;
+        invhCodeOtherCurrency = this.currencyDescription || "0";
+        invoiceItem = this.invoiceItem;
+        description = `Payment of Invoice ${this.invoiceItem}`;
+        this.description = 'Payment from Agency ' + this.selectedAgencyDesc;
+        break;
 
       case "ICT":
-          invhCode = this.interCoCompany;
-          invhCodeOtherCurrency = "0";
-          this.invoiceItem = this.interCoCompanyarr.find(c => c.accCode === this.interCoCompany)?.accDescription || "";
-          this.description = this.interCoBankarr.find(b => b.bkiCode === this.interCoBank)?.bkifullname || "";
-          break;    
+        invhCode = this.interCoCompany;
+        invhCodeOtherCurrency = "0";
+        this.invoiceItem = this.interCoCompanyarr.find(c => c.accCode === this.interCoCompany)?.accDescription || "";
+        this.description = this.interCoBankarr.find(b => b.bkiCode === this.interCoBank)?.bkifullname || "";
+        break;
 
       case "ICR":
-          invhCode = this.interCoCompany;
-          invhCodeOtherCurrency = "0";
-          invoiceItem = "";
-          description = this.description;
-          break;
+        invhCode = this.interCoCompany;
+        invhCodeOtherCurrency = "0";
+        invoiceItem = "";
+        description = this.description;
+        break;
       default:
         invhCode = "0";
         invhCodeOtherCurrency = "0";
         this.invoiceItem = "";
         this.description = this.description;
         break;
-}
-  
+    }
 
-  const newAllocation = {
-    allocateType: selectedAllocationType?.altDesc || '',
-    invoiceItem: invoiceItem,
-    amountToAllocate: this.amountAllocate || 0,
-    agencyCommission: this.allocationData?.invhTotAgencyFee || 0,
-    ourFee: this.allocationData?.invhTotOurfee || 0,
-    contractorDue: this.allocationData?.invhTotSal || 0,
-    vat: this.allocationData?.invhVATI || 0,
-    descrp: description,
-    dueByAgen: this.dueByAgency || 0,
-    bkCharges: this.bankChargesContractor || 0,
-    bkChargesSMTG: this.bankChargesAf || 0,
-    taxWithheld: this.taxWithHeld || 0,
-    factoring: this.factoring || 0,
-    pendingLeft: this.pendingLeftDue || 0,
-    invhCode: invhCode,
-    invhCodeOtherCurrency: invhCodeOtherCurrency
-};
+
+    const newAllocation = {
+      allocateType: selectedAllocationType?.altDesc || '',
+      invoiceItem: invoiceItem,
+      amountToAllocate: this.amountAllocate || 0,
+      agencyCommission: this.allocationData?.invhTotAgencyFee || 0,
+      ourFee: this.allocationData?.invhTotOurfee || 0,
+      contractorDue: this.allocationData?.invhTotSal || 0,
+      vat: this.allocationData?.invhVATI || 0,
+      descrp: description,
+      dueByAgen: this.dueByAgency || 0,
+      bkCharges: this.bankChargesContractor || 0,
+      bkChargesSMTG: this.bankChargesAf || 0,
+      taxWithheld: this.taxWithHeld || 0,
+      factoring: this.factoring || 0,
+      pendingLeft: this.pendingLeftDue || 0,
+      invhCode: invhCode,
+      invhCodeOtherCurrency: invhCodeOtherCurrency
+    };
 
     if (this.btnText === "Add") {
       this.allocationList.push(newAllocation);
-  } else {
+    } else {
       this.allocationList[this.editIndex] = newAllocation;
       this.btnText = "Add";
       this.editIndex = -1;
-  }
+    }
 
     this.calculateTotals();
     this.resetAllocation();
@@ -555,6 +581,56 @@ export class RemittanceAllocationComponent implements OnInit {
     this.isFieldReadOnly = this.allocationType === "123";
   }
 
+  validateCharges(): boolean {
+    if (this.allocateType == "INV") {
+      const allocatedAmt = parseFloat(this.amountAllocate.toString()) || 0;
+      const dueByAmt = parseFloat(this.dueByAgency.toString()) || 0;
+      const contractorCharges = parseFloat(this.bankChargesContractor.toString()) || 0;
+      const afCharges = parseFloat(this.bankChargesAf.toString()) || 0;
+      const withheldTax = parseFloat(this.taxWithHeld.toString()) || 0;
+      const factoringAmt = parseFloat(this.factoring.toString()) || 0;
+      const agencyCommission = parseFloat(this.allocationData.invhTotAgencyFee.toString()) || 0;
+      const ourFee = parseFloat(this.allocationData.invhTotOurfee.toString()) || 0;
+      const contractorDue = parseFloat(this.allocationData.invhTotSal.toString()) || 0;
+      const VAT = parseFloat(this.allocationData.invhVATI.toString()) || 0;
+      const pendingLeftDue = parseFloat(this.pendingLeftDue.toString()) || 0;
+      if (this.invoice !== "0") {
+        if (this.roundVal(allocatedAmt) > this.roundVal(dueByAmt)) {
+          alert(`You are trying to allocate more than the maximum left on this invoice (${dueByAmt}). Allocate less or remove bank charges.`);
+          return false;
+        }
+        const totalAllocation = this.roundVal(allocatedAmt + contractorCharges + afCharges + withheldTax + factoringAmt);
+        if (totalAllocation > this.roundVal(dueByAmt)) {
+          alert(`You are trying to allocate more than the maximum left on this invoice (${dueByAmt}). Allocate less or remove bank charges.`);
+          return false;
+        }
+        if (
+          this.hdctcIs3Tier &&
+          this.roundVal(dueByAmt - pendingLeftDue) !== this.roundVal(agencyCommission + ourFee + contractorDue + VAT)
+        ) {
+          alert(
+            `You are trying to allocate more or less than the maximum of 'Amount To Allocate' ${this.roundVal(dueByAmt) - this.roundVal(pendingLeftDue)
+            } on this invoice into 'Agency Commission' + 'Our Fee' + 'Contractor Due' + 'VAT' total amount ${agencyCommission + ourFee + contractorDue + VAT
+            }.`
+          );
+          return false;
+        } else if (
+          !this.hdctcIs3Tier &&
+          this.roundVal(dueByAmt - pendingLeftDue) < this.roundVal(agencyCommission + ourFee + contractorDue + VAT)
+        ) {
+          alert(
+            `You are trying to allocate more than the maximum of 'Amount To Allocate' ${this.roundVal(dueByAmt) - this.roundVal(pendingLeftDue)
+            } on this invoice into 'Agency Commission' + 'Our Fee' + 'Contractor Due' + 'VAT' total amount ${agencyCommission + ourFee + contractorDue + VAT
+            }.`
+          );
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
   validateAFVChange(obj: any, id: string) {
 
     const allocatedAmt = parseFloat(this.amountAllocate) || 0;
@@ -588,7 +664,7 @@ export class RemittanceAllocationComponent implements OnInit {
   }
 
 
-  ValidateBankChargesAF(field : string) {
+  ValidateBankChargesAF(field: string) {
 
     const allocatedAmt = isNaN(parseFloat(this.amountAllocate)) ? 0 : parseFloat(this.amountAllocate);
     const dueByAmt = isNaN(parseFloat(this.dueByAgency)) ? 0 : parseFloat(this.dueByAgency);
@@ -610,18 +686,17 @@ export class RemittanceAllocationComponent implements OnInit {
 
       if (totalAllocation > this.roundVal(dueByAmt)) {
         alert(`You are trying to allocate more than the maximum left on this invoice (${dueByAmt}). Allocate less or remove bank charges.`);
-        //this.amountAllocate = "0"; // Reset to 0 as a number
-        if(field == "bankChargesAf"){
+        if (field == "bankChargesAf") {
           this.bankChargesAf = 0;
         }
-        if(field == "taxWithHeld"){
+        if (field == "taxWithHeld") {
           this.taxWithHeld = 0;
         }
 
-        if(field == "bankChargesContractor"){
+        if (field == "bankChargesContractor") {
           this.bankChargesContractor = 0;
         }
-        if(field == "factoring"){
+        if (field == "factoring") {
           this.factoring = 0;
         }
 
@@ -631,185 +706,185 @@ export class RemittanceAllocationComponent implements OnInit {
       }
 
       if (typeof this.getSplitAmount === "function") {
-        this.getSplitAmount(); // Call only if function exists
+        this.getSplitAmount();
       }
     }
     return true;
   }
 
   validateBankCharges(field: string): boolean {
-
-    switch (field) {
-      case 'amountAllocate':
-        if (!this.amountAllocate || this.amountAllocate < '0') {
-          alert('Amount to allocate should not be negative.');
-          this.amountAllocate = "0";
-          return false;
-        }
-
-        const allocatedAmt = parseFloat(this.amountAllocate) || 0;
-        const dueByAmt = parseFloat(this.dueByAgency) || 0;
-
-        const contractorCharges = parseFloat(this.bankChargesContractor as any) || 0;
-        const afCharges = parseFloat(this.bankChargesAf as any) || 0;
-        const withheldTax = parseFloat(this.taxWithHeld as any) || 0;
-        const factoringAmt = parseFloat(this.factoring as any) || 0;
-        const aldConBanks = 1
-
-        if (this.invoiceItem !== "0") {
-          if (this.roundVal(allocatedAmt) > this.roundVal(dueByAmt)) {
-            alert(`You are trying to allocate more than the maximum left on this invoice (${dueByAmt}). Allocate less or remove bank charges.`);
+    if (this.allocationType === 'INV') {
+      switch (field) {
+        case 'amountAllocate':
+          if (!this.amountAllocate || this.amountAllocate < '0') {
+            alert('Amount to allocate should not be negative.');
+            this.amountAllocate = "0";
             return false;
           }
 
-          const totalAllocated = this.roundVal(
-            allocatedAmt +
-            contractorCharges +
-            afCharges +
-            withheldTax +
-            factoringAmt
-          );
+          const allocatedAmt = parseFloat(this.amountAllocate) || 0;
+          const dueByAmt = parseFloat(this.dueByAgency) || 0;
 
-          if (totalAllocated !== this.roundVal(dueByAmt)) {
-            const difference = this.roundVal(dueByAmt - allocatedAmt - withheldTax - factoringAmt);
+          const contractorCharges = parseFloat(this.bankChargesContractor as any) || 0;
+          const afCharges = parseFloat(this.bankChargesAf as any) || 0;
+          const withheldTax = parseFloat(this.taxWithHeld as any) || 0;
+          const factoringAmt = parseFloat(this.factoring as any) || 0;
+          const aldConBanks = 1
 
-            if (confirm(`The amount entered: ${totalAllocated} is not equal to the pending amount: ${dueByAmt}.
-    Will the difference: ${difference} be considered as bank charges?
-    Reply 'OK' if invoice 100% paid, 'Cancel' if future payments are expected.`)) {
-              if (aldConBanks !== 1) {
-
-                this.pendingLeftDue = 0;
-                this.bankChargesAf = this.roundVal(dueByAmt - contractorCharges - allocatedAmt - withheldTax - factoringAmt);
-              } else {
-
-                this.bankChargesContractor = this.roundVal(dueByAmt - afCharges - allocatedAmt - withheldTax - factoringAmt);
-                this.pendingLeftDue = 0;
-              }
-            } else if (totalAllocated > this.roundVal(dueByAmt)) {
+          if (this.invoiceItem !== "0") {
+            if (this.roundVal(allocatedAmt) > this.roundVal(dueByAmt)) {
               alert(`You are trying to allocate more than the maximum left on this invoice (${dueByAmt}). Allocate less or remove bank charges.`);
               return false;
-            } else {
-              this.pendingLeftDue = this.roundVal(dueByAmt - contractorCharges - afCharges - allocatedAmt - withheldTax - factoringAmt);
             }
 
-            this.getSplitAmount(); // Assuming this triggers the calculation of split amounts
+            const totalAllocated = this.roundVal(
+              allocatedAmt +
+              contractorCharges +
+              afCharges +
+              withheldTax +
+              factoringAmt
+            );
+
+            if (totalAllocated !== this.roundVal(dueByAmt)) {
+              const difference = this.roundVal(dueByAmt - allocatedAmt - withheldTax - factoringAmt);
+
+              if (confirm(`The amount entered: ${totalAllocated} is not equal to the pending amount: ${dueByAmt}.
+  Will the difference: ${difference} be considered as bank charges?
+  Reply 'OK' if invoice 100% paid, 'Cancel' if future payments are expected.`)) {
+                if (aldConBanks !== 1) {
+
+                  this.pendingLeftDue = 0;
+                  this.bankChargesAf = this.roundVal(dueByAmt - contractorCharges - allocatedAmt - withheldTax - factoringAmt);
+                } else {
+
+                  this.bankChargesContractor = this.roundVal(dueByAmt - afCharges - allocatedAmt - withheldTax - factoringAmt);
+                  this.pendingLeftDue = 0;
+                }
+              } else if (totalAllocated > this.roundVal(dueByAmt)) {
+                alert(`You are trying to allocate more than the maximum left on this invoice (${dueByAmt}). Allocate less or remove bank charges.`);
+                return false;
+              } else {
+                this.pendingLeftDue = this.roundVal(dueByAmt - contractorCharges - afCharges - allocatedAmt - withheldTax - factoringAmt);
+              }
+
+              this.getSplitAmount();
+              return false;
+            }
+          }
+
+          break;
+
+        case 'taxWithHeld':
+          if (!this.taxWithHeld) {
+            this.taxWithHeld = 0;
+          } else if (this.taxWithHeld < 0.0) {
+            alert('Tax withheld should not be negative.');
+            this.taxWithHeld = 0;
             return false;
           }
-        }
+          this.ValidateBankChargesAF(field)
+          break;
 
-        break;
+        case 'bankChargesAf':
+          if (!this.bankChargesAf) {
+            this.bankChargesAf = 0;
+          } else if (this.bankChargesAf < 0) {
+            alert('Bank Charges SMTG should not be negative.');
+            this.bankChargesAf = 0;
+            return false;
+          }
+          this.ValidateBankChargesAF(field)
+          break;
 
-      case 'taxWithHeld':
-        if (!this.taxWithHeld) {
-          this.taxWithHeld = 0;
-        } else if (this.taxWithHeld < 0.0) {
-          alert('Tax withheld should not be negative.');
-          this.taxWithHeld = 0;
+
+        case 'bankChargesContractor':
+          if (!this.bankChargesContractor) {
+            this.bankChargesContractor = 0;
+          } else if (this.bankChargesContractor < 0) {
+            alert('Bank Charges Contractor should not be negative.');
+            this.bankChargesContractor = 0;
+            return false;
+          }
+          this.ValidateBankChargesAF(field)
+          break;
+
+        case 'factoring':
+          if (!this.factoring) {
+            this.factoring = 0;
+          } else if (this.factoring < 0) {
+            alert('factoring should not be negative.');
+            this.factoring = 0;
+            return false;
+          }
+          this.ValidateBankChargesAF(field)
+          break;
+
+        case 'allocationData.invhTotAgencyFee':
+          let invhTotAgencyFee = parseFloat(this.allocationData.invhVATI) || 0;
+
+          if (invhTotAgencyFee < 0) {
+            alert(' invhTotAgencyFee should not be negative.');
+            this.allocationData.invhTotAgencyFee = 0;
+            return false;
+          }
+
+
+          this.validateAFVChange(this.allocationData, 'invhTotAgencyFee');
+          break;
+
+        case 'allocationData.invhVATI':
+          let invhVATI = parseFloat(this.allocationData.invhVATI) || 0;
+
+          if (invhVATI < 0) {
+            alert('allocationData.invhVATI should not be negative.');
+            this.allocationData.invhVATI = 0;
+            return false;
+          }
+
+          // Ensure you pass the correct object and ID to validateAFVChange
+          this.validateAFVChange(this.allocationData, 'invhVATI');
+          break;
+
+
+        case 'allocationData.invhTotOurfee':
+          if (!this.allocationData.invhTotOurfee) {
+            this.allocationData.invhTotOurfee = 0;
+          } else if (this.allocationData.invhTotOurfee < 0) {
+            alert('allocationData invhTotOurfee should not be negative.');
+            this.allocationData.invhTotOurfee = 0;
+            return false;
+          }
+          this.validateAFVChange(this.allocationData, 'invhTotOurfee');
+          break;
+
+        case 'allocationData.invhTotSal':
+          if (!this.allocationData.invhTotSal) {
+            this.allocationData.invhTotSal = 0;
+          } else if (this.allocationData.invhTotSal < 0) {
+            alert('allocationData invhTotSal should not be negative.');
+            this.allocationData.invhTotSal = 0;
+            return false;
+          }
+          this.validateAFVChange(this.allocationData, 'invhTotSal');
+          break;
+
+        case 'pendingLeftDue':
+          if (!this.pendingLeftDue) {
+            this.pendingLeftDue = 0;
+          } else if (this.pendingLeftDue < 0) {
+            alert('pending Left Due should not be negative.');
+            this.pendingLeftDue = 0;
+            return false;
+          }
+          break;
+
+
+
+        default:
+          console.log("Invalid field");
           return false;
-        }
-        this.ValidateBankChargesAF(field)
-        break;
-
-      case 'bankChargesAf':
-        if (!this.bankChargesAf) {
-          this.bankChargesAf = 0;
-        } else if (this.bankChargesAf < 0) {
-          alert('Bank Charges SMTG should not be negative.');
-          this.bankChargesAf = 0;
-          return false;
-        }
-        this.ValidateBankChargesAF(field)
-        break;
-
-
-      case 'bankChargesContractor':
-        if (!this.bankChargesContractor) {
-          this.bankChargesContractor = 0;
-        } else if (this.bankChargesContractor < 0) {
-          alert('Bank Charges Contractor should not be negative.');
-          this.bankChargesContractor = 0;
-          return false;
-        }
-        this.ValidateBankChargesAF(field)
-        break;
-
-      case 'factoring':
-        if (!this.factoring) {
-          this.factoring = 0;
-        } else if (this.factoring < 0) {
-          alert('factoring should not be negative.');
-          this.factoring = 0;
-          return false;
-        }
-        this.ValidateBankChargesAF(field)
-        break;
-
-      case 'allocationData.invhTotAgencyFee':
-        let invhTotAgencyFee = parseFloat(this.allocationData.invhVATI) || 0;
-
-        if (invhTotAgencyFee < 0) {
-          alert(' invhTotAgencyFee should not be negative.');
-          this.allocationData.invhTotAgencyFee = 0;
-          return false;
-        }
-
-
-        this.validateAFVChange(this.allocationData, 'invhTotAgencyFee');
-        break;
-
-      case 'allocationData.invhVATI':
-        let invhVATI = parseFloat(this.allocationData.invhVATI) || 0;
-
-        if (invhVATI < 0) {
-          alert('allocationData.invhVATI should not be negative.');
-          this.allocationData.invhVATI = 0;
-          return false;
-        }
-
-        // Ensure you pass the correct object and ID to validateAFVChange
-        this.validateAFVChange(this.allocationData, 'invhVATI');
-        break;
-
-
-      case 'allocationData.invhTotOurfee':
-        if (!this.allocationData.invhTotOurfee) {
-          this.allocationData.invhTotOurfee = 0;
-        } else if (this.allocationData.invhTotOurfee < 0) {
-          alert('allocationData invhTotOurfee should not be negative.');
-          this.allocationData.invhTotOurfee = 0;
-          return false;
-        }
-        this.validateAFVChange(this.allocationData, 'invhTotOurfee');
-        break;
-
-      case 'allocationData.invhTotSal':
-        if (!this.allocationData.invhTotSal) {
-          this.allocationData.invhTotSal = 0;
-        } else if (this.allocationData.invhTotSal < 0) {
-          alert('allocationData invhTotSal should not be negative.');
-          this.allocationData.invhTotSal = 0;
-          return false;
-        }
-        this.validateAFVChange(this.allocationData, 'invhTotSal');
-        break;
-
-      case 'pendingLeftDue':
-        if (!this.pendingLeftDue) {
-          this.pendingLeftDue = 0;
-        } else if (this.pendingLeftDue < 0) {
-          alert('pending Left Due should not be negative.');
-          this.pendingLeftDue = 0;
-          return false;
-        }
-        break;
-
-
-
-      default:
-        console.log("Invalid field");
-        return false;
+      }
     }
-
     return true;
   }
 
@@ -953,47 +1028,66 @@ export class RemittanceAllocationComponent implements OnInit {
     this.onInvoiceDataBind();
     this.onOtherCurrencyDataBind();
     this.onInterCoCompanyInter();
-    this.getAllocationType();
   }
 
   deleteRow(index: number) {
-    this.allocationList.splice(index, 1);
-    this.calculateTotals();
+    this.notificationService.setNotificationVisibility(true);
+    this.notificationService.showNotification(
+      'Do you want to delete this record.',
+      'WARNING',
+      'warning',
+      () => { 
+        this.allocationList.splice(index, 1);
+        this.calculateTotals();
+        this.notificationService.setNotificationVisibility(false);
+       }
+    );
   }
 
   updateRow(row: any, index: number) {
 
-    this.btnText = "Update";
-    this.editIndex = index;
-
-      const selectedAllocationType = this.allocationarr.find(
-        allocation => allocation.altDesc === row.allocateType
+    this.notificationService.setNotificationVisibility(true);
+    this.notificationService.showNotification(
+      'Do you want to Update this record.',
+      'INFO',
+      'success',
+      () => { 
+        this.btnText = "Update";
+        this.editIndex = index;
+    
+        const selectedAllocationType = this.allocationarr.find(
+          allocation => allocation.altDesc === row.allocateType
+        );
+    
+        const selectedInvoice = this.invoicearr.find(inv => inv.invoiceRef.includes(row.invoiceItem));
+    
+        let invoiceCode = "";
+        if (selectedInvoice) {
+          const parts: string[] = selectedInvoice.invoiceRef.split('|').map((p: string) => p.trim());
+          invoiceCode = parts.length > 0 ? selectedInvoice.invhCode : "";
+        }
+    
+        this.allocationType = selectedAllocationType?.altCode || "";
+        this.invoice = invoiceCode;
+        this.amountAllocate = row.amountToAllocate;
+        this.allocationData = {
+          invhTotAgencyFee: row.agencyCommission,
+          invhTotOurfee: row.ourFee,
+          invhTotSal: row.contractorDue,
+          invhVATI: row.vat
+        };
+        this.description = row.descrp || "";
+        this.dueByAgency = row.dueByAgen || 0;
+        this.bankChargesContractor = row.bkCharges || 0;
+        this.bankChargesAf = row.bkChargesSMTG || 0;
+        this.taxWithHeld = row.taxWithheld || 0;
+        this.factoring = row.factoring || 0;
+        this.pendingLeftDue = row.pendingLeft || 0;
+        this.notificationService.setNotificationVisibility(false);
+       }
     );
-  
-    const selectedInvoice = this.invoicearr.find(inv => inv.invoiceRef.includes(row.invoiceItem));
 
-    let invoiceCode = "";
-    if (selectedInvoice) {
-      const parts: string[] = selectedInvoice.invoiceRef.split('|').map((p: string) => p.trim());
-        invoiceCode = parts.length > 0 ? selectedInvoice.invhCode : "";
-    }
-
-    this.allocationType = selectedAllocationType?.altCode || "";
-    this.invoice = invoiceCode;
-    this.amountAllocate = row.amountToAllocate;
-    this.allocationData = {
-        invhTotAgencyFee: row.agencyCommission,
-        invhTotOurfee: row.ourFee,
-        invhTotSal: row.contractorDue,
-        invhVATI: row.vat
-    };
-    this.description = row.descrp || "";
-    this.dueByAgency = row.dueByAgen || 0;
-    this.bankChargesContractor = row.bkCharges || 0;
-    this.bankChargesAf = row.bkChargesSMTG || 0;
-    this.taxWithHeld = row.taxWithheld || 0;
-    this.factoring = row.factoring || 0;
-    this.pendingLeftDue = row.pendingLeft || 0;
+   
 
   }
 
@@ -1016,12 +1110,11 @@ export class RemittanceAllocationComponent implements OnInit {
     };
 
     this.dueByAgency = '';
-    this.description = '';
-    this.bankChargesContractor =0;
-    this.factoring=0;
-    this.bankChargesAf=0;
-    this.taxWithHeld=0;
-    this.pendingLeftDue=0;
+    this.bankChargesContractor = 0;
+    this.factoring = 0;
+    this.bankChargesAf = 0;
+    this.taxWithHeld = 0;
+    this.pendingLeftDue = 0;
     this.currencyDescription = null;
     this.btnText = "Add";
     this.editIndex = -1;
