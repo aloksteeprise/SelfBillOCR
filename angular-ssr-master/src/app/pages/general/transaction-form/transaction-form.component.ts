@@ -154,7 +154,7 @@ if (isPlatformBrowser(this.platformId)) {
   }
 
   loadInvoices() {
-    this.loading = true;
+  
     
     const SortColumn = this.sort?.active || '';
     const SortDirection = this.sort?.direction || '';
@@ -163,7 +163,7 @@ if (isPlatformBrowser(this.platformId)) {
       this.ciecode = this.selectedCompany?.cieCode;
     }
   
-
+    this.loading = true;
     this.transactionFormService
       .getTransaction(
         this.pageIndex,
@@ -209,7 +209,7 @@ if (isPlatformBrowser(this.platformId)) {
   openAllocationModal(invoiceData: any, autoFocus: boolean = false): void {
     console.log("Opening modal with cieCode:", this.ciecode);
     this.loading = true
-    debugger
+   
     if (invoiceData.isRecordValidated == false) {
       this.loading = false
       this.notificationService.showNotification(
@@ -221,10 +221,12 @@ if (isPlatformBrowser(this.platformId)) {
       //  return;
     }
     else {
+      this.loading =false
       this.dialog.open(RemittanceAllocationComponent, {
         data: { invoiceData, cieCode: this.ciecode },
         autoFocus: autoFocus
       });
+
     }
   }
 
