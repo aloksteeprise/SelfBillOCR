@@ -71,6 +71,11 @@
   pointer-events: none;
 }
 
+::ng-deep .modal {
+
+  --bs-modal-padding: 0rem !important;
+}
+
 .btn-close {
   --bs-btn-close-color: white !important; 
 }
