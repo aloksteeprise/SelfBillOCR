@@ -42,7 +42,7 @@
         
             <!-- Multi Select Invoices -->
             <div class="col-sm-3 col-md-2 d-flex flex-column" style="margin-top: 28px;">
-              <mat-form-field appearance="outline" class="w-100" style="height: 40px; margin-top: 5px;">
+              <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Multi Select Invoices</mat-label>
                 <mat-select multiple [(ngModel)]="selectedInvoices" disableRipple>
                   <mat-option disabled class="header-option">
@@ -206,7 +206,7 @@
                     <td>{{ row.factoring }}</td>
                     <td>{{ row.pendingLeft }}</td>
                     <td>
-                      <a href="#" class="text-primary" (click)="$event.preventDefault();">Update</a> |
+                      <a href="#" class="text-primary" (click)="updateRow(row, i);  $event.preventDefault();">Update</a> |
                       <a href="#" class="text-danger" (click)="deleteRow(row);  $event.preventDefault();">Delete</a>
                     </td>
                   </tr>
