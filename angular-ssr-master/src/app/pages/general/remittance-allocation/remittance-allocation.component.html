@@ -43,7 +43,7 @@
             <!-- Multi Select Invoices -->
             <div class="col-sm-3 col-md-2 d-flex flex-column" style="margin-top: 28px;">
               <mat-form-field appearance="outline" class="w-100">
-                <mat-label style="padding: 14px;">Multi Select Invoices</mat-label>
+                <mat-label >Multi Select Invoices</mat-label>
                 <mat-select multiple [(ngModel)]="selectedInvoices" disableRipple>
                   <mat-option disabled class="header-option">
                     <strong>InvoiceCode | InvoiceRef | Currency</strong>
@@ -57,7 +57,7 @@
         
             <!-- Multi Select Buttons -->
             <div class="col-sm-4 d-flex justify-content-center">
-              <button class="btn btn-primary btn-lg" [disabled]="!selectedAgencyDesc" (click)="multiAllocationSummary()" style="font-size: 14px;margin-top: 10px;">Multi-select of Invoices</button>
+              <button class="btn btn-primary btn-lg" [disabled]="!selectedAgencyDesc" (click)="multiAllocationSummary()" style="font-size: 14px;margin-top: 10px;padding: 14px;">Multi-select of Invoices</button>
               <button type="button" class="btn-close" (click)="closeDialog()" aria-label="Close"></button>
             </div>
           </div>
