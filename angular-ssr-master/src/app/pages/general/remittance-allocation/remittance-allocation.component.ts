@@ -162,7 +162,7 @@ export class RemittanceAllocationComponent implements OnInit {
 
     this.http.post<any>(apiUrl, {}, { headers }).subscribe({
       next: (data) => {
-        this.allocationarr = data.data.allocationList;
+        this.allocationarr = data.data.allocationList.slice(0, 3);
         if (this.invoiceDropdown && this.allocationarr.length > 1) {
           this.allocationType = this.allocationarr[0].altCode;
         } else {
@@ -280,7 +280,7 @@ export class RemittanceAllocationComponent implements OnInit {
   autoSplit() {
 
     this.toggleAllocation()
-    debugger
+    
     if (this.allocationData.ctcIs3Tier == 0) {
       this.disabledFields['invhTotAgencyFee'] = true;
       this.disabledFields['invhTotOurfee'] = true;
