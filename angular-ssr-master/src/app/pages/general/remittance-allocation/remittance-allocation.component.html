@@ -2,8 +2,9 @@
   style="margin-top: 45px; overflow-y: hidden;">
   <div class="modal-dialog modal-xl">
     <div class="modal-content custom-height">
+      <app-confirmation-pop style="position: absolute; top: 0; left: 0;"></app-confirmation-pop>
       <app-notification-popup style="position: absolute; top: 0; left: 0;"
-      *ngIf="(notificationService.notificationVisibility$ | async)"></app-notification-popup>
+        *ngIf="(notificationService.notificationVisibility$ | async)"></app-notification-popup>
       <div class="modal-body">
         <div class="container-fluid row" style="background-color: #e1e8ee; padding-bottom: 6px;">      
           <div class="row align-items-center text-black g-3 d-flex" style="margin-top: -1px;">
@@ -282,7 +283,7 @@
         </div>
 
       </div>
-      
+
     </div>
   </div>
 </div>

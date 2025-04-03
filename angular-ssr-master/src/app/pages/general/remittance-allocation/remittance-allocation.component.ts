@@ -11,6 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { ConfirmationPopComponent } from '../confirmation-pop/confirmation-pop.component';
 
 @Component({
   selector: 'app-remittance-allocation',
@@ -19,6 +20,7 @@ import { MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger }
 })
 export class RemittanceAllocationComponent implements OnInit {
   @ViewChild('autoTrigger') autoTrigger!: MatAutocompleteTrigger;
+  @ViewChild(ConfirmationPopComponent) popupComponent!: ConfirmationPopComponent;
   agencyControl = new FormControl('');
   filteredAgencies!: Observable<{ agecode: string; agedesc: string }[]>;
   allAgencies: { agecode: string; agedesc: string }[] = [];
@@ -91,7 +93,8 @@ export class RemittanceAllocationComponent implements OnInit {
   pendingLeftDue: number = 0;
   btnText: string = 'Add';
   editIndex: number = -1;
-
+  hdnAmountAvailable : number = 0;
+  hdnTotalAmount: string = '0';
   selectedAgencyDesc: string = '';
   disabledFields: { [key: string]: boolean } = {};
 
@@ -107,6 +110,8 @@ export class RemittanceAllocationComponent implements OnInit {
     this.cieCode = invoiceData.cieCode;
     this.txtAmountAvailable = invoiceData.invoiceData.mvtAmountRcvd;
     this.txtTotalAmount = invoiceData.invoiceData.mvtAmountRcvd;
+    this.hdnAmountAvailable = this.txtAmountAvailable;
+    this.hdnTotalAmount = this.txtTotalAmount;
 
     this.disabledFields = {
       invoice: false,
@@ -646,83 +651,81 @@ export class RemittanceAllocationComponent implements OnInit {
   }
 
   validateAFVChange(obj: any, id: string) {
-
-    const allocatedAmt = parseFloat(this.amountAllocate) || 0;
-    const dueByAmt = parseFloat(this.dueByAgency) || 0;
-
-    const contractorCharges = parseFloat(this.bankChargesContractor as any) || 0;
-    const afCharges = parseFloat(this.bankChargesAf as any) || 0;
-    const withheldTax = parseFloat(this.taxWithHeld as any) || 0;
-    const factoringAmt = parseFloat(this.factoring as any) || 0;
-
-    if (this.invoice !== "0") {
-      if (this.roundVal(allocatedAmt) > this.roundVal(dueByAmt)) {
-        alert(`You are trying to allocate more than the maximum left on this invoice (${dueByAmt}). Allocate less or remove bank charges.`);
-        return false;
+      const allocatedAmt = parseFloat(this.amountAllocate) || 0;
+      const dueByAmt = parseFloat(this.dueByAgency) || 0;
+  
+      const contractorCharges = parseFloat(this.bankChargesContractor as any) || 0;
+      const afCharges = parseFloat(this.bankChargesAf as any) || 0;
+      const withheldTax = parseFloat(this.taxWithHeld as any) || 0;
+      const factoringAmt = parseFloat(this.factoring as any) || 0;
+  
+      if (this.invoice !== "0") {
+        if (this.roundVal(allocatedAmt) > this.roundVal(dueByAmt)) {
+          alert(`You are trying to allocate more than the maximum left on this invoice (${dueByAmt}). Allocate less or remove bank charges.`);
+          return false;
+        }
+  
+        const maxAllowedAmt = this.roundVal(parseFloat((document.getElementById(id) as HTMLInputElement)?.value || "0"));
+  
+        const enteredAmt = this.roundVal(parseFloat(obj?.value || "0"));
+  
+        if (enteredAmt > maxAllowedAmt) {
+          alert(`Entered amount ${enteredAmt} is not allowed. You can allocate a maximum amount of ${maxAllowedAmt}.`);
+          obj.value = maxAllowedAmt;
+          obj.focus();
+          obj.select();
+          return false;
+        }
       }
-
-      const maxAllowedAmt = this.roundVal(parseFloat((document.getElementById(id) as HTMLInputElement)?.value || "0"));
-
-      const enteredAmt = this.roundVal(parseFloat(obj?.value || "0"));
-
-      if (enteredAmt > maxAllowedAmt) {
-        alert(`Entered amount ${enteredAmt} is not allowed. You can allocate a maximum amount of ${maxAllowedAmt}.`);
-        obj.value = maxAllowedAmt;
-        obj.focus();
-        obj.select();
-        return false;
-      }
-    }
-
     return true;
   }
 
 
   ValidateBankChargesAF(field: string) {
-
-    const allocatedAmt = isNaN(parseFloat(this.amountAllocate)) ? 0 : parseFloat(this.amountAllocate);
-    const dueByAmt = isNaN(parseFloat(this.dueByAgency)) ? 0 : parseFloat(this.dueByAgency);
-
-    const contractorCharges = isNaN(parseFloat(this.bankChargesContractor as any)) ? 0 : parseFloat(this.bankChargesContractor as any);
-    const afCharges = isNaN(parseFloat(this.bankChargesAf as any)) ? 0 : parseFloat(this.bankChargesAf as any);
-    const withheldTax = isNaN(parseFloat(this.taxWithHeld as any)) ? 0 : parseFloat(this.taxWithHeld as any);
-    const factoringAmt = isNaN(parseFloat(this.factoring as any)) ? 0 : parseFloat(this.factoring as any);
-
-    if (this.invoice !== "0") {
-      console.log("Checking allocation");
-
-      if (this.roundVal(allocatedAmt) > this.roundVal(dueByAmt)) {
-        alert(`You are trying to allocate more than the maximum left on this invoice (${dueByAmt}). Allocate less or remove bank charges.`);
-        return false;
+      const allocatedAmt = isNaN(parseFloat(this.amountAllocate)) ? 0 : parseFloat(this.amountAllocate);
+      const dueByAmt = isNaN(parseFloat(this.dueByAgency)) ? 0 : parseFloat(this.dueByAgency);
+  
+      const contractorCharges = isNaN(parseFloat(this.bankChargesContractor as any)) ? 0 : parseFloat(this.bankChargesContractor as any);
+      const afCharges = isNaN(parseFloat(this.bankChargesAf as any)) ? 0 : parseFloat(this.bankChargesAf as any);
+      const withheldTax = isNaN(parseFloat(this.taxWithHeld as any)) ? 0 : parseFloat(this.taxWithHeld as any);
+      const factoringAmt = isNaN(parseFloat(this.factoring as any)) ? 0 : parseFloat(this.factoring as any);
+  
+      if (this.invoice !== "0") {
+        console.log("Checking allocation");
+  
+        if (this.roundVal(allocatedAmt) > this.roundVal(dueByAmt)) {
+          alert(`You are trying to allocate more than the maximum left on this invoice (${dueByAmt}). Allocate less or remove bank charges.`);
+          return false;
+        }
+  
+        const totalAllocation = this.roundVal(allocatedAmt + contractorCharges + afCharges + withheldTax + factoringAmt);
+  
+        if (totalAllocation > this.roundVal(dueByAmt)) {
+          alert(`You are trying to allocate more than the maximum left on this invoice (${dueByAmt}). Allocate less or remove bank charges.`);
+          if (field == "bankChargesAf") {
+            this.bankChargesAf = 0;
+          }
+          if (field == "taxWithHeld") {
+            this.taxWithHeld = 0;
+          }
+  
+          if (field == "bankChargesContractor") {
+            this.bankChargesContractor = 0;
+          }
+          if (field == "factoring") {
+            this.factoring = 0;
+          }
+  
+          return false;
+        } else {
+          this.pendingLeftDue = this.roundVal(dueByAmt - contractorCharges - afCharges - allocatedAmt - withheldTax - factoringAmt);
+        }
+  
+        if (typeof this.getSplitAmount === "function") {
+          this.getSplitAmount();
+        }
       }
-
-      const totalAllocation = this.roundVal(allocatedAmt + contractorCharges + afCharges + withheldTax + factoringAmt);
-
-      if (totalAllocation > this.roundVal(dueByAmt)) {
-        alert(`You are trying to allocate more than the maximum left on this invoice (${dueByAmt}). Allocate less or remove bank charges.`);
-        if (field == "bankChargesAf") {
-          this.bankChargesAf = 0;
-        }
-        if (field == "taxWithHeld") {
-          this.taxWithHeld = 0;
-        }
-
-        if (field == "bankChargesContractor") {
-          this.bankChargesContractor = 0;
-        }
-        if (field == "factoring") {
-          this.factoring = 0;
-        }
-
-        return false;
-      } else {
-        this.pendingLeftDue = this.roundVal(dueByAmt - contractorCharges - afCharges - allocatedAmt - withheldTax - factoringAmt);
-      }
-
-      if (typeof this.getSplitAmount === "function") {
-        this.getSplitAmount();
-      }
-    }
+    
     return true;
   }
 
@@ -1023,6 +1026,14 @@ export class RemittanceAllocationComponent implements OnInit {
   }
 
   onOptionSelected(event: MatAutocompleteSelectedEvent): void {
+    this.showAllocation = false;
+    this.showAllocationSummery = false;
+    this.resetAllocation();
+    this.allocationList = [];
+    this.txtAllocatedConfirmedAmount = 0;
+    this.txtTotalAmount = this.hdnTotalAmount;
+    this.txtAmountAvailable = this.hdnAmountAvailable;
+    this.invoiceDropdown = null;
     const selectedAgedesc = event.option.value.trim();
 
     const selectedAgency = this.allAgencies.find(agency =>
@@ -1046,62 +1057,60 @@ export class RemittanceAllocationComponent implements OnInit {
 
   deleteRow(index: number) {
     this.notificationService.setNotificationVisibility(true);
-    this.notificationService.showNotification(
-      'Do you want to delete this record.',
-      'WARNING',
+    this.popupComponent.openPopup(
+      'Confirmation',
+      'Are you sure that you want to Delete?',
       'warning',
       () => {
         this.allocationList.splice(index, 1);
         this.calculateTotals();
         this.notificationService.setNotificationVisibility(false);
+  
+          this.notificationService.showNotification(
+          'Record has been deleted successfully.',
+          'SUCCESS',
+          'success',
+          () => {
+            this.notificationService.setNotificationVisibility(false);
+          }
+        );
       }
     );
   }
 
   updateRow(row: any, index: number) {
+    this.btnText = "Update";
+    this.editIndex = index;
 
-    this.notificationService.setNotificationVisibility(true);
-    this.notificationService.showNotification(
-      'Do you want to Update this record.',
-      'INFO',
-      'success',
-      () => {
-        this.btnText = "Update";
-        this.editIndex = index;
-
-        const selectedAllocationType = this.allocationarr.find(
-          allocation => allocation.altDesc === row.allocateType
-        );
-
-        const selectedInvoice = this.invoicearr.find(inv => inv.invoiceRef.includes(row.invoiceItem));
-
-        let invoiceCode = "";
-        if (selectedInvoice) {
-          const parts: string[] = selectedInvoice.invoiceRef.split('|').map((p: string) => p.trim());
-          invoiceCode = parts.length > 0 ? selectedInvoice.invhCode : "";
-        }
-
-        this.allocationType = selectedAllocationType?.altCode || "";
-        this.invoice = invoiceCode;
-        this.amountAllocate = row.amountToAllocate;
-        this.allocationData = {
-          invhTotAgencyFee: row.agencyCommission,
-          invhTotOurfee: row.ourFee,
-          invhTotSal: row.contractorDue,
-          invhVATI: row.vat
-        };
-        this.description = row.descrp || "";
-        this.dueByAgency = row.dueByAgen || 0;
-        this.bankChargesContractor = row.bkCharges || 0;
-        this.bankChargesAf = row.bkChargesSMTG || 0;
-        this.taxWithHeld = row.taxWithheld || 0;
-        this.factoring = row.factoring || 0;
-        this.pendingLeftDue = row.pendingLeft || 0;
-        this.notificationService.setNotificationVisibility(false);
-      }
+    const selectedAllocationType = this.allocationarr.find(
+      allocation => allocation.altDesc === row.allocateType
     );
 
+    const selectedInvoice = this.invoicearr.find(inv => inv.invoiceRef.includes(row.invoiceItem));
 
+    let invoiceCode = "";
+    if (selectedInvoice) {
+      const parts: string[] = selectedInvoice.invoiceRef.split('|').map((p: string) => p.trim());
+      invoiceCode = parts.length > 0 ? selectedInvoice.invhCode : "";
+    }
+
+    this.allocationType = selectedAllocationType?.altCode || "";
+    this.invoice = invoiceCode;
+    this.amountAllocate = row.amountToAllocate;
+    this.allocationData = {
+      invhTotAgencyFee: row.agencyCommission,
+      invhTotOurfee: row.ourFee,
+      invhTotSal: row.contractorDue,
+      invhVATI: row.vat
+    };
+    this.description = row.descrp || "";
+    this.dueByAgency = row.dueByAgen || 0;
+    this.bankChargesContractor = row.bkCharges || 0;
+    this.bankChargesAf = row.bkChargesSMTG || 0;
+    this.taxWithHeld = row.taxWithheld || 0;
+    this.factoring = row.factoring || 0;
+    this.pendingLeftDue = row.pendingLeft || 0;
+    this.notificationService.setNotificationVisibility(false);
 
   }
 
@@ -1130,6 +1139,8 @@ export class RemittanceAllocationComponent implements OnInit {
     this.taxWithHeld = 0;
     this.pendingLeftDue = 0;
     this.currencyDescription = null;
+    this.interCoCompany = null;
+    this.interCoBank = null;
     this.btnText = "Add";
     this.editIndex = -1;
   }
