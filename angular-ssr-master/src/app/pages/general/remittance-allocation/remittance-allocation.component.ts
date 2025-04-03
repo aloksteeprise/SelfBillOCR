@@ -75,8 +75,8 @@ export class RemittanceAllocationComponent implements OnInit {
   txtAllocatedConfirmedAmount: number = 0;
   btnSubmitAllocVisible: boolean = true;
   allocationList: any[] = [];
-  hdctcIs3Tier: string = '0';
-  hdctcIsFactoring: string = '0';
+  hdctcIs3Tier: number = 0;
+  hdctcIsFactoring: number = 0;
   allocateType: string = '';
   invoiceItem: string = '';
   amountToAllocate: number = 0;
@@ -93,8 +93,6 @@ export class RemittanceAllocationComponent implements OnInit {
   pendingLeftDue: number = 0;
   btnText: string = 'Add';
   editIndex: number = -1;
-  hdnAmountAvailable : number = 0;
-  hdnTotalAmount: string = '0';
   selectedAgencyDesc: string = '';
   disabledFields: { [key: string]: boolean } = {};
 
@@ -110,8 +108,6 @@ export class RemittanceAllocationComponent implements OnInit {
     this.cieCode = invoiceData.cieCode;
     this.txtAmountAvailable = invoiceData.invoiceData.mvtAmountRcvd;
     this.txtTotalAmount = invoiceData.invoiceData.mvtAmountRcvd;
-    this.hdnAmountAvailable = this.txtAmountAvailable;
-    this.hdnTotalAmount = this.txtTotalAmount;
 
     this.disabledFields = {
       invoice: false,
@@ -432,74 +428,112 @@ export class RemittanceAllocationComponent implements OnInit {
   }
 
   addAllocation() {
+    
+    if (!this.allocationType) {
+      return this.notificationService.showNotification("Please select Allocation Type.", "INFO", "info");
+    }
 
-    if (!this.allocationType) return alert("Please select Allocation Type.");
-    if (this.allocationType === "INV" && !this.invoice) return alert("Please select an Item.");
-    if (this.allocationType === "ICT" && !this.interCoCompany) return alert("Please select InterCo Account.");
-    if (this.allocationType === "ICT" && !this.interCoBank) return alert("Please select Bank.");
-    if (!this.amountAllocate) return alert("Please enter Amount To Allocate.");
-
-    if (this.isNegative(this.amountAllocate)) return alert("Amount to Allocate should not be negative.");
-    if (this.isNegative(this.allocationData.invhTotAgencyFee)) return alert("Agency Commission should not be negative.");
-    if (this.isNegative(this.allocationData.invhTotOurfee)) return alert("Our Fee should not be negative.");
-    if (this.isNegative(this.allocationData.invhTotSal)) return alert("Contractor Due should not be negative.");
-    if (this.isNegative(this.allocationData.invhVATI)) return alert("VAT should not be negative.");
-    if (this.isNegative(this.bankChargesContractor)) return alert("Bank Charges Contractor should not be negative.");
-    if (this.isNegative(this.bankChargesAf)) return alert("Bank Charges SMTG should not be negative.");
-    if (this.isNegative(this.taxWithHeld)) return alert("Tax Withheld should not be negative.");
-    if (this.isNegative(this.pendingLeftDue)) return alert("Pending Left Due should not be negative.");
-
+    if (this.allocationType === "INV" && !this.invoice) {
+      return this.notificationService.showNotification("Please select an Item.", "INFO", "info");
+    }
+    if (this.allocationType === "ICT" && !this.interCoCompany) {
+      return this.notificationService.showNotification("Please select InterCo Account.", "INFO", "info");
+    }
+    if (this.allocationType === "ICT" && !this.interCoBank) {
+      return this.notificationService.showNotification("Please select Bank.", "INFO", "info");
+    }
+    if (!this.amountAllocate) {
+      return this.notificationService.showNotification("Please enter Amount To Allocate.", "INFO", "info");
+    }
+  
+    if (this.isNegative(this.amountAllocate)) {
+      return this.notificationService.showNotification("Amount to Allocate should not be negative.", "INFO", "info");
+    }
+    if (this.isNegative(this.allocationData.invhTotAgencyFee)) {
+      return this.notificationService.showNotification("Agency Commission should not be negative.", "INFO", "info");
+    }
+    if (this.isNegative(this.allocationData.invhTotOurfee)) {
+      return this.notificationService.showNotification("Our Fee should not be negative.", "INFO", "info");
+    }
+    if (this.isNegative(this.allocationData.invhTotSal)) {
+      return this.notificationService.showNotification("Contractor Due should not be negative.", "INFO", "info");
+    }
+    if (this.isNegative(this.allocationData.invhVATI)) {
+      return this.notificationService.showNotification("VAT should not be negative.", "INFO", "info");
+    }
+    if (this.isNegative(this.bankChargesContractor)) {
+      return this.notificationService.showNotification("Bank Charges Contractor should not be negative.", "INFO", "info");
+    }
+    if (this.isNegative(this.bankChargesAf)) {
+      return this.notificationService.showNotification("Bank Charges SMTG should not be negative.", "INFO", "info");
+    }
+    if (this.isNegative(this.taxWithHeld)) {
+      return this.notificationService.showNotification("Tax Withheld should not be negative.", "INFO", "info");
+    }
+    if (this.isNegative(this.pendingLeftDue)) {
+      return this.notificationService.showNotification("Pending Left Due should not be negative.", "INFO", "info");
+    }
+  
     if (this.factoring && this.allocationType === "INV" && this.invoice) {
-      if (!this.factoring) return alert("Please select Factoring option.");
+      if (!this.factoring) {
+        return this.notificationService.showNotification("Please select Factoring option.", "INFO", "info");
+      }
+      
       const totalFactoringAmount =
-        parseFloat(this.amountAllocate) || 0 +
-        parseFloat(this.bankChargesContractor as any) || 0 +
-        parseFloat(this.bankChargesAf as any) || 0 +
-        parseFloat(this.taxWithHeld as any) || 0 +
-        parseFloat(this.factoring as any) || 0;
-
-      if (this.hdctcIsFactoring === "1" && totalFactoringAmount === parseFloat(this.dueByAgency)) {
-        return alert("You have selected 'Factoring' option but the invoice payment is a full payment of invoice. So please select 'Factoring Last' option.");
+        (parseFloat(this.amountAllocate) || 0) +
+        (parseFloat(this.bankChargesContractor as any) || 0) +
+        (parseFloat(this.bankChargesAf as any) || 0) +
+        (parseFloat(this.taxWithHeld as any) || 0) +
+        (parseFloat(this.factoring as any) || 0);
+  
+      if (this.hdctcIsFactoring === 1 && totalFactoringAmount === parseFloat(this.dueByAgency)) {
+        return this.notificationService.showNotification(
+          "You have selected 'Factoring' option but the invoice payment is a full payment of invoice. So please select 'Factoring Last' option.",
+          "INFO",
+          "info"
+        );
       }
     }
-
+  
     if (this.pendingLeftDue < 0) {
-      return alert(`You are trying to allocate more than the maximum left on this invoice (${this.dueByAgency}). Allocate less or remove bank charges.`);
+      return this.notificationService.showNotification(
+        `You are trying to allocate more than the maximum left on this invoice (${this.dueByAgency}). Allocate less or remove bank charges.`,
+        "INFO",
+        "info"
+      );
     }
-
     if (!this.validateCharges()) return;
-
+  
     this.showAllocationSummery = true;
-
+  
     const selectedAllocationType = this.allocationarr.find(
       allocation => allocation.altCode === this.allocationType
     );
-
+  
     const selectedInvoice = this.invoicearr.find(inv => inv.invhCode === this.invoice);
-
+  
     if (selectedInvoice) {
       const parts: string[] = selectedInvoice.invoiceRef.split('|').map((p: string) => p.trim());
-
+  
       const isDuplicate = this.allocationList.some(row => row.invoiceItem === parts[0]);
-
+  
       if (parts.length > 0) {
         this.invoiceItem = parts[0];
       } else {
         this.invoiceItem = "";
       }
-
+  
       if (isDuplicate && this.btnText == "Add") {
-        alert("Invoice " + parts[0] + " has already been added.");
+        this.notificationService.showNotification(`Invoice ${parts[0]} has already been added.`, "INFO", "info");
         return;
       }
-
     }
-
+  
     let invhCode = "0";
     let invhCodeOtherCurrency = "0";
     let invoiceItem = "";
     let description = '';
-
+  
     switch (this.allocationType.toUpperCase()) {
       case "INV":
         invhCode = this.invoice;
@@ -508,14 +542,14 @@ export class RemittanceAllocationComponent implements OnInit {
         description = `Payment of Invoice ${this.invoiceItem}`;
         this.description = 'Payment from Agency ' + this.selectedAgencyDesc;
         break;
-
+  
       case "ICT":
         invhCode = this.interCoCompany;
         invhCodeOtherCurrency = "0";
         this.invoiceItem = this.interCoCompanyarr.find(c => c.accCode === this.interCoCompany)?.accDescription || "";
         this.description = this.interCoBankarr.find(b => b.bkiCode === this.interCoBank)?.bkifullname || "";
         break;
-
+  
       case "ICR":
         invhCode = this.interCoCompany;
         invhCodeOtherCurrency = "0";
@@ -529,8 +563,7 @@ export class RemittanceAllocationComponent implements OnInit {
         this.description = this.description;
         break;
     }
-
-
+  
     const newAllocation = {
       allocateType: selectedAllocationType?.altDesc || '',
       invoiceItem: invoiceItem,
@@ -549,7 +582,7 @@ export class RemittanceAllocationComponent implements OnInit {
       invhCode: invhCode,
       invhCodeOtherCurrency: invhCodeOtherCurrency
     };
-
+  
     if (this.btnText === "Add") {
       this.allocationList.push(newAllocation);
     } else {
@@ -557,11 +590,11 @@ export class RemittanceAllocationComponent implements OnInit {
       this.btnText = "Add";
       this.editIndex = -1;
     }
-
+  
     this.calculateTotals();
     this.resetAllocation();
   }
-
+  
 
   onAllocationChange() {
     if (this.allocationType === 'ACC') {
@@ -1129,9 +1162,7 @@ export class RemittanceAllocationComponent implements OnInit {
     this.showAllocationSummery = false;
     this.resetAllocation();
     this.allocationList = [];
-    this.txtAllocatedConfirmedAmount = 0;
-    this.txtTotalAmount = this.hdnTotalAmount;
-    this.txtAmountAvailable = this.hdnAmountAvailable;
+    this.calculateTotals();
     this.invoiceDropdown = null;
     const selectedAgedesc = event.option.value.trim();
 
@@ -1164,7 +1195,7 @@ export class RemittanceAllocationComponent implements OnInit {
         this.allocationList.splice(index, 1);
         this.calculateTotals();
         this.notificationService.setNotificationVisibility(false);
-  
+        this.resetAllocation();
           this.notificationService.showNotification(
           'Record has been deleted successfully.',
           'SUCCESS',
