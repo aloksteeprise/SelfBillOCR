@@ -357,9 +357,15 @@ export class RemittanceAllocationComponent implements OnInit {
           }
 
           if (isDuplicate) {
-            alert("Invoice " + invoiceItem + " has already been added.");
+            this.notificationService.showNotification(
+              `Invoice ${invoiceItem} has already been added.`,
+              'INFO',
+              'info',
+              () => {}
+            );
             return;
           }
+          
 
 
           this.allocationList.push({
@@ -601,7 +607,7 @@ export class RemittanceAllocationComponent implements OnInit {
   }
 
   validateCharges(): boolean {
-    if (this.allocateType == "INV") {
+    if (this.allocationType == "INV") {
       const allocatedAmt = parseFloat(this.amountAllocate.toString()) || 0;
       const dueByAmt = parseFloat(this.dueByAgency.toString()) || 0;
       const contractorCharges = parseFloat(this.bankChargesContractor.toString()) || 0;
@@ -615,36 +621,53 @@ export class RemittanceAllocationComponent implements OnInit {
       const pendingLeftDue = parseFloat(this.pendingLeftDue.toString()) || 0;
       if (this.invoice !== "0") {
         if (this.roundVal(allocatedAmt) > this.roundVal(dueByAmt)) {
-          alert(`You are trying to allocate more than the maximum left on this invoice (${dueByAmt}). Allocate less or remove bank charges.`);
+          this.popupComponent.openPopup(
+            'Confirmation',
+            `You are trying to allocate more than the maximum left on this invoice (${dueByAmt}). Allocate less or remove bank charges.`,
+            'Confirmation',
+            () => {}
+          );
           return false;
         }
+      
         const totalAllocation = this.roundVal(allocatedAmt + contractorCharges + afCharges + withheldTax + factoringAmt);
         if (totalAllocation > this.roundVal(dueByAmt)) {
-          alert(`You are trying to allocate more than the maximum left on this invoice (${dueByAmt}). Allocate less or remove bank charges.`);
+          this.popupComponent.openPopup(
+            'Confirmation',
+            `You are trying to allocate more than the maximum left on this invoice (${dueByAmt}). Allocate less or remove bank charges.`,
+            'Confirmation',
+            () => {}
+          );
           return false;
         }
+      
         if (
           this.hdctcIs3Tier &&
           this.roundVal(dueByAmt - pendingLeftDue) !== this.roundVal(agencyCommission + ourFee + contractorDue + VAT)
         ) {
-          alert(
+          this.popupComponent.openPopup(
+            'Confirmation',
             `You are trying to allocate more or less than the maximum of 'Amount To Allocate' ${this.roundVal(dueByAmt) - this.roundVal(pendingLeftDue)
-            } on this invoice into 'Agency Commission' + 'Our Fee' + 'Contractor Due' + 'VAT' total amount ${agencyCommission + ourFee + contractorDue + VAT
-            }.`
+            } on this invoice into 'Agency Commission' + 'Our Fee' + 'Contractor Due' + 'VAT' total amount ${agencyCommission + ourFee + contractorDue + VAT}.`,
+            'Confirmation',
+            () => {}
           );
           return false;
         } else if (
           !this.hdctcIs3Tier &&
           this.roundVal(dueByAmt - pendingLeftDue) < this.roundVal(agencyCommission + ourFee + contractorDue + VAT)
         ) {
-          alert(
+          this.popupComponent.openPopup(
+            'Confirmation',
             `You are trying to allocate more than the maximum of 'Amount To Allocate' ${this.roundVal(dueByAmt) - this.roundVal(pendingLeftDue)
-            } on this invoice into 'Agency Commission' + 'Our Fee' + 'Contractor Due' + 'VAT' total amount ${agencyCommission + ourFee + contractorDue + VAT
-            }.`
+            } on this invoice into 'Agency Commission' + 'Our Fee' + 'Contractor Due' + 'VAT' total amount ${agencyCommission + ourFee + contractorDue + VAT}.`,
+            'Confirmation',
+            () => {}
           );
           return false;
         }
       }
+      
     }
 
     return true;
@@ -661,21 +684,34 @@ export class RemittanceAllocationComponent implements OnInit {
   
       if (this.invoice !== "0") {
         if (this.roundVal(allocatedAmt) > this.roundVal(dueByAmt)) {
-          alert(`You are trying to allocate more than the maximum left on this invoice (${dueByAmt}). Allocate less or remove bank charges.`);
+          this.notificationService.showNotification(
+            `You are trying to allocate more than the maximum left on this invoice (${dueByAmt}). Allocate less or remove bank charges.`,
+            'ERROR',  // Title
+            'error',  // Notification type
+            () => {}   // Callback function (if any action is needed)
+          );
           return false;
         }
+        
   
         const maxAllowedAmt = this.roundVal(parseFloat((document.getElementById(id) as HTMLInputElement)?.value || "0"));
   
         const enteredAmt = this.roundVal(parseFloat(obj?.value || "0"));
   
         if (enteredAmt > maxAllowedAmt) {
-          alert(`Entered amount ${enteredAmt} is not allowed. You can allocate a maximum amount of ${maxAllowedAmt}.`);
-          obj.value = maxAllowedAmt;
-          obj.focus();
-          obj.select();
+          this.popupComponent.openPopup(
+            'Confirmation',
+            `Entered amount ${enteredAmt} is not allowed. You can allocate a maximum amount of ${maxAllowedAmt}.`,
+            'Confirmation',
+            () => {
+              obj.value = maxAllowedAmt;
+              obj.focus();
+              obj.select();
+            }
+          );
           return false;
         }
+        
       }
     return true;
   }
@@ -692,39 +728,49 @@ export class RemittanceAllocationComponent implements OnInit {
   
       if (this.invoice !== "0") {
         console.log("Checking allocation");
-  
+      
         if (this.roundVal(allocatedAmt) > this.roundVal(dueByAmt)) {
-          alert(`You are trying to allocate more than the maximum left on this invoice (${dueByAmt}). Allocate less or remove bank charges.`);
+          this.popupComponent.openPopup(
+            'Confirmation',
+            `You are trying to allocate more than the maximum left on this invoice (${dueByAmt}). Allocate less or remove bank charges.`,
+            'Confirmation',
+            () => {}
+          );
           return false;
         }
-  
+      
         const totalAllocation = this.roundVal(allocatedAmt + contractorCharges + afCharges + withheldTax + factoringAmt);
-  
+      
         if (totalAllocation > this.roundVal(dueByAmt)) {
-          alert(`You are trying to allocate more than the maximum left on this invoice (${dueByAmt}). Allocate less or remove bank charges.`);
-          if (field == "bankChargesAf") {
-            this.bankChargesAf = 0;
-          }
-          if (field == "taxWithHeld") {
-            this.taxWithHeld = 0;
-          }
-  
-          if (field == "bankChargesContractor") {
-            this.bankChargesContractor = 0;
-          }
-          if (field == "factoring") {
-            this.factoring = 0;
-          }
-  
+          this.popupComponent.openPopup(
+            'Confirmation',
+            `You are trying to allocate more than the maximum left on this invoice (${dueByAmt}). Allocate less or remove bank charges.`,
+            'Confirmation',
+            () => {
+              if (field == "bankChargesAf") {
+                this.bankChargesAf = 0;
+              }
+              if (field == "taxWithHeld") {
+                this.taxWithHeld = 0;
+              }
+              if (field == "bankChargesContractor") {
+                this.bankChargesContractor = 0;
+              }
+              if (field == "factoring") {
+                this.factoring = 0;
+              }
+            }
+          );
           return false;
         } else {
           this.pendingLeftDue = this.roundVal(dueByAmt - contractorCharges - afCharges - allocatedAmt - withheldTax - factoringAmt);
         }
-  
+      
         if (typeof this.getSplitAmount === "function") {
           this.getSplitAmount();
         }
       }
+      
     
     return true;
   }
@@ -734,10 +780,17 @@ export class RemittanceAllocationComponent implements OnInit {
       switch (field) {
         case 'amountAllocate':
           if (!this.amountAllocate || this.amountAllocate < '0') {
-            alert('Amount to allocate should not be negative.');
-            this.amountAllocate = "0";
+            this.notificationService.showNotification(
+              'Amount to allocate should not be negative.',
+              'INFO',
+              'info',
+              () => {
+                this.amountAllocate = "0";
+              }
+            );
             return false;
           }
+          
 
           const allocatedAmt = parseFloat(this.amountAllocate) || 0;
           const dueByAmt = parseFloat(this.dueByAgency) || 0;
@@ -750,151 +803,197 @@ export class RemittanceAllocationComponent implements OnInit {
 
           if (this.invoiceItem !== "0") {
             if (this.roundVal(allocatedAmt) > this.roundVal(dueByAmt)) {
-              alert(`You are trying to allocate more than the maximum left on this invoice (${dueByAmt}). Allocate less or remove bank charges.`);
+              this.popupComponent.openPopup(
+                'Confirmation',
+                `You are trying to allocate more than the maximum left on this invoice (${dueByAmt}). Allocate less or remove bank charges.`,
+                'confirmation',
+                () => {}
+              );
               return false;
             }
-
+          
             const totalAllocated = this.roundVal(
-              allocatedAmt +
-              contractorCharges +
-              afCharges +
-              withheldTax +
-              factoringAmt
+              allocatedAmt + contractorCharges + afCharges + withheldTax + factoringAmt
             );
-
+          
             if (totalAllocated !== this.roundVal(dueByAmt)) {
               const difference = this.roundVal(dueByAmt - allocatedAmt - withheldTax - factoringAmt);
-
-              if (confirm(`The amount entered: ${totalAllocated} is not equal to the pending amount: ${dueByAmt}.
-  Will the difference: ${difference} be considered as bank charges?
-  Reply 'OK' if invoice 100% paid, 'Cancel' if future payments are expected.`)) {
-                if (aldConBanks !== 1) {
-
-                  this.pendingLeftDue = 0;
-                  this.bankChargesAf = this.roundVal(dueByAmt - contractorCharges - allocatedAmt - withheldTax - factoringAmt);
-                } else {
-
-                  this.bankChargesContractor = this.roundVal(dueByAmt - afCharges - allocatedAmt - withheldTax - factoringAmt);
-                  this.pendingLeftDue = 0;
+          
+              this.popupComponent.openPopup(
+                'Confirmation',
+                `The amount entered: ${totalAllocated} is not equal to the pending amount: ${dueByAmt}. 
+                Will the difference: ${difference} be considered as bank charges? 
+                Click 'Confirm' if invoice is 100% paid, or 'Cancel' if future payments are expected.`,
+                'confirmation',
+                () => {
+                  if (aldConBanks !== 1) {
+                    this.pendingLeftDue = 0;
+                    this.bankChargesAf = this.roundVal(dueByAmt - contractorCharges - allocatedAmt - withheldTax - factoringAmt);
+                  } else {
+                    this.bankChargesContractor = this.roundVal(dueByAmt - afCharges - allocatedAmt - withheldTax - factoringAmt);
+                    this.pendingLeftDue = 0;
+                  }
+                },
+                () => {
+                  if (totalAllocated > this.roundVal(dueByAmt)) {
+                    this.popupComponent.openPopup(
+                      'Confirmation',
+                      `You are trying to allocate more than the maximum left on this invoice (${dueByAmt}). Allocate less or remove bank charges.`,
+                      'confirmation',
+                      () => {}
+                    );
+                  } else {
+                    this.pendingLeftDue = this.roundVal(dueByAmt - contractorCharges - afCharges - allocatedAmt - withheldTax - factoringAmt);
+                  }
                 }
-              } else if (totalAllocated > this.roundVal(dueByAmt)) {
-                alert(`You are trying to allocate more than the maximum left on this invoice (${dueByAmt}). Allocate less or remove bank charges.`);
-                return false;
-              } else {
-                this.pendingLeftDue = this.roundVal(dueByAmt - contractorCharges - afCharges - allocatedAmt - withheldTax - factoringAmt);
-              }
-
+              );
+          
               this.getSplitAmount();
               return false;
             }
           }
+          
 
           break;
 
-        case 'taxWithHeld':
-          if (!this.taxWithHeld) {
-            this.taxWithHeld = 0;
-          } else if (this.taxWithHeld < 0.0) {
-            alert('Tax withheld should not be negative.');
-            this.taxWithHeld = 0;
-            return false;
-          }
-          this.ValidateBankChargesAF(field)
-          break;
-
-        case 'bankChargesAf':
-          if (!this.bankChargesAf) {
-            this.bankChargesAf = 0;
-          } else if (this.bankChargesAf < 0) {
-            alert('Bank Charges SMTG should not be negative.');
-            this.bankChargesAf = 0;
-            return false;
-          }
-          this.ValidateBankChargesAF(field)
-          break;
-
-
-        case 'bankChargesContractor':
-          if (!this.bankChargesContractor) {
-            this.bankChargesContractor = 0;
-          } else if (this.bankChargesContractor < 0) {
-            alert('Bank Charges Contractor should not be negative.');
-            this.bankChargesContractor = 0;
-            return false;
-          }
-          this.ValidateBankChargesAF(field)
-          break;
-
-        case 'factoring':
-          if (!this.factoring) {
-            this.factoring = 0;
-          } else if (this.factoring < 0) {
-            alert('factoring should not be negative.');
-            this.factoring = 0;
-            return false;
-          }
-          this.ValidateBankChargesAF(field)
-          break;
-
-        case 'allocationData.invhTotAgencyFee':
-          let invhTotAgencyFee = parseFloat(this.allocationData.invhVATI) || 0;
-
-          if (invhTotAgencyFee < 0) {
-            alert(' invhTotAgencyFee should not be negative.');
-            this.allocationData.invhTotAgencyFee = 0;
-            return false;
-          }
-
-
-          this.validateAFVChange(this.allocationData, 'invhTotAgencyFee');
-          break;
-
-        case 'allocationData.invhVATI':
-          let invhVATI = parseFloat(this.allocationData.invhVATI) || 0;
-
-          if (invhVATI < 0) {
-            alert('allocationData.invhVATI should not be negative.');
-            this.allocationData.invhVATI = 0;
-            return false;
-          }
-
-          // Ensure you pass the correct object and ID to validateAFVChange
-          this.validateAFVChange(this.allocationData, 'invhVATI');
-          break;
-
-
-        case 'allocationData.invhTotOurfee':
-          if (!this.allocationData.invhTotOurfee) {
-            this.allocationData.invhTotOurfee = 0;
-          } else if (this.allocationData.invhTotOurfee < 0) {
-            alert('allocationData invhTotOurfee should not be negative.');
-            this.allocationData.invhTotOurfee = 0;
-            return false;
-          }
-          this.validateAFVChange(this.allocationData, 'invhTotOurfee');
-          break;
-
-        case 'allocationData.invhTotSal':
-          if (!this.allocationData.invhTotSal) {
-            this.allocationData.invhTotSal = 0;
-          } else if (this.allocationData.invhTotSal < 0) {
-            alert('allocationData invhTotSal should not be negative.');
-            this.allocationData.invhTotSal = 0;
-            return false;
-          }
-          this.validateAFVChange(this.allocationData, 'invhTotSal');
-          break;
-
-        case 'pendingLeftDue':
-          if (!this.pendingLeftDue) {
-            this.pendingLeftDue = 0;
-          } else if (this.pendingLeftDue < 0) {
-            alert('pending Left Due should not be negative.');
-            this.pendingLeftDue = 0;
-            return false;
-          }
-          break;
-
+          
+            case 'taxWithHeld':
+              if (!this.taxWithHeld) {
+                this.taxWithHeld = 0;
+              } else if (this.taxWithHeld < 0.0) {
+                this.notificationService.showNotification(
+                  'Tax withheld should not be negative.',
+                  'INFO',
+                  'info'
+                );
+                this.taxWithHeld = 0;
+                return false;
+              }
+              this.ValidateBankChargesAF(field);
+              break;
+          
+            case 'bankChargesAf':
+              if (!this.bankChargesAf) {
+                this.bankChargesAf = 0;
+              } else if (this.bankChargesAf < 0) {
+                this.notificationService.showNotification(
+                  'Bank Charges SMTG should not be negative.',
+                  'INFO',
+                  'info'
+                );
+                this.bankChargesAf = 0;
+                return false;
+              }
+              this.ValidateBankChargesAF(field);
+              break;
+          
+            case 'bankChargesContractor':
+              if (!this.bankChargesContractor) {
+                this.bankChargesContractor = 0;
+              } else if (this.bankChargesContractor < 0) {
+                this.notificationService.showNotification(
+                  'Bank Charges Contractor should not be negative.',
+                  'INFO',
+                  'info'
+                );
+                this.bankChargesContractor = 0;
+                return false;
+              }
+              this.ValidateBankChargesAF(field);
+              break;
+          
+            case 'factoring':
+              if (!this.factoring) {
+                this.factoring = 0;
+              } else if (this.factoring < 0) {
+                this.notificationService.showNotification(
+                  'Factoring should not be negative.',
+                  'INFO',
+                  'info'
+                );
+                this.factoring = 0;
+                return false;
+              }
+              this.ValidateBankChargesAF(field);
+              break;
+          
+            case 'allocationData.invhTotAgencyFee':
+              let invhTotAgencyFee = parseFloat(this.allocationData.invhVATI) || 0;
+          
+              if (invhTotAgencyFee < 0) {
+                this.notificationService.showNotification(
+                  'invhTotAgencyFee should not be negative.',
+                  'INFO',
+                  'info'
+                );
+                this.allocationData.invhTotAgencyFee = 0;
+                return false;
+              }
+          
+              this.validateAFVChange(this.allocationData, 'invhTotAgencyFee');
+              break;
+          
+            case 'allocationData.invhVATI':
+              let invhVATI = parseFloat(this.allocationData.invhVATI) || 0;
+          
+              if (invhVATI < 0) {
+                this.notificationService.showNotification(
+                  'allocationData.invhVATI should not be negative.',
+                  'INFO',
+                  'info'
+                );
+                this.allocationData.invhVATI = 0;
+                return false;
+              }
+          
+              this.validateAFVChange(this.allocationData, 'invhVATI');
+              break;
+          
+            case 'allocationData.invhTotOurfee':
+              if (!this.allocationData.invhTotOurfee) {
+                this.allocationData.invhTotOurfee = 0;
+              } else if (this.allocationData.invhTotOurfee < 0) {
+                this.notificationService.showNotification(
+                  'allocationData invhTotOurfee should not be negative.',
+                  'INFO',
+                  'info'
+                );
+                this.allocationData.invhTotOurfee = 0;
+                return false;
+              }
+              this.validateAFVChange(this.allocationData, 'invhTotOurfee');
+              break;
+          
+            case 'allocationData.invhTotSal':
+              if (!this.allocationData.invhTotSal) {
+                this.allocationData.invhTotSal = 0;
+              } else if (this.allocationData.invhTotSal < 0) {
+                this.notificationService.showNotification(
+                  'allocationData invhTotSal should not be negative.',
+                  'INFO',
+                  'info'
+                );
+                this.allocationData.invhTotSal = 0;
+                return false;
+              }
+              this.validateAFVChange(this.allocationData, 'invhTotSal');
+              break;
+          
+            case 'pendingLeftDue':
+              if (!this.pendingLeftDue) {
+                this.pendingLeftDue = 0;
+              } else if (this.pendingLeftDue < 0) {
+                this.notificationService.showNotification(
+                  'Pending Left Due should not be negative.',
+                  'INFO',
+                  'info'
+                );
+                this.pendingLeftDue = 0;
+                return false;
+              }
+              break;
+          
+          
 
 
         default:
@@ -1060,7 +1159,7 @@ export class RemittanceAllocationComponent implements OnInit {
     this.popupComponent.openPopup(
       'Confirmation',
       'Are you sure that you want to Delete?',
-      'warning',
+      'Confirmation',
       () => {
         this.allocationList.splice(index, 1);
         this.calculateTotals();
