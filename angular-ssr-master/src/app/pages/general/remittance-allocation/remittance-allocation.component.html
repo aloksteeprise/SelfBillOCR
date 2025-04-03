@@ -13,7 +13,7 @@
               <div class="position-relative">
                 <input type="text" placeholder="Select Agency" [formControl]="agencyControl" (click)="onInputClick()"
                   [matAutocomplete]="auto" class="form-control example-input" [value]="selectedAgencyDesc"
-                  #autoTrigger="matAutocompleteTrigger" style="height: 39px; border: 1px solid; border-radius: 4px; background-color: #7f7575;">
+                  #autoTrigger="matAutocompleteTrigger" style="height: 39px; border: 1px solid; border-radius: 4px; border-color: #7f7575;">
                 <i class="bi bi-caret-down-fill position-absolute"
                   style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"
                   (click)="autoTrigger.openPanel()"></i>
@@ -29,7 +29,7 @@
             <div class="col-sm-3 col-md-2 d-flex flex-column">
               <div class="position-relative w-100">
                 <mat-form-field appearance="outline" class="w-100">
-                  <mat-label>Invoice No:</mat-label>
+                  <mat-label>Invoice No</mat-label>
                   
                   <mat-select [(ngModel)]="invoiceDropdown" (selectionChange)="onInvoiceChange($event)">
                     <mat-option disabled class="header-option">
