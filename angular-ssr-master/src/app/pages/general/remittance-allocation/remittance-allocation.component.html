@@ -5,21 +5,21 @@
       <app-notification-popup style="position: absolute; top: 0; left: 0;"
       *ngIf="(notificationService.notificationVisibility$ | async)"></app-notification-popup>
       <div class="modal-body">
-        <div class="container-fluid" style="background-color: #e1e8ee; padding-bottom: 10px;">      
-          <div class="row align-items-center text-black g-3 d-flex">
+        <div class="container-fluid row" style="background-color: #e1e8ee; padding-bottom: 6px;">      
+          <div class="row align-items-center text-black g-3 d-flex" style="margin-top: -1px;">
             <!-- Agency Field -->
             <div class="col-sm-3 col-md-2 d-flex flex-column">
-              <mat-label>Agency:</mat-label>
+              <!-- <mat-label>Agency:</mat-label> -->
               <div class="position-relative">
                 <input type="text" placeholder="Select Agency" [formControl]="agencyControl" (click)="onInputClick()"
                   [matAutocomplete]="auto" class="form-control example-input" [value]="selectedAgencyDesc"
-                  #autoTrigger="matAutocompleteTrigger" style="height: 45px;">
+                  #autoTrigger="matAutocompleteTrigger" style="height: 39px; border: 1px solid; border-radius: 4px; background-color: #7f7575;">
                 <i class="bi bi-caret-down-fill position-absolute"
                   style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"
                   (click)="autoTrigger.openPanel()"></i>
               </div>
-              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
-                <mat-option *ngFor="let agency of filteredAgencies | async" [value]="agency.agedesc">
+              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)" >
+                <mat-option *ngFor="let agency of filteredAgencies | async" [value]="agency.agedesc" class="cdk-overlay-panes">
                   {{ agency.agedesc }}
                 </mat-option>
               </mat-autocomplete>
@@ -27,43 +27,64 @@
 
             <!-- Invoice Dropdown -->
             <div class="col-sm-3 col-md-2 d-flex flex-column">
-              <mat-label class="custom-bottom">Invoice:</mat-label>
-              <select id="invoiceDropdown" class="form-select flex-grow-1" [(ngModel)]="invoiceDropdown"
-                (change)="onInvoiceChange($event)" name="invoiceDropdown" style="height: 45px;">
-                <option value="null" disabled selected>InvoiceRef | InvhDate | Due | LeftPending | ConFullName</option>
-                <option *ngFor="let invoice of invoicearr" [ngValue]="invoice.invhCode">
-                  {{ invoice.invoiceRef }}
-                </option>
-              </select>
+              <div class="position-relative w-100">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Invoice No:</mat-label>
+                  
+                  <mat-select [(ngModel)]="invoiceDropdown" (selectionChange)="onInvoiceChange($event)">
+                    <mat-option disabled class="header-option">
+                      <strong>InvoiceRef | InvhDate | Due | LeftPending | ConFullName</strong>
+                    </mat-option>
+                    <mat-option *ngFor="let invoice of invoicearr" [value]="invoice.invhCode">
+                      {{ invoice.invoiceRef }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <i class="bi bi-caret-down-fill position-absolute"
+                   style="right: 15px; top: 50%; transform: translateY(-50%); font-size: 14px; pointer-events: none;"></i>
+              </div>
+              
             </div>
 
             <!-- Allocation Button -->
-            <div class="col-sm-3 col-md-2 d-flex justify-content-center align-items-center">
+            <div class="col-sm-3 col-md-2 d-flex justify-content-center align-items-start">
               <button class="btn btn-primary btn-lg w-100" (click)="toggleAllocation()" [disabled]="!selectedAgencyDesc"
-                style="font-size: 14px;margin-top: 22px;padding: 11px;">Allocation</button>
+                style="font-size: 16px; border-radius: 5px;" >Allocation</button>
             </div>
 
             <!-- Multi Select Invoices -->
-            <div class="col-sm-3 col-md-2 d-flex flex-column" style="margin-top: 28px;">
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Multi Select Invoices</mat-label>
-                <mat-select multiple [(ngModel)]="selectedInvoices" disableRipple>
-                  <mat-option disabled class="header-option">
-                    <strong>InvoiceCode | InvoiceRef | Currency</strong>
-                  </mat-option>
-                  <mat-option *ngFor="let invoice of invoicearr" [value]="invoice">
-                    {{ invoice.invhCode }} | {{ invoice.invoiceRef }} | {{ invoice.ctcCurrenCy }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
+            <div class="col-sm-3 col-md-2 d-flex flex-column" style="margin-left: 95px;">
+              <div class="position-relative w-100">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Multi Select Invoices</mat-label>
+                  <mat-select multiple [(ngModel)]="selectedInvoices" disableRipple>
+                    <mat-option disabled class="header-option">
+                      <strong>InvoiceCode | InvoiceRef | Currency</strong>
+                    </mat-option>
+                    <mat-option *ngFor="let invoice of invoicearr" [value]="invoice">
+                      {{ invoice.invhCode }} | {{ invoice.invoiceRef }} | {{ invoice.ctcCurrenCy }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <i class="bi bi-caret-down-fill position-absolute"
+                   style="right: 15px; top: 50%; transform: translateY(-50%); font-size: 14px; pointer-events: none;"></i>
+              </div>
+              
             </div>
 
             <!-- Multi Select Buttons -->
-            <div class="col-sm-4 d-flex justify-content-center">
+            <div class="col-sm-3 d-flex justify-content-start">
               <button class="btn btn-primary btn-lg" [disabled]="!selectedAgencyDesc" (click)="multiAllocationSummary()"
-                style="font-size: 14px;margin-top: 22px;padding: 11px;">Multi-select of Invoices</button>
-              <button type="button" class="btn-close" (click)="closeDialog()" aria-label="Close"></button>
+                style="font-size: 15px; height: 42px; margin-top: -2px; border-radius: 5px; ">Multi Select of Invoices</button>
+              <!-- <button type="button" class="btn-close" (click)="closeDialog()" aria-label="Close"></button> -->
             </div>
+
+            <button type="button" 
+        class="btn-close position-absolute" 
+        (click)="closeDialog()" 
+        aria-label="Close"
+        style="top: 4%; right: 25px; transform: translateY(-50%);">
+</button>
           </div>
         </div>
 
