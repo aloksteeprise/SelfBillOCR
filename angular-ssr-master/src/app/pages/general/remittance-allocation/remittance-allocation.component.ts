@@ -273,8 +273,22 @@ export class RemittanceAllocationComponent implements OnInit {
   }
 
   autoSplit() {
-    alert('Auto Split functionality not implemented yet!');
+
+    this.toggleAllocation()
+    debugger
+    if (this.allocationData.ctcIs3Tier == 0) {
+      this.disabledFields['invhTotAgencyFee'] = true;
+      this.disabledFields['invhTotOurfee'] = true;
+      this.disabledFields['invhTotSal'] = true;
+    }
+    else {
+      this.disabledFields['invhTotAgencyFee'] = false;
+      this.disabledFields['invhTotOurfee'] = false;
+      this.disabledFields['invhTotSal'] = false;
+
+    }
   }
+
 
   closeDialog(): void {
     this.dialogRef.close();
@@ -1036,11 +1050,11 @@ export class RemittanceAllocationComponent implements OnInit {
       'Do you want to delete this record.',
       'WARNING',
       'warning',
-      () => { 
+      () => {
         this.allocationList.splice(index, 1);
         this.calculateTotals();
         this.notificationService.setNotificationVisibility(false);
-       }
+      }
     );
   }
 
@@ -1051,22 +1065,22 @@ export class RemittanceAllocationComponent implements OnInit {
       'Do you want to Update this record.',
       'INFO',
       'success',
-      () => { 
+      () => {
         this.btnText = "Update";
         this.editIndex = index;
-    
+
         const selectedAllocationType = this.allocationarr.find(
           allocation => allocation.altDesc === row.allocateType
         );
-    
+
         const selectedInvoice = this.invoicearr.find(inv => inv.invoiceRef.includes(row.invoiceItem));
-    
+
         let invoiceCode = "";
         if (selectedInvoice) {
           const parts: string[] = selectedInvoice.invoiceRef.split('|').map((p: string) => p.trim());
           invoiceCode = parts.length > 0 ? selectedInvoice.invhCode : "";
         }
-    
+
         this.allocationType = selectedAllocationType?.altCode || "";
         this.invoice = invoiceCode;
         this.amountAllocate = row.amountToAllocate;
@@ -1084,10 +1098,10 @@ export class RemittanceAllocationComponent implements OnInit {
         this.factoring = row.factoring || 0;
         this.pendingLeftDue = row.pendingLeft || 0;
         this.notificationService.setNotificationVisibility(false);
-       }
+      }
     );
 
-   
+
 
   }
 
