@@ -148,7 +148,7 @@ export class ManualAllocationPopupComponent implements OnInit{
         const resultObj = response?.data
         const isSuccess = resultObj?.result === true;
 
-        debugger
+        
   
         if (isSuccess) {
           this.notificationService.showNotification(
@@ -156,6 +156,11 @@ export class ManualAllocationPopupComponent implements OnInit{
             'INFO',
             'info',
             () => {
+              
+              if (this.data.applyFilterFn) {
+                this.data.applyFilterFn();  
+              }
+
               this.dialogRef.close();
               this.notificationService.setNotificationVisibility(false);
             }

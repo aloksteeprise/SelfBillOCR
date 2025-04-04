@@ -371,7 +371,7 @@ if (isPlatformBrowser(this.platformId)) {
     if (this.selectedCompany && this.selectedBankAccount) {
     const dialogRef = this.dialog.open(ManualAllocationPopupComponent, {
       width: '800px',
-      data: { company : selectedCompany ,bankAccount: selectedBankAccount }
+      data: { company : selectedCompany ,bankAccount: selectedBankAccount, applyFilterFn: (form: any) => this.applyFilter(form) }
     });
   
   
