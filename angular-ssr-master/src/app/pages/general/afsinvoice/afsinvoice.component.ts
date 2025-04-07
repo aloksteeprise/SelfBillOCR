@@ -108,11 +108,13 @@ export class AfsinvoiceComponent implements OnInit {
   initializeFormData(): void {
     if (this.data) {
       console.log(this.data);
+      debugger;
     
   
       //alert(this.data.contract_CtcContractor);
       this.id = this.data.id;
       this.conCode = this.data.contract_CtcContractor || '';
+      
       this.contractorname = this.data.contractorName || '';
       this.afscontractor = this.data.afscontractor || '';
       this.firstnamefor = this.data.cFirstName || '';
@@ -186,6 +188,7 @@ export class AfsinvoiceComponent implements OnInit {
           //Set the selected contract if `this.gridCtcCode` matches any option's `id`
            if(this.conCode)
             {
+              debugger
               this.selectedContract = this.contractorOptions.find(
                 (option) => option.conCode  == this.conCode
               );
@@ -254,7 +257,7 @@ const headers = new HttpHeaders({
 const body = {
   CtcCode: this.conCode
 };
-
+debugger
 this.http.post<any>(apiUrl,body, { headers}).subscribe(
   (response) => {
     // Assign the list of contractors to the dropdown options
@@ -269,12 +272,15 @@ this.http.post<any>(apiUrl,body, { headers}).subscribe(
        if (contractsListItems.length>0 && this.selectedContract) {
         // Filter and map contracts
         //this.IsContractIsActiveOrNot="";
+        debugger
         this.filteredContractOptions = contractsListItems
             .filter((contract: any) => contract.conCode === this.selectedContract.conCode && contract.contracts.includes('Active'))
+            
             .map((item: any) => ({
                 id: item.ctcCode,
                 name: item.contracts // Assuming "contracts" field is what you want to display
             }));       
+            debugger
           console.log('this.filteredContractOptions');
           console.log(this.filteredContractOptions);
           // Select the first record by default
@@ -491,8 +497,27 @@ onSkip() {
   this.loading = true;
   const errors: any = {};
   this.errors = errors; 
+  let isValid = true;
   this.notificationService.setNotificationVisibility(false);
   
+  if (!errors.startDate && !errors.endDate) {
+    const start = new Date(this.startdate);
+    const end = new Date(this.enddate);
+  
+   
+    const startYear = start.getFullYear();
+    const startMonth = start.getMonth();
+    const endYear = end.getFullYear();
+    const endMonth = end.getMonth();
+  
+    
+    if (startYear !== endYear || startMonth !== endMonth) {
+      isValid = false;
+      errors.endDate = 'Date must be within the same month and year.';
+      this.loading = false;
+      return; 
+    }
+  }
 
 
   const formData = {
@@ -647,7 +672,7 @@ onSubmit(form: any): void {
       
       if (startYear !== endYear || startMonth !== endMonth) {
         isValid = false;
-        errors.endDate = 'End Date must be within the same month.';
+        errors.endDate = 'Date must be within the same month and year.';
       }
     }
     
@@ -811,7 +836,7 @@ onSubmit(form: any): void {
                     }
                   );
                 } else {
-                 
+                 debugger
                   this.notificationService.showNotification(
                     'The records have been successfully validated and moved.',
                     'INFORMATION',
@@ -1060,29 +1085,54 @@ resetAFSContractDropdown(): void {
     });
   }
 
+  // getDateRange(): { min: string; max: string } {
+  //   if (!this.startdate) {
+  //     return { min: '', max: '' }; 
+  //   }
+  
+  //   const start = new Date(this.startdate);
+    
+   
+  //   if (isNaN(start.getTime())) {
+  //     return { min: '', max: '' };
+  //   }
+  
+  //   const year = start.getFullYear();
+  //   const month = start.getMonth();
+  
+    
+  //   const minDate = new Date(year, month, 1).toISOString().split('T')[0];
+  
+
+  //    const maxDate = new Date(year, month + 1, 0).toISOString().split('T')[0];
+  
+  //   return { min: minDate, max: maxDate };
+  // }
+
   getDateRange(): { min: string; max: string } {
     if (!this.startdate) {
-      return { min: '', max: '' }; // Allow any date initially
+      return { min: '', max: '' }; 
     }
   
-    const start = new Date(this.startdate);
-    
-    // Ensure startdate is valid before applying restrictions
+    // Safely parse DD/MM/YYYY format
+    const [day, month, year] = this.startdate.split('/').map(Number);
+  
+    if (!day || !month || !year) {
+      return { min: '', max: '' };
+    }
+  
+    const start = new Date(year, month - 1, day);
+  
     if (isNaN(start.getTime())) {
       return { min: '', max: '' };
     }
   
-    const year = start.getFullYear();
-    const month = start.getMonth();
-  
-    // First day of the month
-    const minDate = new Date(year, month, 1).toISOString().split('T')[0];
-  
-    // Last day of the month
-     const maxDate = new Date(year, month + 1, 0).toISOString().split('T')[0];
+    const minDate = new Date(year, month - 1, 1).toISOString().split('T')[0];
+    const maxDate = new Date(year, month, 0).toISOString().split('T')[0]; 
   
     return { min: minDate, max: maxDate };
   }
+  
 
   getToday(): string {
     return new Date().toISOString().split('T')[0]
@@ -1095,7 +1145,6 @@ resetAFSContractDropdown(): void {
       console.log('Contractor Name field lost focus:', this.contractorname);
       this.loading =true;
       if (this.contractorname) { 
-          //re-bind the drop-downs
           this.fetchContractorOptions();
       }
       this.loading =false;

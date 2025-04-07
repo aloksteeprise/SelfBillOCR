@@ -149,7 +149,7 @@
           <td mat-cell *matCellDef="let row"> {{row.cLastName}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="startDate">
+        <!-- <ng-container matColumnDef="startDate">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Start Date </th>
           <td mat-cell *matCellDef="let row"> {{row.startDate}} </td>
         </ng-container>
@@ -157,7 +157,17 @@
         <ng-container matColumnDef="endDate">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> End Date </th>
           <td mat-cell *matCellDef="let row"> {{row.endDate}} </td>
+        </ng-container> -->
+
+        <ng-container matColumnDef="recieveddate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Received Date </th>
+          <td mat-cell *matCellDef="let row">
+            {{ row.createdDate | date: 'yyyy-MM-dd h:mm a ' }}
+          </td>
+          
         </ng-container>
+
+
 
         <ng-container matColumnDef="totalAmount">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Total Amount </th>
