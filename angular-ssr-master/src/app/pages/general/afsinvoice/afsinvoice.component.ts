@@ -500,25 +500,23 @@ onSkip() {
   let isValid = true;
   this.notificationService.setNotificationVisibility(false);
   
-  if (!errors.startDate && !errors.endDate) {
+  if (this.startdate && this.enddate && !errors.startDate && !errors.endDate) {
     const start = new Date(this.startdate);
     const end = new Date(this.enddate);
   
-   
     const startYear = start.getFullYear();
     const startMonth = start.getMonth();
     const endYear = end.getFullYear();
     const endMonth = end.getMonth();
   
-    
     if (startYear !== endYear || startMonth !== endMonth) {
       isValid = false;
       errors.endDate = 'Date must be within the same month and year.';
       this.loading = false;
-      return; 
+      return;
     }
   }
-
+  
 
   const formData = {
     RowId: this.id,
