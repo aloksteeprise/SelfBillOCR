@@ -66,7 +66,8 @@ export class ApiService {
   }
 
   generateInvoicePDF(invoiceID: number, isAdminorContractor: number, token: string): Observable<any> {
-    const url = environment.API_BASE_URL + 'Invoice/GenerateInvoicePDF';
+    //const url = environment.API_BASE_URL + 'Invoice/GenerateInvoicePDF';
+    const url =  'https://wfmapilive.accessfinancial.com/api/Invoice/GenerateInvoicePDF';
   
     // Construct the request body
     const body = {

@@ -300,7 +300,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
           this.loading=false;
           if(pdfPath){
             console.log("pdfPath : "+ pdfPath)
-            const fullPdfUrl = `https://wfmapi2.accessfinancial.com/${pdfPath.replace(/\\/g, '/')}`;
+            const fullPdfUrl = `https://wfmapilive.accessfinancial.com/${pdfPath.replace(/\\/g, '/')}`;            
             window.open(fullPdfUrl, '_blank');
           }
           else{
