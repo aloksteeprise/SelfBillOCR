@@ -143,6 +143,7 @@ export class AfsinvoiceComponent implements OnInit {
 
     const apiUrl = environment.API_BASE_URL+'OCRAI/GetContractorContractListByConName';
     // Sending request to API
+    /*
     let searchFullName="";
     if(this.gridCtcCode >0){
       searchFullName = this.firstnamefor + ' ' + this.lastnamefor;
@@ -150,7 +151,11 @@ export class AfsinvoiceComponent implements OnInit {
     else{
       searchFullName= this.contractorname ;
     }
-    
+    */
+
+    //at 07 Apr 2025
+    let searchFullName=this.contractorname ;
+
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.token}`,
       'Content-Type': 'application/json',
@@ -169,6 +174,7 @@ export class AfsinvoiceComponent implements OnInit {
           
           // Store the entire contractsList in localStorage
           localStorage.setItem('contractsList', JSON.stringify(response.data.contractsList));
+
           this.contractorOptions = response.data.contractsList.map((item: any) => ({
             id: item.ctcCode, // Use ctcCode as ID
             conCode:item.conCode,
@@ -189,6 +195,9 @@ export class AfsinvoiceComponent implements OnInit {
                 (option) => option.conCode.length >0
               );
             }
+
+            console.log("this.selectedContract");
+            console.log(this.selectedContract);
             
           if(this.selectedContract && this.selectedContract.conCode){
              this.conCode =this.selectedContract.conCode;
@@ -223,7 +232,8 @@ export class AfsinvoiceComponent implements OnInit {
    //alert( this.IsContractIsActiveOrNot);
     if (this.selectedContract) {
       this.errors.selectedContract = undefined;
-  
+      //Once change contract , reset the value
+      this.conCode = this.selectedContract.conCode;  
     }
 
 
@@ -256,7 +266,7 @@ this.http.post<any>(apiUrl,body, { headers}).subscribe(
      let contractsListItems =response?.data?.contractsList;
      console.log('this.selectedContract');
      console.log(this.selectedContract);
-       if (contractsListItems && this.selectedContract) {
+       if (contractsListItems.length>0 && this.selectedContract) {
         // Filter and map contracts
         //this.IsContractIsActiveOrNot="";
         this.filteredContractOptions = contractsListItems
