@@ -34,8 +34,15 @@
                   
                   <mat-select [(ngModel)]="invoiceDropdown" (selectionChange)="onInvoiceChange($event)">
                     <mat-option disabled class="header-option">
-                      <strong>InvoiceRef | InvhDate | Due | LeftPending | ConFullName</strong>
+                      <div class="dropdown-header">
+                        <div>InvoiceRef &nbsp;&nbsp;&nbsp;&nbsp;| InvhDate &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Due   
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          | LeftPending | ConFullName</div>
+                      </div>
                     </mat-option>
+                    <!-- <mat-option disabled class="header-option">
+                      <strong>InvoiceRef | InvhDate | Due | LeftPending | ConFullName</strong>
+                    </mat-option> -->
                     <mat-option *ngFor="let invoice of invoicearr" [value]="invoice.invhCode">
                       {{ invoice.invoiceRef }}
                     </mat-option>
@@ -54,7 +61,7 @@
             </div>
 
             <!-- Multi Select Invoices -->
-            <div class="col-sm-3 col-md-2 d-flex flex-column" style="margin-left: 95px;">
+            <!-- <div class="col-sm-3 col-md-2 d-flex flex-column" style="margin-left: 95px;">
               <div class="position-relative w-100">
                 <mat-form-field appearance="outline" class="w-100">
                   <mat-label>Multi Select Invoices</mat-label>
@@ -71,8 +78,35 @@
                    style="right: 15px; top: 50%; transform: translateY(-50%); font-size: 14px; pointer-events: none;"></i>
               </div>
               
-            </div>
-
+            </div> -->
+            <div class="col-sm-3 col-md-2 d-flex flex-column" style="margin-left: 95px;">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Multi Select Invoices</mat-label>
+                <mat-select multiple [(ngModel)]="selectedInvoices" disableRipple>
+                  
+                  <!-- Header -->
+                  <mat-option disabled class="header-option">
+                    <div class="dropdown-header">
+                      <div>Invoice Code</div>
+                      <div>Invoice Ref</div>
+                      <div>Currency</div>
+                    </div>
+                  </mat-option>
+              
+                  <!-- Rows -->
+                  <mat-option *ngFor="let invoice of invoicearr" [value]="invoice">
+                    <div class="dropdown-row">
+                      <div class="col">{{ invoice.invhCode }}</div>
+                      <div class="col invoice-ref">
+                        <!-- {{ invoice.invoiceRef.split('|')[0] }}<br /> -->
+                        {{ invoice.invoiceRef.split('|').slice(0).join('|') }}
+                      </div>
+                      <div class="col">{{ invoice.ctcCurrenCy }}</div>
+                    </div>
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>              
+          </div>
             <!-- Multi Select Buttons -->
             <div class="col-sm-3 d-flex justify-content-start">
               <button class="btn btn-primary btn-lg" [disabled]="!selectedAgencyDesc" (click)="multiAllocationSummary()"

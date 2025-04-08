@@ -106,6 +106,29 @@
   height: 26px;
 }
 
+::ng-deep .mat-mdc-option .mdc-list-item__primary-text {
+  white-space: normal;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  font-family: inherit;
+  text-decoration: inherit;
+  text-transform: inherit;
+  margin-right: auto;
+  opacity: 1 !important;
+}
+
+::ng-deep .mat-mdc-select-panel .mat-mdc-option.header-option .mat-mdc-option-pseudo-checkbox {
+  display: none !important;
+}
+
+::ng-deep .mat-mdc-option.mat-mdc-option-active.mdc-list-item {
+  outline: 0;
+  background-color: rgb(225 225 225);
+}
+
+
 .form-select {
   padding: 3px 28px 3px 3px;
   font-size: 14px;
@@ -249,3 +272,36 @@
   border-radius: 2;
   outline: 0;
 }
+
+.dropdown-header, .dropdown-row {
+  display: grid;
+  grid-template-columns: 1fr 5fr 1fr;
+  gap: 31px;
+  align-items: center;
+  font-size: 13px;
+  padding: 4px 6px;
+  border: 1px solid #ccc;
+  border-collapse: collapse;
+}
+
+.dropdown-header {
+  font-weight: bold;
+  border: 1px solid #ccc;
+  padding: 6px 8px;
+  background-color: #fff;
+}
+
+.dropdown-row {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border: 1px solid #ccc;
+  background-color: #fff;
+}
+
+.invoice-ref {
+  white-space: normal;
+  line-height: 1.3;
+  width: 270px;
+}
+
