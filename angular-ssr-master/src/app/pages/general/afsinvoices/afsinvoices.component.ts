@@ -291,23 +291,36 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
 
   onDownloadInvoice(row: any) {
     const invoiceID = row.afsInvoiceStatus;
-    const isAdminorContractor = 0;
-  this.loading=true;
+    const isAdminorContractor = 1; //for UAT admin
+    this.loading=true;
+    //debugger;
     this.apiService.generateInvoicePDF(invoiceID, isAdminorContractor,this.token).subscribe(
       (response: any) => {
         if (response.succeeded) {
           const pdfPath = response.messages[0];  
           this.loading=false;
+          //debugger;
           if(pdfPath){
             console.log("pdfPath : "+ pdfPath)
-            const fullPdfUrl = `https://wfmapilive.accessfinancial.com/${pdfPath.replace(/\\/g, '/')}`;            
-            window.open(fullPdfUrl, '_blank');
+            const fullPdfUrl = environment.API_UAT_Invoice_URL + `${pdfPath.replace(/\\/g, '/')}`;            
+            //window.open(fullPdfUrl, '_blank'); //old logic
+
+            //New logic to open PDF files
+            const link = document.createElement('a');
+            link.setAttribute('target', '_blank');
+            link.setAttribute('href', fullPdfUrl);
+            document.body.appendChild;
+            link.click();
+            link.remove();
+
           }
           else{
             //alert('Failed to generate the invoice.');
             this.loading=false;
           }
-        } else {
+
+        } 
+        else {
           alert('We are unable to display the invoice file. Please contact the system administrator.');
           this.loading=false;
         }

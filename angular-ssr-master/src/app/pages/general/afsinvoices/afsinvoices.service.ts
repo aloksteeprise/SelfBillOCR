@@ -66,18 +66,18 @@ export class ApiService {
   }
 
   generateInvoicePDF(invoiceID: number, isAdminorContractor: number, token: string): Observable<any> {
-    //const url = environment.API_BASE_URL + 'Invoice/GenerateInvoicePDF';
-    const url =  'https://wfmapilive.accessfinancial.com/api/Invoice/GenerateInvoicePDF';
-  
+    const url = environment.API_UAT_Invoice_URL + 'api/Invoice/GenerateInvoicePDF';
+    //const url = environment.API_Live_Invoice_URL + 'api/Invoice/GenerateInvoicePDF';
+
     // Construct the request body
     const body = {
-      invoiceID,
-      isAdminorContractor,
+      "invoiceID": invoiceID,
+      "isAdminorContractor":isAdminorContractor,
     };
 
     const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
+      //Authorization: `Bearer ${token}`, //for UAT not accepting the Bearer token
+      'Content-Type': 'application/json'
     });
   
     // Return the API response
