@@ -76,7 +76,7 @@ export class ApiService {
     };
 
     const headers = new HttpHeaders({
-      //Authorization: `Bearer ${token}`, //for UAT not accepting the Bearer token
+      //Authorization: `Bearer ${token}`, //for UAT not accepting the Bearer token but live have
       'Content-Type': 'application/json'
     });
   

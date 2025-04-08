@@ -305,7 +305,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
             const fullPdfUrl = environment.API_UAT_Invoice_URL + `${pdfPath.replace(/\\/g, '/')}`;            
             //window.open(fullPdfUrl, '_blank'); //old logic
 
-            //New logic to open PDF files
+            //New logic to open PDF file
             const link = document.createElement('a');
             link.setAttribute('target', '_blank');
             link.setAttribute('href', fullPdfUrl);
