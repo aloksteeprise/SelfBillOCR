@@ -35,7 +35,7 @@
 
 
 ::ng-deep .cdk-overlay-pane {
-  width: 500px !important; 
+  width: 600px !important; 
 }
 
 
@@ -67,9 +67,21 @@
   font-weight: var(--mat-form-field-container-text-weight, var(--mat-app-body-large-weight));
 }
 
+::ng-deep .custom-multi-select .mdc-notched-outline {
+  display: flex;
+  position: absolute;
+  left: 0;
+  box-sizing: border-box;
+  width: 135%;
+  max-width: 135%;
+  margin-top: 8px;
+  height: 70%;
+  text-align: left;
+  pointer-events: none;
+  }
+
 ::ng-deep .mdc-notched-outline {
-  display: flex
-;
+  display: flex;
   position: absolute;
   /* top: 0; */
   /* right: 0; */
@@ -275,8 +287,8 @@
 
 .dropdown-header, .dropdown-row {
   display: grid;
-  grid-template-columns: 1fr 5fr 1fr;
-  gap: 31px;
+  grid-template-columns: 1fr 5fr 1fr 2fr;
+  gap: 15px;
   align-items: center;
   font-size: 13px;
   padding: 4px 6px;

@@ -79,10 +79,10 @@
               </div>
               
             </div> -->
-            <div class="col-sm-3 col-md-2 d-flex flex-column" style="margin-left: 95px;">
-              <mat-form-field appearance="outline" class="w-100">
+            <div class="col-sm-3 col-md-3 d-flex">
+              <mat-form-field appearance="outline" class="w-auto custom-multi-select">
                 <mat-label>Multi Select Invoices</mat-label>
-                <mat-select multiple [(ngModel)]="selectedInvoices" disableRipple>
+                <mat-select multiple [(ngModel)]="selectedInvoices" disableRipple style="width: 135%;">
                   
                   <!-- Header -->
                   <mat-option disabled class="header-option">
@@ -90,6 +90,7 @@
                       <div>Invoice Code</div>
                       <div>Invoice Ref</div>
                       <div>Currency</div>
+                      <div>Invoice Date</div>
                     </div>
                   </mat-option>
               
@@ -102,10 +103,13 @@
                         {{ invoice.invoiceRef.split('|').slice(0).join('|') }}
                       </div>
                       <div class="col">{{ invoice.ctcCurrenCy }}</div>
+                      <div class="col">{{ invoice.invoiceRef.split('|')[1]?.trim() }}</div>
                     </div>
                   </mat-option>
                 </mat-select>
-              </mat-form-field>              
+              </mat-form-field>  
+              <!-- <i class="bi bi-caret-down-fill position-absolute"
+              style="right: 386px; top: 7%; transform: translateY(-50%); font-size: 14px; pointer-events: none;"></i>             -->
           </div>
             <!-- Multi Select Buttons -->
             <div class="col-sm-3 d-flex justify-content-start">
