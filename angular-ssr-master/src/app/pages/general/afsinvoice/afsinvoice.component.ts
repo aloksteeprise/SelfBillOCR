@@ -641,6 +641,12 @@ onSubmit(form: any): void {
     isValid = false;
   }
 
+  if (!this.totalAmount || this.totalAmount.trim() === '' || this.totalAmount === "0") {
+    errors.totalAmount = 'Total Amount is required.';
+    isValid = false;
+  }
+
+
   // if (!this.startdate || this.startdate.trim() === '') {
   //   errors.startDate = 'Start Date is required.';
   //   isValid = false;
