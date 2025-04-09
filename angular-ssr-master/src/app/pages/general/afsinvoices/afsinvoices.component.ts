@@ -66,7 +66,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   hideCheckBoxes: boolean = true; // Default: Show checkboxes
   isMovedInOriginaldb : boolean = true;
   IsCompleteRecord:boolean =false;
-
+  btnText : string = 'Validate';
   constructor(private apiService: ApiService, private dialog: MatDialog,  public notificationService: NotificationPopupService,private http: HttpClient,private breakpointObserver: BreakpointObserver ) { }
 
   ngOnInit() {
@@ -150,6 +150,9 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
             this.isMovedInOriginaldb = this.allRecords[0].isMovedInOriginaldb;
         } else {
             this.isMovedInOriginaldb = false;  
+        }
+        if(this.isMovedInOriginaldb){
+          this.btnText = 'Validated';
         }
           this.loading = false; 
         },
@@ -268,6 +271,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     this.selectedRecords = []
     this.hideCheckBoxes = true;
     this.IsCompleteRecord= false;
+    this.btnText = 'Validate';
     const startDateInput = document.getElementById('startdate') as HTMLInputElement;
     const endDateInput = document.getElementById('enddate') as HTMLInputElement;
 
@@ -296,6 +300,7 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     //debugger;
     this.apiService.generateInvoicePDF(invoiceID, isAdminorContractor,this.token).subscribe(
       (response: any) => {
+        debugger;
         if (response.succeeded) {
           const pdfPath = response.messages[0];  
           this.loading=false;

@@ -54,6 +54,7 @@ export class AfsinvoiceComponent implements OnInit {
   currencytype :string='';
   token: string = '';
   contract_CtcCode:string='';
+  isRecordValidated:boolean=false;
 
 
   constructor(
@@ -134,13 +135,15 @@ export class AfsinvoiceComponent implements OnInit {
       this.groupNewId = this.data.grouP_NEWID || '';
       this.gridCtcCode = this.data.contract_CtcCode || 0;
        this.contract_CtcCode = this.data.contract_CtcCode || '';
+       this.isRecordValidated = this.data.isRecordValidated || '';
 
       console.log(this.ctcCode);
     }
   }
 
   fetchContractorOptions(): void {
-    
+    debugger
+
     //const apiUrl = 'https://localhost:44337/api/OCRAI/GetContractorContractListByConName'; // Replace with your API URL
 
     const apiUrl = environment.API_BASE_URL+'OCRAI/GetContractorContractListByConName';
@@ -156,7 +159,8 @@ export class AfsinvoiceComponent implements OnInit {
     */
 
     //at 07 Apr 2025
-    let searchFullName=this.contractorname ;
+   let searchFullName = this.contractorname
+
 
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.token}`,
@@ -166,8 +170,11 @@ export class AfsinvoiceComponent implements OnInit {
     const body = {
       firstNameForAFS: this.firstnamefor,
       lastNameForAFS: this.lastnamefor,
-      fullName: searchFullName,
+      fullName: searchFullName.replace(/\n/g, ''),
     };
+
+    console.log(body,"let see the full name")
+    debugger
 
     this.http.post<any>(apiUrl,body, {headers }).subscribe(
       (response) => {
