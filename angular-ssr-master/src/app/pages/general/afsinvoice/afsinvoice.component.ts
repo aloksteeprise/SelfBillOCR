@@ -741,7 +741,10 @@ onSubmit(form: any): void {
       StartDate: this.startdate,
       EndDate: this.enddate,
       GroupNewId: this.groupNewId,
-      IsSkip:false
+      IsSkip:false,
+      totalAmount : this.totalAmount,
+      invoiceNo : this.invoiceNumber,
+      invoiceDate : this.invoiceDate,
     };
 
     this.loading =true
