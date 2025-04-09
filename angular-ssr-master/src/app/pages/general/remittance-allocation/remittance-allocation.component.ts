@@ -1279,20 +1279,32 @@ export class RemittanceAllocationComponent implements OnInit {
     const totalAmount = parseFloat(this.txtTotalAmount) || 0;
     const allocatedConfirmedAmount = this.txtAllocatedConfirmedAmount || 0;
     const amountAvailable = this.txtAmountAvailable || 0;
-
-    if (confirm("The accounting scheme will be created. Select OK to update, Cancel to edit your allocation lines")) {
-      if (totalAmount !== 0.00 && allocatedConfirmedAmount === amountAvailable) {
-        alert("The total allocated is different from the amount received. This update cannot be accepted.");
-        this.btnSubmitAllocVisible = true;
-        return false;
-      } else {
-        this.btnSubmitAllocVisible = false;
-        return true;
+    
+    this.popupComponent.openPopup(
+      'Confirmation',
+      'The accounting scheme will be created. Select Yes to update, No to edit your allocation lines',
+      'Confirmation',
+      () => {
+        if (totalAmount !== 0.00 && allocatedConfirmedAmount === amountAvailable) {
+          this.notificationService.showNotification(
+            'The total allocated is different from the amount received. This update cannot be accepted.',
+            'INFO',
+            'info',
+            () => {
+              this.notificationService.setNotificationVisibility(false);
+            }
+          );
+          this.btnSubmitAllocVisible = true;
+          return false;
+        } else {
+          this.btnSubmitAllocVisible = false;
+          return true;
+        }
       }
-    } else {
-      this.btnSubmitAllocVisible = true;
-      return false;
-    }
+      
+    );
+    this.btnSubmitAllocVisible = true;
+    return false;
   }
 
 }

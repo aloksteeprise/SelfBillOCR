@@ -534,6 +534,8 @@ onSkip() {
     totalAmount : this.totalAmount,
     invoiceNo : this.invoiceNumber,
     invoiceDate : this.invoiceDate,
+    CtcCode: this.contract_CtcCode,
+    CtcContractor:this.conCode,
     GroupNewId: this.groupNewId,
     IsSkip: true,
   };
