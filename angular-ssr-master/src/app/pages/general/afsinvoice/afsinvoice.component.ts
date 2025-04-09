@@ -640,11 +640,20 @@ onSubmit(form: any): void {
     errors.lastName = 'Last Name is required.';
     isValid = false;
   }
-
-  if (!this.totalAmount || this.totalAmount.trim() === '' || this.totalAmount === "0") {
-    errors.totalAmount = 'Total Amount is required.';
+  if (
+    !this.totalAmount ||
+    this.totalAmount.trim() == '' ||
+    Number(this.totalAmount) == 0
+  ) {
+    errors.totalAmount = 'Total Amount should be greater than 0.';
     isValid = false;
   }
+  
+  
+  // if (!this.totalAmount || this.totalAmount.trim() === '' || this.totalAmount === "0") {
+  //   errors.totalAmount = 'Total Amount is required.';
+  //   isValid = false;
+  // }
 
 
   // if (!this.startdate || this.startdate.trim() === '') {
