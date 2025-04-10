@@ -520,6 +520,18 @@ onSkip() {
       isValid = false;
       errors.endDate = 'Date must be within the same month and year.';
       this.loading = false;
+    }
+
+    if (
+      !this.totalAmount ||
+      this.totalAmount.trim() == '' ||
+      Number(this.totalAmount) == 0
+    ) {
+      errors.totalAmount = 'Total Amount should be greater than 0.';
+      isValid = false;
+    }
+
+    if(!isValid){
       return;
     }
   }
