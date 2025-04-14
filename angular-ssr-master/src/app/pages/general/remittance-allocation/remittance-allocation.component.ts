@@ -340,7 +340,6 @@ export class RemittanceAllocationComponent implements OnInit {
       this.showAllocation = true;
       const selectedAllocationType = "Invoice";
 
-
       this.selectedInvoices.forEach(selectedInvoice => {
         if (selectedInvoice) {
           const parts: string[] = selectedInvoice.invoiceRef.split('|').map((p: string) => p.trim());
@@ -357,7 +356,10 @@ export class RemittanceAllocationComponent implements OnInit {
               `Invoice ${invoiceItem} has already been added.`,
               'INFO',
               'info',
-              () => {}
+              () => {
+                this.notificationService.setNotificationVisibility(false);
+                return;
+              }
             );
             return;
           }
@@ -430,53 +432,98 @@ export class RemittanceAllocationComponent implements OnInit {
   addAllocation() {
     
     if (!this.allocationType) {
-      return this.notificationService.showNotification("Please select Allocation Type.", "INFO", "info");
+      return this.notificationService.showNotification("Please select Allocation Type.", "INFO", "info",() => {
+        this.notificationService.setNotificationVisibility(false);
+        return;
+      });
     }
 
     if (this.allocationType === "INV" && !this.invoice) {
-      return this.notificationService.showNotification("Please select an Item.", "INFO", "info");
+      return this.notificationService.showNotification("Please select an Item.", "INFO", "info",() => {
+        this.notificationService.setNotificationVisibility(false);
+        return;
+      });
     }
     if (this.allocationType === "ICT" && !this.interCoCompany) {
-      return this.notificationService.showNotification("Please select InterCo Account.", "INFO", "info");
+      return this.notificationService.showNotification("Please select InterCo Account.", "INFO", "info",() => {
+        this.notificationService.setNotificationVisibility(false);
+        return;
+      });
     }
     if (this.allocationType === "ICT" && !this.interCoBank) {
-      return this.notificationService.showNotification("Please select Bank.", "INFO", "info");
+      return this.notificationService.showNotification("Please select Bank.", "INFO", "info",() => {
+        this.notificationService.setNotificationVisibility(false);
+        return;
+      });
     }
     if (!this.amountAllocate) {
-      return this.notificationService.showNotification("Please enter Amount To Allocate.", "INFO", "info");
+      return this.notificationService.showNotification("Please enter Amount To Allocate.", "INFO", "info",() => {
+        this.notificationService.setNotificationVisibility(false);
+        return;
+      });
     }
   
     if (this.isNegative(this.amountAllocate)) {
-      return this.notificationService.showNotification("Amount to Allocate should not be negative.", "INFO", "info");
+      return this.notificationService.showNotification("Amount to Allocate should not be negative.", "INFO", "info",() => {
+        this.notificationService.setNotificationVisibility(false);
+        return;
+      });
     }
     if (this.isNegative(this.allocationData.invhTotAgencyFee)) {
-      return this.notificationService.showNotification("Agency Commission should not be negative.", "INFO", "info");
+      return this.notificationService.showNotification("Agency Commission should not be negative.", "INFO", "info",() => {
+        this.notificationService.setNotificationVisibility(false);
+        return;
+      });
     }
     if (this.isNegative(this.allocationData.invhTotOurfee)) {
-      return this.notificationService.showNotification("Our Fee should not be negative.", "INFO", "info");
+      return this.notificationService.showNotification("Our Fee should not be negative.", "INFO", "info",() => {
+        this.notificationService.setNotificationVisibility(false);
+        return;
+      });
     }
     if (this.isNegative(this.allocationData.invhTotSal)) {
-      return this.notificationService.showNotification("Contractor Due should not be negative.", "INFO", "info");
+      return this.notificationService.showNotification("Contractor Due should not be negative.", "INFO", "info",() => {
+        this.notificationService.setNotificationVisibility(false);
+        return;
+      });
     }
     if (this.isNegative(this.allocationData.invhVATI)) {
-      return this.notificationService.showNotification("VAT should not be negative.", "INFO", "info");
+      return this.notificationService.showNotification("VAT should not be negative.", "INFO", "info",() => {
+        this.notificationService.setNotificationVisibility(false);
+        return;
+      });
     }
     if (this.isNegative(this.bankChargesContractor)) {
-      return this.notificationService.showNotification("Bank Charges Contractor should not be negative.", "INFO", "info");
+      return this.notificationService.showNotification("Bank Charges Contractor should not be negative.", "INFO", "info",() => {
+        this.notificationService.setNotificationVisibility(false);
+        return;
+      });
     }
     if (this.isNegative(this.bankChargesAf)) {
-      return this.notificationService.showNotification("Bank Charges SMTG should not be negative.", "INFO", "info");
+      return this.notificationService.showNotification("Bank Charges SMTG should not be negative.", "INFO", "info",() => {
+        this.notificationService.setNotificationVisibility(false);
+        return;
+      });
     }
     if (this.isNegative(this.taxWithHeld)) {
-      return this.notificationService.showNotification("Tax Withheld should not be negative.", "INFO", "info");
+      return this.notificationService.showNotification("Tax Withheld should not be negative.", "INFO", "info",() => {
+        this.notificationService.setNotificationVisibility(false);
+        return;
+      });
     }
     if (this.isNegative(this.pendingLeftDue)) {
-      return this.notificationService.showNotification("Pending Left Due should not be negative.", "INFO", "info");
+      return this.notificationService.showNotification("Pending Left Due should not be negative.", "INFO", "info",() => {
+        this.notificationService.setNotificationVisibility(false);
+        return;
+      });
     }
   
     if (this.factoring && this.allocationType === "INV" && this.invoice) {
       if (!this.factoring) {
-        return this.notificationService.showNotification("Please select Factoring option.", "INFO", "info");
+        return this.notificationService.showNotification("Please select Factoring option.", "INFO", "info",() => {
+          this.notificationService.setNotificationVisibility(false);
+          return;
+        });
       }
       
       const totalFactoringAmount =
@@ -490,7 +537,10 @@ export class RemittanceAllocationComponent implements OnInit {
         return this.notificationService.showNotification(
           "You have selected 'Factoring' option but the invoice payment is a full payment of invoice. So please select 'Factoring Last' option.",
           "INFO",
-          "info"
+          "info",() => {
+            this.notificationService.setNotificationVisibility(false);
+            return;
+          }
         );
       }
     }
@@ -499,7 +549,11 @@ export class RemittanceAllocationComponent implements OnInit {
       return this.notificationService.showNotification(
         `You are trying to allocate more than the maximum left on this invoice (${this.dueByAgency}). Allocate less or remove bank charges.`,
         "INFO",
-        "info"
+        "info",
+        () => {
+          this.notificationService.setNotificationVisibility(false);
+          return;
+        }
       );
     }
     if (!this.validateCharges()) return;
@@ -524,7 +578,10 @@ export class RemittanceAllocationComponent implements OnInit {
       }
   
       if (isDuplicate && this.btnText == "Add") {
-        this.notificationService.showNotification(`Invoice ${parts[0]} has already been added.`, "INFO", "info");
+        this.notificationService.showNotification(`Invoice ${parts[0]} has already been added.`, "INFO", "info",() => {
+          this.notificationService.setNotificationVisibility(false);
+          return;
+        });
         return;
       }
     }
@@ -720,8 +777,10 @@ export class RemittanceAllocationComponent implements OnInit {
           this.notificationService.showNotification(
             `You are trying to allocate more than the maximum left on this invoice (${dueByAmt}). Allocate less or remove bank charges.`,
             'ERROR',  // Title
-            'error',  // Notification type
-            () => {}   // Callback function (if any action is needed)
+            'error',() => {
+              this.notificationService.setNotificationVisibility(false);
+              return;
+            }  // Callback function (if any action is needed)
           );
           return false;
         }
@@ -819,6 +878,7 @@ export class RemittanceAllocationComponent implements OnInit {
               'info',
               () => {
                 this.amountAllocate = "0";
+                this.notificationService.setNotificationVisibility(false);
               }
             );
             return false;
@@ -897,7 +957,11 @@ export class RemittanceAllocationComponent implements OnInit {
                 this.notificationService.showNotification(
                   'Tax withheld should not be negative.',
                   'INFO',
-                  'info'
+                  'info',
+                  () => {
+                    this.notificationService.setNotificationVisibility(false);
+                    return;
+                  }
                 );
                 this.taxWithHeld = 0;
                 return false;
@@ -912,7 +976,11 @@ export class RemittanceAllocationComponent implements OnInit {
                 this.notificationService.showNotification(
                   'Bank Charges SMTG should not be negative.',
                   'INFO',
-                  'info'
+                  'info',
+                  () => {
+                    this.notificationService.setNotificationVisibility(false);
+                    return;
+                  }
                 );
                 this.bankChargesAf = 0;
                 return false;
@@ -927,7 +995,11 @@ export class RemittanceAllocationComponent implements OnInit {
                 this.notificationService.showNotification(
                   'Bank Charges Contractor should not be negative.',
                   'INFO',
-                  'info'
+                  'info',
+                  () => {
+                    this.notificationService.setNotificationVisibility(false);
+                    return;
+                  }
                 );
                 this.bankChargesContractor = 0;
                 return false;
@@ -942,7 +1014,11 @@ export class RemittanceAllocationComponent implements OnInit {
                 this.notificationService.showNotification(
                   'Factoring should not be negative.',
                   'INFO',
-                  'info'
+                  'info',
+                  () => {
+                    this.notificationService.setNotificationVisibility(false);
+                    return;
+                  }
                 );
                 this.factoring = 0;
                 return false;
@@ -957,7 +1033,11 @@ export class RemittanceAllocationComponent implements OnInit {
                 this.notificationService.showNotification(
                   'invhTotAgencyFee should not be negative.',
                   'INFO',
-                  'info'
+                  'info',
+                  () => {
+                    this.notificationService.setNotificationVisibility(false);
+                    return;
+                  }
                 );
                 this.allocationData.invhTotAgencyFee = 0;
                 return false;
@@ -973,7 +1053,11 @@ export class RemittanceAllocationComponent implements OnInit {
                 this.notificationService.showNotification(
                   'allocationData.invhVATI should not be negative.',
                   'INFO',
-                  'info'
+                  'info',
+                  () => {
+                    this.notificationService.setNotificationVisibility(false);
+                    return;
+                  }
                 );
                 this.allocationData.invhVATI = 0;
                 return false;
@@ -989,7 +1073,11 @@ export class RemittanceAllocationComponent implements OnInit {
                 this.notificationService.showNotification(
                   'allocationData invhTotOurfee should not be negative.',
                   'INFO',
-                  'info'
+                  'info',
+                  () => {
+                    this.notificationService.setNotificationVisibility(false);
+                    return;
+                  }
                 );
                 this.allocationData.invhTotOurfee = 0;
                 return false;
@@ -1004,7 +1092,11 @@ export class RemittanceAllocationComponent implements OnInit {
                 this.notificationService.showNotification(
                   'allocationData invhTotSal should not be negative.',
                   'INFO',
-                  'info'
+                  'info',
+                  () => {
+                    this.notificationService.setNotificationVisibility(false);
+                    return;
+                  }
                 );
                 this.allocationData.invhTotSal = 0;
                 return false;
@@ -1019,7 +1111,11 @@ export class RemittanceAllocationComponent implements OnInit {
                 this.notificationService.showNotification(
                   'Pending Left Due should not be negative.',
                   'INFO',
-                  'info'
+                  'info',
+                  () => {
+                    this.notificationService.setNotificationVisibility(false);
+                    return;
+                  }
                 );
                 this.pendingLeftDue = 0;
                 return false;

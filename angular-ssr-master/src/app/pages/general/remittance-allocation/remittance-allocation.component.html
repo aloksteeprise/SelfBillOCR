@@ -6,17 +6,17 @@
       <app-notification-popup style="position: absolute; top: 0; left: 0;"
         *ngIf="(notificationService.notificationVisibility$ | async)"></app-notification-popup>
       <div class="modal-body">
-        <div class="container-fluid row" style="background-color: #e1e8ee; padding-bottom: 6px;">      
-          <div class="row align-items-center text-black g-3 d-flex" style="margin-top: -1px;">
+        <div class="container-fluid row" style="background-color: #8ac4dbc7;">      
+          <div class="row text-black g-3 d-flex" style="margin-top: -6px;">
             <!-- Agency Field -->
             <div class="col-sm-3 col-md-2 d-flex flex-column">
-              <!-- <mat-label>Agency:</mat-label> -->
+              <label style="padding-bottom: 9px;">Agency:</label>
               <div class="position-relative">
-                <input type="text" placeholder="Select Agency" [formControl]="agencyControl" (click)="onInputClick()"
+                <input type="text" placeholder="Search Agency" [formControl]="agencyControl" (click)="onInputClick()"
                   [matAutocomplete]="auto" class="form-control example-input" [value]="selectedAgencyDesc"
-                  #autoTrigger="matAutocompleteTrigger" style="height: 39px; border: 1px solid; border-radius: 4px; border-color: #7f7575; background-color: #e1e8ee;">
+                  #autoTrigger="matAutocompleteTrigger" style="height: 39px; border: 1px solid; border-radius: 5px; background-color: #77b0c600;">
                 <i class="bi bi-caret-down-fill position-absolute"
-                  style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"
+                  style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: small; color: #5a5f6a;"
                   (click)="autoTrigger.openPanel()"></i>
               </div>
               <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)" >
@@ -28,34 +28,40 @@
 
             <!-- Invoice Dropdown -->
             <div class="col-sm-3 col-md-2 d-flex flex-column">
-              <div class="position-relative w-100">
+              <div class="position-relative">
+                <label>Invoice No:</label>
                 <mat-form-field appearance="outline" class="w-100">
-                  <mat-label>Invoice No</mat-label>
+                  <!-- <mat-label>Invoice No</mat-label> -->
                   
                   <mat-select [(ngModel)]="invoiceDropdown" (selectionChange)="onInvoiceChange($event)">
                     <mat-option disabled class="header-option">
                       <div class="dropdown-header">
-                        <div>InvoiceRef &nbsp;&nbsp;&nbsp;&nbsp;| InvhDate &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Due   
-                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                          | LeftPending | ConFullName</div>
+                        <div>InvoiceRef &nbsp;| &nbsp;InvhDate &nbsp;&nbsp;&nbsp; |&nbsp; Due   
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          |&nbsp; LeftPending &nbsp;|&nbsp; ConFullName</div>
                       </div>
                     </mat-option>
                     <!-- <mat-option disabled class="header-option">
                       <strong>InvoiceRef | InvhDate | Due | LeftPending | ConFullName</strong>
                     </mat-option> -->
-                    <mat-option *ngFor="let invoice of invoicearr" [value]="invoice.invhCode">
+                    <!-- <mat-option *ngFor="let invoice of invoicearr" [value]="invoice.invhCode">
                       {{ invoice.invoiceRef }}
-                    </mat-option>
+                    </mat-option> -->
+                  <mat-option *ngFor="let invoice of invoicearr" [value]="invoice.invhCode">
+                    <div class="dropdown-row">
+                      <div class="col">{{ invoice.invoiceRef }}</div>
+                    </div>
+                  </mat-option>
                   </mat-select>
                 </mat-form-field>
-                <i class="bi bi-caret-down-fill position-absolute"
-                   style="right: 15px; top: 50%; transform: translateY(-50%); font-size: 14px; pointer-events: none;"></i>
+                <!-- <i class="bi bi-caret-down-fill position-absolute"
+                   style="right: 15px; top: 50%; transform: translateY(-50%); font-size: 14px; pointer-events: none;"></i> -->
               </div>
               
             </div>
 
             <!-- Allocation Button -->
-            <div class="col-sm-3 col-md-2 d-flex justify-content-center align-items-start">
+            <div class="col-sm-3 col-md-2 d-flex justify-content-center align-items-center">
               <button class="btn btn-primary btn-lg w-100" (click)="toggleAllocation()" [disabled]="!selectedAgencyDesc"
                 style="font-size: 16px; border-radius: 5px;" >Allocation</button>
             </div>
@@ -80,9 +86,11 @@
               
             </div> -->
             <div class="col-sm-3 col-md-3 d-flex">
+              <div class="position-relative">
+              <label>Multi Select Invoices:</label>
               <mat-form-field appearance="outline" class="w-auto custom-multi-select">
-                <mat-label>Multi Select Invoices</mat-label>
-                <mat-select multiple [(ngModel)]="selectedInvoices" disableRipple style="width: 135%;">
+                <!-- <mat-label>Multi Select Invoices</mat-label> -->
+                <mat-select multiple [(ngModel)]="selectedInvoices" disableRipple style="width: 141%;">
                   
                   <!-- Header -->
                   <mat-option disabled class="header-option">
@@ -107,12 +115,13 @@
                     </div>
                   </mat-option>
                 </mat-select>
-              </mat-form-field>  
+              </mat-form-field> 
+            </div> 
               <!-- <i class="bi bi-caret-down-fill position-absolute"
               style="right: 386px; top: 7%; transform: translateY(-50%); font-size: 14px; pointer-events: none;"></i>             -->
           </div>
             <!-- Multi Select Buttons -->
-            <div class="col-sm-3 d-flex justify-content-start">
+            <div class="col-sm-3 d-flex justify-content-start align-items-center">
               <button class="btn btn-primary btn-lg" [disabled]="!selectedAgencyDesc" (click)="multiAllocationSummary()"
                 style="font-size: 15px; height: 42px; margin-top: -2px; border-radius: 5px; ">Multi Select of Invoices</button>
               <!-- <button type="button" class="btn-close" (click)="closeDialog()" aria-label="Close"></button> -->
@@ -122,13 +131,12 @@
         class="btn-close position-absolute" 
         (click)="closeDialog()" 
         aria-label="Close"
-        style="top: 4%; right: 25px; transform: translateY(-50%);">
-</button>
+        style="top: 40px; right: 25px; transform: translateY(-50%);"></button>
           </div>
         </div>
 
         <div *ngIf="showAllocation" class="border p-1 mt-1 bg-light">
-          <h6 class="color text-black" style="padding-left: 10px;">Allocate</h6>
+          <h6 class="color" style="padding-left: 10px;  background-color: #8ac4dbc7;">Allocate</h6>
           <div class="table-responsive">
             <table class="table table-bordered text-center custom-bottom">
               <thead class="color text-black">
@@ -217,15 +225,15 @@
                   <td>Description</td>
                   <td colspan="6"><input type="text" class="form-control" [(ngModel)]="description"></td>
                   <td colspan="6" class="text-end">
-                    <button class="btn btn-primary" id="btnAddRow" name="btnAddRow" [disabled]="isDisabled('btnAddRow')"
+                    <button class="btn btn-outline-info" id="btnAddRow" name="btnAddRow" [disabled]="isDisabled('btnAddRow')"
                       (click)="addAllocation()">{{ btnText }}</button>
-                    <button class="btn btn-warning mx-3" (click)="resetAllocation()">Reset</button>
-                    <button class="btn btn-secondary" (click)="autoSplit()">Auto split</button>
+                    <button class="btn btn-outline-warning mx-3" (click)="resetAllocation()">Reset</button>
+                    <button class="btn btn-outline-secondary" (click)="autoSplit()">Auto split</button>
                   </td>
                 </tr>
                 <tr>
-                  <td class="border text-black" style="background-color: #7f858c;" colspan="2">
-                    <strong style="font-size: 12px; color: white;">Other Currency Invoice</strong>
+                  <td class="border text-black" colspan="2">
+                    <strong >Other Currency Invoice</strong>
                   </td>
                   <td colspan="5">
                     <select id="currencyDescription" class="form-select flex-grow-1" [(ngModel)]="currencyDescription"
@@ -243,7 +251,7 @@
             </table>
           </div>
           <div class="border p-1 mt-1 bg-light">
-            <h6 class="color text-black" style="padding-left: 10px;">Allocation Summary</h6>
+            <h6 class="color" style="padding-left: 10px; background-color: #8ac4dbc7;">Allocation Summary</h6>
             <div class="table-responsive" *ngIf="showAllocationSummery">
               <table class="table table-bordered text-center">
                 <thead class="color text-black">
@@ -291,7 +299,7 @@
               </table>
             </div>
 
-            <div class="container-fluid">
+            <div class="container-fluid" style="padding-top: 10px; background-color: #d6e4f0;">
               <div class="row align-items-center text-black">
                 <div class="col d-flex align-items-center mb-0">
                   <label class=" me-2">Total available for allocation:</label>

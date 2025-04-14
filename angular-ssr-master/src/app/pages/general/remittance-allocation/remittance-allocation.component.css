@@ -55,7 +55,7 @@
 ::ng-deep .mat-mdc-form-field {
   --mat-mdc-form-field-floating-label-scale: 0.75;
   display: inline-flex;
-  flex-direction: row;
+  /* flex-direction: row; */
   min-width: 0;
   text-align: left;
   -moz-osx-font-smoothing: grayscale;
@@ -163,13 +163,20 @@
 .text-black {
   color: black;
 }
-
+.text-white{
+  color: white;
+}
 .btn-close {
 
   margin-left: 90px;
   /* margin-top: 30px; */
   border-block: revert;
 
+}
+
+
+th {
+  background-color: #d6e4f0  !important;
 }
 
 .form-controldarker{
