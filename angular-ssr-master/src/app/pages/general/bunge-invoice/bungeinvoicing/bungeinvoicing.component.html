@@ -1,203 +1,224 @@
 <div class="mat-elevation-z8 " style="margin-top: 65px; overflow-x: hidden;">
-    <div>
-      <div class="d-flex align-items-center justify-content-between">
-        <p style="font-weight: 1000; font-size: x-large; margin: 0; padding-left: 14px; ">Self Bill Invoice</p>
-  
-      </div>
-      <hr />
-      <form (ngSubmit)="SearchResults(myForm)" #myForm="ngForm" class="searchTable">
-        <div class="row g-2 ">
-          <div class=" col-6 col-sm-2 marginleft20">
-            <label class="fontweight500">Contractor Name</label>
-            <input type="text" class="form-control" id="name" name="name" placeholder="First / Last name"
-              [(ngModel)]="name" autocomplete="off" maxlength="100" />
-          </div>
-          <div class="col-6 col-sm-2 marginleft8">
-            <label class="fontweight500">Invoice No</label>
-            <input type="text" class="form-control" id="invoiceno" name="invoiceno" placeholder="Invoice No"
-              [(ngModel)]="invoiceno" maxlength="50" autocomplete="off" />
-          </div>
-          <div class="col-6 col-sm-2 marginleft8">
-            <label class="fontweight500"> Period From Date:</label>
-            <input type="date" id="startdate" class="form-control" [(ngModel)]="startdate" name="startdate"
-              min="1900-01-01" max="9999-12-31" />
-          </div>
-          <div class="col-6 col-sm-2 marginleft8">
-            <label class="fontweight500"> To Date: </label>
-            <input type="date" id="enddate" class="form-control" [(ngModel)]="enddate" name="date" min="1900-01-01" max="9999-12-31" />
-          </div>
-          <div class="col-6 col-sm-2 marginleft20 ">
-            <label class="fontweight500">CSM Team</label>
-            <select id="CsmTeam" class="form-select flex-grow-1" [(ngModel)]="CsmTeam"
-              name="CsmTeam">
-              <option value="null" disabled selected>Select CSM Team</option>
-              <option *ngFor="let team of csmTeamarr" [ngValue]="team.cmCode">
-                {{ team.cmDesc }}
-              </option>
-            </select>
-          </div>
-        </div>
-  
-        <div class="row custom-height">
-          <div class="col-6 col-sm-2  d-flex justify-content-start align-items-center  margintop25"  >
-            <!-- <input type="checkbox" name="IsSelfBill" [(ngModel)]="IsSelfBill" style="margin-left: 23px;" />
-            <label class="form-check-label fontweight500" for="flexCheckDefault"
-              style="margin-left: 10px; ">
-              Is Bunge Contracts?
-            </label> -->
-          </div>
-  
-          <div class="form-check col-6 col-sm-3 d-flex justify-content-start align-items-center  margintop25" >
-            <!-- <input type="checkbox" name="IsValidatedRecord" [(ngModel)]="IsValidatedRecord"  class="custom-marginmobile" (change)="changeblur($event)" style="margin-left: 30px;"/>
-            <label class="form-check-label fontweight500 " for="flexCheckDefault"
-              style="margin-left: 10px; " >
-              Validated and Invoice created?
-            </label> -->
-          </div>
-  
-          <div class="form-check col-6 col-sm-2 d-flex justify-content-start align-items-center  margintop25" >
-            <!-- <input type="checkbox" id="IsCompleteRecord" name="IsCompleteRecord"  [(ngModel)]="IsCompleteRecord" >
-            <label class="form-check-label fontweight500 " for="flexCheckDefault"
-            style="margin-left: 10px; " >
-            Read Status
-            </label> -->
-          </div>
+  <div>
+    <div class="d-flex align-items-center justify-content-between">
+      <p style="font-weight: 1000; font-size: x-large; margin: 0; padding-left: 14px; ">Bunge Invoicing</p>
 
-          <div class="col-6 col-sm-2 d-flex justify-content-start align-items-center  margintop25 custom-center"
-            style="padding-bottom: 5px;" >
-            
-          </div>
-  
-          <div class="col-6 col-sm-2 d-flex justify-content-start align-items-center margintop25 " style="padding-bottom: 5px; padding-right: 0px; margin-left: -20px;" >
-            <button type="submit" class="btn btn-dark">Search</button>
-            <button type="button" (click)="ClearSearch()" class="btn btn-outline-dark"
-              style="margin-left: 12px; color: white;">Clear</button>
-            
-          </div>
-  
+    </div>
+    <hr />
+    <form (ngSubmit)="SearchResults(myForm)" #myForm="ngForm" class="searchTable">
+      <div class="row g-2 ">
+        <div class=" col-6 col-sm-2 marginleft20">
+          <label class="fontweight500">Contractor Name:</label>
+          <input type="text" class="form-control" id="name" name="name" placeholder="First / Last name"
+            [(ngModel)]="name" autocomplete="off" maxlength="100" />
         </div>
-      </form>
-      <app-confirmation-pop style="position: absolute; top: 0; left: 0;"></app-confirmation-pop>
-      <app-notification-popup style="position: absolute; top: 0; left: 0;"
-        *ngIf="(notificationService.notificationVisibility$ | async)"></app-notification-popup>
-  
-      <div style="overflow-x:auto;">
-        <table mat-table [dataSource]="dataSource.data" matSort class="table">
-          <ng-container matColumnDef="contractorName">
-            <th mat-header-cell *matHeaderCellDef   class="coloredwhite" style="width: 180px;"> 
-              <input *ngIf="!IsValidatedRecord && hideCheckBoxes" type="checkbox" [(ngModel)]="IsAllRecord" name="IsAllRecord"
-              (change)="toggleAllRecords($event)" style="margin-right: 8px;" />
-            
-              Contractor Name 
-            </th>
-            
-            <td mat-cell *matCellDef="let row">
-              <input *ngIf="!IsValidatedRecord && !row.isMovedInOriginaldb" type="checkbox" [checked]="selectedRecords.includes(row.id)"
-                (change)="onCheckboxChange($event, row.id)" class="custom-checkbox" [disabled]="row.isErrorOnRow === 1"  style="margin-right: 5px;"/>
-  
-                <span>{{ row.contractorName }}</span>
-            </td>
-          </ng-container>
-  
-  
-  
-          <ng-container matColumnDef="cFirstName">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> First Name</th>
-            <td mat-cell *matCellDef="let row"> {{row.cFirstName}} </td>
-          </ng-container>
-  
-          <ng-container matColumnDef="cLastName">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Last Name </th>
-            <td mat-cell *matCellDef="let row"> {{row.cLastName}} </td>
-          </ng-container>
-  
-          <ng-container matColumnDef="CreatedDate">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Received Date </th>
-            <td mat-cell *matCellDef="let row">
-              {{ row.createdDate | date: 'yyyy-MM-dd h:mm a ' }}
-            </td>
-            
-          </ng-container>
-   
-          <ng-container matColumnDef="totalAmount">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Total Amount </th>
-            <td mat-cell *matCellDef="let row"> {{row.totalAmount}} </td>
-          </ng-container>
-  
-          <ng-container matColumnDef="selfBillInvoiceNo">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> SelfBill InvoiceNo </th>
-            <td mat-cell *matCellDef="let row"> {{row.selfBillInvoiceNo}} </td>
-          </ng-container>
-   
-          <ng-container matColumnDef="errorMessage">
-            <th mat-header-cell *matHeaderCellDef class="coloredwhite"> Read Status </th>
-            <td mat-cell *matCellDef="let row" style="width: 130px;">
-              <ng-container *ngIf="row.isErrorOnRow; else okTemplate">
-                <i class="fa-solid fa-triangle-exclamation"></i>
-                {{ row.errorMessage }}
-                <span *ngIf="row.errorID ==0">Timeperiod is not specified.</span>
-              </ng-container>
-              <ng-template #okTemplate>
-                <i class="fa-solid fa-circle-check"></i>
-                OK
-              </ng-template>
-            </td>
-          </ng-container>
-  
-          <ng-container matColumnDef="afsInvoiceStatus">
-            <th mat-header-cell *matHeaderCellDef class="coloredwhite">
-             Invoice No / Status
-            </th>
-            <td mat-cell *matCellDef="let row" style="padding-left: 30px;">
-              <div *ngIf="row.afsInvoiceStatus && row.isRecordValidated;">
-                <a href="javascript:void(0)" (click)="onDownloadInvoice(row)" class="invoice-link">
-                  {{row.afsInvoiceNumber}} <i class="fa-solid fa-download" style="margin-right: 5px;"></i>
-                </a>
-              </div>
-  
-              <div *ngIf="row.isRecordValidated; else pendingTemplate">
-  
-              </div>
-  
-              <ng-template #pendingTemplate>
-                <span>Pending</span>
-              </ng-template>
-            </td>
-          </ng-container>
-  
-          <ng-container matColumnDef="isExpenseOrTimesheet">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Sheet Type </th>
-            <td mat-cell *matCellDef="let row">
-  
-              <span *ngIf="row.isExpenseOrTimesheet =='T'">Timesheet</span>
-              <span *ngIf="row.isExpenseOrTimesheet =='E'">Expense</span>
-            </td>
-          </ng-container>
-  
-          
-          <ng-container matColumnDef="CsmTeam">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite">Csm Team</th>
-            <td mat-cell *matCellDef="let row"> {{row.csmTeam}}</td>
-          </ng-container>
-  
-          <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef class="coloredwhite"> Actions </th>
-            <td mat-cell *matCellDef="let element">
-                <button type="button" (click)="openInvoiceModal(element)"
-                  class="btn btn-outline-success">{{ btnText }}</button>
-            </td>
-          </ng-container>
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns;"
-            [ngClass]="{'table-success': row.isErrorOnRow===0, 'table-danger': row.isErrorOnRow ===1}"></tr>
-        </table>
+        <div class="col-6 col-sm-2 marginleft8">
+          <label class="fontweight500">Invoice No:</label>
+          <input type="text" class="form-control" id="invoiceno" name="invoiceno" placeholder="Invoice No"
+            [(ngModel)]="invoiceno" maxlength="50" autocomplete="off" />
+        </div>
+        <div class="col-6 col-sm-2 marginleft8">
+          <label class="fontweight500"> Period From Date:</label>
+          <input type="date" id="startdate" class="form-control" [(ngModel)]="startdate" name="startdate"
+            min="1900-01-01" max="9999-12-31" />
+        </div>
+        <div class="col-6 col-sm-2 marginleft8">
+          <label class="fontweight500"> To Date: </label>
+          <input type="date" id="enddate" class="form-control" [(ngModel)]="enddate" name="date" min="1900-01-01"
+            max="9999-12-31" />
+        </div>
+        <div class="col-6 col-sm-2 marginleft20 ">
+          <label class="fontweight500">CSM Team:</label>
+          <select id="CsmTeam" class="form-select flex-grow-1" [(ngModel)]="CsmTeam" name="CsmTeam">
+            <option value="null" disabled selected>Select CSM Team</option>
+            <option *ngFor="let team of csmTeamarr" [ngValue]="team.cmCode">
+              {{ team.cmDesc }}
+            </option>
+          </select>
+        </div>
       </div>
-  
-      <mat-paginator [length]="totalRecords" [pageSize]="pageSize" [pageIndex]="pageIndex" (page)="onPageChanged($event)"
-        [pageSizeOptions]="[5, 10, 15, 20]" [showFirstLastButtons]="true">
-      </mat-paginator>
+
+      <div class="row g-2 ">
+        <div class=" col-6 col-sm-2 marginleft20">
+          <label class="fontweight500">AFS Contractor:</label>
+          <div class="position-relative">
+            <input type="text" placeholder="Search Contractor" [formControl]="ContractorControl" (click)="onInputClick()"
+              [matAutocomplete]="auto" class="form-control example-input" [value]="selectedContractor"
+              #autoTrigger="matAutocompleteTrigger">
+            <i class="bi bi-caret-down-fill position-absolute"
+              style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: small; color: #5a5f6a;"
+              (click)="autoTrigger.openPanel()"></i>
+          </div>
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
+            <mat-option *ngFor="let contractor of filteredContractors | async" [value]="contractor.fullName"
+              class="cdk-overlay-panes">
+              {{ contractor.fullName }}
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+        <div class="col-6 col-sm-2 marginleft8">
+          <label for="afscontact" class="fontweight500">AFS Contract:<span
+            style="font-size: 13px; color: white;">(Active Only)</span>:</label>
+        <div class="col-sm-12">
+          <select class="form-select" id="AFSContactDropdown" name="afscontact" required
+            [(ngModel)]="selectedFilteredContract">
+            <option value="null" selected>Select Contract</option>
+            <option *ngFor="let option of filteredContractOptions" [value]="option.name">
+              {{ option.name }}
+            </option>
+          </select>
+          <div *ngIf="IsContractIsActiveOrNot ==='Contract is not active.'">
+            <span style="color: rgb(225, 21, 21);"> Contract is not active.</span>
+          </div>
+        </div>
+        </div>
+        <div class="col-6 col-sm-2 marginleft8">
+          <label class="fontweight500">Internal Invoice Type:</label>
+          <select id="internalInvoiceType" class="form-select flex-grow-1" [(ngModel)]="internalInvoiceType" name="internalInvoiceType">
+            <option value="null" disabled selected>Select Internal Invoice Type</option>
+            <option *ngFor="let InterInvoice of internalInvoiceTypeArr" [ngValue]="InterInvoice.cmCode">
+              {{ InterInvoice.cmDesc }}
+            </option>
+          </select>
+        </div>
+        <div class="col-6 col-sm-2 marginleft8">
+          <label class="fontweight500">Currency:</label>
+          <select id="currency" class="form-select flex-grow-1" [(ngModel)]="currency" name="currency">
+            <option value="null" disabled selected>Select Currency</option>
+            <option *ngFor="let curr of currencyArr" [ngValue]="curr.cmCode">
+              {{ curr.cmDesc }}
+            </option>
+          </select>
+        </div>
+        <div class="col-6 col-sm-2 marginleft20 " style="padding-top: 22px;;">
+          <button type="submit" class="btn btn-dark">Search</button>
+          <button type="button" (click)="ClearSearch()" class="btn btn-outline-dark"
+            style="margin-left: 12px; color: white;">Clear</button>
+        </div>
+      </div>
+    </form>
+    <app-confirmation-pop style="position: absolute; top: 0; left: 0;"></app-confirmation-pop>
+    <app-notification-popup style="position: absolute; top: 0; left: 0;"
+      *ngIf="(notificationService.notificationVisibility$ | async)"></app-notification-popup>
+
+    <div style="overflow-x:auto;">
+      <table mat-table [dataSource]="dataSource.data" matSort class="table">
+        <ng-container matColumnDef="contractorName">
+          <th mat-header-cell *matHeaderCellDef class="coloredwhite" style="width: 180px;">
+            <input *ngIf="!IsValidatedRecord && hideCheckBoxes" type="checkbox" [(ngModel)]="IsAllRecord"
+              name="IsAllRecord" (change)="toggleAllRecords($event)" style="margin-right: 8px;" />
+
+            Contractor Name
+          </th>
+
+          <td mat-cell *matCellDef="let row">
+            <input *ngIf="!IsValidatedRecord && !row.isMovedInOriginaldb" type="checkbox"
+              [checked]="selectedRecords.includes(row.id)" (change)="onCheckboxChange($event, row.id)"
+              class="custom-checkbox" [disabled]="row.isErrorOnRow === 1" style="margin-right: 5px;" />
+
+            <span>{{ row.contractorName }}</span>
+          </td>
+        </ng-container>
+
+
+
+        <ng-container matColumnDef="cFirstName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> First Name</th>
+          <td mat-cell *matCellDef="let row"> {{row.cFirstName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="cLastName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Last Name </th>
+          <td mat-cell *matCellDef="let row"> {{row.cLastName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="CreatedDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Received Date </th>
+          <td mat-cell *matCellDef="let row">
+            {{ row.createdDate | date: 'yyyy-MM-dd h:mm a ' }}
+          </td>
+
+        </ng-container>
+
+        <ng-container matColumnDef="totalAmount">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Total Amount </th>
+          <td mat-cell *matCellDef="let row"> {{row.totalAmount}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="selfBillInvoiceNo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> SelfBill InvoiceNo </th>
+          <td mat-cell *matCellDef="let row"> {{row.selfBillInvoiceNo}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="errorMessage">
+          <th mat-header-cell *matHeaderCellDef class="coloredwhite"> Read Status </th>
+          <td mat-cell *matCellDef="let row" style="width: 130px;">
+            <ng-container *ngIf="row.isErrorOnRow; else okTemplate">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+              {{ row.errorMessage }}
+              <span *ngIf="row.errorID ==0">Timeperiod is not specified.</span>
+            </ng-container>
+            <ng-template #okTemplate>
+              <i class="fa-solid fa-circle-check"></i>
+              OK
+            </ng-template>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="afsInvoiceStatus">
+          <th mat-header-cell *matHeaderCellDef class="coloredwhite">
+            Invoice No / Status
+          </th>
+          <td mat-cell *matCellDef="let row" style="padding-left: 30px;">
+            <div *ngIf="row.afsInvoiceStatus && row.isRecordValidated;">
+              <a href="javascript:void(0)" (click)="onDownloadInvoice(row)" class="invoice-link">
+                {{row.afsInvoiceNumber}} <i class="fa-solid fa-download" style="margin-right: 5px;"></i>
+              </a>
+            </div>
+
+            <div *ngIf="row.isRecordValidated; else pendingTemplate">
+
+            </div>
+
+            <ng-template #pendingTemplate>
+              <span>Pending</span>
+            </ng-template>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="isExpenseOrTimesheet">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Sheet Type </th>
+          <td mat-cell *matCellDef="let row">
+
+            <span *ngIf="row.isExpenseOrTimesheet =='T'">Timesheet</span>
+            <span *ngIf="row.isExpenseOrTimesheet =='E'">Expense</span>
+          </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="CsmTeam">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite">Csm Team</th>
+          <td mat-cell *matCellDef="let row"> {{row.csmTeam}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="coloredwhite"> Actions </th>
+          <td mat-cell *matCellDef="let element">
+            <button type="button" (click)="openInvoiceModal(element)" class="btn btn-outline-success">{{ btnText
+              }}</button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; let i = index; columns: displayedColumns;"
+          [ngClass]="{'table-success': row.isErrorOnRow===0, 'table-danger': row.isErrorOnRow ===1}"></tr>
+      </table>
     </div>
-  
-    <div class="loading-overlay" *ngIf="loading">
-      <div class="loader"></div>
-    </div>
+
+    <mat-paginator [length]="totalRecords" [pageSize]="pageSize" [pageIndex]="pageIndex" (page)="onPageChanged($event)"
+      [pageSizeOptions]="[5, 10, 15, 20]" [showFirstLastButtons]="true">
+    </mat-paginator>
+  </div>
+
+  <div class="loading-overlay" *ngIf="loading">
+    <div class="loader"></div>
+  </div>

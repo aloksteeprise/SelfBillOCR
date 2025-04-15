@@ -3,13 +3,14 @@
     word-break: break-word;
     white-space: normal;
 }
+
 .break-text {
     width: 175px;
     word-wrap: break-word;
     overflow-wrap: break-word;
     display: inline-block;
 }
-  
+
 
 hr {
     margin: 0.5rem !important;
@@ -37,11 +38,11 @@ hr {
     margin-left: 20px;
 }
 
-.custom-label{
+.custom-label {
 
     font-size: .8rem;
     font-weight: bold;
-  }
+}
 
 .margintop25 {
     margin-top: 5px;
@@ -263,14 +264,17 @@ input[type="checkbox"] {
         margin-top: 5px;
         margin-bottom: 10px;
     }
-    .custom-center{
 
-        justify-content: center!important;
+    .custom-center {
+
+        justify-content: center !important;
     }
-    .custom-height{
+
+    .custom-height {
         margin-top: 10px;
     }
-    .custom-marginmobile{
+
+    .custom-marginmobile {
         margin-left: -8px;
     }
 }
