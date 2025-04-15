@@ -57,39 +57,45 @@
           </mat-autocomplete>
         </div>
         <div class="col-6 col-sm-2 marginleft8">
-          <label for="afscontact" class="fontweight500">AFS Contract:<span
-            style="font-size: 13px; color: white;">(Active Only)</span>:</label>
+          <label for="afscontact" class="fontweight500">AFS Contract:</label>
+          <!-- <span
+            style="font-size: 13px; color: white;">(Active Only)</span> -->
         <div class="col-sm-12">
           <select class="form-select" id="AFSContactDropdown" name="afscontact" required
             [(ngModel)]="selectedFilteredContract">
-            <option value="null" selected>Select Contract</option>
-            <option *ngFor="let option of filteredContractOptions" [value]="option.name">
-              {{ option.name }}
+            <option value="" selected>Select Contract</option>
+            <option *ngFor="let option of filteredContractOptions" [value]="option.ctcCode">
+              {{ option.contracts }}
             </option>
           </select>
-          <div *ngIf="IsContractIsActiveOrNot ==='Contract is not active.'">
+          <!-- <div *ngIf="IsContractIsActiveOrNot ==='Contract is not active.'">
             <span style="color: rgb(225, 21, 21);"> Contract is not active.</span>
-          </div>
+          </div> -->
         </div>
         </div>
         <div class="col-6 col-sm-2 marginleft8">
           <label class="fontweight500">Internal Invoice Type:</label>
-          <select id="internalInvoiceType" class="form-select flex-grow-1" [(ngModel)]="internalInvoiceType" name="internalInvoiceType">
-            <option value="null" disabled selected>Select Internal Invoice Type</option>
-            <option *ngFor="let InterInvoice of internalInvoiceTypeArr" [ngValue]="InterInvoice.cmCode">
-              {{ InterInvoice.cmDesc }}
-            </option>
+          <select id="internalInvoiceType" 
+                  class="form-select flex-grow-1" 
+                  [(ngModel)]="internalInvoiceType" 
+                  name="internalInvoiceType">
+              <option [ngValue]="" disabled>Select Internal Invoice Type</option>
+              <option *ngFor="let InterInvoice of internalInvoiceTypeArr" 
+                      [ngValue]="InterInvoice.cmCode">
+                {{ InterInvoice.cmDesc }}
+              </option>
           </select>
         </div>
         <div class="col-6 col-sm-2 marginleft8">
           <label class="fontweight500">Currency:</label>
           <select id="currency" class="form-select flex-grow-1" [(ngModel)]="currency" name="currency">
-            <option value="null" disabled selected>Select Currency</option>
-            <option *ngFor="let curr of currencyArr" [ngValue]="curr.cmCode">
-              {{ curr.cmDesc }}
+            <option [ngValue]="null" disabled selected>Select Currency</option>
+            <option *ngFor="let curr of currencyArr" [ngValue]="curr.curCode">
+              {{ curr.curName }}
             </option>
           </select>
         </div>
+             
         <div class="col-6 col-sm-2 marginleft20 " style="padding-top: 22px;;">
           <button type="submit" class="btn btn-dark">Search</button>
           <button type="button" (click)="ClearSearch()" class="btn btn-outline-dark"
@@ -112,7 +118,7 @@
           </th>
 
           <td mat-cell *matCellDef="let row">
-            <input *ngIf="!IsValidatedRecord && !row.isMovedInOriginaldb" type="checkbox"
+            <input type="checkbox"
               [checked]="selectedRecords.includes(row.id)" (change)="onCheckboxChange($event, row.id)"
               class="custom-checkbox" [disabled]="row.isErrorOnRow === 1" style="margin-right: 5px;" />
 

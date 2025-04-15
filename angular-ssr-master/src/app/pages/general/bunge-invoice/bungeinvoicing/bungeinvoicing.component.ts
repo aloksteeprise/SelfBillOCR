@@ -76,21 +76,16 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
   Contractorarr: any[] = [];
   isDropdownOpen = false;
   selectedContractor: string = '';
-  internalInvoiceType: any | null = null;
-  internalInvoiceTypeArr: any[] = [];
+  internalInvoiceType: any | null = '1';
+  internalInvoiceTypeArr = [
+    { cmCode: '1', cmDesc: 'Service Invoices' },
+    { cmCode: '2', cmDesc: 'Other Invoices' }
+  ];
+  
   currency: any | null = null;
   currencyArr: any[] = [];
-
-  contractorOptions: { id: number; firstName: string; lastName: string; fullName: string; conCode: string; }[] = [];
-  filteredContractOptions: { id: number; name: string }[] = [];
+  filteredContractOptions: { contracts: string; ctcCode: string }[] = [];
   selectedFilteredContract: string = '';
-  IsContractIsActiveOrNot: any;
-  contractorname: string = '';
-  afscontractor: string = '';
-  afsContract: string = '';
-  firstnamefor: string = '';
-  lastnamefor: string = '';
-  id: number = 0;
   conCode: string = "";
 
   constructor(private BungeApiService: BungeApiService, private dialog: MatDialog, public notificationService: NotificationPopupService, private http: HttpClient, private breakpointObserver: BreakpointObserver) { }
@@ -165,6 +160,7 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
 
     this.loadInvoices();
     this.getCsmTeam();
+    this.getCurrency();
   }
 
   ngAfterViewInit() {
@@ -269,16 +265,13 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
   }
 
   filterContractData(): void {
-    
-    console.log('Selected Contractor:', this.allContractor);
     this.filteredContractOptions = [];
     this.selectedFilteredContract = '';
     
     if (this.allContractor) {
       this.conCode = this.conCode;
     }
-
-    const apiUrl = environment.API_BASE_URL + 'OCRAI/GetAFSBungeContactDropdownData';
+    const apiUrl = environment.API_BASE_URL + 'OCRAI/GetAFSBungeContactDropdownDat';
 
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.token}`,
@@ -288,44 +281,14 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
     const body = {
       CtcCode: this.conCode
     };
-    
     this.http.post<any>(apiUrl, body, { headers }).subscribe(
       (response) => {
-        
-        console.log('GetContractorActiveContract API');
+        debugger
+
         console.log(response);
         if (response?.data?.contractsList) {
-          
-          let contractsListItems = response?.data?.contractsList;
-          console.log('this.selectedContract');
-          console.log(this.conCode);
-          if (contractsListItems.length > 0 && this.conCode) {
-
-            this.filteredContractOptions = contractsListItems
-              .filter((contract: any) => contract.conCode === this.conCode && contract.contracts.includes('Active'))
-
-              .map((item: any) => ({
-                id: item.ctcCode,
-                name: item.contracts
-              }));
-            console.log('this.filteredContractOptions');
-            console.log(this.filteredContractOptions);
-            if (this.filteredContractOptions.length > 0) {
-              this.selectedFilteredContract = this.filteredContractOptions[0].name;
-            }
-
-
-            let changeNameAsperContractorChange = contractsListItems
-              .filter((contract: any) => contract.conCode === this.conCode && contract.contracts.includes('Active'));
-
-            if (changeNameAsperContractorChange != undefined && changeNameAsperContractorChange[0] != undefined) {
-              this.firstnamefor = changeNameAsperContractorChange[0].conFirstName;
-              this.lastnamefor = changeNameAsperContractorChange[0].conLastName;
-
-              console.log(this.firstnamefor);
-              console.log(this.lastnamefor);
-            }
-          }
+          debugger
+          this.filteredContractOptions = response?.data?.contractsList;
         }
       },
       (error) => {
@@ -335,20 +298,15 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
   }
 
   fetchContractorList(searchTerm: string): Observable<{ conCode: string; fullName: string }[]> {
-    
     const apiUrl = `${environment.API_BASE_URL}OCRAI/GetAFSBungeContractorDat`;
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
     const body = {
-      SearchTerm: searchTerm,
-      PageNumber: 1,
-      PageSize: 200
+      fullName: searchTerm
     };
     return this.http.post<any>(apiUrl, body, { headers }).pipe(
       map(data => {
-        
         let contractsList = Array.isArray(data?.data?.contractsList) ? data.data.contractsList : [];
-
         if (!contractsList.length) {
           contractsList = this.allContractor;
         }
@@ -371,7 +329,6 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
   }
 
   onOptionSelected(event: MatAutocompleteSelectedEvent): void {
-
     const selectedcont = event.option.value.trim();
 
     const selectedAgency = this.allContractor.find(contractor =>
@@ -380,7 +337,6 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
 
     if (selectedAgency) {
       this.conCode = selectedAgency.conCode;
-      this.contractorname = selectedAgency.fullName;
       this.filterContractData();
 
     } 
@@ -617,6 +573,29 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
     this.http.post<any>(apiUrl, {}, { headers }).subscribe({
       next: (data) => {
         this.csmTeamarr = data.data.csmTeamList;
+      },
+      error: (error) => {
+        console.error("Error Response:", error);
+      },
+    });
+  }
+
+  getCurrency() {
+    const apiUrl = environment.API_BASE_URL + 'OCRAI/GetCurrencyListData';
+    this.notificationService.setNotificationVisibility(true);
+  
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.token}`,
+      'Content-Type': 'application/json',
+    });
+  
+    this.http.post<any>(apiUrl, {}, { headers }).subscribe({
+      next: (data) => {
+        this.currencyArr = data.data.currencyList;
+  
+        if (this.currencyArr.length > 0) {
+          this.currencyArr = data.data.currencyList;
+        }
       },
       error: (error) => {
         console.error("Error Response:", error);
