@@ -154,6 +154,9 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
         if(this.isMovedInOriginaldb){
           this.btnText = 'Validated';
         }
+        else{
+          this.btnText = 'Validate';
+        }
           this.loading = false; 
         },
         error: (err) => {
