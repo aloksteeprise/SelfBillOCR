@@ -1,12 +1,12 @@
 <div class="modal d-block" id="allocationModal" tabindex="-1" aria-labelledby="allocationModalLabel" aria-hidden="true"
-  style="margin-top: 45px; overflow-y: hidden;">
+  style="margin-top: 45px; overflow-y: hidden;" >
   <div class="modal-dialog modal-xl">
     <div class="modal-content custom-height">
       <app-confirmation-pop style="position: absolute; top: 0; left: 0;"></app-confirmation-pop>
       <app-notification-popup style="position: absolute; top: 0; left: 0;"
         *ngIf="(notificationService.notificationVisibility$ | async)"></app-notification-popup>
       <div class="modal-body">
-        <div class="container-fluid row" style="background-color: #8ac4dbc7;">      
+        <div class="container-fluid row" style="background-color: #E5E7EB">      
           <div class="row text-black g-3 d-flex" style="margin-top: -6px;">
             <!-- Agency Field -->
             <div class="col-sm-3 col-md-2 d-flex flex-column">
@@ -20,7 +20,7 @@
                   (click)="autoTrigger.openPanel()"></i>
               </div>
               <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)" >
-                <mat-option *ngFor="let agency of filteredAgencies | async" [value]="agency.agedesc" class="cdk-overlay-panes">
+                <mat-option *ngFor="let agency of filteredAgencies | async" [value]="agency.agedesc">
                   {{ agency.agedesc }}
                 </mat-option>
               </mat-autocomplete>
@@ -136,7 +136,7 @@
         </div>
 
         <div *ngIf="showAllocation" class="border p-1 mt-1 bg-light">
-          <h6 class="color" style="padding-left: 10px;  background-color: #8ac4dbc7;">Allocate</h6>
+          <h6 class="color" style="padding-left: 10px;  background-color: #E5E7EB;">Allocate</h6>
           <div class="table-responsive">
             <table class="table table-bordered text-center custom-bottom">
               <thead class="color text-black">
@@ -251,7 +251,7 @@
             </table>
           </div>
           <div class="border p-1 mt-1 bg-light">
-            <h6 class="color" style="padding-left: 10px; background-color: #8ac4dbc7;">Allocation Summary</h6>
+            <h6 class="color" style="padding-left: 10px; background-color: #E5E7EB;">Allocation Summary</h6>
             <div class="table-responsive" *ngIf="showAllocationSummery">
               <table class="table table-bordered text-center">
                 <thead class="color text-black">
@@ -299,7 +299,7 @@
               </table>
             </div>
 
-            <div class="container-fluid" style="padding-top: 10px; background-color: #d6e4f0;">
+            <div class="container-fluid" style="padding-top: 10px; background-color: #E5E7EB">
               <div class="row align-items-center text-black">
                 <div class="col d-flex align-items-center mb-0">
                   <label class=" me-2">Total available for allocation:</label>
