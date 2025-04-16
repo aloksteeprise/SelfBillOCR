@@ -49,7 +49,7 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
   dataSource = new MatTableDataSource<afsInvoice>([]);
   totalRecords: number = 0;
   pageIndex: number = 0;
-  pageSize: number = 20;
+  pageSize: number = 50;
   filterValue: string = '';
   name: string = '';
   invoiceno: string = '';
