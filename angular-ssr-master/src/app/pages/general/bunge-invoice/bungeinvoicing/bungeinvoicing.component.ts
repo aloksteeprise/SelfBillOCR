@@ -60,7 +60,6 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
   token: string = '';
   loading: boolean = false;
   isNotificationVisible: boolean = false;
-  IsSelfBill: boolean = false;
   CsmTeam: any | null = null;
   csmTeamarr: any[] = [];
   IsAllRecord: boolean = false;
@@ -71,6 +70,7 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
   isMovedInOriginaldb: boolean = true;
   IsCompleteRecord: boolean = false;
   btnText: string = 'Validate';
+  btnConsolidateVisible: boolean = false;
   defaultContractor: { conCode: string; fullName: string }[] = [];
   Contractor: string | null = null;
   Contractorarr: any[] = [];
@@ -82,10 +82,10 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
     { cmCode: '2', cmDesc: 'Other Invoices' }
   ];
   
-  currency: any | null = null;
+  currency: any = null;
   currencyArr: any[] = [];
-  filteredContractOptions: { contracts: string; ctcCode: string }[] = [];
-  selectedFilteredContract: string = '';
+  filteredContractOptions: any[] = [];  
+  selectedFilteredContract: any = null;
   conCode: string = "";
 
   constructor(private BungeApiService: BungeApiService, private dialog: MatDialog, public notificationService: NotificationPopupService, private http: HttpClient, private breakpointObserver: BreakpointObserver) { }
@@ -176,9 +176,8 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
     this.loading = true;
     const SortColumn = this.sort?.active || '';
     const SortDirection = this.sort?.direction || '';
-
     this.BungeApiService
-      .getInvoices(this.pageIndex, this.pageSize, SortColumn, SortDirection, this.name, this.invoiceno, this.startdate, this.enddate, this.CsmTeam, this.selectedFilteredContract, this.selectedContractor, this.internalInvoiceType, this.currency, this.token)
+      .getInvoices(this.pageIndex, this.pageSize, SortColumn, SortDirection, this.name, this.invoiceno, this.startdate, this.enddate, this.CsmTeam, this.selectedFilteredContract, this.conCode, this.internalInvoiceType, this.currency, this.token)
       .subscribe({
         next: (response: any) => {
           this.allRecords = response.data.data;
@@ -242,15 +241,6 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
 
   SearchResults(form: any): void {
 
-    this.pageIndex = 0;
-    this.name = this.name;
-    this.invoiceno = this.invoiceno;
-    this.startdate = this.startdate;
-    this.enddate = this.enddate;
-    this.IsValidatedRecord = this.IsValidatedRecord;
-    this.isChecked = this.isChecked;
-    this.hideCheckBoxes = true;
-
     this.loadInvoices();
   }
 
@@ -266,12 +256,13 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
 
   filterContractData(): void {
     this.filteredContractOptions = [];
-    this.selectedFilteredContract = '';
+    this.selectedFilteredContract = 'null';
+    this.btnConsolidateVisible = true;
     
     if (this.allContractor) {
       this.conCode = this.conCode;
     }
-    const apiUrl = environment.API_BASE_URL + 'OCRAI/GetAFSBungeContactDropdownDat';
+    const apiUrl = environment.API_BASE_URL + 'OCRAI/GetAFSBungeContactDropdownData';
 
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.token}`,
@@ -283,11 +274,9 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
     };
     this.http.post<any>(apiUrl, body, { headers }).subscribe(
       (response) => {
-        debugger
 
         console.log(response);
         if (response?.data?.contractsList) {
-          debugger
           this.filteredContractOptions = response?.data?.contractsList;
         }
       },
@@ -297,8 +286,16 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
     );
   }
 
+  onContractSelected(selectedCtcCode: any) {
+    const selectedContract = this.filteredContractOptions.find(c => c.ctcCode == selectedCtcCode);
+    
+    if (selectedContract) {
+      this.currency = selectedContract.ctcCurrenCy;
+    }
+  }
+
   fetchContractorList(searchTerm: string): Observable<{ conCode: string; fullName: string }[]> {
-    const apiUrl = `${environment.API_BASE_URL}OCRAI/GetAFSBungeContractorDat`;
+    const apiUrl = `${environment.API_BASE_URL}OCRAI/GetAFSBungeContractorData`;
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
     const body = {
@@ -352,14 +349,21 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
     this.invoiceno = '';
     this.startdate = '';
     this.enddate = '';
+    this.selectedContractor = '';
+    this.selectedFilteredContract = 'null';
+    this.internalInvoiceType = null;
+    this.currency = null;
+    this.filteredContractors = of([]); 
+    this.conCode = '';
+    this.ContractorControl.setValue('');
     this.IsValidatedRecord = false;
     this.CsmTeam = null;
-    this.IsSelfBill = false;
     this.IsAllRecord = false
     this.selectedRecords = []
     this.hideCheckBoxes = true;
     this.IsCompleteRecord = false;
     this.btnText = 'Validate';
+    this.btnConsolidateVisible = false;
     const startDateInput = document.getElementById('startdate') as HTMLInputElement;
     const endDateInput = document.getElementById('enddate') as HTMLInputElement;
 

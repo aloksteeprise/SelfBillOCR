@@ -30,7 +30,7 @@
         <div class="col-6 col-sm-2 marginleft20 ">
           <label class="fontweight500">CSM Team:</label>
           <select id="CsmTeam" class="form-select flex-grow-1" [(ngModel)]="CsmTeam" name="CsmTeam">
-            <option value="null" disabled selected>Select CSM Team</option>
+            <option value="null" selected>Select CSM Team</option>
             <option *ngFor="let team of csmTeamarr" [ngValue]="team.cmCode">
               {{ team.cmDesc }}
             </option>
@@ -58,28 +58,25 @@
         </div>
         <div class="col-6 col-sm-2 marginleft8">
           <label for="afscontact" class="fontweight500">AFS Contract:</label>
-          <!-- <span
-            style="font-size: 13px; color: white;">(Active Only)</span> -->
-        <div class="col-sm-12">
-          <select class="form-select" id="AFSContactDropdown" name="afscontact" required
-            [(ngModel)]="selectedFilteredContract">
-            <option value="" selected>Select Contract</option>
-            <option *ngFor="let option of filteredContractOptions" [value]="option.ctcCode">
-              {{ option.contracts }}
-            </option>
-          </select>
-          <!-- <div *ngIf="IsContractIsActiveOrNot ==='Contract is not active.'">
-            <span style="color: rgb(225, 21, 21);"> Contract is not active.</span>
-          </div> -->
+          <div class="col-sm-12">
+            <select class="form-select" id="AFSContactDropdown" name="afscontact" required
+              [(ngModel)]="selectedFilteredContract" 
+              (ngModelChange)="onContractSelected($event)">
+              <option value="null" selected>Select Contract</option>
+              <option *ngFor="let option of filteredContractOptions" [value]="option.ctcCode">
+                {{ option.contracts }}
+              </option>
+            </select>
+          </div>
         </div>
-        </div>
+        
         <div class="col-6 col-sm-2 marginleft8">
           <label class="fontweight500">Internal Invoice Type:</label>
           <select id="internalInvoiceType" 
                   class="form-select flex-grow-1" 
                   [(ngModel)]="internalInvoiceType" 
                   name="internalInvoiceType">
-              <option [ngValue]="" disabled>Select Internal Invoice Type</option>
+              <option value="null" >Select Internal Invoice Type</option>
               <option *ngFor="let InterInvoice of internalInvoiceTypeArr" 
                       [ngValue]="InterInvoice.cmCode">
                 {{ InterInvoice.cmDesc }}
@@ -89,9 +86,9 @@
         <div class="col-6 col-sm-2 marginleft8">
           <label class="fontweight500">Currency:</label>
           <select id="currency" class="form-select flex-grow-1" [(ngModel)]="currency" name="currency">
-            <option [ngValue]="null" disabled selected>Select Currency</option>
+            <option value="null" >Select Currency</option>
             <option *ngFor="let curr of currencyArr" [ngValue]="curr.curCode">
-              {{ curr.curName }}
+              {{ curr.curCode }}
             </option>
           </select>
         </div>
@@ -100,6 +97,13 @@
           <button type="submit" class="btn btn-dark">Search</button>
           <button type="button" (click)="ClearSearch()" class="btn btn-outline-dark"
             style="margin-left: 12px; color: white;">Clear</button>
+        </div>
+      </div>
+
+      <div class="row g-2 " style="display: flex; justify-content: end; margin-left: 80px; padding-bottom: 5px;" *ngIf="btnConsolidateVisible">
+        <div class="col-6 col-sm-3 marginleft20 ">
+          <button type="button" class="btn btn-info"
+            style="margin-left: 12px; color: black;">Consolidated Invoice (Bunge)</button>
         </div>
       </div>
     </form>
