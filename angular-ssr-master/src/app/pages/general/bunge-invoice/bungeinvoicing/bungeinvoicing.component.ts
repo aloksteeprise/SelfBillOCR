@@ -15,6 +15,8 @@ import { FormControl } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 import { MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { isPlatformBrowser } from '@angular/common';
+import { Inject, PLATFORM_ID } from '@angular/core';
 
 @Component({
   selector: 'app-bungeinvoicing',
@@ -88,7 +90,7 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
   selectedFilteredContract: any = null;
   conCode: string = "";
 
-  constructor(private BungeApiService: BungeApiService, private dialog: MatDialog, public notificationService: NotificationPopupService, private http: HttpClient, private breakpointObserver: BreakpointObserver) { }
+  constructor(private BungeApiService: BungeApiService, private dialog: MatDialog, public notificationService: NotificationPopupService, private http: HttpClient, private breakpointObserver: BreakpointObserver,@Inject(PLATFORM_ID) private platformId: Object) { }
 
   ngOnInit() {
 
@@ -127,12 +129,13 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
       }
     });
 
-    const storedToken = localStorage.getItem('token');
-    if (storedToken) {
-      this.token = storedToken;
-    } else {
-      console.error('Token not found in localStorage.');
-
+    if (isPlatformBrowser(this.platformId)) {
+      const storedToken = localStorage.getItem('token');
+      if (storedToken) {
+        this.token = storedToken;
+      } else {
+        console.error('Token not found in localStorage.');
+      }
     }
 
     this.fetchContractorList('').subscribe(contractors => {
