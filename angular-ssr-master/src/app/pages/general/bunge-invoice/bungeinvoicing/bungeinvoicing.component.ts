@@ -17,6 +17,7 @@ import { debounceTime, distinctUntilChanged, switchMap, map } from 'rxjs/operato
 import { MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, PLATFORM_ID } from '@angular/core';
+import { debug } from 'console';
 
 @Component({
   selector: 'app-bungeinvoicing',
@@ -64,7 +65,7 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
   isNotificationVisible: boolean = false;
   CsmTeam: any | null = null;
   csmTeamarr: any[] = [];
-  IsAllRecord: boolean = false;
+  isAllRecord: boolean = false;
   selectedRecords: number[] = [];
   allRecords: any[] = [];
   isChecked = false;
@@ -195,6 +196,9 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
           if (this.isMovedInOriginaldb) {
             this.btnText = 'Validated';
           }
+          else{
+            this.btnText = 'Validate';
+          }
           this.loading = false;
         },
         error: (err) => {
@@ -210,12 +214,12 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
 
       this.pageSize = event.pageSize;
       this.pageIndex = 0;
-      this.IsAllRecord = false
+      this.isAllRecord = false
 
     } else {
 
       this.pageIndex = event.pageIndex;
-      this.IsAllRecord = false
+      this.isAllRecord = false
       this.selectedRecords = [];
     }
 
@@ -361,7 +365,7 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
     this.ContractorControl.setValue('');
     this.IsValidatedRecord = false;
     this.CsmTeam = null;
-    this.IsAllRecord = false
+    this.isAllRecord = false
     this.selectedRecords = []
     this.hideCheckBoxes = true;
     this.IsCompleteRecord = false;
@@ -429,7 +433,7 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
   }
 
   changeblur(event: any) {
-    this.IsAllRecord = false
+    this.isAllRecord = false
     this.selectedRecords = []
     if (!this.IsValidatedRecord && this.isMovedInOriginaldb) {
       this.hideCheckBoxes = false;
@@ -438,7 +442,7 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
   }
 
   toggleAllRecords(event: any) {
-    this.IsAllRecord = event.target.checked;
+    this.isAllRecord = event.target.checked;
     setTimeout(() => {
       if (!this.allRecords || this.allRecords.length === 0) {
         console.warn(" No records found in allRecords!");
@@ -446,7 +450,7 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
         return;
       }
 
-      if (this.IsAllRecord) {
+      if (this.isAllRecord) {
         this.selectedRecords = this.allRecords
           .filter(row => row.isErrorOnRow !== 1)
           .map(row => row.id);
@@ -464,17 +468,17 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
     } else {
       this.selectedRecords = this.selectedRecords.filter(recordId => recordId !== id);
 
-      this.IsAllRecord = false;
+      this.isAllRecord = false;
     }
 
     this.selectedRecords = [...this.selectedRecords];
 
   }
 
-  openBatchValidateConfirmationBox() {
+  openGenerateConsolidateInvoiceConfirmationBox() {
     if (!this.selectedRecords || this.selectedRecords.length === 0) {
       this.notificationService.showNotification(
-        'Please select at least one record to batch validate.',
+        'Please select at least one record to Generate Consolidate Invoice.',
         'WARNING',
         'warning',
         () => { console.log('User acknowledged warning') }
@@ -489,7 +493,7 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
         'warning',
         () => {
           console.log('Yes action clicked!');
-          this.BatchValidate();
+          this.GenerateConsolidateInvoice();
         },
         () => {
           console.log('No action clicked!');
@@ -498,10 +502,10 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
     }
   }
 
-  BatchValidate() {
+  GenerateConsolidateInvoice() {
     this.loading = true;
 
-    const apiUrl = environment.API_BASE_URL + 'OCRAI/SelfBillBatchValidate';
+    const apiUrl = environment.API_BASE_URL + 'OCRAI/GenerateConsolidateInvoice';
     this.notificationService.setNotificationVisibility(true);
 
     const headers = new HttpHeaders({
@@ -512,8 +516,12 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
     console.log("Headers:", headers);
 
     const body = {
+      selectedFilteredContract : this.selectedFilteredContract,
+      conCode : this.conCode,
+      internalInvoiceType : this.internalInvoiceType,
+      currency : this.currency,
       selectedIds: this.selectedRecords,
-      IsAllRecord: this.IsAllRecord
+      isAllRecord: this.isAllRecord
     };
 
     console.log("Payload Sent to API:", body);
@@ -527,7 +535,7 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
 
           if (response.data[0].status === 4 && response.data[0].statusMsg == "") {
             this.notificationService.showNotification(
-              'Records have been validated and processed successfully. The updates have been applied to those that meet the criteria.',
+              'Records have been Generated and processed successfully.',
               'INFORMATION',
               'success',
               () => {

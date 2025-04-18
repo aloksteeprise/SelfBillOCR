@@ -102,8 +102,8 @@
 
       <div class="row g-2 " style="display: flex; justify-content: end; margin-left: 80px; padding-bottom: 5px;" *ngIf="btnConsolidateVisible">
         <div class="col-6 col-sm-3 marginleft20 ">
-          <button type="button" class="btn btn-warning"
-            style="margin-left: 12px; color: white;">Consolidated Invoice (Bunge)</button>
+          <button type="button" class="btn btn-warning" (click)="openGenerateConsolidateInvoiceConfirmationBox()"
+            style="margin-left: 12px; color: #312a2a;">Consolidated Invoice (Bunge)</button>
         </div>
       </div>
     </form>
@@ -115,8 +115,8 @@
       <table mat-table [dataSource]="dataSource.data" matSort class="table">
         <ng-container matColumnDef="contractorName">
           <th mat-header-cell *matHeaderCellDef class="coloredwhite" style="width: 180px;">
-            <input *ngIf="!IsValidatedRecord && hideCheckBoxes" type="checkbox" [(ngModel)]="IsAllRecord"
-              name="IsAllRecord" (change)="toggleAllRecords($event)" style="margin-right: 8px;" />
+            <input *ngIf="!IsValidatedRecord && hideCheckBoxes" type="checkbox" [(ngModel)]="isAllRecord"
+              name="isAllRecord" (change)="toggleAllRecords($event)" style="margin-right: 8px;" />
 
             Contractor Name
           </th>

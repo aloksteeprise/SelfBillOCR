@@ -36,13 +36,12 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     'afsInvoiceStatus',
     'isExpenseOrTimesheet',
     'actions',
-    // 'CsmTeam'
   ];
 
   dataSource = new MatTableDataSource<afsInvoice>([]);
   totalRecords: number = 0;
   pageIndex: number = 0;
-  pageSize: number = 20;
+  pageSize: number = 50;
   filterValue: string = '';
   name: string = '';
   invoiceno: string = '';
@@ -56,14 +55,13 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   loading: boolean = false;
   isNotificationVisible: boolean = false;
   IsSelfBill:boolean=false;
-  // CsmTeam:string='';
   CsmTeam: any | null = null;
   csmTeamarr: any[] = [];
   IsAllRecord: boolean = false; 
   selectedRecords: number[] = []; 
-  allRecords: any[] = []; // Ensure this holds all records loaded in the table
+  allRecords: any[] = [];
   isChecked = false;
-  hideCheckBoxes: boolean = true; // Default: Show checkboxes
+  hideCheckBoxes: boolean = true;
   isMovedInOriginaldb : boolean = true;
   IsCompleteRecord:boolean =false;
   btnText : string = 'Validate';
@@ -73,7 +71,6 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
 
     this.breakpointObserver.observe(['(max-width: 700px)']).subscribe((result) => {
       if (result.matches) {
-        // Mobile view: Show "actions" first
          this.displayedColumns = [
            'actions',
     'contractorName',
@@ -90,7 +87,6 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   ];
 
       } else {
-        // Desktop view: Default order
         this.displayedColumns = [
           'contractorName',
           'cFirstName',
@@ -109,8 +105,6 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
         ];
       }
     });
-
-    //Assigning the token here 
 
     const storedToken = localStorage.getItem('token');
     if (storedToken) {
@@ -166,32 +160,17 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
       });
 }
 
-  
-
-
-  // onFilter(event: KeyboardEvent) {
-  //   // Check if the key pressed is Enter (key code 13)
-  //   if (event.key === 'Enter') {
-  //     const input = event.target as HTMLInputElement;
-  //     this.filterValue = input.value.trim(); // Get the filter value
-  //     this.pageIndex = 1; // Reset to the first page for new filter
-  //     this.loadInvoices(); // Reload data with the filter
-  //   }
-  // }
-
-
   onPageChanged(event: any) {
 
     if (this.pageSize !== event.pageSize) {
 
       this.pageSize = event.pageSize;
-      this.pageIndex = 0; // Reset to the first page if page size changes
+      this.pageIndex = 0;
       this.IsAllRecord = false
-      // this.selectedRecords = [];
 
     } else {
 
-      this.pageIndex = event.pageIndex; // Adjust for 1-based indexing
+      this.pageIndex = event.pageIndex;
       this.IsAllRecord = false
       this.selectedRecords = [];
     }
@@ -199,38 +178,13 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     this.loadInvoices();
   }
 
-  // openInvoiceModal(invoiceData: any): void {
-
-
-
-  //   const dialogRef = this.dialog.open(AfsinvoiceComponent,
-  //     {
-  //       width: '90%', 
-  //       maxWidth: '600px', // Optional: Limit max width
-  //       data: {
-  //         ...invoiceData,  // Include all the properties of invoiceData
-
-
-  //         thumbImage: '',  // Dynamically set image path
-  //         fullImagePath: ''  // Dynamically set image path
-  //       }
-  //     });
-
-  //   dialogRef.afterClosed().subscribe(result => {
-
-  //     this.ClearSearch();
-  //     console.log('The dialog was closed');
-  //   });
-  // }
-
   openInvoiceModal(invoiceData: any): void {
 
     const dialogRef = this.dialog.open(AfsinvoiceComponent, {
       width: '800px',
-      data: invoiceData, // Pass row data to the modal
+      data: invoiceData,
     });
 
-    // Use afterClosed() on dialogRef to handle modal close event
     dialogRef.afterClosed().subscribe(result => {
 
       this.name = this.name;
@@ -265,8 +219,8 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     this.pageIndex = 0;
     this.name = '';
     this.invoiceno = '';
-    this.startdate = ''; // Reset the start date
-    this.enddate = ''; // Reset the end date
+    this.startdate = '';
+    this.enddate = '';
     this.IsValidatedRecord = false;
     this.CsmTeam = null;
     this.IsSelfBill = false;
@@ -298,22 +252,17 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
 
   onDownloadInvoice(row: any) {
     const invoiceID = row.afsInvoiceStatus;
-    const isAdminorContractor = 1; //for UAT admin
+    const isAdminorContractor = 1;
     this.loading=true;
-    //debugger;
     this.apiService.generateInvoicePDF(invoiceID, isAdminorContractor,this.token).subscribe(
       (response: any) => {
-        debugger;
         if (response.succeeded) {
           const pdfPath = response.messages[0];  
           this.loading=false;
-          //debugger;
           if(pdfPath){
             console.log("pdfPath : "+ pdfPath)
             const fullPdfUrl = environment.API_UAT_Invoice_URL + `${pdfPath.replace(/\\/g, '/')}`;            
-            //window.open(fullPdfUrl, '_blank'); //old logic
 
-            //New logic to open PDF file
             const link = document.createElement('a');
             link.setAttribute('target', '_blank');
             link.setAttribute('href', fullPdfUrl);
@@ -323,7 +272,6 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
 
           }
           else{
-            //alert('Failed to generate the invoice.');
             this.loading=false;
           }
 
@@ -341,7 +289,6 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
     );
   }
 
-  // For checkbox logic when record is validated hide/unhide
   changeblur (event:any){
     this.IsAllRecord = false 
     this.selectedRecords= [] 
@@ -353,30 +300,24 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
 
   toggleAllRecords(event: any) {
     this.IsAllRecord = event.target.checked;
-    //console.log(this.IsAllRecord, "IsAllRecord status updated");
 
     setTimeout(() => {
         if (!this.allRecords || this.allRecords.length === 0) {
             console.warn(" No records found in allRecords!");  
-            this.selectedRecords = []; // Ensure it's an empty array instead of null
+            this.selectedRecords = [];
             return;  
         }
 
     if (this.IsAllRecord) {
-        // ✅ Select all visible rows (excluding errors)
         this.selectedRecords = this.allRecords
-            .filter(row => row.isErrorOnRow !== 1) // Exclude error rows
+            .filter(row => row.isErrorOnRow !== 1)
             .map(row => row.id);
     } else {
-        //  Unselect all
         this.selectedRecords = [];
     }
 
-    //  Ensure Angular detects changes
     this.selectedRecords = [...this.selectedRecords];
-
-    //console.log(" Selected Records:", this.selectedRecords);
-  }, 500); // Wait for 0.5 sec to ensure data is loaded
+  }, 500);
 }
 
 
@@ -384,20 +325,15 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
   
 onCheckboxChange(event: any, id: number) {
   if (event.target.checked) {
-      // Add to selected records
       this.selectedRecords.push(id);
   } else {
-      //  Remove from selected records
       this.selectedRecords = this.selectedRecords.filter(recordId => recordId !== id);
       
-      //  If any row is unchecked, uncheck "Is All Batch Records?"
       this.IsAllRecord = false;
   }
 
-  //  Ensure Angular detects changes
   this.selectedRecords = [...this.selectedRecords];
 
-  //console.log("Updated Selected Records:", this.selectedRecords);
 }
 
 
@@ -428,76 +364,8 @@ onCheckboxChange(event: any, id: number) {
     );
   }
 }
-  
-//   BatchValidate() {
-//     // Determine the records to send
-//     let recordsToSend: number[];
-//     console.log(this.selectedRecords,"akashs")
-//     if (this.IsAllRecord) {
-//         // If "Is All Record" is checked, send all valid records
-//         recordsToSend = this.allRecords
-//             .filter(row => row.isErrorOnRow !== 1) // Exclude rows with errors
-//             .map(row => row.id);
-//     } else {
-//         // Otherwise, send only manually selected records
-//         recordsToSend = this.selectedRecords;
-//     }
-
-//     if (recordsToSend.length === 0) {
-//         alert("Please select at least one record to validate.");
-//         return;
-//     }
-
-//     console.log(recordsToSend, "Records to be validated");
-
-//     const apiUrl = environment.API_BASE_URL + 'OCRAI/SelfBillBatchValidate';
-//     this.notificationService.setNotificationVisibility(true);
-    
-//     const headers = new HttpHeaders({
-//         Authorization: `Bearer ${this.token}`,
-//         'Content-Type': 'application/json',
-//     });
-
-//     const body = {
-//       selectedIds: recordsToSend, // ✅ Match backend's "SelectedIds"
-//       IsAllRecord: this.IsAllRecord // ✅ Match backend's "IsAllRecord"
-//   };
-  
-    
-//     // Send the records to be validated
-
-//     this.http.post<any>(apiUrl, body, { headers }).subscribe({
-//         next: (response) => {
-//             if (response && response.data && response.data.length > 0 && response.data[0].status === 4) {
-//                 this.notificationService.showNotification(
-//                     'Records have been validated and processed successfully.',
-//                     'INFORMATION',
-//                     'success',
-//                     () => {
-//                         console.log('OK clicked 4');
-//                         this.notificationService.setNotificationVisibility(false);
-//                         window.location.reload();
-//                     }
-//                 );
-//             }
-//         },
-//         error: (error) => {
-//             console.error("Error Response:", error);
-//             this.notificationService.showNotification(
-//                 'Unable to complete the action. Please retry.',
-//                 'ERROR',
-//                 'error',
-//                 () => {
-//                     console.log('Error callback');
-//                     this.notificationService.setNotificationVisibility(false);
-//                 }
-//             );
-//         },
-//     });
-// }
 
 BatchValidate() {
-  // ✅ Show warning popup if no records are selected
  this.loading = true;
 
   const apiUrl = environment.API_BASE_URL + 'OCRAI/SelfBillBatchValidate';
@@ -511,8 +379,8 @@ BatchValidate() {
   console.log("Headers:", headers);
 
   const body = {
-      selectedIds: this.selectedRecords, // ✅ Send selected record IDs
-      IsAllRecord: this.IsAllRecord      // ✅ Send boolean flag
+      selectedIds: this.selectedRecords,
+      IsAllRecord: this.IsAllRecord
   };
 
   console.log("Payload Sent to API:", body);
@@ -524,7 +392,6 @@ BatchValidate() {
         if (response?.data?.length > 0) {
           this.loading = false;
       
-          // Check if status is 4 and no status message exists
           if (response.data[0].status === 4 && response.data[0].statusMsg =="") {
               this.notificationService.showNotification(
                   'Records have been validated and processed successfully. The updates have been applied to those that meet the criteria.',
@@ -538,7 +405,6 @@ BatchValidate() {
               );
           }
       
-          // Check if there are issues with validation (non-empty statusMsg)
           if (response.data[0].statusMsg && response.data[0].statusMsg.length > 0) {
               this.notificationService.showNotification(
                   `Validation was successful for some records, but failed for records associated with ${response.data[0].statusMsg}. Please review and correct these records individually, then revalidate.`,
@@ -581,10 +447,6 @@ getCsmTeam() {
   this.http.post<any>(apiUrl, {}, { headers }).subscribe({
       next: (data) => {
         this.csmTeamarr = data.data.csmTeamList;     
-          // if (data && data.data && data.data.CsmTeamList && Array.isArray(data.data.CsmTeamList)) {
-          //   this.csmTeamarr = data.data.csmTeamList;     
-          //   console.log('this.csmTeamarr', this.csmTeamarr)         
-          // }
       },
       error: (error) => {
           console.error("Error Response:", error);        
@@ -595,11 +457,11 @@ openSelfBillPopup(): void {
   const dialogRef = this.dialog.open(AfsselfbillnotificationComponent, {
     width: '800px',
     height:'330px',
-    data: { token: this.token }  // Passing token here
+    data: { token: this.token }
   });
 
   dialogRef.afterClosed().subscribe(result => {
-    console.log('The dialog was closed, result:', result); // Receiving data back if needed
+    console.log('The dialog was closed, result:', result);
   });
 }
 }

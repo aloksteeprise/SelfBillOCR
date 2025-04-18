@@ -8,7 +8,6 @@
         <button type="button" class="btn-close buttonmargin_mobile" (click)="closeDialog()" aria-label="Close"></button>
       </div>
       <div class="modal-body d-flex flex-column flex-lg-row">
-        <!-- Left Side: Form with Scrollbar -->
         <div class="col-12 col-lg-6 overflow-auto pe-lg-4 mb-2 mb-lg-0"
           style="max-height: 480px; border-right: 5px solid #ddd;">
           <app-notification-popup
@@ -16,7 +15,6 @@
 
 
           <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)">
-            <!-- Contractor Name -->
             <div class="row mb-2 align-items-center">
               <label for="contractorname" class="col-sm-4 col-form-label fontsize14">Contractor Name:
               </label>
@@ -26,20 +24,6 @@
                    required autocomplete="off" appInputSanitizer="alphabet">
               </div>
             </div>
-
-
-            <!-- AFS Contractor DropDown -->
-            <!-- <div class="row mb-2 align-items-center">
-              <label for="afscontractor" class="col-sm-4 col-form-label fontsize14">AFS Contractor:</label>
-              <div class="col-sm-8">
-                <select class="form-select" id="AFSContractorDropdown" name="Contractor" (change)="filterContractData()"
-                  required [(ngModel)]="selectedContract">
-                  <option *ngFor="let option of contractorOptions" [ngValue]="option">
-                    {{ option.fullName }}
-                  </option>
-                </select>
-              </div>
-            </div> -->
 
             <div class="row mb-2 align-items-center">
               <label for="afscontractor" class="col-sm-4 col-form-label fontsize14">AFS Contractor: <span
@@ -57,19 +41,6 @@
                 </div>
               </div>
             </div>
-
-            <!-- AFS Contact -->
-            <!-- <div class="row mb-2 align-items-center">
-              <label for="afscontact" class="col-sm-4 col-form-label fontsize14">AFS Contract:</label>
-              <div class="col-sm-8">
-                <select class="form-select" id="AFSContactDropdown" name="afscontact" required
-                  [(ngModel)]="selectedFilteredContract">
-                  <option *ngFor="let option of filteredContractOptions" [value]="option.name">
-                    {{ option.name }}
-                  </option>
-                </select>
-              </div>
-            </div> -->
 
             <div class="row mb-2 align-items-center">
               <label for="afscontact" class="col-sm-4 col-form-label fontsize14">AFS Contract <span
@@ -92,7 +63,6 @@
               </div>
             </div>
 
-            <!-- First Name -->
             <div class="row mb-2 align-items-center">
               <label for="firstnamefor" class="col-sm-4 col-form-label fontsize14">First Name: <span
                   style="color: red;"> *</span></label>
@@ -106,7 +76,6 @@
               </div>
             </div>
 
-            <!-- Last Name -->
             <div class="row mb-2 align-items-center">
               <label for="lastnamefor" class="col-sm-4 col-form-label fontsize14">Last Name: <span style="color: red;">
                   *</span></label>
@@ -120,7 +89,6 @@
               </div>
             </div>
 
-            <!-- Start Date -->
             <div class="row mb-2 align-items-center">
               <label for="startDate" class="col-sm-4 col-form-label fontsize14">
                 Start Date: <span style="color: red;"> *</span>
@@ -135,8 +103,6 @@
               </div>
             </div>
 
-
-            <!-- End Date -->
             <div class="row mb-2 align-items-center">
               <label for="endDate" class="col-sm-4 col-form-label fontsize14">End Date: <span style="color: red;">
                   *</span></label>
@@ -145,14 +111,12 @@
                 [(ngModel)]="enddate" (input)="clearValidation('endDate')" 
                 [min]="startdate ? getDateRange().min : ''" 
                 [max]="startdate ? getDateRange().max : ''" />
-                <!-- Only show the div if there is an error -->
                 <div class="error-message" *ngIf="errors.endDate">
                   <small class="text-danger">{{ errors.endDate }}</small>
                 </div>
               </div>
             </div>
 
-            <!-- Total Amount -->
             <div class="row mb-2 align-items-center">
               <label for="TotalAmount" class="col-sm-4 col-form-label fontsize14">Total Amount:</label>
               <div class="col-sm-8">
@@ -167,7 +131,6 @@
                 </div>
               </div>
             </div>
-            <!-- Invoice No -->
             <div class="row mb-2 align-items-center">
               <label for="invoiceNumber" class="col-sm-4 col-form-label fontsize14">Invoice no:</label>
               <div class="col-sm-8">
@@ -189,10 +152,6 @@
             <strong class="" style="font-size: 12px; visibility: hidden;"  [ngClass]="{contract_CtcCode}" >
               Contractor ID :- {{ contract_CtcCode }}
             </strong>
-            
-
-
-
 
             <input type="hidden" id="groupNewId" name="groupNewId" [(ngModel)]="groupNewId">
             <input type="hidden" id="gridCtcCode" name="gridCtcCode" [(ngModel)]="gridCtcCode">
@@ -264,8 +223,6 @@
         ></i>
       </div>
     </a>    
-
-
           <div class="image-scroll-container overflow-auto"
             [ngStyle]="{ 'max-width': imageWidth + 'px', 'max-height': imageHeight + 'px', 'border': '2px solid #ddd' }">
 
@@ -281,14 +238,9 @@
       </div>
       <div class="col-12 phoneresponsive">
         <div class="row">
-          <!-- Error Message with more space on larger screens -->
           <div class="col-12 col-lg-4">
-            <!-- <small class="text-danger p-2" *ngIf="errors.dateComparison">
-              {{ errors.dateComparison }}
-            </small> -->
           </div>
 
-          <!-- Button on the right -->
           <div class="col-12 col-lg-6 overflow-auto mb-3 mb-lg-0 d-flex justify-content-start" *ngIf="!isRecordValidated">
 
             <button (click)="onPrevious()"  class="btn btn-outline-dark mt-3 mb-3" style="margin-right: 10px;">Previous</button>
@@ -298,12 +250,6 @@
             <button (click)="onDelete()" class="btn btn-outline-dark mt-3 mb-3" style="margin-left: 10px;">Delete</button>
             <app-confirmation-pop style="position: absolute; top: 0; left: 0;"></app-confirmation-pop>
           </div>
-
-          <!-- <div class="col-12 col-lg-3 overflow-auto  mb-3 mb-lg-0 d-flex justify-content-end">
-            <i class="fa fa-download" style="font-size:24px; "></i>
-
-          </div> -->
-
         </div>
       </div>
     </div>
