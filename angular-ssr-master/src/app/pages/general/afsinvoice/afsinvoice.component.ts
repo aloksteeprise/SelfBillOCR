@@ -463,7 +463,7 @@ export class AfsinvoiceComponent implements OnInit {
       IsSkip: true,
     };
 
-    console.log(formData, "Akssdj")
+  
 
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.token}`,
@@ -765,7 +765,7 @@ export class AfsinvoiceComponent implements OnInit {
                 () => {
 
 
-                  console.log('OK clicked 5');
+                  console.log('OK clicked 6');
                   console.log('response' + response.data.resultTable.length);
                   console.log(response);
                   this.notificationService.setNotificationVisibility(false);
@@ -782,7 +782,7 @@ export class AfsinvoiceComponent implements OnInit {
                 () => {
 
 
-                  console.log('OK clicked 5');
+                  console.log('OK clicked 7');
                   console.log('response' + response.data.resultTable.length);
                   console.log(response);
                   this.notificationService.setNotificationVisibility(false);
@@ -800,7 +800,7 @@ export class AfsinvoiceComponent implements OnInit {
                 () => {
 
 
-                  console.log('OK clicked 5');
+                  console.log('OK clicked 8');
                   console.log('response' + response.data.resultTable.length);
                   console.log(response);
                   this.notificationService.setNotificationVisibility(false);
@@ -852,7 +852,7 @@ export class AfsinvoiceComponent implements OnInit {
     this.enddate = data.EndDate || '';
     this.totalAmount = data.TotalAmount?.includes(' ') ? data.TotalAmount.split(' ')[0] : data.TotalAmount?.trim() || '';
     this.invoiceNumber = data.SelfBillInvoiceNo || '';
-    console.log(this.invoiceNumber, "jjscnjhsbc")
+    
 
     this.invoiceDate = data.SelfBillInvoiceDate || '';
     this.contract_CtcCode = data.Contract_CtcCode || '';
