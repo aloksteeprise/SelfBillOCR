@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PaginationResponse } from '../bungeinvoicing/bungeinvoicing.model';
-import { environment } from '../../constant/api-constants'
+import { environment } from '../constant/api-constants'
 
 @Injectable({
   providedIn: 'root',

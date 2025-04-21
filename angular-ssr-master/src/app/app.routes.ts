@@ -16,7 +16,7 @@ import { RemittanceComponent } from './pages/general/remittance/remittance.compo
 import {TransactionFormComponent} from './pages/general/transaction-form/transaction-form.component'
 import {ManualAllocationPopupComponent} from './pages/general/manual-allocation-popup/manual-allocation-popup.component'
 import {RemittanceAllocationComponent} from  './pages/general/remittance-allocation/remittance-allocation.component'
-import { BungeinvoicingComponent } from './pages/general/bunge-invoice/bungeinvoicing/bungeinvoicing.component';
+import { BungeinvoicingComponent } from './pages/general/bungeinvoicing/bungeinvoicing.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -104,7 +104,7 @@ export const routes: Routes = [
   },
   {
     path: 'bungeinvoicing',component: BungeinvoicingComponent,
-    loadChildren: () => import('./pages/general/bunge-invoice/bungeinvoicing/bungeinvoicing.module').then(mod => mod.BungeinvoicingModule)
+    loadChildren: () => import('./pages/general/bungeinvoicing/bungeinvoicing.module').then(mod => mod.BungeinvoicingModule)
   },
 
   { path: '**', component: NotFoundComponent }

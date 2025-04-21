@@ -212,11 +212,6 @@ input[type=number] {
   max-height: 100%; /* Limit container height */
 }
 
-::ng-deep .ngxImageZoomContainer {
-  /* height: 470px !important; */
-  /* display: block; */
-}
-
 ::ng-deep .ngxImageZoomFullContainer.ngxImageZoomLensEnabled {
   border: 2px solid #7393B3 !important; 
   cursor: crosshair !important; 
