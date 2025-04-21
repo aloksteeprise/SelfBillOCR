@@ -264,7 +264,6 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
   filterContractData(): void {
     this.filteredContractOptions = [];
     this.selectedFilteredContract = 'null';
-    this.btnConsolidateVisible = true;
     
     if (this.allContractor) {
       this.conCode = this.conCode;
@@ -435,6 +434,7 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
   changeblur(event: any) {
     this.isAllRecord = false
     this.selectedRecords = []
+    this.btnConsolidateVisible = false;
     if (!this.IsValidatedRecord && this.isMovedInOriginaldb) {
       this.hideCheckBoxes = false;
 
@@ -454,8 +454,10 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
         this.selectedRecords = this.allRecords
           .filter(row => row.isErrorOnRow !== 1)
           .map(row => row.id);
+          this.btnConsolidateVisible = true;
       } else {
         this.selectedRecords = [];
+        this.btnConsolidateVisible = false;
       }
 
       this.selectedRecords = [...this.selectedRecords];
@@ -465,9 +467,12 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
   onCheckboxChange(event: any, id: number) {
     if (event.target.checked) {
       this.selectedRecords.push(id);
+      this.btnConsolidateVisible = true;
     } else {
       this.selectedRecords = this.selectedRecords.filter(recordId => recordId !== id);
-
+      if(this.selectedRecords.length == 0){
+        this.btnConsolidateVisible = false;
+      }
       this.isAllRecord = false;
     }
 

@@ -38,7 +38,7 @@
         </div>
       </div>
 
-      <div class="row g-2 ">
+      <div class="row g-2 " *ngIf="btnConsolidateVisible">
         <div class=" col-6 col-sm-2 marginleft20">
           <label class="fontweight500">AFS Contractor:</label>
           <div class="position-relative">
@@ -91,19 +91,18 @@
               {{ curr.curCode }}
             </option>
           </select>
-        </div>
-             
-        <div class="col-6 col-sm-2 marginleft20 " style="padding-top: 22px;;">
-          <button type="submit" class="btn btn-dark">Search</button>
-          <button type="button" (click)="ClearSearch()" class="btn btn-outline-dark"
-            style="margin-left: 12px; color: white;">Clear</button>
+        </div>     
+        <div class="col-6 col-sm-2 marginleft20 " style="padding-top: 22px;">
+          <button type="button" class="btn btn-warning" (click)="openGenerateConsolidateInvoiceConfirmationBox()"
+            style="color: #312a2a;">Consolidated Invoice (Bunge)</button>
         </div>
       </div>
 
-      <div class="row g-2 " style="display: flex; justify-content: end; margin-left: 80px; padding-bottom: 5px;" *ngIf="btnConsolidateVisible">
-        <div class="col-6 col-sm-3 marginleft20 ">
-          <button type="button" class="btn btn-warning" (click)="openGenerateConsolidateInvoiceConfirmationBox()"
-            style="margin-left: 12px; color: #312a2a;">Consolidated Invoice (Bunge)</button>
+      <div class="row g-2 " style="display: flex; justify-content: end; margin-left: 80px; padding-bottom: 5px;">       
+        <div class="col-6 col-sm-2 marginleft20">
+          <button type="submit" class="btn btn-dark">Search</button>
+          <button type="button" (click)="ClearSearch()" class="btn btn-outline-dark"
+            style="margin-left: 12px; color: white;">Clear</button>
         </div>
       </div>
     </form>
