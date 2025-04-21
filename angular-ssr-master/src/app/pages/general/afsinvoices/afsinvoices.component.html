@@ -145,11 +145,11 @@
 
         <ng-container matColumnDef="errorMessage">
           <th mat-header-cell *matHeaderCellDef class="coloredwhite"> Read Status </th>
-          <td mat-cell *matCellDef="let row" style="width: 130px;">
+          <td mat-cell *matCellDef="let row" style="width: 150px;">
             <ng-container *ngIf="row.isErrorOnRow; else okTemplate">
               <i class="fa-solid fa-triangle-exclamation"></i>
               {{ row.errorMessage }}
-              <span *ngIf="row.errorID ==0">Timeperiod is not specified.</span>
+              <span *ngIf="row.errorID == 0">Timeperiod is not specified.</span>
             </ng-container>
             <ng-template #okTemplate>
               <i class="fa-solid fa-circle-check"></i>
