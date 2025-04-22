@@ -52,7 +52,7 @@ export class AfsinvoiceComponent implements OnInit {
   token: string = '';
   contract_CtcCode: string = '';
   isRecordValidated: boolean = false;
-
+  filterRecords: any[] = [];
 
   constructor(
     private dialogRef: MatDialogRef<AfsinvoiceComponent>,
@@ -62,6 +62,9 @@ export class AfsinvoiceComponent implements OnInit {
     private downloadPdfService: DownloadPdfService
   ) {
     this.setImagePath(data.invoiceFilePath, data.invoiceFileName);
+    if (data.filterRecords) {
+      this.filterRecords = data.filterRecords;
+    }
   }
 
   setImagePath(filePath: string, pdfFile: string): void {
@@ -86,8 +89,6 @@ export class AfsinvoiceComponent implements OnInit {
     console.log('Full pdfFileName  Path:', this.pdfFileName);
   }
 
-
-
   ngOnInit(): void {
 
     const storedToken = localStorage.getItem('token');
@@ -103,34 +104,38 @@ export class AfsinvoiceComponent implements OnInit {
   }
 
   initializeFormData(): void {
-    if (this.data) {
-      console.log(this.data);
+    if (this.data && this.data.invoiceData) {
+      const invData = this.data.invoiceData;
 
-      this.id = this.data.id;
-      this.conCode = this.data.contract_CtcContractor || '';
+      this.id = invData.id;
+      this.conCode = invData.contract_CtcContractor || '';
 
-      this.contractorname = this.data.contractorName || '';
-      this.afscontractor = this.data.afscontractor || '';
-      this.firstnamefor = this.data.cFirstName || '';
-      this.lastnamefor = this.data.cLastName || '';
-      this.startdate = this.data.startDate || '';
-      this.enddate = this.data.endDate || '';
+      this.contractorname = invData.contractorName || '';
+      this.afscontractor = invData.afscontractor || '';
+      this.firstnamefor = invData.cFirstName || '';
+      this.lastnamefor = invData.cLastName || '';
+      this.startdate = invData.startDate || '';
+      this.enddate = invData.endDate || '';
 
-      this.IsContractIsActiveOrNot = this.data.errorMessage;
-      console.log(this.IsContractIsActiveOrNot, "SAaaskansa")
-      this.currencytype = this.data.currencyType || '';
+      this.IsContractIsActiveOrNot = invData.errorMessage;
+      this.currencytype = invData.currencyType || '';
 
-      this.totalAmount = this.data.totalAmount.includes(' ') ? this.data.totalAmount.split(' ')[0] : this.data.totalAmount.trim();
-      this.invoiceNumber = this.data.selfBillInvoiceNo || '';
-      this.invoiceDate = this.data.selfBillInvoiceDate || '';
-      this.groupNewId = this.data.grouP_NEWID || '';
-      this.gridCtcCode = this.data.contract_CtcCode || 0;
-      this.contract_CtcCode = this.data.contract_CtcCode || '';
-      this.isRecordValidated = this.data.isRecordValidated || '';
+      this.totalAmount = invData.totalAmount
+        ? (invData.totalAmount.includes(' ')
+          ? invData.totalAmount.split(' ')[0]
+          : invData.totalAmount.trim())
+        : '';
+      this.invoiceNumber = invData.selfBillInvoiceNo || '';
+      this.invoiceDate = invData.selfBillInvoiceDate || '';
+      this.groupNewId = invData.grouP_NEWID || '';
+      this.gridCtcCode = invData.contract_CtcCode || 0;
+      this.contract_CtcCode = invData.contract_CtcCode || '';
+      this.isRecordValidated = invData.isRecordValidated || '';
 
-      console.log(this.ctcCode);
+      console.log(this.conCode);
     }
   }
+
 
   fetchContractorOptions(): void {
 
@@ -151,7 +156,6 @@ export class AfsinvoiceComponent implements OnInit {
     };
 
     console.log(body, "let see the full name")
-    debugger
 
     this.http.post<any>(apiUrl, body, { headers }).subscribe(
       (response) => {
@@ -305,21 +309,37 @@ export class AfsinvoiceComponent implements OnInit {
         this.loading = false;
 
         if (response.data.resultTable.length > 0) {
-          const previousRecord = response.data.resultTable[0];
+          const currentRecordId = this.id;
+          this.filterRecords = this.filterRecords.map((record: any) => convertKeysToPascalCase(record));
+          this.filterRecords = this.filterRecords.map((record: any) => {
+            if (record.Id === currentRecordId) {
+              return {
+                ...record,
+                Id: formData.RowId,
+                CFirstName: formData.FirstName,
+                CLastName: formData.LastName,
+                StartDate: formData.StartDate,
+                EndDate: formData.EndDate,
+                GrouP_NEWID: formData.GroupNewId
+            };
+            }
+            return record;
+        });
+          const currentIndex = this.filterRecords.findIndex((record: any) => record.Id === currentRecordId);
 
-          if (previousRecord.Message === 'No previous record') {
+          if (currentIndex > 0) {
+            const previousRecord = this.filterRecords[currentIndex - 1];
+            this.fetchNextRecord(previousRecord);
+            this.notificationService.setNotificationVisibility(false);
+          } else {
             this.notificationService.showNotification(
-              'There are no previous record avaiable. Please Skip action.',
+              'There are no previous records available. Please use the Skip action.',
               'INFO',
               'info',
               () => {
                 this.notificationService.setNotificationVisibility(false);
               }
             );
-          } else {
-
-            this.fetchNextRecord(previousRecord);
-            this.notificationService.setNotificationVisibility(false);
           }
         } else {
           this.notificationService.showNotification(
@@ -347,7 +367,6 @@ export class AfsinvoiceComponent implements OnInit {
     });
 
   }
-
 
   onDelete() {
     this.popupComponent.openPopup(
@@ -382,19 +401,46 @@ export class AfsinvoiceComponent implements OnInit {
           next: (response) => {
             this.loading = false;
 
-            if (response?.data?.resultTable?.length > 0) {
-              const previousRecord = response.data.resultTable[0];
-              this.fetchNextRecord(previousRecord);
-            }
+            if (response?.data?.resultTable?.length > 0){
+              const currentRecordId = this.id;
+              this.filterRecords = this.filterRecords.map((record: any) => convertKeysToPascalCase(record));
+              const currentIndex = this.filterRecords.findIndex((record: any) => record.Id === currentRecordId);
 
-            this.notificationService.showNotification(
-              'Record has been successfully deleted. Retrieving the next record.',
-              'SUCCESS',
-              'success',
-              () => {
-                this.notificationService.setNotificationVisibility(false);
+              if (currentIndex > -1 && currentIndex + 1 < this.filterRecords.length) {
+                const nextRecord = this.filterRecords[currentIndex + 1];
+                this.fetchNextRecord(nextRecord);
+                this.filterRecords = this.filterRecords.filter((record: any) => record.Id !== currentRecordId);
+                this.notificationService.showNotification(
+                  'Record has been successfully deleted. Retrieving the next record.',
+                  'SUCCESS',
+                  'success',
+                  () => {
+                    this.notificationService.setNotificationVisibility(false);
+                  }
+                );
               }
-            );
+              else {
+                this.notificationService.showNotification(
+                  'No further records available.',
+                  'INFO',
+                  'info',
+                  () => {
+                    this.dialogRef.close();
+                    this.notificationService.setNotificationVisibility(false);
+                  }
+                );
+              }         
+            }else {
+              this.notificationService.showNotification(
+                'No more records to Delete.',
+                'INFO',
+                'info',
+                () => {
+                  this.dialogRef.close();
+                  this.notificationService.setNotificationVisibility(false);
+                }
+              );
+            }
           },
           error: (error) => {
             this.loading = false;
@@ -441,6 +487,7 @@ export class AfsinvoiceComponent implements OnInit {
       ) {
         errors.totalAmount = 'Total Amount should be greater than 0.';
         isValid = false;
+        this.loading = false
       }
 
       if (!isValid) {
@@ -462,9 +509,7 @@ export class AfsinvoiceComponent implements OnInit {
       GroupNewId: this.groupNewId,
       IsSkip: true,
     };
-
   
-
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.token}`,
       'Content-Type': 'application/json',
@@ -475,9 +520,39 @@ export class AfsinvoiceComponent implements OnInit {
       next: (response) => {
         this.loading = false;
         if (response.data.resultTable.length > 0) {
-          const nextRecord = response.data.resultTable[0];
+          const currentRecordId = this.id;
+          this.filterRecords = this.filterRecords.map((record: any) => convertKeysToPascalCase(record));
+          this.filterRecords = this.filterRecords.map((record: any) => {
+            if (record.Id === currentRecordId) {
+                return {
+                    ...record,
+                    Id: formData.RowId,
+                    CFirstName: formData.FirstName,
+                    CLastName: formData.LastName,
+                    StartDate: formData.StartDate,
+                    EndDate: formData.EndDate,
+                    TotalAmount: formData.totalAmount,
+                    SelfBillInvoiceNo: formData.invoiceNo,
+                    SelfBillInvoiceDate: formData.invoiceDate,
+                    Contract_CtcCode: formData.CtcCode,
+                    Contract_CtcContractor: formData.CtcContractor,
+                    GrouP_NEWID: formData.GroupNewId,
+                    ContractorName : formData.FirstName + " " + formData.LastName,
+                    afscontractor: this.afscontractor
+                };
+            }
+            return record;
+        });
+          const currentIndex = this.filterRecords.findIndex((record: any) => record.Id === currentRecordId);
 
-          if (nextRecord.Message === 'All rows complete') {
+          if (currentIndex > -1 && currentIndex + 1 < this.filterRecords.length) {
+
+            const nextRecord = this.filterRecords[currentIndex + 1];
+
+            this.fetchNextRecord(nextRecord);
+            this.notificationService.setNotificationVisibility(false);
+
+          } else {
             this.notificationService.showNotification(
               'All records have been processed.',
               'INFORMATION',
@@ -487,11 +562,8 @@ export class AfsinvoiceComponent implements OnInit {
                 this.notificationService.setNotificationVisibility(false);
               }
             );
-          } else {
-            this.fetchNextRecord(nextRecord);
-            this.notificationService.setNotificationVisibility(false);
-
           }
+
         } else {
           this.notificationService.showNotification(
             'No more records to process.',
@@ -629,6 +701,16 @@ export class AfsinvoiceComponent implements OnInit {
       const apiUrl = environment.API_BASE_URL + 'OCRAI/ValidateAndMapToContractorContract';
       this.http.post<any>(apiUrl, formData, { headers }).subscribe({
         next: (response) => {
+          
+          const currentRecordId = this.id;
+          let nextRecord: any = null;
+          this.filterRecords = this.filterRecords.map((record: any) => convertKeysToPascalCase(record));
+          const currentIndex = this.filterRecords.findIndex((record: any) => record.Id === currentRecordId);
+          if (currentIndex > -1 && currentIndex + 1 < this.filterRecords.length) {
+
+            nextRecord = this.filterRecords[currentIndex + 1];
+          }
+
           switch (response.data.validationResult) {
             case -1:
 
@@ -656,15 +738,16 @@ export class AfsinvoiceComponent implements OnInit {
                   console.log('OK clicked 1');
                   console.log('response');
                   console.log(response);
-                  if (response.data.resultTable.length > 0) {
-                    this.fetchNextRecord(response.data.resultTable[0]);
+                  if (nextRecord) {
+                    this.fetchNextRecord(nextRecord);
                   }
                 }
               );
               break;
 
             case 2:
-              this.loading = false
+              this.loading = false;
+              this.filterRecords = this.filterRecords.filter((record: any) => record.Id !== currentRecordId);
               this.notificationService.showNotification(
                 'The records have been successfully validated and moved.',
                 'INFORMATION',
@@ -673,8 +756,9 @@ export class AfsinvoiceComponent implements OnInit {
                   console.log('OK clicked 2');
                   console.log('response');
                   console.log(response);
-                  if (response.data.resultTable.length > 0) {
-                    this.fetchNextRecord(response.data.resultTable[0]);
+                  if (nextRecord) {
+                    this.filterRecords = this.filterRecords.filter((record: any) => record.Id !== currentRecordId);
+                    this.fetchNextRecord(nextRecord);
                   }
                 }
               );
@@ -701,20 +785,19 @@ export class AfsinvoiceComponent implements OnInit {
               this.loading = false;
 
               if (response.data.resultTable.length > 0) {
-                const nextRecord = response.data.resultTable[0];
+                const recordFromDb = response.data.resultTable[0];
 
-                if (nextRecord.Message === 'All rows complete') {
-                  this.notificationService.showNotification(
-                    'The records have been successfully validated and moved. And all records have been processed.',
-                    'INFORMATION',
-                    'success',
-                    () => {
-                      this.dialogRef.close();
-                      this.notificationService.setNotificationVisibility(false);
-                    }
-                  );
-                } else {
-                  debugger
+                if (recordFromDb.Message === 'All rows complete') {
+                    this.notificationService.showNotification(
+                      'The records have been successfully validated and moved. And all records have been processed.',
+                      'INFORMATION',
+                      'success',
+                      () => {
+                        this.dialogRef.close();
+                        this.notificationService.setNotificationVisibility(false);
+                      }
+                    );
+                  } else {
                   this.notificationService.showNotification(
                     'The records have been successfully validated and moved.',
                     'INFORMATION',
@@ -722,9 +805,8 @@ export class AfsinvoiceComponent implements OnInit {
                     () => {
                       console.log('OK clicked 4');
                       console.log('response' + response.data.resultTable.length);
-
                       console.log(response);
-
+                      this.filterRecords = this.filterRecords.filter((record: any) => record.Id !== currentRecordId);
                       this.fetchNextRecord(nextRecord);
 
                       this.notificationService.setNotificationVisibility(false);
@@ -840,9 +922,8 @@ export class AfsinvoiceComponent implements OnInit {
   }
 
   fetchNextRecord(data: any): void {
-    console.log("this.id" + this.id);
-
-    this.id = data.ID;
+debugger
+    this.id = data.Id;
     this.conCode = data.Contract_CtcContractor || '';
     this.contractorname = data.ContractorName || '';
     this.afscontractor = data.afscontractor || '';
@@ -857,7 +938,7 @@ export class AfsinvoiceComponent implements OnInit {
     this.invoiceDate = data.SelfBillInvoiceDate || '';
     this.contract_CtcCode = data.Contract_CtcCode || '';
 
-    this.groupNewId = data.GROUP_NEWID || '';
+    this.groupNewId = data.GrouP_NEWID || '';
     this.gridCtcCode = data.Contract_CtcCode || 0;
     this.currencytype = data.CurrencyType || '';
     this.imageName = data.InvoiceFilePath;
@@ -945,4 +1026,15 @@ export class AfsinvoiceComponent implements OnInit {
     this.loading = false;
   }
 
+}
+
+function convertKeysToPascalCase(obj: any): any {
+  const newObj: any = {};
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      const pascalKey = key.charAt(0).toUpperCase() + key.slice(1);
+      newObj[pascalKey] = obj[key];
+    }
+  }
+  return newObj;
 }

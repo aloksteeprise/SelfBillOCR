@@ -182,7 +182,10 @@ export class AfsInvoicesComponent implements OnInit, AfterViewInit {
 
     const dialogRef = this.dialog.open(AfsinvoiceComponent, {
       width: '800px',
-      data: invoiceData,
+      data: { 
+        invoiceData: invoiceData, 
+        filterRecords: this.allRecords  // Pass your filtered array here!
+      },
     });
 
     dialogRef.afterClosed().subscribe(result => {
