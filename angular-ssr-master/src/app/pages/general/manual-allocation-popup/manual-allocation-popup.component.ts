@@ -16,6 +16,8 @@ export class ManualAllocationPopupComponent implements OnInit{
 
   @ViewChild('myForm') myForm: any;
   currency: string = '';
+  internalCompany : string = '';
+  bankAccount : string = '';
   bankPaymentDate : string = '';
   amountPaid : string = '';
   invoiceNo : string = '';
@@ -29,7 +31,8 @@ export class ManualAllocationPopupComponent implements OnInit{
     @Inject(MAT_DIALOG_DATA) public data: any,
     private http: HttpClient,
   ) {
-
+    this.internalCompany = data.company;
+    this.bankAccount = data.bankAccount;
     this.currency = this.extractCurrency(data.bankAccount);
     this.fundSource = data.bankAccount + ' | ' + data.company;
   }
@@ -124,11 +127,13 @@ export class ManualAllocationPopupComponent implements OnInit{
     this.errors = errors;
   
     const formData = {
+      internalCompany : this.internalCompany,
+      bankAccount : this.bankAccount,
       bankPaymentDate: this.bankPaymentDate,
       currency: this.currency,
       amountPaid: this.amountPaid,
       invoiceNo: this.invoiceNo,
-      fundSource: this.fundSource,
+      fundSource: this.internalCompany,
       fundDescription: this.fundDescription
     };
     console.log('Submitted Data:', formData);
