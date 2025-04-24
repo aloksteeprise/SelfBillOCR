@@ -292,6 +292,11 @@ export class AfsinvoiceComponent implements OnInit {
       LastName: this.lastnamefor,
       StartDate: this.startdate,
       EndDate: this.enddate,
+      totalAmount: this.totalAmount,
+      invoiceNo: this.invoiceNumber,
+      invoiceDate: this.invoiceDate,
+      CtcCode: this.contract_CtcCode,
+      CtcContractor: this.conCode,
       GroupNewId: this.groupNewId,
       IsSkip: false,
       IsPrevious: true,
@@ -380,12 +385,12 @@ export class AfsinvoiceComponent implements OnInit {
         this.notificationService.setNotificationVisibility(false);
 
         const formData = {
-          RowId: this.id,
-          FirstName: this.firstnamefor,
-          LastName: this.lastnamefor,
-          StartDate: this.startdate,
-          EndDate: this.enddate,
-          GroupNewId: this.groupNewId,
+           RowId: this.id,
+          // FirstName: this.firstnamefor,
+          // LastName: this.lastnamefor,
+          // StartDate: this.startdate,
+          // EndDate: this.enddate,
+          // GroupNewId: this.groupNewId,
           IsSkip: false,
           IsPrevious: false,
           IsDelete: true
@@ -482,13 +487,15 @@ export class AfsinvoiceComponent implements OnInit {
 
       if (
         !this.totalAmount ||
-        this.totalAmount.trim() == '' ||
-        Number(this.totalAmount) == 0
+        this.totalAmount.trim() === '' ||
+        isNaN(Number(this.totalAmount)) ||  // catch non-numeric inputs like "0.0.0.0"
+        Number(this.totalAmount) <= 0       // ensure positive numeric value
       ) {
-        errors.totalAmount = 'Total Amount should be greater than 0.';
+        errors.totalAmount = 'Total Amount should be a valid number greater than 0.';
         isValid = false;
-        this.loading = false
+        this.loading = false;
       }
+      
 
       if (!isValid) {
         return;
