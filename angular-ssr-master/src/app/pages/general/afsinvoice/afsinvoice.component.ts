@@ -300,7 +300,7 @@ export class AfsinvoiceComponent implements OnInit {
       GroupNewId: this.groupNewId,
       IsSkip: false,
       IsPrevious: true,
-      IsDelete: false,
+      IsDelete: false
     };
 
     const headers = new HttpHeaders({
@@ -320,12 +320,19 @@ export class AfsinvoiceComponent implements OnInit {
             if (record.Id === currentRecordId) {
               return {
                 ...record,
-                Id: formData.RowId,
-                CFirstName: formData.FirstName,
-                CLastName: formData.LastName,
-                StartDate: formData.StartDate,
-                EndDate: formData.EndDate,
-                GrouP_NEWID: formData.GroupNewId
+                    Id: formData.RowId,
+                    CFirstName: formData.FirstName,
+                    CLastName: formData.LastName,
+                    StartDate: formData.StartDate,
+                    EndDate: formData.EndDate,
+                    TotalAmount: formData.totalAmount,
+                    SelfBillInvoiceNo: formData.invoiceNo,
+                    SelfBillInvoiceDate: formData.invoiceDate,
+                    Contract_CtcCode: formData.CtcCode,
+                    Contract_CtcContractor: formData.CtcContractor,
+                    GrouP_NEWID: formData.GroupNewId,
+                    ContractorName : formData.FirstName + " " + formData.LastName,
+                    afscontractor: this.afscontractor
             };
             }
             return record;
@@ -488,14 +495,40 @@ export class AfsinvoiceComponent implements OnInit {
       if (
         !this.totalAmount ||
         this.totalAmount.trim() === '' ||
-        isNaN(Number(this.totalAmount)) ||  // catch non-numeric inputs like "0.0.0.0"
-        Number(this.totalAmount) <= 0       // ensure positive numeric value
+        isNaN(Number(this.totalAmount)) ||
+        Number(this.totalAmount) <= 0
       ) {
         errors.totalAmount = 'Total Amount should be a valid number greater than 0.';
         isValid = false;
-        this.loading = false;
+        this.loading = false
       }
-      
+
+    const startDate = SharedUtils.validateDate(this.startdate, 'Start Date', true);
+    if (startDate) {
+      isValid = false;
+      errors.startDate = startDate;
+    }
+
+    const endDate = SharedUtils.validateDate(this.enddate, 'End Date', true);
+    if (endDate) {
+      isValid = false;
+      errors.endDate = endDate;
+    }
+    if (this.startdate && this.enddate) {
+      const startDateObj = new Date(this.startdate);
+      const endDateObj = new Date(this.enddate);
+
+      if (startDateObj > endDateObj) {
+        errors.dateComparison = 'Start Date cannot be greater than End Date.';
+        isValid = false;
+      }
+    }
+    
+    const invoiceDate = SharedUtils.validateDate(this.invoiceDate, 'Invoice Date', false);
+    if (invoiceDate) {
+      isValid = false;
+      errors.invoiceDate = invoiceDate;
+    }
 
       if (!isValid) {
         return;
@@ -515,6 +548,8 @@ export class AfsinvoiceComponent implements OnInit {
       CtcContractor: this.conCode,
       GroupNewId: this.groupNewId,
       IsSkip: true,
+      IsPrevious: false,
+      IsDelete: false
     };
   
     const headers = new HttpHeaders({
@@ -624,11 +659,13 @@ export class AfsinvoiceComponent implements OnInit {
     }
     if (
       !this.totalAmount ||
-      this.totalAmount.trim() == '' ||
-      Number(this.totalAmount) == 0
+      this.totalAmount.trim() === '' ||
+      isNaN(Number(this.totalAmount)) ||
+      Number(this.totalAmount) <= 0
     ) {
-      errors.totalAmount = 'Total Amount should be greater than 0.';
+      errors.totalAmount = 'Total Amount should be a valid number greater than 0.';
       isValid = false;
+      this.loading = false
     }
 
     const startDate = SharedUtils.validateDate(this.startdate, 'Start Date', true);
@@ -683,17 +720,22 @@ export class AfsinvoiceComponent implements OnInit {
     this.errors = errors;
 
     if (isValid) {
+
       const formData = {
         RowId: this.id,
         FirstName: this.firstnamefor,
         LastName: this.lastnamefor,
         StartDate: this.startdate,
         EndDate: this.enddate,
-        GroupNewId: this.groupNewId,
-        IsSkip: false,
         totalAmount: this.totalAmount,
         invoiceNo: this.invoiceNumber,
         invoiceDate: this.invoiceDate,
+        CtcCode: this.contract_CtcCode,
+        CtcContractor: this.conCode,
+        GroupNewId: this.groupNewId,
+        IsSkip: false,
+        IsPrevious: false,
+        IsDelete: false
       };
 
       this.loading = true
@@ -929,7 +971,6 @@ export class AfsinvoiceComponent implements OnInit {
   }
 
   fetchNextRecord(data: any): void {
-debugger
     this.id = data.Id;
     this.conCode = data.Contract_CtcContractor || '';
     this.contractorname = data.ContractorName || '';

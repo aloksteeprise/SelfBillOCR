@@ -250,7 +250,6 @@ if (isPlatformBrowser(this.platformId)) {
   validateRecord(mvtKey: number): void {
     console.log('Validating record with ID:', mvtKey);
   this.loading = true
-  debugger
     if (mvtKey === null || mvtKey === undefined || mvtKey === 0) {
       console.error('Invalid ID:', mvtKey);
       return;  // Stop execution if the ID is invalid
@@ -297,7 +296,6 @@ if (isPlatformBrowser(this.platformId)) {
     this.loadInvoices();
   }
   openConfirmationBox() {
-    debugger;
     this.popupComponent.openPopup(
       'Confirmation',
       'Are you sure that you want to proceed?',

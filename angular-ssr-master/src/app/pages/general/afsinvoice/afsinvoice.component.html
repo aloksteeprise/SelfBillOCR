@@ -121,7 +121,7 @@
               <div class="col-sm-8">
                 <div class="input-group">
                   <span class="input-group-text " style="font-size: 12px;">{{currencytype}}</span>
-                  <input type="text" class="form-control" id="TotalAmount" name="totalAmount" [(ngModel)]="totalAmount"
+                  <input type="text" class="form-control" id="TotalAmount" name="totalAmount" [(ngModel)]="totalAmount" (input)="clearValidation('totalAmount')"
                     required maxlength="50" appInputSanitizer="number" autocomplete="off">
                     
                 </div>
@@ -133,7 +133,7 @@
             <div class="row mb-2 align-items-center">
               <label for="invoiceNumber" class="col-sm-4 col-form-label fontsize14">Invoice no:</label>
               <div class="col-sm-8">
-                <input type="text" class="form-control" id="invoiceNumber" name="invoiceNumber" [(ngModel)]="invoiceNumber"
+                <input type="text" class="form-control" id="invoiceNumber" name="invoiceNumber" [(ngModel)]="invoiceNumber" (input)="clearValidation('invoiceNumber')"
                   maxlength="500" required appInputSanitizer="alphanumeric" autocomplete="off">
               </div>
             </div>
@@ -141,7 +141,7 @@
               <label for="Invoicedate" class="col-sm-4 col-form-label fontsize14">Invoice Date:</label>
               <div class="col-sm-8">
                 <input type="date" class="form-control" id="Invoicedate" name="invoiceDate" required
-                  [(ngModel)]="invoiceDate">
+                  [(ngModel)]="invoiceDate" (input)="clearValidation('invoiceDate')">
                 <div class="error-message" *ngIf="errors.invoiceDate">
                   <small class="text-danger">{{ errors.invoiceDate }}</small>
                 </div>
