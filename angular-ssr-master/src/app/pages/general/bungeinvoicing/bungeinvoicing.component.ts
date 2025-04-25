@@ -295,8 +295,11 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
   onContractSelected(selectedCtcCode: any) {
     const selectedContract = this.filteredContractOptions.find(c => c.ctcCode == selectedCtcCode);
     
-    if (selectedContract) {
+    if (selectedContract && selectedContract != "null") {
       this.currency = selectedContract.ctcCurrenCy;
+    }
+    else{
+      this.currency = null;
     }
   }
 
@@ -481,16 +484,69 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
   }
 
   openGenerateConsolidateInvoiceConfirmationBox() {
+    let isValid = true;
+
+    if (!this.ContractorControl.value) {
+      this.notificationService.showNotification(
+        'AFS Contractor is required.',
+        'WARNING',
+        'warning',
+        () => { console.log('User acknowledged warning')
+          isValid = false;
+        }
+      );
+      return;
+    }
+
+    if (!this.selectedFilteredContract || this.selectedFilteredContract == "null") {
+      this.notificationService.showNotification(
+        'AFS Contract is required.',
+        'WARNING',
+        'warning',
+        () => { console.log('User acknowledged warning') 
+          isValid = false;
+        }
+      );
+      return;
+    }
+
+    if (!this.internalInvoiceType || this.internalInvoiceType == "null") {
+      this.notificationService.showNotification(
+        'Internal Invoice Type is required.',
+        'WARNING',
+        'warning',
+        () => { console.log('User acknowledged warning')
+          isValid = false;
+         }
+      );
+      return;
+    }
+
+    if (!this.currency || this.currency == "null") {
+      this.notificationService.showNotification(
+        'Currency is required.',
+        'WARNING',
+        'warning',
+        () => { console.log('User acknowledged warning') 
+          isValid = false;
+        }
+      );
+      return;
+    }
+
     if (!this.selectedRecords || this.selectedRecords.length === 0) {
       this.notificationService.showNotification(
         'Please select at least one record to Generate Consolidate Invoice.',
         'WARNING',
         'warning',
-        () => { console.log('User acknowledged warning') }
+        () => { console.log('User acknowledged warning') 
+          isValid = false;
+        }
       );
       return;
     }
-    else {
+
+    if(isValid) {
 
       this.popupComponent.openPopup(
         'Confirmation',
@@ -533,8 +589,7 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
 
     this.http.post<any>(apiUrl, body, { headers }).subscribe({
       next: (response) => {
-        console.log('con ID', response.data[0].statusMsg);
-
+        //console.log('con ID', response.data[0].statusMsg);
         if (response?.data?.length > 0) {
           this.loading = false;
 
@@ -563,6 +618,16 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
               }
             );
           }
+        }
+        else{
+          this.loading = false;
+          this.notificationService.showNotification(
+            'No Record Found',
+            'WARNING',
+            'warning',
+            () => { console.log('User acknowledged warning')}
+          );
+          return;
         }
       },
       error: (error) => {
