@@ -360,7 +360,7 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
     this.enddate = '';
     this.selectedContractor = '';
     this.selectedFilteredContract = 'null';
-    this.internalInvoiceType = null;
+    this.internalInvoiceType = '1';
     this.currency = null;
     this.filteredContractors = of([]); 
     this.conCode = '';
