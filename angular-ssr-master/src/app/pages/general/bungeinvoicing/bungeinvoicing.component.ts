@@ -589,11 +589,11 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
 
     this.http.post<any>(apiUrl, body, { headers }).subscribe({
       next: (response) => {
-        //console.log('con ID', response.data[0].statusMsg);
-        if (response?.data?.length > 0) {
+        console.log("Bunge",response);
+        if (response?.data?.generatedList?.length > 0) {
           this.loading = false;
 
-          if (response.data[0].status === 4 && response.data[0].statusMsg == "") {
+          if (response.data.generatedList[0]) {
             this.notificationService.showNotification(
               'Records have been Generated and processed successfully.',
               'INFORMATION',
