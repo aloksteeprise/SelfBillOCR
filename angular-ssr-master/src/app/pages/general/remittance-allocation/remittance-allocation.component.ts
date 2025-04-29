@@ -12,6 +12,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { ConfirmationPopComponent } from '../confirmation-pop/confirmation-pop.component';
+import { debug } from 'node:console';
 
 @Component({
   selector: 'app-remittance-allocation',
@@ -172,6 +173,7 @@ export class RemittanceAllocationComponent implements OnInit {
   }
 
   toggleAllocation() {
+    this.onInvoiceChange();
     this.showAllocation = true;
 
     const data = {
@@ -203,8 +205,12 @@ export class RemittanceAllocationComponent implements OnInit {
     }
   }
 
-  onInvoiceChange(event: any) {
+  onInvoiceChange() {
     if (this.invoiceDropdown) {
+      this.isInterCoVisible = false;
+      this.isinterCoBankVisible = false;
+      this.isItemVisible = true;
+
       this.invoice = this.invoiceDropdown;
       const selectedInvoice = this.invoicearr.find(inv => inv.invhCode === this.invoiceDropdown);
 
@@ -274,10 +280,11 @@ export class RemittanceAllocationComponent implements OnInit {
   }
 
   autoSplit() {
-
-    this.toggleAllocation()
+    if(this.invoice){
+      this.toggleAllocation()
+    }
     
-    if (this.allocationData.ctcIs3Tier == 0) {
+    if (["0", 0, null, undefined, ''].includes(this.allocationData.ctcIs3Tier)) {
       this.disabledFields['invhTotAgencyFee'] = true;
       this.disabledFields['invhTotOurfee'] = true;
       this.disabledFields['invhTotSal'] = true;
@@ -603,8 +610,9 @@ export class RemittanceAllocationComponent implements OnInit {
       case "ICT":
         invhCode = this.interCoCompany;
         invhCodeOtherCurrency = "0";
-        this.invoiceItem = this.interCoCompanyarr.find(c => c.accCode === this.interCoCompany)?.accDescription || "";
-        this.description = this.interCoBankarr.find(b => b.bkiCode === this.interCoBank)?.bkifullname || "";
+        invoiceItem = this.interCoCompanyarr.find(c => c.accCode === this.interCoCompany)?.accDescription || "";
+        description = this.interCoBankarr.find(b => b.bkiCode === this.interCoBank)?.bkifullname || "";
+        this.description = 'Payment from Agency ' + this.selectedAgencyDesc;
         break;
   
       case "ICR":
@@ -616,7 +624,7 @@ export class RemittanceAllocationComponent implements OnInit {
       default:
         invhCode = "0";
         invhCodeOtherCurrency = "0";
-        this.invoiceItem = "";
+        invoiceItem = "";
         this.description = this.description;
         break;
     }
@@ -654,6 +662,21 @@ export class RemittanceAllocationComponent implements OnInit {
   
 
   onAllocationChange() {
+
+    this.allocationData = {
+      invhTotAgencyFee: 0,
+      invhTotOurfee: 0,
+      invhTotSal: 0,
+      invhVATI: 0,
+    };
+
+    this.dueByAgency = '';
+    this.bankChargesContractor = 0;
+    this.factoring = 0;
+    this.bankChargesAf = 0;
+    this.taxWithHeld = 0;
+    this.pendingLeftDue = 0;
+      
     if (this.allocationType === 'ACC') {
       this.disabledFields['invoice'] = true;
       this.disabledFields['invhTotAgencyFee'] = true;
@@ -663,9 +686,7 @@ export class RemittanceAllocationComponent implements OnInit {
       this.isInterCoVisible = false;
       this.isinterCoBankVisible = false;
       this.isItemVisible = true;
-      this.amountAllocate = "";
-      this.invoice = null;
-      this.dueByAgency = "";
+      this.invoice = null;     
       this.description = 'Payment on Account from ' + this.selectedAgencyDesc;
 
       return;
@@ -1317,11 +1338,38 @@ export class RemittanceAllocationComponent implements OnInit {
     let invoiceCode = "";
     if (selectedInvoice) {
       const parts: string[] = selectedInvoice.invoiceRef.split('|').map((p: string) => p.trim());
-      invoiceCode = parts.length > 0 ? selectedInvoice.invhCode : "";
+      invoiceCode = parts.length > 0 ? selectedInvoice.invhCode : "";    
+      this.isInterCoVisible = false;
+      this.isinterCoBankVisible = false;
+      this.isItemVisible = true;
+    }
+
+    const selectedinterCoCompanyarr = this.interCoCompanyarr.find(c => c.accDescription.includes(row.invoiceItem));
+
+    let CoCompanyCode = "";
+    if (selectedinterCoCompanyarr) {
+      const parts: string[] = selectedinterCoCompanyarr.accDescription.split('|').map((p: string) => p.trim());
+      CoCompanyCode = parts.length > 0 ? selectedinterCoCompanyarr.accCode : "";      
+      this.isInterCoVisible = true;
+      this.isinterCoBankVisible = true;
+      this.isItemVisible = false;
+    }
+
+    const selectedinterCoBankarr = this.interCoBankarr.find(c => c.bkifullname.includes(row.descrp));
+
+    let CoBankCode = "";
+    if (selectedinterCoBankarr) {
+      const parts: string[] = selectedinterCoBankarr.bkifullname.split('|').map((p: string) => p.trim());
+      CoBankCode = parts.length > 0 ? selectedinterCoBankarr.bkiCode : "";
+      this.isInterCoVisible = true;
+      this.isinterCoBankVisible = true;
+      this.isItemVisible = false;
     }
 
     this.allocationType = selectedAllocationType?.altCode || "";
     this.invoice = invoiceCode;
+    this.interCoCompany = CoCompanyCode;
+    this.interCoBank = CoBankCode;
     this.amountAllocate = row.amountToAllocate;
     this.allocationData = {
       invhTotAgencyFee: row.agencyCommission,
@@ -1369,6 +1417,9 @@ export class RemittanceAllocationComponent implements OnInit {
     this.interCoBank = null;
     this.btnText = "Add";
     this.editIndex = -1;
+    this.isInterCoVisible = false;
+    this.isinterCoBankVisible = false;
+    this.isItemVisible = true;
   }
 
   confirmAllocation(): boolean {
