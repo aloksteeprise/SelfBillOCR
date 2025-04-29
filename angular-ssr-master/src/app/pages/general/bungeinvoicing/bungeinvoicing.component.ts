@@ -606,18 +606,18 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
             );
           }
 
-          if (response.data[0].statusMsg && response.data[0].statusMsg.length > 0) {
-            this.notificationService.showNotification(
-              `Validation was successful for some records, but failed for records associated with ${response.data[0].statusMsg}. Please review and correct these records individually, then revalidate.`,
-              'INFORMATION',
-              'warning',
-              () => {
-                console.log('OK clicked with issues');
-                this.notificationService.setNotificationVisibility(false);
-                window.location.reload();
-              }
-            );
-          }
+          // if (response.data[0].statusMsg && response.data[0].statusMsg.length > 0) {
+          //   this.notificationService.showNotification(
+          //     `Validation was successful for some records, but failed for records associated with ${response.data[0].statusMsg}. Please review and correct these records individually, then revalidate.`,
+          //     'INFORMATION',
+          //     'warning',
+          //     () => {
+          //       console.log('OK clicked with issues');
+          //       this.notificationService.setNotificationVisibility(false);
+          //       window.location.reload();
+          //     }
+          //   );
+          // }
         }
         else{
           this.loading = false;
