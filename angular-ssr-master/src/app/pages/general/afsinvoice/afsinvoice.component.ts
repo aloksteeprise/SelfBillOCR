@@ -61,14 +61,13 @@ export class AfsinvoiceComponent implements OnInit {
     public notificationService: NotificationPopupService,
     private downloadPdfService: DownloadPdfService
   ) {
-    this.setImagePath(data.invoiceFilePath, data.invoiceFileName);
     if (data.filterRecords) {
       this.filterRecords = data.filterRecords;
+      this.setImagePath(data.invoiceData.invoiceFilePath, data.invoiceData.invoiceFileName);
     }
   }
 
   setImagePath(filePath: string, pdfFile: string): void {
-
     this.imageName = filePath;
     this.uplodedPDFFile = pdfFile;
     this.thumbImage = `assets/documents/pdf/${this.imageName}`;
@@ -104,6 +103,7 @@ export class AfsinvoiceComponent implements OnInit {
   }
 
   initializeFormData(): void {
+    debugger
     if (this.data && this.data.invoiceData) {
       const invData = this.data.invoiceData;
 
