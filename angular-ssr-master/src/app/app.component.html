@@ -21,6 +21,13 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" 
+               routerLink="/bungeinvoicing" 
+               routerLinkActive="active-link" 
+               [routerLinkActiveOptions]="{exact: true}" 
+               aria-current="page">Bunge Invoicing</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" 
                routerLink="/remittance" 
                routerLinkActive="active-link" 
                [routerLinkActiveOptions]="{exact: true}" 
@@ -33,13 +40,7 @@
                [routerLinkActiveOptions]="{exact: true}" 
                aria-current="page">Bank Statements & Allocation</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" 
-               routerLink="/bungeinvoicing" 
-               routerLinkActive="active-link" 
-               [routerLinkActiveOptions]="{exact: true}" 
-               aria-current="page">Bunge Invoicing</a>
-          </li>
+          
         </ul>
         <form class="d-flex">
           <span style="padding-top: 5px;" class="me-3 text-light" [title]="username">{{ getTruncatedUsername() }}</span>
