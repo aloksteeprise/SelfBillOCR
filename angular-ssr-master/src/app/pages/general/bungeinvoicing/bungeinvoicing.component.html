@@ -39,6 +39,16 @@
       </div>
 
       <div class="row g-2 " *ngIf="btnConsolidateVisible">
+        <div class="col-6 col-sm-2 marginleft8">
+          <label class="fontweight500">Currency:</label>
+          <select id="currency" class="form-select flex-grow-1" [(ngModel)]="currency" name="currency"
+          (ngModelChange)="onCurrencySelected($event)" >
+            <option value="null" >Select Currency</option>
+            <option *ngFor="let curr of currencyArr" [ngValue]="curr.curCode">
+              {{ curr.curCode }}
+            </option>
+          </select>
+        </div>
         <div class=" col-6 col-sm-2 marginleft20">
           <label class="fontweight500">AFS Contractor:</label>
           <div class="position-relative">
@@ -60,8 +70,7 @@
           <label for="afscontact" class="fontweight500">AFS Contract:</label>
           <div class="col-sm-12">
             <select class="form-select" id="AFSContactDropdown" name="afscontact" required
-              [(ngModel)]="selectedFilteredContract" 
-              (ngModelChange)="onContractSelected($event)">
+              [(ngModel)]="selectedFilteredContract">
               <option value="null" selected>Select Contract</option>
               <option *ngFor="let option of filteredContractOptions" [value]="option.ctcCode">
                 {{ option.contracts }}
@@ -82,16 +91,7 @@
                 {{ InterInvoice.cmDesc }}
               </option>
           </select>
-        </div>
-        <div class="col-6 col-sm-2 marginleft8">
-          <label class="fontweight500">Currency:</label>
-          <select id="currency" class="form-select flex-grow-1" [(ngModel)]="currency" name="currency">
-            <option value="null" >Select Currency</option>
-            <option *ngFor="let curr of currencyArr" [ngValue]="curr.curCode">
-              {{ curr.curCode }}
-            </option>
-          </select>
-        </div>     
+        </div>  
         <div class="col-6 col-sm-2 marginleft20 " style="padding-top: 22px;">
           <button type="button" class="btn btn-warning" (click)="openGenerateConsolidateInvoiceConfirmationBox()"
             style="color: #312a2a;">Consolidated Invoice (Bunge)</button>

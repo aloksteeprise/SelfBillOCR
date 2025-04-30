@@ -87,7 +87,8 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
   
   currency: any = null;
   currencyArr: any[] = [];
-  filteredContractOptions: any[] = [];  
+  filteredContractOptions: any[] = [];
+  hiddenfilteredContract : any[] =[];
   selectedFilteredContract: any = null;
   conCode: string = "";
 
@@ -231,7 +232,7 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
       width: '800px',
       data: { 
         invoiceData: invoiceData, 
-        filterRecords: this.allRecords  // Pass your filtered array here!
+        filterRecords: this.allRecords
       },
     });
 
@@ -285,7 +286,12 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
 
         console.log(response);
         if (response?.data?.contractsList) {
+          
           this.filteredContractOptions = response?.data?.contractsList;
+          this.hiddenfilteredContract = this.filteredContractOptions;
+          if(this.currency){
+            this.filteredContractOptions = this.filteredContractOptions.filter((record: any) => record.ctcCurrenCy === this.currency);          
+          }
         }
       },
       (error) => {
@@ -294,15 +300,13 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
     );
   }
 
-  onContractSelected(selectedCtcCode: any) {
-    const selectedContract = this.filteredContractOptions.find(c => c.ctcCode == selectedCtcCode);
-    
-    if (selectedContract && selectedContract != "null") {
-      this.currency = selectedContract.ctcCurrenCy;
+  onCurrencySelected(selectedCurrency: any) {
+    this.currency = selectedCurrency;
+    if(this.hiddenfilteredContract.length > 0){
+      this.filteredContractOptions = this.hiddenfilteredContract.filter((record: any) => record.ctcCurrenCy === selectedCurrency);          
     }
-    else{
-      this.currency = null;
-    }
+
+    this.loadInvoices();
   }
 
   fetchContractorList(searchTerm: string): Observable<{ conCode: string; fullName: string }[]> {
@@ -488,6 +492,18 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
   openGenerateConsolidateInvoiceConfirmationBox() {
     let isValid = true;
 
+    if (!this.currency || this.currency == "null") {
+      this.notificationService.showNotification(
+        'Currency is required.',
+        'WARNING',
+        'warning',
+        () => { console.log('User acknowledged warning') 
+          isValid = false;
+        }
+      );
+      return;
+    }
+
     if (!this.ContractorControl.value) {
       this.notificationService.showNotification(
         'AFS Contractor is required.',
@@ -520,18 +536,6 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
         () => { console.log('User acknowledged warning')
           isValid = false;
          }
-      );
-      return;
-    }
-
-    if (!this.currency || this.currency == "null") {
-      this.notificationService.showNotification(
-        'Currency is required.',
-        'WARNING',
-        'warning',
-        () => { console.log('User acknowledged warning') 
-          isValid = false;
-        }
       );
       return;
     }
