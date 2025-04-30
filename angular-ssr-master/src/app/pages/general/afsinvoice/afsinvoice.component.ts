@@ -104,7 +104,6 @@ export class AfsinvoiceComponent implements OnInit {
   }
 
   initializeFormData(): void {
-    debugger
     if (this.data && this.data.invoiceData) {
       const invData = this.data.invoiceData;
 
@@ -291,7 +290,6 @@ export class AfsinvoiceComponent implements OnInit {
     this.filterRecords = this.filterRecords.map((record: any) => convertKeysToPascalCase(record));
     const currentIndex = this.filterRecords.findIndex((record: any) => record.Id === currentRecordId);
     
-debugger
     if (this.iserrors) {
       if (currentIndex > 0) {
         const previousRecord = this.filterRecords[currentIndex - 1];
@@ -548,7 +546,7 @@ debugger
       this.loading = false
     }
 
-    const inputinvoiceDate = new Date(this.enddate);
+    const inputinvoiceDate = new Date(this.invoiceDate);
     const invoiceyear = inputinvoiceDate.getFullYear();
 
 
