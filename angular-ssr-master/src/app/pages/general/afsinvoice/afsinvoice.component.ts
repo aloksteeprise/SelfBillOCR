@@ -53,6 +53,7 @@ export class AfsinvoiceComponent implements OnInit {
   contract_CtcCode: string = '';
   isRecordValidated: boolean = false;
   filterRecords: any[] = [];
+  iserrors:boolean = false;
 
   constructor(
     private dialogRef: MatDialogRef<AfsinvoiceComponent>,
@@ -285,8 +286,20 @@ export class AfsinvoiceComponent implements OnInit {
     const errors: any = {};
     this.errors = errors;
     this.notificationService.setNotificationVisibility(false);
-
-    const formData = {
+    let formData: any = {};
+    const currentRecordId = this.id;
+    this.filterRecords = this.filterRecords.map((record: any) => convertKeysToPascalCase(record));
+    const currentIndex = this.filterRecords.findIndex((record: any) => record.Id === currentRecordId);
+    
+debugger
+    if (this.iserrors) {
+      if (currentIndex > 0) {
+        const previousRecord = this.filterRecords[currentIndex - 1];
+        this.fetchNextRecord(previousRecord);
+      }
+    }
+    else{
+    formData = {
       RowId: this.id,
       FirstName: this.firstnamefor,
       LastName: this.lastnamefor,
@@ -302,6 +315,7 @@ export class AfsinvoiceComponent implements OnInit {
       IsPrevious: true,
       IsDelete: false
     };
+    }
 
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.token}`,
@@ -314,10 +328,9 @@ export class AfsinvoiceComponent implements OnInit {
         this.loading = false;
 
         if (response.data.resultTable.length > 0) {
-          const currentRecordId = this.id;
-          this.filterRecords = this.filterRecords.map((record: any) => convertKeysToPascalCase(record));
+
           this.filterRecords = this.filterRecords.map((record: any) => {
-            if (record.Id === currentRecordId) {
+            if (record.Id === currentRecordId && !this.iserrors) {
               return {
                 ...record,
                     Id: formData.RowId,
@@ -337,8 +350,7 @@ export class AfsinvoiceComponent implements OnInit {
             }
             return record;
         });
-          const currentIndex = this.filterRecords.findIndex((record: any) => record.Id === currentRecordId);
-
+          
           if (currentIndex > 0) {
             const previousRecord = this.filterRecords[currentIndex - 1];
             this.fetchNextRecord(previousRecord);
@@ -381,6 +393,10 @@ export class AfsinvoiceComponent implements OnInit {
   }
 
   onDelete() {
+    const currentRecordId = this.id;
+    this.filterRecords = this.filterRecords.map((record: any) => convertKeysToPascalCase(record));
+    const currentIndex = this.filterRecords.findIndex((record: any) => record.Id === currentRecordId);
+
     this.popupComponent.openPopup(
       'Confirmation',
       'Are you sure that you want to proceed?',
@@ -414,10 +430,6 @@ export class AfsinvoiceComponent implements OnInit {
             this.loading = false;
 
             if (response?.data?.resultTable?.length > 0){
-              const currentRecordId = this.id;
-              this.filterRecords = this.filterRecords.map((record: any) => convertKeysToPascalCase(record));
-              const currentIndex = this.filterRecords.findIndex((record: any) => record.Id === currentRecordId);
-
               if (currentIndex > -1 && currentIndex + 1 < this.filterRecords.length) {
                 const nextRecord = this.filterRecords[currentIndex + 1];
                 this.fetchNextRecord(nextRecord);
@@ -476,44 +488,44 @@ export class AfsinvoiceComponent implements OnInit {
     this.errors = errors;
     let isValid = true;
     this.notificationService.setNotificationVisibility(false);
+    const currentRecordId = this.id;
+    this.filterRecords = this.filterRecords.map((record: any) => convertKeysToPascalCase(record));
+    const inputstartdateDate = new Date(this.startdate);
+    const startdateyear = inputstartdateDate.getFullYear();
 
-    if (this.startdate && this.enddate && !errors.startDate && !errors.endDate) {
+    if (startdateyear < 1900) {
+      isValid = false;
+      errors.startDate = 'Invalid StartDate.';
+      this.loading = false;
+    }
+
+    const inputendDate = new Date(this.enddate);
+    const endyear = inputendDate.getFullYear();
+
+    if (endyear < 1900) {
+      isValid = false;
+      this.loading = false;
+      errors.endDate = 'Invalid EndDate.';
+    }
+
+    if (!errors.startDate && !errors.endDate && this.startdate && this.enddate) {
       const start = new Date(this.startdate);
       const end = new Date(this.enddate);
+
 
       const startYear = start.getFullYear();
       const startMonth = start.getMonth();
       const endYear = end.getFullYear();
       const endMonth = end.getMonth();
 
+
       if (startYear !== endYear || startMonth !== endMonth) {
         isValid = false;
         errors.endDate = 'Date must be within the same month and year.';
         this.loading = false;
       }
-
-      if (
-        !this.totalAmount ||
-        this.totalAmount.trim() === '' ||
-        isNaN(Number(this.totalAmount)) ||
-        Number(this.totalAmount) <= 0
-      ) {
-        errors.totalAmount = 'Total Amount should be a valid number greater than 0.';
-        isValid = false;
-        this.loading = false
-      }
-
-    const startDate = SharedUtils.validateDate(this.startdate, 'Start Date', true);
-    if (startDate) {
-      isValid = false;
-      errors.startDate = startDate;
     }
 
-    const endDate = SharedUtils.validateDate(this.enddate, 'End Date', true);
-    if (endDate) {
-      isValid = false;
-      errors.endDate = endDate;
-    }
     if (this.startdate && this.enddate) {
       const startDateObj = new Date(this.startdate);
       const endDateObj = new Date(this.enddate);
@@ -521,19 +533,37 @@ export class AfsinvoiceComponent implements OnInit {
       if (startDateObj > endDateObj) {
         errors.dateComparison = 'Start Date cannot be greater than End Date.';
         isValid = false;
+        this.loading = false;
       }
-    }
-    
-    const invoiceDate = SharedUtils.validateDate(this.invoiceDate, 'Invoice Date', false);
-    if (invoiceDate) {
-      isValid = false;
-      errors.invoiceDate = invoiceDate;
     }
 
-      if (!isValid) {
-        return;
-      }
+    if (
+      !this.totalAmount ||
+      this.totalAmount.trim() === '' ||
+      isNaN(Number(this.totalAmount)) ||
+      Number(this.totalAmount) <= 0
+    ) {
+      errors.totalAmount = 'Total Amount should be a valid number greater than 0.';
+      isValid = false;
+      this.loading = false
     }
+
+    const inputinvoiceDate = new Date(this.enddate);
+    const invoiceyear = inputinvoiceDate.getFullYear();
+
+
+    if (invoiceyear < 1900) {
+      isValid = false;
+      this.loading = false;
+      errors.invoiceDate = 'Invalid InvoiceDate.';
+    }
+    
+    if (!isValid) {
+      this.iserrors = true 
+          return;
+      }
+     
+    
 
     const formData = {
       RowId: this.id,
@@ -562,8 +592,7 @@ export class AfsinvoiceComponent implements OnInit {
       next: (response) => {
         this.loading = false;
         if (response.data.resultTable.length > 0) {
-          const currentRecordId = this.id;
-          this.filterRecords = this.filterRecords.map((record: any) => convertKeysToPascalCase(record));
+          
           this.filterRecords = this.filterRecords.map((record: any) => {
             if (record.Id === currentRecordId) {
                 return {
@@ -637,6 +666,11 @@ export class AfsinvoiceComponent implements OnInit {
     this.submitted = true;
     let isValid = true;
     const errors: any = {};
+
+    const currentRecordId = this.id;
+    let nextRecord: any = null;
+    this.filterRecords = this.filterRecords.map((record: any) => convertKeysToPascalCase(record));
+    const currentIndex = this.filterRecords.findIndex((record: any) => record.Id === currentRecordId);
 
     if (!this.selectedContract) {
       errors.selectedContract = 'AFS Contractor is required.';
@@ -719,7 +753,12 @@ export class AfsinvoiceComponent implements OnInit {
     }
     this.errors = errors;
 
-    if (isValid) {
+    if (!isValid) {
+      this.iserrors = true 
+          return;
+      }
+
+    else{
 
       const formData = {
         RowId: this.id,
@@ -751,10 +790,6 @@ export class AfsinvoiceComponent implements OnInit {
       this.http.post<any>(apiUrl, formData, { headers }).subscribe({
         next: (response) => {
           
-          const currentRecordId = this.id;
-          let nextRecord: any = null;
-          this.filterRecords = this.filterRecords.map((record: any) => convertKeysToPascalCase(record));
-          const currentIndex = this.filterRecords.findIndex((record: any) => record.Id === currentRecordId);
           if (currentIndex > -1 && currentIndex + 1 < this.filterRecords.length) {
 
             nextRecord = this.filterRecords[currentIndex + 1];

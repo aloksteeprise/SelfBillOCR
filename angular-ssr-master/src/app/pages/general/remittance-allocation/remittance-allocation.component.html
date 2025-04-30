@@ -170,7 +170,7 @@
                   <td>
                     <select id="invoice" class="form-select flex-grow-1" [(ngModel)]="invoice" *ngIf="isItemVisible"
                       (change)="onItemChange($event)" name="invoice" [disabled]="isDisabled('invoice')">
-                      <option value="null" selected>InvoiceRef | InvhDate | Due | LeftPending | ConFullName
+                      <option value="null" disabled selected>InvoiceRef | InvhDate | Due | LeftPending | ConFullName
                       </option>
                       <option *ngFor="let invoice of invoicearr" [ngValue]="invoice.invhCode">
                         {{ invoice.invoiceRef }}
@@ -187,10 +187,10 @@
                     </select>
 
                     <select id="interCoBank" class="form-select flex-grow-1" *ngIf="isinterCoBankVisible"
-                      [(ngModel)]="interCoBank" (change)="onInterCoCompanyBankAcc($event)" name="interCoBank"
+                      [(ngModel)]="interCoBank" name="interCoBank"
                       style="margin-top: 5px;">
                       <option value="null" disabled selected>Select Bank</option>
-                      <option *ngFor="let interCoBank of interCoBankarr" [ngValue]="interCoBank.bkiCode">
+                      <option *ngFor="let interCoBank of interCoBankarr" (change)="onInterCoCompanyBankAcc($event)" [ngValue]="interCoBank.bkiCode">
                         {{ interCoBank.bkifullname }}
                       </option>
                     </select>

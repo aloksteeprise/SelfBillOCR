@@ -625,7 +625,7 @@ export class RemittanceAllocationComponent implements OnInit {
         invhCode = "0";
         invhCodeOtherCurrency = "0";
         invoiceItem = "";
-        this.description = this.description;
+        description = this.description;
         break;
     }
   
@@ -662,7 +662,11 @@ export class RemittanceAllocationComponent implements OnInit {
   
 
   onAllocationChange() {
+    // this.btnText = "Add";
+    // this.editIndex = -1;
 
+    this.invoice = null;
+    this.amountAllocate = '';
     this.allocationData = {
       invhTotAgencyFee: 0,
       invhTotOurfee: 0,
@@ -1212,7 +1216,8 @@ export class RemittanceAllocationComponent implements OnInit {
       next: (data) => {
         console.log('response', data);
         if (data?.data?.interCoBankList) {
-          this.interCoBankarr = data.data.interCoBankList;
+          this.interCoBankarr = data.data.interCoBankList;   
+          this.interCoBank = null; 
         } else {
           this.interCoBankarr = [];
         }

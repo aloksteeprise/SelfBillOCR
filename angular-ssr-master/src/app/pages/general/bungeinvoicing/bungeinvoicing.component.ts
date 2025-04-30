@@ -227,10 +227,12 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
   }
 
   openInvoiceModal(invoiceData: any): void {
-
     const dialogRef = this.dialog.open(AfsinvoiceComponent, {
       width: '800px',
-      data: invoiceData,
+      data: { 
+        invoiceData: invoiceData, 
+        filterRecords: this.allRecords  // Pass your filtered array here!
+      },
     });
 
     dialogRef.afterClosed().subscribe(result => {
