@@ -481,7 +481,7 @@ export class AfsinvoiceComponent implements OnInit {
   }
 
   onSkip() {
-    this.loading = true;
+     this.loading = true;
     const errors: any = {};
     this.errors = errors;
     let isValid = true;
@@ -553,7 +553,7 @@ export class AfsinvoiceComponent implements OnInit {
     if (invoiceyear < 1900) {
       isValid = false;
       this.loading = false;
-      errors.invoiceDate = 'Invalid InvoiceDate.';
+      errors.invoiceDate = 'Invalid Invoice Date.';
     }
     
     if (!isValid) {
