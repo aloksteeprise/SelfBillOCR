@@ -186,6 +186,8 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
       .subscribe({
         next: (response: any) => {
           this.allRecords = response.data.data;
+          // this.selectedRecords = this.allRecords
+          debugger
           this.dataSource.data = response.data.data;
           console.log(" Incoming Data from API:", this.allRecords);
           this.totalRecords = response.data.totalRecords;
@@ -250,9 +252,11 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
   }
 
   SearchResults(form: any): void {
-
+   
+  
     this.loadInvoices();
   }
+  
 
   private _filterContractor(value: string): Observable<{ conCode: string; fullName: string }[]> {
     const filterValue = value.toLowerCase().trim();
@@ -479,6 +483,7 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
   onCheckboxChange(event: any, id: number) {
     if (event.target.checked) {
       this.selectedRecords.push(id);
+      
       this.btnConsolidateVisible = true;
     } else {
       this.selectedRecords = this.selectedRecords.filter(recordId => recordId !== id);
@@ -584,7 +589,7 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
     });
 
     console.log("Headers:", headers);
-
+    this.selectedRecords = this.allRecords.map(record => record.id);
     const body = {
       selectedFilteredContract : this.selectedFilteredContract,
       conCode : this.conCode,
@@ -689,6 +694,8 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
   
         if (this.currencyArr.length > 0) {
           this.currencyArr = data.data.currencyList;
+      
+        
         }
       },
       error: (error) => {
