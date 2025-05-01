@@ -33,7 +33,7 @@
                 <mat-form-field appearance="outline" class="w-100">
                   <!-- <mat-label>Invoice No</mat-label> -->
                   
-                  <mat-select [(ngModel)]="invoiceDropdown">
+                  <mat-select [(ngModel)]="invoiceDropdown" placeholder="Select an invoice">
                     <mat-option disabled class="header-option">
                       <div class="dropdown-header">
                         <div>InvoiceRef &nbsp;| &nbsp;InvhDate &nbsp;&nbsp;&nbsp; |&nbsp; Due   
@@ -90,7 +90,7 @@
               <label>Multi Select Invoices:</label>
               <mat-form-field appearance="outline" class="w-auto custom-multi-select">
                 <!-- <mat-label>Multi Select Invoices</mat-label> -->
-                <mat-select multiple [(ngModel)]="selectedInvoices" disableRipple style="width: 141%;">
+                <mat-select multiple [(ngModel)]="selectedInvoices" disableRipple style="width: 141%;" placeholder="Select an Multi invoice">
                   
                   <!-- Header -->
                   <mat-option disabled class="header-option">
@@ -209,14 +209,13 @@
                       (blur)="validateBankCharges('allocationData.invhVATI')"></td>
                   <td><input type="text" class="form-control" [(ngModel)]="dueByAgency" disabled></td>
                   <td><input type="text" class="form-control" [(ngModel)]="bankChargesContractor"
-                      (blur)="validateBankCharges('bankChargesContractor')"></td>
+                      (blur)="validateBankCharges('bankChargesContractor')" [disabled]="isDisabled('bankChargesContractor')"></td>
                   <td><input type="text" class="form-control" [(ngModel)]="bankChargesAf"
-                      (blur)="validateBankCharges('bankChargesAf')"></td>
-
+                      (blur)="validateBankCharges('bankChargesAf')" [disabled]="isDisabled('bankChargesAf')"></td>
                   <td><input type="text" class="form-control" [(ngModel)]="taxWithHeld"
-                      (blur)="validateBankCharges('taxWithHeld')"></td>
+                      (blur)="validateBankCharges('taxWithHeld')" [disabled]="isDisabled('taxWithHeld')"></td>
                   <td><input type="text" class="form-control" [(ngModel)]="factoring"
-                      (blur)="validateBankCharges('factoring')"></td>
+                      (blur)="validateBankCharges('factoring')" [disabled]="isDisabled('factoring')"></td>
                   <td><input type="text" class="form-control" [(ngModel)]="pendingLeftDue" disabled
                       (blur)="validateBankCharges('pendingLeftDue')"></td>
                 </tr>
@@ -299,7 +298,7 @@
               </table>
             </div>
 
-            <div class="container-fluid" style="padding-top: 10px; background-color: #E5E7EB">
+            <div class="container-fluid" style="padding-top: 10px; "> <!-- background-color: #E5E7EB" -->
               <div class="row align-items-center text-black">
                 <div class="col d-flex align-items-center mb-0">
                   <label class=" me-2">Total available for allocation:</label>

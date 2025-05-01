@@ -311,7 +311,10 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
 
   fetchContractorList(searchTerm: string): Observable<{ conCode: string; fullName: string }[]> {
     const apiUrl = `${environment.API_BASE_URL}OCRAI/GetAFSBungeContractorData`;
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+   const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.token}`,
+      'Content-Type': 'application/json',
+    });
 
     const body = {
       fullName: searchTerm

@@ -22,12 +22,11 @@
         </div>
         <div class="col-6 col-sm-2">
           <label for="mvtFrom" class="form-label me-2 custom-label">Mvt From:</label>
-          <input type="date" id="mvtFrom" class="form-control" name="mvtFrom" [(ngModel)]="mvtFromDate"
-            >
+          <input type="date" id="mvtFrom" class="form-control" name="mvtFrom" [(ngModel)]="mvtFromDate" min="1900-01-01" max="9999-12-31">
         </div>
         <div class="col-6 col-sm-2">
           <label for="mvtTo" class="form-label me-2 custom-label">To:</label>
-          <input type="date" id="mvtTo" class="form-control" name="mvtTo" [(ngModel)]="mvtToDate">
+          <input type="date" id="mvtTo" class="form-control" name="mvtTo" [(ngModel)]="mvtToDate" min="1900-01-01" max="9999-12-31">
         </div>
         <!-- <div class="col-6 col-sm-2">
           <label for="mvtType" class="form-label me-2 custom-label">Type of Movements:</label>
@@ -67,12 +66,12 @@
         <div class="col-6 col-sm-2">
           <label for="valueFrom" class="form-label me-2 custom-label">Value From:</label>
           <input type="date" id="valueFrom" class="form-control" name="valueFrom" [(ngModel)]="mvtValueFromDate"
-            >
+          min="1900-01-01" max="9999-12-31">
         </div>
         <div class="col-6 col-sm-2">
           <label for="valueTo" class="form-label me-2 custom-label">To:</label>
           <input type="date" id="valueTo" class="form-control" name="valueTo" [(ngModel)]="mvtValueToDate"
-            >
+          min="1900-01-01" max="9999-12-31">
         </div>
         <div class="col-6 col-sm-2" style="padding-top: 30px;">
           <label class="form-label custom-label">Money:</label>

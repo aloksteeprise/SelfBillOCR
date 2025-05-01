@@ -1,4 +1,4 @@
-import { Component, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { environment } from '../constant/api-constants';
 import { NotificationPopupService } from '../notification-popup/notification-popup.service';
@@ -13,6 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { ConfirmationPopComponent } from '../confirmation-pop/confirmation-pop.component';
 import { debug } from 'node:console';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-remittance-allocation',
@@ -101,7 +102,8 @@ export class RemittanceAllocationComponent implements OnInit {
     private dialogRef: MatDialogRef<RemittanceAllocationComponent>,
     public notificationService: NotificationPopupService,
     private http: HttpClient,
-    @Inject(MAT_DIALOG_DATA) public invoiceData: any
+    @Inject(MAT_DIALOG_DATA) public invoiceData: any,
+    @Inject(PLATFORM_ID) private platformId: object,
   ) {
 
     this.bkAccount = invoiceData.invoiceData.mvtBkAccount;
@@ -119,25 +121,38 @@ export class RemittanceAllocationComponent implements OnInit {
       dueByAgency: true,
       pendingLeftDue: true,
       currencyDescription: false,
+      bankChargesContractor :false,
+      bankChargesAf:false,
+      taxWithHeld:false,
+      factoring : false,
       btnAddRow: false
     };
   }
 
   ngOnInit(): void {
-    this.fetchAgencyList('').subscribe(agencies => {
-      this.allAgencies = agencies;
-      this.defaultAgencies = agencies;
-      this.filteredAgencies = of(agencies);
-    });
 
+    if (isPlatformBrowser(this.platformId)) {
+      const storedToken = localStorage.getItem('token');
+      if (storedToken) {
+        this.token = storedToken;
+
+   // Now it's safe to call the API
+        this.fetchAgencyList('').subscribe(agencies => {
+          this.allAgencies = agencies;
+          this.defaultAgencies = agencies;
+          this.filteredAgencies = of(agencies);
+        });
+      } else {
+        console.error('Token not found in localStorage.');
+      }
+    }
+    this.getAllocationType();
+  
     this.agencyControl.valueChanges.subscribe(value => {
-
       if (!value || value.trim() === '') {
         console.log('Input Cleared - Showing Default List');
-
         this.allAgencies = [...this.defaultAgencies];
         this.filteredAgencies = of(this.defaultAgencies);
-
         this.filteredAgencies.subscribe(data => {
           console.log('Updated Filtered Agencies:', data);
         });
@@ -145,8 +160,8 @@ export class RemittanceAllocationComponent implements OnInit {
         this.filteredAgencies = this._filterAgencies(value);
       }
     });
-    this.getAllocationType();
   }
+  
 
   getAllocationType() {
     const apiUrl = environment.API_BASE_URL + 'OCRAI/GetAllocationTypeListData';
@@ -687,6 +702,10 @@ export class RemittanceAllocationComponent implements OnInit {
       this.disabledFields['invhTotSal'] = true;
       this.disabledFields['invhTotOurfee'] = true;
       this.disabledFields['currencyDescription'] = true;
+      this.disabledFields['bankChargesContractor'] = true;
+      this.disabledFields['bankChargesAf'] = true;
+      this.disabledFields['taxWithHeld'] = true;
+      this.disabledFields['factoring'] = true;
       this.isInterCoVisible = false;
       this.isinterCoBankVisible = false;
       this.isItemVisible = true;
@@ -703,7 +722,12 @@ export class RemittanceAllocationComponent implements OnInit {
       this.isInterCoVisible = false;
       this.isinterCoBankVisible = false;
       this.isItemVisible = true;
+      this.disabledFields['bankChargesContractor'] = false;
+      this.disabledFields['bankChargesAf'] = false;
+      this.disabledFields['taxWithHeld'] = false;
+      this.disabledFields['factoring'] = false;
       this.description = 'Payment from Agency ' + this.selectedAgencyDesc;
+
       return;
     }
 
@@ -713,6 +737,10 @@ export class RemittanceAllocationComponent implements OnInit {
       this.isInterCoVisible = true;
       this.isItemVisible = false;
       this.amountAllocate = "";
+      this.disabledFields['bankChargesContractor'] = true;
+      this.disabledFields['bankChargesAf'] = true;
+      this.disabledFields['taxWithHeld'] = true;
+      this.disabledFields['factoring'] = true;
       this.description = 'Payment on InterCo Company from ' + this.selectedAgencyDesc;
 
       return;
@@ -1243,7 +1271,10 @@ export class RemittanceAllocationComponent implements OnInit {
 
   fetchAgencyList(searchTerm: string): Observable<{ agecode: string; agedesc: string }[]> {
     const apiUrl = `${environment.API_BASE_URL}OCRAI/GetAgencyListData`;
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.token}`,
+      'Content-Type': 'application/json',
+    });
 
     const body = {
       SearchTerm: searchTerm,

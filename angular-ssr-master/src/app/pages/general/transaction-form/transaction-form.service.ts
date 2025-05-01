@@ -64,9 +64,15 @@ export class TransactionFormService {
     return this.http.post(`${this.apiUrl}/GetCompanyListData`, {}, { headers });
   }
 
-  ValidateManualBankAllocation(RowId: number): Observable<any> {
+  ValidateManualBankAllocation(RowId: number,token: string): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+
+    debugger
     console.log('id' , RowId)
-    return this.http.post(`${this.apiUrl}/ValidateManualBankAllocation`, { RowId });
+    return this.http.post(`${this.apiUrl}/ValidateManualBankAllocation`, { RowId }, { headers });
   }
   
   getBankAccountList(cieCode: number, bkiCurrency: string | null = null,token : string): Observable<any> {

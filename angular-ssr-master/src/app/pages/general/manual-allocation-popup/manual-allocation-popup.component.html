@@ -14,7 +14,7 @@
               *</span></label>
             <div class="col-sm-5">
               <input type="date" id="bankPaymentDate" name="bankPaymentDate" [(ngModel)]="bankPaymentDate"
-                class="form-control" required  (input)="clearValidation('bankPaymentDate')" />
+                class="form-control" required  (input)="clearValidation('bankPaymentDate')" min="1900-01-01" max="9999-12-31" />
               <div class="error-message" *ngIf="errors.bankPaymentDate">
                 <small class="text-danger">{{ errors.bankPaymentDate }}</small>
               </div>

@@ -255,7 +255,7 @@ if (isPlatformBrowser(this.platformId)) {
       return;  // Stop execution if the ID is invalid
     }
   
-    this.transactionFormService.ValidateManualBankAllocation(mvtKey).subscribe(
+    this.transactionFormService.ValidateManualBankAllocation(mvtKey,this.token).subscribe(
       (response) => {
         this.loading = false
         this.loadInvoices();
