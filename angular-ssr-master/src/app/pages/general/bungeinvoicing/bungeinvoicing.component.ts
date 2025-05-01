@@ -503,7 +503,7 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
 
     if (!this.currency || this.currency == "null") {
       this.notificationService.showNotification(
-        'Currency is required.',
+        'You need to select a currency first.',
         'WARNING',
         'warning',
         () => { console.log('User acknowledged warning') 
