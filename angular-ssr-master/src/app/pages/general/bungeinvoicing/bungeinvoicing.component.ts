@@ -82,7 +82,7 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
   internalInvoiceType: any | null = '1';
   internalInvoiceTypeArr = [
     { cmCode: '1', cmDesc: 'Service Invoices' },
-    { cmCode: '2', cmDesc: 'Other Invoices' }
+    { cmCode: '2', cmDesc: 'Management Fees Invoices' }
   ];
   
   currency: any = null;
@@ -307,7 +307,7 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
   onCurrencySelected(selectedCurrency: any) {
     this.currency = selectedCurrency;
     if(this.hiddenfilteredContract.length > 0){
-      this.filteredContractOptions = this.hiddenfilteredContract.filter((record: any) => record.ctcCurrenCy === selectedCurrency);          
+      this.filteredContractOptions = this.hiddenfilteredContract.filter((record: any) => record.ctcCurrenCy === selectedCurrency);  
     }
 
     this.loadInvoices();
@@ -474,6 +474,7 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
       } else {
         this.selectedRecords = [];
         this.btnConsolidateVisible = false;
+        this.ClearSearch();
       }
 
       this.selectedRecords = [...this.selectedRecords];
