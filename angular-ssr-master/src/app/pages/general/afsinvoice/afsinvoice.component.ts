@@ -327,27 +327,27 @@ export class AfsinvoiceComponent implements OnInit {
 
         if (response.data.resultTable.length > 0) {
 
-          this.filterRecords = this.filterRecords.map((record: any) => {
-            if (record.Id === currentRecordId && !this.iserrors) {
-              return {
-                ...record,
-                    Id: formData.RowId,
-                    CFirstName: formData.FirstName,
-                    CLastName: formData.LastName,
-                    StartDate: formData.StartDate,
-                    EndDate: formData.EndDate,
-                    TotalAmount: formData.totalAmount,
-                    SelfBillInvoiceNo: formData.invoiceNo,
-                    SelfBillInvoiceDate: formData.invoiceDate,
-                    Contract_CtcCode: formData.CtcCode,
-                    Contract_CtcContractor: formData.CtcContractor,
-                    GrouP_NEWID: formData.GroupNewId,
-                    ContractorName : formData.FirstName + " " + formData.LastName,
-                    afscontractor: this.afscontractor
-            };
-            }
-            return record;
-        });
+        //   this.filterRecords = this.filterRecords.map((record: any) => {
+        //     if (record.Id === currentRecordId && !this.iserrors) {
+        //       return {
+        //         ...record,
+        //             Id: formData.RowId,
+        //             CFirstName: formData.FirstName,
+        //             CLastName: formData.LastName,
+        //             StartDate: formData.StartDate,
+        //             EndDate: formData.EndDate,
+        //             TotalAmount: formData.totalAmount,
+        //             SelfBillInvoiceNo: formData.invoiceNo,
+        //             SelfBillInvoiceDate: formData.invoiceDate,
+        //             Contract_CtcCode: formData.CtcCode,
+        //             Contract_CtcContractor: formData.CtcContractor,
+        //             GrouP_NEWID: formData.GroupNewId,
+        //             ContractorName : formData.FirstName + " " + formData.LastName,
+        //             afscontractor: this.afscontractor
+        //     };
+        //     }
+        //     return record;
+        // });
           
           if (currentIndex > 0) {
             const previousRecord = this.filterRecords[currentIndex - 1];
