@@ -308,10 +308,12 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
 
   onCurrencySelected(selectedCurrency: any) {
     this.currency = selectedCurrency;
+    this.IsValidatedRecord = false;
+    this.isAllRecord = false;
+    this.selectedRecords = []
+
     if(this.hiddenfilteredContract.length > 0){
-      this.filteredContractOptions = this.hiddenfilteredContract.filter((record: any) => record.ctcCurrenCy === selectedCurrency);  
-      //this.IsValidatedRecord = false;
-      this.isAllRecord = false
+      this.filteredContractOptions = this.hiddenfilteredContract.filter((record: any) => record.ctcCurrenCy === selectedCurrency);    
     }
 
     this.loadInvoices();
