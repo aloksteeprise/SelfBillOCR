@@ -91,6 +91,8 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
   hiddenfilteredContract : any[] =[];
   selectedFilteredContract: any = null;
   conCode: string = "";
+  selectedIdsToSend: number[]= [];
+
 
   constructor(private BungeApiService: BungeApiService, private dialog: MatDialog, public notificationService: NotificationPopupService, private http: HttpClient, private breakpointObserver: BreakpointObserver,@Inject(PLATFORM_ID) private platformId: Object) { }
 
@@ -308,6 +310,8 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
     this.currency = selectedCurrency;
     if(this.hiddenfilteredContract.length > 0){
       this.filteredContractOptions = this.hiddenfilteredContract.filter((record: any) => record.ctcCurrenCy === selectedCurrency);  
+      //this.IsValidatedRecord = false;
+      this.isAllRecord = false
     }
 
     this.loadInvoices();
@@ -561,7 +565,36 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
       return;
     }
 
+    
     if(isValid) {
+
+      const visibleIds = this.allRecords.map(record => record.id);
+
+      // 🔍 Step 2: Remove any selected ID that no longer exists after filtering
+      this.selectedRecords = this.selectedRecords.filter(id => visibleIds.includes(id));
+    
+      // 🔍 Step 3: If some IDs got removed, this is no longer "all"
+      if (this.selectedRecords.length < visibleIds.length) {
+        this.isAllRecord = false;
+      }
+    
+      // Step 4: Prepare payload
+      this.selectedIdsToSend = this.isAllRecord
+      ? visibleIds
+      : this.selectedRecords;
+   
+      if (this.selectedIdsToSend.length === 0) {
+       this.loading = false;
+       this.notificationService.showNotification(
+         'Please select at least one record before generating the invoice.',
+         'WARNING',
+         'warning',
+         () => {
+           this.notificationService.setNotificationVisibility(false);
+         }
+       );
+       return;
+      }   
 
       this.popupComponent.openPopup(
         'Confirmation',
@@ -590,13 +623,16 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
     });
 
     console.log("Headers:", headers);
-    this.selectedRecords = this.allRecords.map(record => record.id);
+   // 🔍 Step 1: Get visible record IDs after filtering
+  
+
+    debugger;
     const body = {
       selectedFilteredContract : this.selectedFilteredContract,
       conCode : this.conCode,
       internalInvoiceType : this.internalInvoiceType,
       currency : this.currency,
-      selectedIds: this.selectedRecords,
+      selectedIds: this.selectedIdsToSend,
       isAllRecord: this.isAllRecord
     };
 
