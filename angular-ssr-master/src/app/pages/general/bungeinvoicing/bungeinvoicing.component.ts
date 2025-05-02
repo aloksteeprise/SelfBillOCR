@@ -610,7 +610,7 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
 
           if (response.data.generatedList[0]) {
             this.notificationService.showNotification(
-              'Records have been Generated and processed successfully.',
+              'Records have been successfully generated, processed, and an email notification has been sent to the respective CSM team.',
               'INFORMATION',
               'success',
               () => {

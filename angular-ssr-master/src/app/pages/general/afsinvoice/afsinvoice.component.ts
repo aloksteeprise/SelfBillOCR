@@ -309,7 +309,7 @@ export class AfsinvoiceComponent implements OnInit {
       CtcCode: this.contract_CtcCode,
       CtcContractor: this.conCode,
       GroupNewId: this.groupNewId,
-      IsSkip: false,
+      IsSkip: true,
       IsPrevious: true,
       IsDelete: false
     };
@@ -412,7 +412,7 @@ export class AfsinvoiceComponent implements OnInit {
           // StartDate: this.startdate,
           // EndDate: this.enddate,
           // GroupNewId: this.groupNewId,
-          IsSkip: false,
+          IsSkip: true,
           IsPrevious: false,
           IsDelete: true
         };
