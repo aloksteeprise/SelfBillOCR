@@ -97,6 +97,7 @@ export class RemittanceAllocationComponent implements OnInit {
   editIndex: number = -1;
   selectedAgencyDesc: string = '';
   disabledFields: { [key: string]: boolean } = {};
+  isAutoSplit: boolean = false;
 
   constructor(
     private dialogRef: MatDialogRef<RemittanceAllocationComponent>,
@@ -188,13 +189,20 @@ export class RemittanceAllocationComponent implements OnInit {
   }
 
   toggleAllocation() {
-    this.onInvoiceChange();
+    if(!this.isAutoSplit){
+      this.onInvoiceChange();
+    }
+    else{
+      this.onItemChange();
+    }
     this.showAllocation = true;
 
-    const data = {
-      invhCode: this.invoiceDropdown
-    };
+    const dueByAgency = Number(this.dueByAgency) || 0;
 
+    const data = {
+      invhCode: this.invoiceDropdown,
+      allocatedAmount : dueByAgency - this.pendingLeftDue
+    };
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.token}`,
       'Content-Type': 'application/json',
@@ -247,7 +255,7 @@ export class RemittanceAllocationComponent implements OnInit {
     this.getAllocationType();
   }
 
-  onItemChange(event: any) {
+  onItemChange() {
     if (this.invoice) {
       const selectedInvoice = this.invoicearr.find(inv => inv.invhCode === this.invoice);
 
@@ -296,6 +304,7 @@ export class RemittanceAllocationComponent implements OnInit {
 
   autoSplit() {
     if(this.invoice){
+      this.isAutoSplit = true;
       this.toggleAllocation()
     }
     

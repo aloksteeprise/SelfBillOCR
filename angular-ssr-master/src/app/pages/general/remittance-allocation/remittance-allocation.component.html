@@ -169,7 +169,7 @@
 
                   <td>
                     <select id="invoice" class="form-select flex-grow-1" [(ngModel)]="invoice" *ngIf="isItemVisible"
-                      (change)="onItemChange($event)" name="invoice" [disabled]="isDisabled('invoice')">
+                      (change)="onItemChange()" name="invoice" [disabled]="isDisabled('invoice')">
                       <option value="null" disabled selected>InvoiceRef | InvhDate | Due | LeftPending | ConFullName
                       </option>
                       <option *ngFor="let invoice of invoicearr" [ngValue]="invoice.invhCode">
