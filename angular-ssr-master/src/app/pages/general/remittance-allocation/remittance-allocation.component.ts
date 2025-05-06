@@ -98,6 +98,7 @@ export class RemittanceAllocationComponent implements OnInit {
   selectedAgencyDesc: string = '';
   disabledFields: { [key: string]: boolean } = {};
   isAutoSplit: boolean = false;
+  isConfPopupOpen :boolean = false;
 
   constructor(
     private dialogRef: MatDialogRef<RemittanceAllocationComponent>,
@@ -872,6 +873,7 @@ export class RemittanceAllocationComponent implements OnInit {
 
 
   ValidateBankChargesAF(field: string) {
+    debugger
       const allocatedAmt = isNaN(parseFloat(this.amountAllocate)) ? 0 : parseFloat(this.amountAllocate);
       const dueByAmt = isNaN(parseFloat(this.dueByAgency)) ? 0 : parseFloat(this.dueByAgency);
   
@@ -882,13 +884,14 @@ export class RemittanceAllocationComponent implements OnInit {
   
       if (this.invoice !== "0") {
         console.log("Checking allocation");
+        this.isConfPopupOpen = true;
       
         if (this.roundVal(allocatedAmt) > this.roundVal(dueByAmt)) {
           this.popupComponent.openPopup(
             'Confirmation',
             `You are trying to allocate more than the maximum left on this invoice (${dueByAmt}). Allocate less or remove bank charges.`,
             'Confirmation',
-            () => {}
+            () => {this.isConfPopupOpen = false;}
           );
           return false;
         }
@@ -896,11 +899,13 @@ export class RemittanceAllocationComponent implements OnInit {
         const totalAllocation = this.roundVal(allocatedAmt + contractorCharges + afCharges + withheldTax + factoringAmt);
       
         if (totalAllocation > this.roundVal(dueByAmt)) {
+
           this.popupComponent.openPopup(
             'Confirmation',
             `You are trying to allocate more than the maximum left on this invoice (${dueByAmt}). Allocate less or remove bank charges.`,
             'Confirmation',
             () => {
+              this.isConfPopupOpen = false;
               if (field == "bankChargesAf") {
                 this.bankChargesAf = 0;
               }
@@ -917,6 +922,7 @@ export class RemittanceAllocationComponent implements OnInit {
           );
           return false;
         } else {
+          this.isConfPopupOpen = false;
           this.pendingLeftDue = this.roundVal(dueByAmt - contractorCharges - afCharges - allocatedAmt - withheldTax - factoringAmt);
         }
       
@@ -930,7 +936,8 @@ export class RemittanceAllocationComponent implements OnInit {
   }
 
   validateBankCharges(field: string): boolean {
-    if (this.allocationType === 'INV') {
+    debugger
+    if (this.allocationType === 'INV' && this.isConfPopupOpen == false) {
       switch (field) {
         case 'amountAllocate':
           if (!this.amountAllocate || this.amountAllocate < '0') {
