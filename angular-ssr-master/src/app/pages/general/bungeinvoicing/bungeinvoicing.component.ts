@@ -189,7 +189,6 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
         next: (response: any) => {
           this.allRecords = response.data.data;
           // this.selectedRecords = this.allRecords
-          debugger
           this.dataSource.data = response.data.data;
           console.log(" Incoming Data from API:", this.allRecords);
           this.totalRecords = response.data.totalRecords;
@@ -204,6 +203,32 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
           else{
             this.btnText = 'Validate';
           }
+          
+          if(this.currency){
+            if (this.allRecords) {
+              this.selectedRecords = this.allRecords
+              .filter((record: any) => record.currencyType === this.currency)
+              .map((record: any) => record.id);
+              if(this.selectedRecords.length > 0){
+                this.isAllRecord = true;
+              }
+              else{
+                this.isAllRecord = false
+                this.selectedRecords = [];
+                this.notificationService.showNotification(
+                  'No records found for the selected currency.',
+                  'INFO',
+                  'info',
+                  () => {
+                    this.notificationService.setNotificationVisibility(false);
+                    return;
+                  }
+            );
+          }
+            }
+            
+          }
+          
           this.loading = false;
         },
         error: (err) => {
@@ -309,14 +334,15 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
   onCurrencySelected(selectedCurrency: any) {
     this.currency = selectedCurrency;
     this.IsValidatedRecord = false;
-    this.isAllRecord = false;
-    this.selectedRecords = []
+    // this.isAllRecord = false;
+    // this.selectedRecords = []
+    
 
     if(this.hiddenfilteredContract.length > 0){
       this.filteredContractOptions = this.hiddenfilteredContract.filter((record: any) => record.ctcCurrenCy === selectedCurrency);    
     }
-
     this.loadInvoices();
+    
   }
 
   fetchContractorList(searchTerm: string): Observable<{ conCode: string; fullName: string }[]> {
@@ -628,7 +654,7 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
    // 🔍 Step 1: Get visible record IDs after filtering
   
 
-    debugger;
+    ;
     const body = {
       selectedFilteredContract : this.selectedFilteredContract,
       conCode : this.conCode,
