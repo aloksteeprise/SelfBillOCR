@@ -159,7 +159,7 @@
           <td mat-cell *matCellDef="let row"> {{row.selfBillInvoiceNo}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="errorMessage">
+        <!-- <ng-container matColumnDef="errorMessage">
           <th mat-header-cell *matHeaderCellDef class="coloredwhite"> Read Status </th>
           <td mat-cell *matCellDef="let row" style="width: 130px;">
             <ng-container *ngIf="row.isErrorOnRow; else okTemplate">
@@ -172,6 +172,15 @@
               OK
             </ng-template>
           </td>
+        </ng-container> -->
+        <ng-container matColumnDef="serviceFee">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Service Fee </th>
+          <td mat-cell *matCellDef="let row"> {{ row.isServiceInvoiceFee === 1 ? 'Yes' : 'No' }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="managementFee">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="coloredwhite"> Management Fee</th>
+          <td mat-cell *matCellDef="let row">  {{ row.isManagementFee === 1 ? 'Yes' : 'No' }} </td>
         </ng-container>
 
         <ng-container matColumnDef="afsInvoiceStatus">
