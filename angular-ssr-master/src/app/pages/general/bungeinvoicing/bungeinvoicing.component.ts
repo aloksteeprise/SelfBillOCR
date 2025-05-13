@@ -210,7 +210,6 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
             this.btnText = 'Validate';
           }
 
-          debugger
           if(this.currency){
             if (this.allRecords) {
               const filteredRecords = this.allRecords.filter(
