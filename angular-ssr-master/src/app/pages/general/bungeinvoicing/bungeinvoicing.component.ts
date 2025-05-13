@@ -209,30 +209,38 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
           else{
             this.btnText = 'Validate';
           }
-          
+
+          debugger
           if(this.currency){
             if (this.allRecords) {
-              this.selectedRecords = this.allRecords
-              .filter((record: any) => record.currencyType === this.currency)
-              .map((record: any) => record.id);
-              if(this.selectedRecords.length > 0){
+              const filteredRecords = this.allRecords.filter(
+                (record: any) => record.currencyType === this.currency
+              );
+              
+              this.selectedRecords = this.selectedRecords.filter(
+                (id: any) => filteredRecords.some((record: any) => record.id === id)
+              );
+
+              if(!this.selectedRecords.length){
+                this.isAllRecord = false;
+                this.selectedRecords = [];
+                if(!this.allRecords.length){
+                  this.notificationService.showNotification(
+                    'No records found for the selected currency.',
+                    'INFO',
+                    'info',
+                    () => {
+                      this.notificationService.setNotificationVisibility(false);
+                      return;
+                    }
+                );
+                }
+              }
+
+              if(this.selectedRecords == this.allRecords){
                 this.isAllRecord = true;
               }
-              else{
-                this.isAllRecord = false
-                this.selectedRecords = [];
-                this.notificationService.showNotification(
-                  'No records found for the selected currency.',
-                  'INFO',
-                  'info',
-                  () => {
-                    this.notificationService.setNotificationVisibility(false);
-                    return;
-                  }
-            );
-          }
-            }
-            
+            }           
           }
           
           this.loading = false;
@@ -343,7 +351,6 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
     // this.isAllRecord = false;
     // this.selectedRecords = []
     
-
     if(this.hiddenfilteredContract.length > 0){
       this.filteredContractOptions = this.hiddenfilteredContract.filter((record: any) => record.ctcCurrenCy === selectedCurrency);    
     }
