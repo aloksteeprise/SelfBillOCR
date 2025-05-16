@@ -154,8 +154,7 @@ if (isPlatformBrowser(this.platformId)) {
   }
 
   loadInvoices() {
-  
-    
+   
     const SortColumn = this.sort?.active || '';
     const SortDirection = this.sort?.direction || '';
 
@@ -208,8 +207,13 @@ if (isPlatformBrowser(this.platformId)) {
 
   openAllocationModal(invoiceData: any, autoFocus: boolean = false): void {
     console.log("Opening modal with cieCode:", this.ciecode);
+    
+    const account = this.bankAccountList
+                 .find(a => a.bkiAccountName === this.selectedBankAccount);
+
+    const bkiCode  = account?.bkiCode ?? '';  
+
     this.loading = true
-   
     if (invoiceData.isRecordValidated == false) {
       this.loading = false
       this.notificationService.showNotification(
@@ -218,12 +222,11 @@ if (isPlatformBrowser(this.platformId)) {
         'warning',
         () => { console.log('Please validate first') }
       );
-      //  return;
     }
     else {
       this.loading =false
       this.dialog.open(RemittanceAllocationComponent, {
-        data: { invoiceData, cieCode: this.ciecode },
+        data: { invoiceData, cieCode: this.ciecode, bkiCode },
         autoFocus: autoFocus
       });
 
@@ -267,9 +270,6 @@ if (isPlatformBrowser(this.platformId)) {
       }
     );
   }
-  
-  
-
 
   ClearSearch() {
     this.pageIndex = 0;
@@ -366,6 +366,7 @@ if (isPlatformBrowser(this.platformId)) {
   openManualAllocationModal(): void {
     const selectedCompany = this.selectedCompany?.cieDesc;
     const selectedBankAccount = this.selectedBankAccount;
+
     if (this.selectedCompany && this.selectedBankAccount) {
     const dialogRef = this.dialog.open(ManualAllocationPopupComponent, {
       width: '800px',

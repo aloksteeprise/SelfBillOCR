@@ -14,6 +14,7 @@ import { MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger }
 import { ConfirmationPopComponent } from '../confirmation-pop/confirmation-pop.component';
 import { debug } from 'node:console';
 import { isPlatformBrowser } from '@angular/common';
+import {AllocateToInvoiceItem} from './remittance-allocation';
 
 @Component({
   selector: 'app-remittance-allocation',
@@ -99,6 +100,17 @@ export class RemittanceAllocationComponent implements OnInit {
   disabledFields: { [key: string]: boolean } = {};
   isAutoSplit: boolean = false;
   isConfPopupOpen :boolean = false;
+  hdFlag : string = "0";
+  debitAmount : number = 0;
+  mvtKey : number = 0;
+  mvtID: number = 0;
+  mvtDate : string = "";
+  refRem : string = "";
+  bankCode : number = 0;
+  userName : any = null;
+  allocateToInvoiceList: AllocateToInvoiceItem[] = [];
+
+
 
   constructor(
     private dialogRef: MatDialogRef<RemittanceAllocationComponent>,
@@ -113,6 +125,12 @@ export class RemittanceAllocationComponent implements OnInit {
     this.cieCode = invoiceData.cieCode;
     this.txtAmountAvailable = invoiceData.invoiceData.mvtAmountRcvd;
     this.txtTotalAmount = invoiceData.invoiceData.mvtAmountRcvd;
+    this.debitAmount = invoiceData.invoiceData.mvtAmountSent;
+    this.mvtKey = invoiceData.invoiceData.mvtKey;
+    this.mvtID = invoiceData.invoiceData.mvtID;
+    this.mvtDate = invoiceData.invoiceData.mvtDate;
+    this.refRem = invoiceData.invoiceData.refRem;
+    this.bankCode = invoiceData.bkiCode;
 
     this.disabledFields = {
       invoice: false,
@@ -135,6 +153,7 @@ export class RemittanceAllocationComponent implements OnInit {
 
     if (isPlatformBrowser(this.platformId)) {
       const storedToken = localStorage.getItem('token');
+      this.userName = localStorage.getItem('username');
       if (storedToken) {
         this.token = storedToken;
 
@@ -308,7 +327,6 @@ export class RemittanceAllocationComponent implements OnInit {
       this.isAutoSplit = true;
       this.toggleAllocation()
     }
-    
     if (["0", 0, null, undefined, ''].includes(this.allocationData.ctcIs3Tier)) {
       this.disabledFields['invhTotAgencyFee'] = true;
       this.disabledFields['invhTotOurfee'] = true;
@@ -340,6 +358,7 @@ export class RemittanceAllocationComponent implements OnInit {
       'Content-Type': 'application/json',
     });
 
+    
     const apiUrl = environment.API_BASE_URL + 'OCRAI/GetInvoiceListData';
     this.http.post<any>(apiUrl, formData, { headers }).subscribe({
       next: (data) => {
@@ -657,18 +676,18 @@ export class RemittanceAllocationComponent implements OnInit {
     const newAllocation = {
       allocateType: selectedAllocationType?.altDesc || '',
       invoiceItem: invoiceItem,
-      amountToAllocate: this.amountAllocate || 0,
-      agencyCommission: this.allocationData?.invhTotAgencyFee || 0,
-      ourFee: this.allocationData?.invhTotOurfee || 0,
-      contractorDue: this.allocationData?.invhTotSal || 0,
-      vat: this.allocationData?.invhVATI || 0,
+      amountToAllocate: parseFloat(this.amountAllocate.toString()) || 0,
+      agencyCommission: parseFloat(this.allocationData?.invhTotAgencyFee.toString()) || 0,
+      ourFee: parseFloat(this.allocationData?.invhTotOurfee.toString()) ||  0,
+      contractorDue: parseFloat(this.allocationData?.invhTotSal.toString()) ||  0,
+      vat: parseFloat(this.allocationData?.invhVATI.toString()) || 0,
       descrp: description,
-      dueByAgen: this.dueByAgency || 0,
-      bkCharges: this.bankChargesContractor || 0,
-      bkChargesSMTG: this.bankChargesAf || 0,
-      taxWithheld: this.taxWithHeld || 0,
-      factoring: this.factoring || 0,
-      pendingLeft: this.pendingLeftDue || 0,
+      dueByAgen: parseFloat(this.dueByAgency.toString()) || 0,
+      bkCharges: parseFloat(this.bankChargesContractor.toString()) || 0,
+      bkChargesSMTG: parseFloat(this.bankChargesAf.toString()) ||  0,
+      taxWithheld: parseFloat(this.taxWithHeld.toString()) || 0,
+      factoring: parseFloat(this.factoring.toString()) || 0,
+      pendingLeft: parseFloat(this.pendingLeftDue.toString()) || 0,
       invhCode: invhCode,
       invhCodeOtherCurrency: invhCodeOtherCurrency
     };
@@ -873,7 +892,6 @@ export class RemittanceAllocationComponent implements OnInit {
 
 
   ValidateBankChargesAF(field: string) {
-    debugger
       const allocatedAmt = isNaN(parseFloat(this.amountAllocate)) ? 0 : parseFloat(this.amountAllocate);
       const dueByAmt = isNaN(parseFloat(this.dueByAgency)) ? 0 : parseFloat(this.dueByAgency);
   
@@ -936,7 +954,7 @@ export class RemittanceAllocationComponent implements OnInit {
   }
 
   validateBankCharges(field: string): boolean {
-    debugger
+    
     if (this.allocationType === 'INV' && this.isConfPopupOpen == false) {
       switch (field) {
         case 'amountAllocate':
@@ -1451,12 +1469,12 @@ export class RemittanceAllocationComponent implements OnInit {
     this.allocationType = null;
     this.invoice = null;
     this.amountAllocate = '';
-    this.allocationData = {
-      invhTotAgencyFee: 0,
-      invhTotOurfee: 0,
-      invhTotSal: 0,
-      invhVATI: 0,
-    };
+    // this.allocationData = {
+    //   invhTotAgencyFee: 0,
+    //   invhTotOurfee: 0,
+    //   invhTotSal: 0,
+    //   invhVATI: 0,
+    // };
 
     this.dueByAgency = '';
     this.bankChargesContractor = 0;
@@ -1474,11 +1492,11 @@ export class RemittanceAllocationComponent implements OnInit {
     this.isItemVisible = true;
   }
 
-  confirmAllocation(): boolean {
+  confirmAllocation(): void {
     const totalAmount = parseFloat(this.txtTotalAmount) || 0;
     const allocatedConfirmedAmount = this.txtAllocatedConfirmedAmount || 0;
     const amountAvailable = this.txtAmountAvailable || 0;
-    
+  
     this.popupComponent.openPopup(
       'Confirmation',
       'The accounting scheme will be created. Select Yes to update, No to edit your allocation lines',
@@ -1491,19 +1509,219 @@ export class RemittanceAllocationComponent implements OnInit {
             'info',
             () => {
               this.notificationService.setNotificationVisibility(false);
+              this.btnSubmitAllocVisible = true;
             }
           );
-          this.btnSubmitAllocVisible = true;
-          return false;
         } else {
           this.btnSubmitAllocVisible = false;
-          return true;
+          this.submitAllocation();
         }
+      },
+      () => {
+        this.btnSubmitAllocVisible = true;
       }
-      
     );
-    this.btnSubmitAllocVisible = true;
-    return false;
+  }
+  
+  submitAllocation(): void {
+    const totalAmount = parseFloat(this.txtTotalAmount) || 0;
+    const allocatedConfirmedAmount = this.txtAllocatedConfirmedAmount || 0;
+    const amountAvailable = this.txtAmountAvailable || 0;
+  
+    if (amountAvailable == allocatedConfirmedAmount && totalAmount == 0) {
+      let strContDue = '';
+      let contDueCount = 1;
+      let strFactoringCheck = '';
+      let FactoringCheckCount = 1;
+      let strDueAgeOur = '';
+      let contDueAgeOurCount = 1;
+
+
+      for (let i = 0; i < this.allocationList.length; i++) {
+        const row = this.allocationList[i];
+
+        const selectedAllocationType = this.allocationarr.find(
+          allocation => allocation.altDesc === row.allocateType
+        );
+
+        const newItem = {
+          AutoID: i+1,
+          ALDCode: 0,
+          AllocationCode: selectedAllocationType?.altCode || "",
+          AllocationType: row.allocateType || '',
+          InvhCode: row.invhCode != null ? row.invhCode.toString() : '',
+          InvhCodeOtherCurrency: row.invhCodeOtherCurrency || '',
+          InvoiceItem: row.invoiceItem || '',
+          AmountToAllocate:  parseFloat(row.amountToAllocate) || 0,
+          AgencyCommission:  parseFloat(row.agencyCommission) || 0,
+          OurFee:  parseFloat(row.ourFee) || 0,
+          ContractorDue:  parseFloat(row.contractorDue) || 0,
+          VAT:  parseFloat(row.vat) || 0,
+          Description: row.descrp || '',
+          DueByAgency:  parseFloat(row.dueByAgen) || 0,
+          BCContractor:  parseFloat(row.bkCharges) || 0,
+          BCSMTG:  parseFloat(row.bkChargesSMTG) || 0,
+          TaxWithHeld:  parseFloat(row.taxWithheld) || 0,
+          Factoring:  parseFloat(row.factoring) || 0,
+          PendingLeftDue:  parseFloat(row.pendingLeft) || 0
+        };
+      
+        this.allocateToInvoiceList.push(newItem);
+
+        if (
+          this.allocationData.ctcIs3Tier == '1' && row.AllocationCode == 'INV' && Number(row.agencyCommission) <= 0 && Number(row.ourFee) <= 0 && Number(row.contractorDue) <= 0
+        ) {
+          strDueAgeOur += `${contDueAgeOurCount}. Invoice : ${row.InvoiceItem}\n`;
+          contDueAgeOurCount++;
+        } else if (
+          this.allocationData.ctcIs3Tier == '1' && row.allocationCode == 'INV' && this.hdFlag == '0' && Number(row.contractorDue) <= 0
+        ) {
+          strContDue += `${contDueCount}. Invoice : ${row.InvoiceItem}\n`;
+          contDueCount++;
+        }
+
+        if (row.AllocationCode == 'INV') {
+          // const factoringFlag = this.factoringMap?.[row.InvhCode];
+
+          // const htValue = ht[row.invhCode]?.toString() || '';
+          // const parts = htValue.split('@');
+
+          // if (row.ALDCode == '0' && factoringFlag === '1') {
+          //   strFactoringCheck += `${FactoringCheckCount}. Invoice : ${row.InvoiceItem}\n`;
+          //   FactoringCheckCount++;
+          // }
+        }
+
+        
+      }
+
+      if (strDueAgeOur) {
+        alert(
+          'Agency Fee, Our Fee and Contractor Due amount do not exist in the following Invoice(s):\n' +
+          strDueAgeOur +
+          '\nYou cannot allocate the above invoice(s).'
+        );
+        return;
+      } else if (strFactoringCheck) {
+        alert(
+          'Factoring options are not selected for the following Invoice(s):\n' +
+          strFactoringCheck +
+          '\nPlease update the above invoice(s) manually by selecting proper factoring option.'
+        );
+        return;
+      } else if (strContDue && this.hdFlag == '0') {
+        const message ='Contractor Due Amount does not exist in the following Invoice(s):\n' +
+              strContDue +
+              '\nPlease select OK if you want to proceed without Contractor’s DUE amount or SALARY.';
+            const contractorConfirm = confirm(message);
+            if (contractorConfirm) {
+              this.hdFlag = '1';
+              this.submitAllocation();
+            } else {
+              return;
+            }
+      } else{
+        let Response = this.SaveAllocationToInvoice(this.cieCode, this.selectedAgency, this.currency, this.bankCode, this.bkAccount, this.txtAmountAvailable
+          ,this.debitAmount, this.mvtKey,  this.mvtID, this.mvtDate, this.selectedAgencyDesc, this.refRem, this.userName, this.allocateToInvoiceList
+        );
+    }
+    } else {
+      this.notificationService.showNotification(
+        'The total allocated is different from the amount received. This update cannot be accepted.',
+        'INFO',
+        'info',
+        () => {
+          this.notificationService.setNotificationVisibility(false);
+          this.btnSubmitAllocVisible = true;
+        }
+      );
+    }
+    
   }
 
+  SaveAllocationToInvoice(
+    cieCode: number,
+    agencyCode: number,
+    currency: string,
+    cieBankCode: number,
+    bankAccount: string,
+    creditAmount: number,
+    debitAmount: number,
+    mvtKey: number,
+    mvtID: number,
+    mvtDate: string,
+    agencyName: string,
+    paymentRef: string,
+    loggedInUser: string,
+    allocationList: any[]
+  ): void {
+    const formData = {
+      CieCode: cieCode,
+      AgencyCode: agencyCode,
+      BkiCurrency: currency,
+      CieBankCode: cieBankCode,
+      BkiAccountNb: bankAccount,
+      CreditAmount: creditAmount,
+      DebitAmount: debitAmount,
+      MvtKey: mvtKey,
+      MvtID: mvtID,
+      MvtDate: mvtDate,
+      AgencyName: agencyName,
+      AlaAgnPayRef: paymentRef,
+      LoggedInUser: loggedInUser,
+      AllocateToInvoiceType: allocationList
+    };
+  
+    console.log('Submitted Data:', formData);
+  
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.token}`,
+      'Content-Type': 'application/json',
+    });
+  
+    const apiUrl = environment.API_BASE_URL + 'OCRAI/SaveAllocationToInvoice';
+    this.http.post<any>(apiUrl, formData, { headers }).subscribe({
+
+      next: (response) => {
+        console.log('API Response:', response);
+  
+        const result = response?.data?.result;
+
+      if (result && result.length > 0) {
+        this.notificationService.showNotification(
+          `${result}`,
+          'INFO',
+          'info',
+          () => {
+            this.notificationService.setNotificationVisibility(false);
+            return;
+          }
+        );
+      } else {
+        this.notificationService.showNotification(
+          `${result}`,
+          'INFO',
+          'info',
+          () => {
+            this.notificationService.setNotificationVisibility(false);
+            return;
+          }
+        );
+      }
+      },
+      error: (error) => {
+        console.error('API Error:', error);
+        this.notificationService.showNotification(
+          'An error occurred. Please try again.',
+          'ERROR',
+          'error',
+          () => {
+            this.dialogRef.close();
+            this.notificationService.setNotificationVisibility(false);
+          }
+        );
+      }
+    });
+  }
+  
 }

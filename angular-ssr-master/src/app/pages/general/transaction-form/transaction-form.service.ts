@@ -70,7 +70,6 @@ export class TransactionFormService {
       'Content-Type': 'application/json',
     });
 
-    debugger
     console.log('id' , RowId)
     return this.http.post(`${this.apiUrl}/ValidateManualBankAllocation`, { RowId }, { headers });
   }
