@@ -1454,6 +1454,7 @@ export class RemittanceAllocationComponent implements OnInit {
     this.taxWithHeld = row.taxWithheld || 0;
     this.factoring = row.factoring || 0;
     this.pendingLeftDue = row.pendingLeft || 0;
+    this.currencyDescription = row.invhCodeOtherCurrency || "null";
     this.notificationService.setNotificationVisibility(false);
 
   }

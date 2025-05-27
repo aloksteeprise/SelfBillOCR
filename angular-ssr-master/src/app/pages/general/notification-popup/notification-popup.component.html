@@ -1,7 +1,8 @@
 <div class="notification-wrapper" *ngIf="isVisible">
   <div class="notification-popup" [ngClass]="type">
     <h3 class="notification-header">{{ header }}</h3>
-    <p class="notification-message">{{ message }}</p>
+    <!-- <p class="notification-message">{{ message }}</p> -->
+  <p class="notification-message" [innerHTML]="message"></p> <!-- ✅ FIXED -->
     <div class="notification-footer">
       <button class="ok-btn" (click)="closePopup()">OK</button>
     </div>

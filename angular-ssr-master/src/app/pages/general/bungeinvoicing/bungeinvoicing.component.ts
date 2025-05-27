@@ -193,9 +193,11 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
       .getInvoices(this.pageIndex, this.pageSize, SortColumn, SortDirection, this.name, this.invoiceno, this.startdate, this.enddate, this.CsmTeam, this.selectedFilteredContract, this.conCode, this.internalInvoiceType, this.currency, this.token)
       .subscribe({
         next: (response: any) => {
+
           this.allRecords = response.data.data;
           // this.selectedRecords = this.allRecords
           this.dataSource.data = response.data.data;
+          
           console.log(" Incoming Data from API:", this.allRecords);
           this.totalRecords = response.data.totalRecords;
           if (this.allRecords.length > 0) {
@@ -509,12 +511,54 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
         this.selectedRecords = [];
         return;
       }
-
       if (this.isAllRecord) {
-        this.selectedRecords = this.allRecords
-          .filter(row => row.isErrorOnRow !== 1)
-          .map(row => row.id);
-          this.btnConsolidateVisible = true;
+        // this.selectedRecords = this.allRecords
+        // this.allRecords.filter(row => row.isErrorOnRow !== 1)
+        // .map(row => row.id);
+
+        this.btnConsolidateVisible = true;
+        this.selectedRecords = [];
+        const serviceNames: string[] = [];
+        const managementNames: string[] = [];
+
+        this.allRecords.forEach(row => {
+                if (row.isErrorOnRow == 1) {
+                  return; // skip error rows
+                }
+
+                if (row.serviceInvoiceFeeUI == 1) {
+                  serviceNames.push(row.cFirstName);
+                } else if (row.managementFeeUI == 1) {
+                  managementNames.push(row.cFirstName);
+                } else {
+                  this.selectedRecords.push(row.id);
+                }
+              });
+
+              let notificationMessage = '';
+
+              if (serviceNames.length) {
+                notificationMessage += `• <strong>SERVICE FEE</strong> invoice already generated for: <strong> ${serviceNames.join(', ')}</strong><br/>`;
+              }
+
+              if (managementNames.length) {
+                notificationMessage += `• <strong>MANAGEMENT FEE</strong> invoice already generated for: <strong> ${managementNames.join(', ')}</strong>`;
+              }
+
+              if (notificationMessage) {
+                this.notificationService.showNotification(
+                  notificationMessage,
+                  'INFORMATION',
+                  'Info',
+                  () => {
+                    this.notificationService.setNotificationVisibility(false);
+                    if(this.selectedRecords.length == 0){
+                        this.isAllRecord = false;
+                        this.btnConsolidateVisible = false;
+                    }
+                  }
+                );
+              }
       } else {
         this.selectedRecords = [];
         this.btnConsolidateVisible = false;
@@ -525,22 +569,74 @@ export class BungeinvoicingComponent implements OnInit, AfterViewInit {
     }, 500);
   }
 
-  onCheckboxChange(event: any, id: number) {
-    if (event.target.checked) {
-      this.selectedRecords.push(id);
+  // onCheckboxChange(event: any, id: number) {
+  //   if (event.target.checked) {
+  //     this.selectedRecords.push(id);
       
-      this.btnConsolidateVisible = true;
-    } else {
-      this.selectedRecords = this.selectedRecords.filter(recordId => recordId !== id);
-      if(this.selectedRecords.length == 0){
-        this.btnConsolidateVisible = false;
+  //     this.btnConsolidateVisible = true;
+  //   } else {
+  //     this.selectedRecords = this.selectedRecords.filter(recordId => recordId !== id);
+  //     if(this.selectedRecords.length == 0){
+  //       this.btnConsolidateVisible = false;
+  //     }
+  //     this.isAllRecord = false;
+  //   }
+
+  //   this.selectedRecords = [...this.selectedRecords];
+
+  // }
+
+  onCheckboxChange(event: any, id: number) {
+  const selectedRow = this.allRecords.find(row => row.id === id);
+  if (!selectedRow) return;
+  if (event.target.checked) {
+    const serviceGenerated = selectedRow.serviceInvoiceFeeUI == 1;
+    const managementGenerated = selectedRow.managementFeeUI == 1;
+
+    if (serviceGenerated || managementGenerated) {
+      let message = '';
+
+      if (serviceGenerated) {
+        message += `• <strong>SERVICE FEE</strong> invoice already generated for: <strong> ${selectedRow.cFirstName}\n`;
       }
-      this.isAllRecord = false;
+      if (managementGenerated) {
+        message += `• <strong>MANAGEMENT FEE</strong> invoice already generated for: <strong> ${selectedRow.cFirstName}\n`;
+      }
+
+      this.notificationService.showNotification(
+        message,
+        'INFORMATION',
+        'Info',
+        () => {
+          this.notificationService.setNotificationVisibility(false);
+          this.btnConsolidateVisible = true;
+          this.selectedRecords.push(id);
+        }
+      );
+
+      // this.btnConsolidateVisible = true;
+      // this.selectedRecords.push(id);
+      //event.target.checked = false;
+      return;
+    }
+    else{
+        this.selectedRecords.push(id);
+        this.btnConsolidateVisible = true;
     }
 
-    this.selectedRecords = [...this.selectedRecords];
+  } else {
+    this.selectedRecords = this.selectedRecords.filter(recordId => recordId !== id);
 
+    if (this.selectedRecords.length === 0) {
+      this.btnConsolidateVisible = false;
+    }
+
+    this.isAllRecord = false;
   }
+
+  this.selectedRecords = [...this.selectedRecords];
+}
+
 
   openGenerateConsolidateInvoiceConfirmationBox() {
     let isValid = true;
