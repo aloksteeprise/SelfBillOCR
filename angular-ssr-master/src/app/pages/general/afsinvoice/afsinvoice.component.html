@@ -103,7 +103,7 @@
               </div>
             </div>
 
-            <div class="row mb-2 align-items-center">
+            <div class="row mb-2">
               <label for="endDate" class="col-sm-4 col-form-label fontsize14">End Date: <span style="color: red;">
                   *</span></label>
               <div class="col-sm-8">
@@ -112,12 +112,22 @@
                 min="1900-01-01" max="9999-12-31" />
                 <div class="error-message" *ngIf="errors.endDate">
                   <small class="text-danger">{{ errors.endDate }}</small>
+                    <div class="row mb-2 align-items-center">
+                    <label for="startDate" class="col-sm-11 col-form-label" style="color: red;">
+                      <input type="checkbox" name="IsDateExtended" [(ngModel)]="IsDateExtended" style="transform: scale(1.5);"
+                      (change)="onCheckboxChange($event)"/>
+                      &nbsp; Override the default Date limit by checking this box.
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
 
             <div class="row mb-2 align-items-center">
-              <label for="TotalAmount" class="col-sm-4 col-form-label fontsize14">Total Amount:</label>
+              <label for="TotalAmount" class="col-sm-4 col-form-label fontsize14">Total Amount &nbsp;
+                <span
+                  style="font-size: 13px; color: grey;">(Excl VAT):</span>
+              </label>
               <div class="col-sm-8">
                 <div class="input-group">
                   <span class="input-group-text " style="font-size: 12px;">{{currencytype}}</span>

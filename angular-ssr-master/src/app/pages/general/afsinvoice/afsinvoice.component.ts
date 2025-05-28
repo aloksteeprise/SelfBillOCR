@@ -54,6 +54,7 @@ export class AfsinvoiceComponent implements OnInit {
   isRecordValidated: boolean = false;
   filterRecords: any[] = [];
   iserrors:boolean = false;
+  IsDateExtended :boolean=false;
 
   constructor(
     private dialogRef: MatDialogRef<AfsinvoiceComponent>,
@@ -311,7 +312,8 @@ export class AfsinvoiceComponent implements OnInit {
       GroupNewId: this.groupNewId,
       IsSkip: true,
       IsPrevious: true,
-      IsDelete: false
+      IsDelete: false,
+      IsDateExtended: this.IsDateExtended
     };
     }
 
@@ -506,23 +508,26 @@ export class AfsinvoiceComponent implements OnInit {
       errors.endDate = 'Invalid EndDate.';
     }
 
-    if (!errors.startDate && !errors.endDate && this.startdate && this.enddate) {
-      const start = new Date(this.startdate);
-      const end = new Date(this.enddate);
+    if(!this.IsDateExtended){
+      if (!errors.startDate && !errors.endDate && this.startdate && this.enddate) {
+        const start = new Date(this.startdate);
+        const end = new Date(this.enddate);
 
 
-      const startYear = start.getFullYear();
-      const startMonth = start.getMonth();
-      const endYear = end.getFullYear();
-      const endMonth = end.getMonth();
+        const startYear = start.getFullYear();
+        const startMonth = start.getMonth();
+        const endYear = end.getFullYear();
+        const endMonth = end.getMonth();
 
 
-      if (startYear !== endYear || startMonth !== endMonth) {
-        isValid = false;
-        errors.endDate = 'Date must be within the same month and year.';
-        this.loading = false;
+        if (startYear !== endYear || startMonth !== endMonth) {
+          isValid = false;
+          errors.endDate = 'Date must be within the same month and year.';
+          this.loading = false;
+        }
       }
     }
+
 
     if (this.startdate && this.enddate) {
       const startDateObj = new Date(this.startdate);
@@ -577,7 +582,8 @@ export class AfsinvoiceComponent implements OnInit {
       GroupNewId: this.groupNewId,
       IsSkip: true,
       IsPrevious: false,
-      IsDelete: false
+      IsDelete: false,
+      IsDateExtended: this.IsDateExtended
     };
   
     const headers = new HttpHeaders({
@@ -716,20 +722,23 @@ export class AfsinvoiceComponent implements OnInit {
     }
 
 
-    if (!errors.startDate && !errors.endDate) {
-      const start = new Date(this.startdate);
-      const end = new Date(this.enddate);
+        if(!this.IsDateExtended){
+      if (!errors.startDate && !errors.endDate && this.startdate && this.enddate) {
+        const start = new Date(this.startdate);
+        const end = new Date(this.enddate);
 
 
-      const startYear = start.getFullYear();
-      const startMonth = start.getMonth();
-      const endYear = end.getFullYear();
-      const endMonth = end.getMonth();
+        const startYear = start.getFullYear();
+        const startMonth = start.getMonth();
+        const endYear = end.getFullYear();
+        const endMonth = end.getMonth();
 
 
-      if (startYear !== endYear || startMonth !== endMonth) {
-        isValid = false;
-        errors.endDate = 'Date must be within the same month and year.';
+        if (startYear !== endYear || startMonth !== endMonth) {
+          isValid = false;
+          errors.endDate = 'Date must be within the same month and year.';
+          this.loading = false;
+        }
       }
     }
 
@@ -772,7 +781,8 @@ export class AfsinvoiceComponent implements OnInit {
         GroupNewId: this.groupNewId,
         IsSkip: false,
         IsPrevious: false,
-        IsDelete: false
+        IsDelete: false,
+        IsDateExtended: this.IsDateExtended
       };
 
       this.loading = true
@@ -1024,7 +1034,7 @@ export class AfsinvoiceComponent implements OnInit {
     this.currencytype = data.CurrencyType || '';
     this.imageName = data.InvoiceFilePath;
     this.uplodedPDFFile = data.InvoiceFileName;
-
+    this.IsDateExtended = false;
 
     this.resetAFSContractorDropdown();
     this.fetchContractorOptions();
@@ -1105,6 +1115,15 @@ export class AfsinvoiceComponent implements OnInit {
       this.fetchContractorOptions();
     }
     this.loading = false;
+  }
+
+    onCheckboxChange(event: any) {
+    // if (event.target.checked) {
+    //   this.IsDateExtended = true;
+    // } else {
+    //   this.IsDateExtended = false;
+    // }
+
   }
 
 }
